@@ -1,0 +1,21 @@
+﻿v1.0.0
+Initial Release
+
+
+v1.1.0
+Added Search to "iFilm"
+Updated "Al-Maaref"
+
+
+v1.2.0
+Added Recent Series to "iFilm"
+
+
+v1.3.0
+Added new website "Al-Fatimi" 
+
+
+v1.4.0
+Added Email function
+
+
