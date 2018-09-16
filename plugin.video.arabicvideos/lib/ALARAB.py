@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
-website0a = 'http://tv.alarab.com'
+website0a = 'http://vod.alarab.com'
 website0b = 'http://tv1.alarab.com'
-website0c = 'http://vod.alarab.com'
+website0c = 'http://tv.alarab.com'
+website0d = 'http://vod.alarab.com/view-1/افلام-عربية'
 
 def MAIN(mode,url):
 	#return
@@ -16,13 +17,13 @@ def MAIN(mode,url):
 def MENU():
 	addDir('بحث في الموقع',website0a,13,icon)
 	addDir('مسلسلات جديدة',website0a,14,icon)
-	html = openURL(website0a)
+	html = openURL(website0d)
 	html_blocks=re.findall('footer_sec(.*?)social-network',html,re.DOTALL)
 	block=html_blocks[0]
 	#xbmcgui.Dialog().ok(str(len(html)), str(len(block)) )
 	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	for url,name in items:
-		url = url.replace(website0b,website0a)
+		#url = url.replace(website0b,website0a)
 		addDir(name,url,11,icon)
 	xbmcplugin.endOfDirectory(addon_handle)
 
@@ -37,6 +38,7 @@ def LATEST():
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def ITEMS(url):
+	#xbmcgui.Dialog().ok(url,'')
 	html = openURL(url)
 	html_blocks = re.findall('heading-list(.*?)right_content',html,re.DOTALL)
 	block = html_blocks[0]
@@ -54,10 +56,10 @@ def ITEMS(url):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
-	id = re.findall('/v(.+?)-',url,re.DOTALL)[0]
+	id = re.findall('com/v(.*?)-',url,re.DOTALL)[0]
 	url = 'http://alarabplayers.alarab.com/?vid='+id
-	html = openURL(url)
 	#xbmcgui.Dialog().ok(url,'')
+	html = openURL(url)
 	#progress = xbmcgui.DialogProgress()
 	#progress.create('Opening website')
 	#progress.update(25,'Finding videos')
@@ -118,8 +120,9 @@ def SEARCH():
 	if len(search)<2:
 		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
 		return
-	search = search.replace(' ','-')
+	search = search.replace(' ','%20')
 	new_search = mixARABIC(search)
 	searchlink = website0a + "/q/" + new_search
+	#xbmcgui.Dialog().ok('',searchlink)
 	ITEMS(searchlink)
 
