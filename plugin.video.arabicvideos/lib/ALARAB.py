@@ -28,10 +28,10 @@ def MENU():
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def LATEST():
-	html = openURL(website0a)
-	html_blocks=re.findall('right_content.+?heading-top(.+?)heading-top',html,re.DOTALL)
+	html = openURL(website0d)
+	html_blocks=re.findall('right_content.*?heading-top(.*?)heading-top',html,re.DOTALL)
 	block = html_blocks[0]
-	items=re.findall('href="(.*?)".+?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
+	items=re.findall('href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
 	for url,img,name in items:
 		url = website0a + url
 		addDir(name,url,11,img)
@@ -42,7 +42,7 @@ def ITEMS(url):
 	html = openURL(url)
 	html_blocks = re.findall('heading-list(.*?)right_content',html,re.DOTALL)
 	block = html_blocks[0]
-	items = re.findall('video-box.*?href="(.*?)".+?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
+	items = re.findall('video-box.*?href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
 	for link,img,name in items:
 		url = website0a + link
 		if 'series' in link:
@@ -73,9 +73,9 @@ def PLAY(url):
 	#file.write('\n\n\n')
 	#file.write(html)
 	#file.close()
-	html_blocks = re.findall('playerInstance.setup(.+?)primary',html,re.DOTALL)
+	html_blocks = re.findall('playerInstance.setup(.*?)primary',html,re.DOTALL)
 	block = html_blocks[0]
-	items = re.findall('file: "(.*?)mp4".+?label: "(.*?)"',block,re.DOTALL)
+	items = re.findall('file: "(.*?)mp4".*?label: "(.*?)"',block,re.DOTALL)
 	if items: 
 		count = 0
 		items_url = []
