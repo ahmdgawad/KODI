@@ -2,7 +2,7 @@
 
 import xbmc,unicodedata,email.charset
 import xbmcgui
-import simplejson as json
+#import simplejson as json
 from LIBRARY import *
 
 def MAIN(mode,keyboard):
@@ -69,8 +69,8 @@ def MAIN(mode,keyboard):
 
 
 		#keyboard = 'emad'
-		json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Input.SendText","params":{"text":"'+keyboard+'","done":false},"id":1}')
-		json.loads(json_query)
+		#json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Input.SendText","params":{"text":"'+keyboard+'","done":false},"id":1}')
+		#json.loads(json_query)
 
 		#keyboard = keyboard.encode('utf8')
 		#new = keyboard.decode('unicode_escape')

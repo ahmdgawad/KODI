@@ -97,7 +97,9 @@ def mixARABIC(string):
 	string = string.decode('utf8')
 	new_string = ''
 	for letter in string:
-		if ord(letter) < 128: unicode_letter = '\u00'+hex(ord(letter)).replace('0x','')
+		#xbmcgui.Dialog().ok(unicodedata.decomposition(letter),hex(ord(letter)))
+		if ord(letter) < 256: unicode_letter = '\u00'+hex(ord(letter)).replace('0x','')
+		elif ord(letter) < 4096: unicode_letter = '\u0'+hex(ord(letter)).replace('0x','')
 		else: unicode_letter = '\u'+unicodedata.decomposition(letter).split(' ')[1]
 		new_string += unicode_letter
 	new_string = new_string.decode('unicode_escape')

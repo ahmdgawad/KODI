@@ -41,7 +41,7 @@ def MAIN(mode,text):
 
 	elif mode==4:
 		search =''
-		keyboard = xbmc.Keyboard(search, 'Search')
+		keyboard = xbmc.Keyboard(search, 'Write a message   اكتب رسالة')
 		keyboard.doModal()
 		if keyboard.isConfirmed(): search = keyboard.getText()
 		if len(search)<2:
@@ -50,14 +50,28 @@ def MAIN(mode,text):
 		message = mixARABIC(search)
 		yes = xbmcgui.Dialog().yesno('هل ترسل هذه الرسالة',message)
 		if yes: 
-			url = 'https://api.smtp2go.com/v3/email/send'
-			data = '{"api_key":"api-5489CD98B6B111E8B6D7F23C91C88F4E","to":["emad.mahdi1@gmail.com"],"sender":"pudegexod@bit-degree.com","subject":"From Arabic Videos","text_body":"'+message+'"}'
+			url = 'http://emadmahdi.pythonanywhere.com/sendemail'
+			subject = 'From Arabic Videos'
+			message = quote(message)
+			payload = '------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"message\"\r\n\r\n'+message+'\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"subject\"\r\n\r\n'+subject+'\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--'
+			headers = {"content-type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW"}
 			#auth=("api", "my personal api key"),
-			response = requests.request('POST', url, data=data, headers='', auth='')
+			#response = requests.request('POST',url, data=payload, headers='', auth='')
+			response = requests.post(url, data=payload, headers=headers, auth='')
 			if response.status_code == 200:
-			    xbmcgui.Dialog().ok('تم الارسال بنجاح','')
+			    xbmcgui.Dialog().ok('تم الارسال','')
 			else:
 			    xbmcgui.Dialog().ok('خطأ في الارسال','Error {}: {!r}'.format(response.status_code, response.content))
+
+		#	url = 'my API and/or SMTP server'
+		#	payload = '{"api_key":"MY API KEY","to":["myemail"],"sender":"myemail","subject":"From Arabic Videos","text_body":"'+message+'"}'
+		#	#auth=("api", "my personal api key"),
+		#	#response = requests.request('POST',url, data=payload, headers='', auth='')
+		#	response = requests.post(url, data=payload, headers='', auth='')
+		#	if response.status_code == 200:
+		#		xbmcgui.Dialog().ok('تم الارسال بنجاح','')
+		#	else:
+		#		xbmcgui.Dialog().ok('خطأ في الارسال','Error {}: {!r}'.format(response.status_code, response.content))
 
 		#	FROMemailAddress = 'emad.mahdi1@gmail.com'
 		#	TOemailAddress = 'emad.mahdi1@gmail.com'
