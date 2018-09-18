@@ -5,6 +5,7 @@ website0a = 'http://vod.alarab.com'
 website0b = 'http://tv1.alarab.com'
 website0c = 'http://tv.alarab.com'
 website0d = 'http://vod.alarab.com/view-1/افلام-عربية'
+website0d = 'http://vod.alarab.com/index.php'
 
 def MAIN(mode,url):
 	#return
@@ -56,10 +57,11 @@ def ITEMS(url):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
+	html = openURL(url)
 	id = re.findall('com/v(.*?)-',url,re.DOTALL)[0]
 	url = 'http://alarabplayers.alarab.com/?vid='+id
+	html = html + openURL(url)
 	#xbmcgui.Dialog().ok(url,'')
-	html = openURL(url)
 	#progress = xbmcgui.DialogProgress()
 	#progress.create('Opening website')
 	#progress.update(25,'Finding videos')
@@ -74,41 +76,45 @@ def PLAY(url):
 	#file.write(html)
 	#file.close()
 	html_blocks = re.findall('playerInstance.setup(.*?)primary',html,re.DOTALL)
-	block = html_blocks[0]
+	block = html_blocks[0] + html_blocks[1]
+	count = 0
+	items_url = []
+	items_name = []
 	items = re.findall('file: "(.*?)mp4".*?label: "(.*?)"',block,re.DOTALL)
-	if items: 
-		count = 0
-		items_url = []
-		items_name = []
-		for file,label in reversed(items):
-			count += 1
-			items_url.append(file+'mp4')
-			items_name.append(label)
-		if count > 1:
-			selection = xbmcgui.Dialog().select('Select Video Quality:', items_name)
-			#xbmcgui.Dialog().ok(items_name[selection], items_url[selection])
-			if selection == -1 : return
-		else:
-			selection = 0
+	for file,label in reversed(items):
+		count += 1
+		items_url.append(file+'mp4')
+		items_name.append(label)
+	items = re.findall('file:".*?youtu.*?=(.*?)"',block,re.DOTALL)
+	for youtubeID in items:
+		url = 'plugin://plugin.video.youtube/play/?video_id='+youtubeID
+		count += 1
+		items_url.append(url)
+		items_name.append('From youtube')
+	url = website0a + '/download.php?file='+id
+	html = openURL(url)
+	items = re.findall('</h2>.*?href="(.*?)mp4"',html,re.DOTALL)
+	if items:
+		url = items[0] + 'mp4'
+		count += 1
+		items_url.append(url)
+		items_name.append('From download')
+	if count == 0:
+		xbmcgui.Dialog().notification('No video file found','')
+		return
+	elif count == 1:
+		selection = 0
 		url = items_url[selection]
-		###url = mixARABIC(url)
-	else:
-		items = re.findall('file:"(.*?)"',block,re.DOTALL)
-		if items:
-			url = 'http:' + items[0]
-			if 'youtu' in url:
-				youtubeID = url.split('=')[1]
-				url = 'plugin://plugin.video.youtube/play/?video_id='+youtubeID
-		else:
-			#if not 'alarabplayers' in url:
-			#	links = re.findall('iframe src="(.*?)"',html,re.DOTALL)
-			#	link = links[0]
-			#	url = link.split('&')[0]
-			#	PLAY(url)
-			#	return
-			#else:
-			xbmcgui.Dialog().notification('No video file found','')
-			return
+	elif count > 1:
+		new_items_url = []
+		new_items_name = []
+		for i in range(0,len(items_url),+1):
+			if items_url[i] not in new_items_url:
+				new_items_url.append(items_url[i])
+				new_items_name.append(items_name[i])
+		selection = xbmcgui.Dialog().select('Select Video Link:', new_items_name)
+		if selection == -1 : return
+		url = new_items_url[selection]
 	play_item = xbmcgui.ListItem(path=url)
 	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
 

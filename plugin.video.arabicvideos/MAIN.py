@@ -11,7 +11,7 @@ def MAIN():
 	website0a = '========================='
 	website0f = '--------------------------------'
 	website0g = 'ـProblems & Solutions       مشاكل وحلول'
-	website0d = 'ـEmail to Developer       رسالة الى المبرمج'
+	website0d = 'ـMessage to developer       رسالة الى المبرمج'
 	addDir(website5,'',50)
 	addDir(website3,'',30)
 	addDir(website2,'',20)
@@ -26,8 +26,10 @@ def MAIN():
 def problemsMENU():
 	website0b = 'Problem:   Can\'t see Arabic Text'
 	website0c = 'الفيديو لا يظهر في موقع كل العرب   :مشكلة'
+	website0d = 'بعض الروابط لا تعمل   :مشكلة'
 	addDir(website0b,'',2)
 	addDir(website0c,'',3)
+	addDir(website0d,'',5)
 	xbmcplugin.endOfDirectory(addon_handle)
 	
 

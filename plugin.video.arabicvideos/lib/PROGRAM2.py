@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
-import requests
-#import smtplib
+import urllib
+
 
 def MAIN(mode,text):
 
@@ -28,43 +28,50 @@ def MAIN(mode,text):
 			for i in range(0,len(keyboard),1):
 				new2 += hex(ord(keyboard[i])).replace('0x','')+' '
 			xbmcgui.Dialog().ok(new1,new2)
+		return
 
 	elif mode==2:
 		message1 = '1.   If you can\'t see Arabic Letters then go to "Kodi Interface Settings" and change the font to "Arial"'
 		message2 = '2.   If you can\'t see "Arial" in kodi skin fonts then go to "Kodi Interface Settings" and change your skin to another skin that accepts "Arial" font'
 		xbmcgui.Dialog().ok('Arabic Problem',message1)
 		xbmcgui.Dialog().ok('Font Problem',message2)
+		return
 
 	elif mode==3:
 		message1 = 'هذا الموقع بحاجة الى ربط مشفر حاول تنزيل شهادة التشفير على كودي او استخدم اصدار اخر لكودي  مثل اصدار 17.6'
 		xbmcgui.Dialog().ok('المواقع المشفرة',message1)
+		return
 
 	elif mode==4:
 		search =''
 		keyboard = xbmc.Keyboard(search, 'Write a message   اكتب رسالة')
 		keyboard.doModal()
 		if keyboard.isConfirmed(): search = keyboard.getText()
-		if len(search)<2:
+		if len(search)<-2:
 			xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
  			return
 		message = mixARABIC(search)
 		yes = xbmcgui.Dialog().yesno('هل ترسل هذه الرسالة',message)
 		if yes: 
+			code = ''
+			reason = ''
 			url = 'http://emadmahdi.pythonanywhere.com/sendemail'
-			subject = 'From Arabic Videos'
-			message = quote(message)
-			payload = '------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"message\"\r\n\r\n'+message+'\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"subject\"\r\n\r\n'+subject+'\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--'
-			headers = {"content-type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW"}
-			#auth=("api", "my personal api key"),
-			#response = requests.request('POST',url, data=payload, headers='', auth='')
-			response = requests.post(url, data=payload, headers=headers, auth='')
-			if response.status_code == 200:
+			payload = {'message' : quote(message), 'subject' : 'From Arabic Videos' }
+			try:
+				data = urllib.urlencode(payload)
+				request = urllib2.Request(url, data)
+				response = urllib2.urlopen(request)
+				code = response.code
+			except urllib2.HTTPError as error:
+				code = str(error.code)
+				reason = str(error.reason)
+			if code == 200:
 			    xbmcgui.Dialog().ok('تم الارسال','')
 			else:
-			    xbmcgui.Dialog().ok('خطأ في الارسال','Error {}: {!r}'.format(response.status_code, response.content))
+			    xbmcgui.Dialog().ok('خطأ في الارسال','Error {}: {!r}'.format(code, reason))
 
 		#	url = 'my API and/or SMTP server'
-		#	payload = '{"api_key":"MY API KEY","to":["myemail"],"sender":"myemail","subject":"From Arabic Videos","text_body":"'+message+'"}'
+		#	payload = '{"api_key":"MY API KEY","to":["me@email.com"],"sender":"me@email.com","subject":"From Arabic Videos","text_body":"'+message+'"}'
 		#	#auth=("api", "my personal api key"),
 		#	#response = requests.request('POST',url, data=payload, headers='', auth='')
 		#	response = requests.post(url, data=payload, headers='', auth='')
@@ -73,8 +80,8 @@ def MAIN(mode,text):
 		#	else:
 		#		xbmcgui.Dialog().ok('خطأ في الارسال','Error {}: {!r}'.format(response.status_code, response.content))
 
-		#	FROMemailAddress = 'emad.mahdi1@gmail.com'
-		#	TOemailAddress = 'emad.mahdi1@gmail.com'
+		#	FROMemailAddress = 'me@email.com'
+		#	TOemailAddress = 'me@email.com'
 		#	header = ''
 		#	#header += 'From: ' + FROMemailAddress
 		#	#header += '\nTo: ' + emailAddress
@@ -86,6 +93,11 @@ def MAIN(mode,text):
 		#	response = server.sendmail(FROMemailAddress,TOemailAddress, header + '\n' + message)
 		#	server.quit()
 		#	xbmcgui.Dialog().ok('Response',str(response))
+		return
 
+	elif mode==5:
+		yes = xbmcgui.Dialog().yesno('الحل هو اخبار المبرمج بالتفاصيل','هل تريد اخبار المبرمج الان ؟')	
+		if yes: MAIN(4,'')
+		return
 
 
