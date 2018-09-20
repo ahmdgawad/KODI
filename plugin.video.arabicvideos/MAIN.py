@@ -8,19 +8,23 @@ def MAIN():
 	website4 = 'موقع قناة المعارف'
 	website5 = 'موقع شوف ماكس'
 	website6 = 'موقع المنبر الفاطمي'
+	website7 = 'موقع اكوام'
 	website0a = '========================='
 	website0f = '--------------------------------'
 	website0g = 'ـProblems & Solutions       مشاكل وحلول'
 	website0d = 'ـMessage to developer       رسالة الى المبرمج'
-	addDir(website5,'',50)
-	addDir(website3,'',30)
-	addDir(website2,'',20)
-	addDir(website6,'',60)
+	website0e = 'Testing'
 	addDir(website4,'',40)
+	addDir(website6,'',60)
+	addDir(website2,'',20)
+	addDir(website7,'',70)
+	addDir(website5,'',50)
 	addDir(website1,'',10)
+	addDir(website3,'',30)
 	addDir(website0a,'',9999)
 	addDir(website0d,'',4)
 	addDir(website0g,'',1111)
+	#addLink(website0e,'',9)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def problemsMENU():
@@ -77,6 +81,7 @@ if mode>=30 and mode<=39: from lib.PANET import MAIN ; MAIN(mode,url)
 if mode>=40 and mode<=49: from lib.ALMAAREF import MAIN ; MAIN(mode,url,category)
 if mode>=50 and mode<=59: from lib.SHOOFMAX import MAIN ; MAIN(mode,url)
 if mode>=60 and mode<=69: from lib.ALFATIMI import MAIN ; MAIN(mode,url,category)
+if mode>=70 and mode<=79: from lib.AKOAM import MAIN ; MAIN(mode,url)
 
 
 

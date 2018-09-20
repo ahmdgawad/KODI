@@ -53,22 +53,13 @@ def MAIN(mode,text):
 		message = mixARABIC(search)
 		yes = xbmcgui.Dialog().yesno('هل ترسل هذه الرسالة',message)
 		if yes: 
-			code = ''
-			reason = ''
 			url = 'http://emadmahdi.pythonanywhere.com/sendemail'
 			payload = {'message' : quote(message), 'subject' : 'From Arabic Videos' }
-			try:
-				data = urllib.urlencode(payload)
-				request = urllib2.Request(url, data)
-				response = urllib2.urlopen(request)
-				code = response.code
-			except urllib2.HTTPError as error:
-				code = str(error.code)
-				reason = str(error.reason)
-			if code == 200:
-			    xbmcgui.Dialog().ok('تم الارسال','')
-			else:
-			    xbmcgui.Dialog().ok('خطأ في الارسال','Error {}: {!r}'.format(code, reason))
+			data = urllib.urlencode(payload)
+			html = openURL(url,data)
+			result = html[0:6]
+			if result != 'Error ':
+				xbmcgui.Dialog().ok('تم الارسال','')
 
 		#	url = 'my API and/or SMTP server'
 		#	payload = '{"api_key":"MY API KEY","to":["me@email.com"],"sender":"me@email.com","subject":"From Arabic Videos","text_body":"'+message+'"}'
@@ -100,4 +91,9 @@ def MAIN(mode,text):
 		if yes: MAIN(4,'')
 		return
 
+	elif mode==9:
+		url = ''
+		play_item = xbmcgui.ListItem(path=url)
+		xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
+		return
 

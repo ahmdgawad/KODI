@@ -118,12 +118,6 @@ def PLAY(url):
 	play_item = xbmcgui.ListItem(path=url)
 	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
 
-	#xbmcgui.Dialog().ok(url,html)
-	#url = 'http://vod-movies.panet.co.il/7mate-bt7bne/1.mp4'
-	#item = xbmcgui.ListItem('test', iconImage=icon, thumbnailImage=icon)
-	#item.setInfo(type='Video', infoLabels={ "Title": 'test'})
-	#xbmc.Player().play(url, item)
-
 def SEARCH(url):
 	type=url.split('/')[-1]
 	search =''

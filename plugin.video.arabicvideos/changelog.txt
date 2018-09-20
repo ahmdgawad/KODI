@@ -19,3 +19,7 @@ v1.4.0
 Added Email function
 
 
+v1.5.0
+Added new website "Akoam"
+
+

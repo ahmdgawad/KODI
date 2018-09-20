@@ -31,7 +31,7 @@ def MENU():
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def TITLES(url,select):
-	notvideos = ['تطبيقات الاجهزة الذكية','جدول البرامج','اوقات برامجنا']
+	notvideosLIST = ['تطبيقات الاجهزة الذكية','جدول البرامج','اوقات برامجنا']
 	html = openURL(url)
 	if select==1:
 		html_blocks1=re.findall('main-content(.*?)class="clear"',html,re.DOTALL)
@@ -44,7 +44,7 @@ def TITLES(url,select):
 	if select<=2 and block:
 		items=re.findall('src="(.*?)".*?href="(.*?)" rel="bookmark">(.*?)<',block,re.DOTALL)
 		for img,url,title in items:
-			if not any(value in title for value in notvideos):
+			if not any(value in title for value in notvideosLIST):
 				#title = title.replace('&#8211;','-')
 				title = unescapeHTML(title)
 				addDir(title,url,42,img)
@@ -54,7 +54,7 @@ def TITLES(url,select):
 			block = html_blocks3[0]
 			items=re.findall('h2.*?href="(.*?)">(.*?)<.*?src="(.*?)"',block,re.DOTALL)
 			for url,title,img in items:
-				if not any(value in title for value in notvideos):
+				if not any(value in title for value in notvideosLIST):
 					#title = title.replace('&#8211;','-')
 					title = unescapeHTML(title)
 					addDir(title,url,42,img)
@@ -115,9 +115,9 @@ def CATEGORIES(url,category):
 	block= html_blocks[0]
 	items=re.findall('cat1.a\((.*?),(.*?),\'(.*?)\',\'\',\'(.*?)\'',block,re.DOTALL)
 	exist=False
-	notvideos = ['-399','5643','2306','5654','10716','10277','7946']
+	notvideosLIST = ['-399','5643','2306','5654','10716','10277','7946']
 	for cat,parent,title,link in items:
-		if parent == category and cat not in notvideos:
+		if parent == category and cat not in notvideosLIST:
 			#title = title.replace('&#8211;','-')
 			title = unescapeHTML(title)
 			url = website0a + '/' + link

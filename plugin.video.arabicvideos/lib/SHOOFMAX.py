@@ -109,9 +109,6 @@ def PLAY(url):
 	#xbmcgui.Dialog().ok(url,'' )
 	play_item = xbmcgui.ListItem(path=url)
 	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
-	#url = 'https://shoofmax.b-cdn.net/ard-alnifaq/ep1/360p/index.m3u8'
-	#url = 'https://shoofmax.b-cdn.net/ard-alnifaq/ep1/fallback.mp4'
-	#PLAY_OLD(url)
 
 
 

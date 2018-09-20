@@ -12,7 +12,7 @@ Download and install these two files using Kodi Addons installer:
 <br />
 <br />
 <a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/repository.emad-1.0.5.zip">1. &nbsp; repository.emad-1.0.5.zip</a><br />
-<a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/plugin.video.arabicvideos-1.4.6.zip">2. &nbsp; arabicvideos-1.4.6.zip</a><br />
+<a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/plugin.video.arabicvideos-1.5.0.zip">2. &nbsp; arabicvideos-1.5.0.zip</a><br />
 <br />
 <br />
 الروابط ادناه توضح طريقة تنزيل وتنصيب هذه الاضافة باستخدام كودي
@@ -43,8 +43,8 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <a href="http://www.ifilmtv.com">3. &nbsp; http://www.ifilmtv.com</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Arabic / English / Farsi / Persian<br />
 <a href="http://www.alfatimi.tv">4. &nbsp; http://www.alfatimi.tv</a><br />
 <a href="http://www.almaareftv.com">5. &nbsp; http://www.almaareftv.com</a><br />
-<a href="http://www.alarab.com">6. &nbsp; http://www.alarab.com</a>
-<br />
+<a href="http://www.alarab.com">6. &nbsp; http://www.alarab.com</a><br />
+<a href="http://www.akoam.net">7. &nbsp; http://www.akoam.net</a><br />
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>3. &nbsp; skin.metropolisEMAD</h2>

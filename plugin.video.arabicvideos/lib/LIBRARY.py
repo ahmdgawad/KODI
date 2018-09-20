@@ -7,7 +7,7 @@ addon_id = sys.argv[0].split('/')[2]
 fanart = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'fanart.jpg'))
 icon = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
 
-def addLink(name,url,mode,iconimage,duration=''):
+def addLink(name,url,mode,iconimage=icon,duration=''):
 	#xbmcgui.Dialog().ok(duration,'')
 	u='plugin://'+addon_id+'/?mode='+str(mode)+'&url='+quote(url)
 	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
@@ -22,33 +22,41 @@ def addLink(name,url,mode,iconimage,duration=''):
 	xbmcplugin.setContent(addon_handle, 'videos')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=False)
 
-def openURL(url,data=''):
+def openURL(url,data='',headers=''):
+	#headers={ 'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36' }
 	html = ''
 	start = time.time()
-	if data=='': request = urllib2.Request(url)
-	else: request = urllib2.Request(url,data=data)
+	if data=='' and headers=='': request = urllib2.Request(url)
+	elif data=='' and headers!='': request = urllib2.Request(url,headers=headers)
+	elif data!='' and headers=='': request = urllib2.Request(url,data=data)
+	elif data!='' and headers!='': request = urllib2.Request(url,headers=headers,data=data)
 
-	#http.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-	#http.add_header('Referer',' http://www.panet.co.il/Ext/players/flv5/player.swf')
-	#http.add_header('Accept',' text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
-	#http.add_header('Host',' fms-eu0.panet.co.il')
-	#http.add_header('Accept-Language',' en-US,en;q=0.5')
-	#http.add_header('Accept-Encoding', 'deflate')
-	#http.add_header('Cookie',' __auc=82d7ffe213cb1b4ce1d273c7ba1; __utma=31848767.848342890.1360191082.1360611183.1360620657.4; __utmz=31848767.1360191082.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmb=31848767.4.10.1360620660; __utmc=31848767; __asc=169c084d13ccb4fa36df421055e')
-	#http.add_header('Connection',' keep-alive')
+	#request.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+	#request.add_header('Referer',' http://www.panet.co.il/Ext/players/flv5/player.swf')
+	#request.add_header('Accept',' text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
+	#request.add_header('Host',' fms-eu0.panet.co.il')
+	#request.add_header('Accept-Language',' en-US,en;q=0.5')
+	#request.add_header('Accept-Encoding', 'deflate')
+	#request.add_header('Cookie',' __auc=82d7ffe213cb1b4ce1d273c7ba1; __utma=31848767.848342890.1360191082.1360611183.1360620657.4; __utmz=31848767.1360191082.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmb=31848767.4.10.1360620660; __utmc=31848767; __asc=169c084d13ccb4fa36df421055e')
+	#request.add_header('Connection',' keep-alive')
 
-	#http.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
-	#http.add_header('Connection', 'close')
-	#http.add_header('Connection', 'keep-alive')
+	#request.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
+	#request.add_header('Connection', 'close')
 	try:
-		http = urllib2.urlopen(request)
-		html = http.read()
+		code = '200'
+		reason = 'OK'
+		response = urllib2.urlopen(request)
+		html = response.read()
+		code = str(response.code)
 		#xbmcgui.Dialog().ok(url,html)
-		end = time.time()
+		#end = time.time()
 		#if end-start > 4 : xbmcgui.Dialog().notification('slower than 4 sec', str(end-start) )
-	except:
-		select = xbmcgui.Dialog().yesno('No Data or Slow Internet !', 'Try again?')
-		if select==True: openURL(url)
+	except urllib2.HTTPError as error:
+		code = str(error.code)
+		reason = str(error.reason)
+		html = 'Error {}: {!r}'.format(code, reason)
+	if code != '200':
+		xbmcgui.Dialog().ok('خطأ في الاتصال',html)
 
         #file = open('/data/emad.html', 'w')
         #file.write(url)
@@ -85,6 +93,7 @@ def addDir(name,url='',mode='',iconimage=icon,page='',category=''):
 	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
 	liz.setInfo( type="Video", infoLabels={ "Title": name } )
 	liz.setProperty('fanart_image', fanart)
+	liz.setProperty('IsPlayable', 'true')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=True)
 
 def mixARABIC(string):
