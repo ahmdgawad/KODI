@@ -47,7 +47,7 @@ def MAIN(mode,text):
 		keyboard = xbmc.Keyboard(search, 'Write a message   اكتب رسالة')
 		keyboard.doModal()
 		if keyboard.isConfirmed(): search = keyboard.getText()
-		if len(search)<-2:
+		if len(search)<2:
 			xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
  			return
 		message = mixARABIC(search)

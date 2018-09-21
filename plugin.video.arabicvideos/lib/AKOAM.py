@@ -54,9 +54,14 @@ def TITLES(url):
 def EPISODES(url):
 	notvideosLIST = ['zip','rar','txt','pdf','htm','tar','iso']
 	html = openURL(url,'',headers)
-	image = re.findall('class="main_img" src="(.*?)"',html,re.DOTALL)
+	image = re.findall('class="main_img".*?src="(.*?)"',html,re.DOTALL)
 	img = image[0]
 	html_blocks = re.findall('direct_link_box(.*?)ako-feedback',html,re.DOTALL)
+	if not html_blocks:
+		title = 'الملف ليس فيديو'
+		addLink(title,'',9999,img)
+		xbmcplugin.endOfDirectory(addon_handle)
+		return	
 	block = html_blocks[0]
 	items = re.findall('sub_epsiode_title">(.*?)</h2>.*?sub_file_title\'>(.*?)</span.*?href=\'(.*?)\'>',block,re.DOTALL)
 	if items:
@@ -76,6 +81,9 @@ def EPISODES(url):
 				addLink(title,link,9999,img)
 			else:
 				addLink(title,link,74,img)
+		if not items:
+			title = 'الملف ليس فيديو'
+			addLink(title,'',9999,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
@@ -104,6 +112,7 @@ def SEARCH():
 		return
 	search = search.replace(' ','%20')
 	new_search = mixARABIC(search)
+	#xbmcgui.Dialog().ok(str(len(search)) , str(len(new_search)) )
 	url = website0a + '/search/' + new_search
 	html = openURL(url,'',headers)
 	html_blocks = re.findall('akoam_result(.*?)<script',html,re.DOTALL)
@@ -111,6 +120,7 @@ def SEARCH():
 	items = re.findall('href="(.*?)".*?background-image: url\((.*?)\).*?<h1>(.*?)</h1>',block,re.DOTALL)
 	for link,img,title in items:
 		title = title.replace('\n','')
+		title = unescapeHTML(title)
 		addDir(title,link,73,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 

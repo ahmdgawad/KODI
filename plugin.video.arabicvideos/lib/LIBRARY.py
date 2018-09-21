@@ -111,6 +111,7 @@ def mixARABIC(string):
 		elif ord(letter) < 4096: unicode_letter = '\u0'+hex(ord(letter)).replace('0x','')
 		else: unicode_letter = '\u'+unicodedata.decomposition(letter).split(' ')[1]
 		new_string += unicode_letter
+	new_string = new_string.replace('\u06CC','\u0649')
 	new_string = new_string.decode('unicode_escape')
 	new_string = new_string.encode('utf-8')
 	return new_string

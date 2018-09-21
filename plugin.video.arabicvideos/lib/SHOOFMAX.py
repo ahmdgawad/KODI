@@ -1,16 +1,21 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
+import urllib
+import requests
 
 website0a = 'http://shoofmax.com'
 website0b = 'https://static.shoofmax.com'
+website0c = 'https://shoofmax.com'
 
 def MAIN(mode,url):
 	if mode==50: MENU()
 	elif mode==51: TITLES(url)
 	elif mode==52: EPISODES(url)
 	elif mode==53: PLAY(url)
+	elif mode==54: SEARCH()
 
 def MENU():
+	#addDir('بحث في الموقع',website0a,54,icon)
 	addDir('افلام بحسب السنة',website0a+'/movie/1/yop',51,icon)
 	addDir('افلام بحسب التقييم',website0a+'/movie/1/review',51,icon)
 	addDir('افلام بحسب المشاهدة',website0a+'/movie/1/views',51,icon)
@@ -109,6 +114,64 @@ def PLAY(url):
 	#xbmcgui.Dialog().ok(url,'' )
 	play_item = xbmcgui.ListItem(path=url)
 	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
+
+
+def SEARCH():
+	search =''
+	keyboard = xbmc.Keyboard(search, 'Search')
+	keyboard.doModal()
+	if keyboard.isConfirmed(): search = keyboard.getText()
+	if len(search)<2:
+		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
+		return
+	search = search.replace(' ','%20')
+	new_search = mixARABIC(search)
+
+	html = openURL(website0c)
+	block = re.findall('name="_csrf" value="(.*?)">',html,re.DOTALL)
+	csrf = block[0]
+
+	url = website0c + '/search'
+	url = "https://shoofmax.com/search"
+
+	#headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
+	#payload = { '_csrf' : 'test' , '_csrf' : csrf }
+
+	payload = '_csrf=' + csrf
+	#payload = 'q=test&_csrf=' + csrf
+	#headers = { 'content-type': 'application/x-www-form-urlencoded' }
+	headers = {
+	    'origin': "https://shoofmax.com",
+	    'upgrade-insecure-requests': "1",
+	    'dnt': "1",
+	    'content-type': "application/x-www-form-urlencoded",
+	    'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
+	    'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+	    'referer': "https://shoofmax.com/",
+	    'accept-encoding': "gzip, deflate, br",
+	    'accept-language': "en-US,en;q=0.9,ar;q=0.8",
+	    'cookie': "session=5ak_HSvwBq8_3vj0BugdPQ.GG6OU4k90qNPndLi51oyyAwzgJPiEIMxh8KJ7Bp39WT1_bOIrguhyyHQRX7psG6hY5l1YP1A2F4KB7DxwABdyp1g_r0JQBhCrB6xZtFDy80.1537480566514.86400000.eQdjvbMrOIYBLzTjXhPCNicnOc3UNBAYpEspiue7a4g; ybjg="
+	    }
+	#html = requests.request("POST", url, data=payload, headers=headers)
+
+	payload = "{ '_csrf='"+ csrf+" }"
+	data = urllib.urlencode(payload)
+	html = openURL(url,data,headers)
+
+	#headers = { "content-type": "application/x-www-form-urlencoded" }
+	#payload = '{ _csrf :'+ csrf +'}'
+	#html = requests.post(url, data=payload, headers=headers, auth='')
+
+	xbmcgui.Dialog().ok(str(url),str(html))
+
+	html_blocks = re.findall('general-body(.*?)search-bottom-padding',html,re.DOTALL)
+	block = html_blocks[0]
+	items = re.findall('href="(.*?)".*?background-image: url\((.*?)\).*?<span>(.*?)</span>',block,re.DOTALL)
+	for link,img,title in items:
+		title = title.replace('\n','')
+		link = website0a + link
+		addDir(title,link,73,img)
+	xbmcplugin.endOfDirectory(addon_handle)
 
 
 

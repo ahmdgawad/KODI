@@ -26,6 +26,9 @@ def MENU(url):
 	menu=['Series', 'Program', 'Music']
 	website0 = SITE(url)
 	html = openURL(url)
+	html_blocks=re.findall('input_Search_" placeholder="(.*?)"',html,re.DOTALL)
+	title = html_blocks[0]
+	addDir(title,website0,26,icon)
 	html_blocks=re.findall('main-body.*?menu(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
@@ -37,9 +40,6 @@ def MENU(url):
 			elif 'Music' in link: addDir(title,url,25,icon,101)
 			else: addDir(title,url,22,icon,101)
 			if 'Series' in link: addDir(title+' 3',url,22,icon,201)
-	html_blocks=re.findall('input_Search_" placeholder="(.*?)"',html,re.DOTALL)
-	title = html_blocks[0]
-	addDir(title,website0,26,icon)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def MUSIC_MENU(url):

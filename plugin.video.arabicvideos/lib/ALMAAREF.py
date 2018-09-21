@@ -14,6 +14,8 @@ def MAIN(mode,url,category):
 	elif mode==47: TITLES(url,3)
 
 def MENU():
+	name = 'بحث في الموقع'
+	addDir(name,website0a,41,icon)
 	html = openURL(website0a)
 	##name = re.findall('main-content.*?<h2><a href=".*?">(.*?)</a></h2>',html,re.DOTALL)[0]
 	##addDir(name,website0a,45,icon)
@@ -26,8 +28,6 @@ def MENU():
 	name = re.findall('categories"><div class="widget-top"><h4>(.*?)</h4>',html,re.DOTALL)
 	if name:
 		addDir(name[0],website0a,44,icon,'','0')
-	name = 'بحث في الموقع'
-	addDir(name,website0a,41,icon)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def TITLES(url,select):

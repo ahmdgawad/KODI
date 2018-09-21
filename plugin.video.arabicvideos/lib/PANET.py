@@ -12,12 +12,12 @@ def MAIN(mode,url):
 	elif mode==34: SEARCH(url)
 
 def MENU():
+	addDir('بحث عن افلام',website0a+'/search/result/title/movies',34,icon)
+	addDir('بحث عن مسلسلات',website0a+'/search/result/title/series',34,icon)
 	addDir('افلام',website0a+'/movies',32,icon)
 	addDir('افلام مصنفة',website0a+'/movies',31,icon)
 	addDir('مسلسلات مصنفة',website0a+'/series',31,icon)
 	addDir('مسرحيات',website0a+'/movies/genre/4/1',32,icon)
-	addDir('بحث عن افلام',website0a+'/search/result/title/movies',34,icon)
-	addDir('بحث عن مسلسلات',website0a+'/search/result/title/series',34,icon)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def CATEGORIES(url):
