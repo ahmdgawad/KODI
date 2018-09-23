@@ -6,6 +6,7 @@ website0b = 'http://tv1.alarab.com'
 website0c = 'http://tv.alarab.com'
 website0d = 'http://vod.alarab.com/view-1/افلام-عربية'
 website0d = 'http://vod.alarab.com/index.php'
+script_name = 'ALARAB'
 
 def MAIN(mode,url):
 	#return
@@ -115,19 +116,12 @@ def PLAY(url):
 		selection = xbmcgui.Dialog().select('Select Video Link:', new_items_name)
 		if selection == -1 : return
 		url = new_items_url[selection]
-	play_item = xbmcgui.ListItem(path=url)
-	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
+	PLAY_VIDEO(url,script_name)
 
 def SEARCH():
-	search =''
-	keyboard = xbmc.Keyboard(search, 'Search')
-	keyboard.doModal()
-	if keyboard.isConfirmed(): search = keyboard.getText()
-	if len(search)<2:
-		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
-		return
-	search = search.replace(' ','%20')
-	new_search = mixARABIC(search)
+	search = KEYBOARD()
+	if search == '': return
+	new_search = search.replace(' ','%20')
 	searchlink = website0a + "/q/" + new_search
 	#xbmcgui.Dialog().ok('',searchlink)
 	ITEMS(searchlink)

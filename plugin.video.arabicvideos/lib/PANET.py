@@ -3,6 +3,7 @@ from LIBRARY import *
 
 website0a = 'http://www.panet.co.il'
 website0b = 'http://m.panet.co.il'
+script_name = 'PANET'
 
 def MAIN(mode,url):
 	if mode==30: MENU()
@@ -115,20 +116,13 @@ def PLAY(url):
 		#items = re.findall('article-player.*?url="(.*?)".*?article-player',html,re.DOTALL)
 		items = re.findall('contentURL" content="(.*?)"',html,re.DOTALL)
 		url = items[0]
-	play_item = xbmcgui.ListItem(path=url)
-	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
+	PLAY_VIDEO(url,script_name)
 
 def SEARCH(url):
+	search = KEYBOARD()
+	if search == '': return
+	new_search = search.replace(' ','-')
 	type=url.split('/')[-1]
-	search =''
-	keyboard = xbmc.Keyboard(search, 'Search')
-	keyboard.doModal()
-	if keyboard.isConfirmed(): search = keyboard.getText()
-	if len(search)<2:
-		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
-		return
-	search = search.replace(' ','-')
-	new_search = mixARABIC(search)
 	data = 'query='+new_search+'&searchDomain='+type
 	html = openURL(website0a+'/search',data)
 	#xbmcgui.Dialog().ok(html, new_search)
@@ -139,4 +133,5 @@ def SEARCH(url):
 		if type=='movies': addLink(title,url,33,icon)
 		else: addDir(title,url+'/1',32,icon)
 	xbmcplugin.endOfDirectory(addon_handle)
+
 

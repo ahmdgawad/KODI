@@ -3,6 +3,7 @@ from LIBRARY import *
 
 website0a = 'http://akoam.net'
 headers={ 'User-Agent' : '' }
+script_name='AKOAM'
 
 def MAIN(mode,url):
 	if mode==70: MENU()
@@ -56,9 +57,11 @@ def EPISODES(url):
 	html = openURL(url,'',headers)
 	image = re.findall('class="main_img".*?src="(.*?)"',html,re.DOTALL)
 	img = image[0]
+	name = re.findall('class="sub_title".*?<h1>(.*?)</h1>',html,re.DOTALL)
+	name = name[0].replace('\n','')
 	html_blocks = re.findall('direct_link_box(.*?)ako-feedback',html,re.DOTALL)
 	if not html_blocks:
-		title = 'الملف ليس فيديو'
+		title = 'الرابط ليس فيديو'
 		addLink(title,'',9999,img)
 		xbmcplugin.endOfDirectory(addon_handle)
 		return	
@@ -66,23 +69,24 @@ def EPISODES(url):
 	items = re.findall('sub_epsiode_title">(.*?)</h2>.*?sub_file_title\'>(.*?)</span.*?href=\'(.*?)\'>',block,re.DOTALL)
 	if items:
 		for title,file,link in items:
-			title = title.replace('\n','')
+			title = name + ' - ' + title.replace('\n','')
 			if any(value in file for value in notvideosLIST):
-				title = 'الملف ليس فيديو'
+				title = 'الرابط ليس فيديو'
 				addLink(title,link,9999,img)
 			else:
 				addLink(title,link,74,img)
 	else:
+		#title = 'رابط التشغيل'
+		title = name
 		items = re.findall('sub_file_title\'>(.*?)</span>.*?href=\'(.*?)\'>',block,re.DOTALL)
-		title = 'رابط التشغيل'
 		for file,link in items:
 			if any(value in file for value in notvideosLIST):
-				title = 'الملف ليس فيديو'
+				title = 'الرابط ليس فيديو'
 				addLink(title,link,9999,img)
 			else:
 				addLink(title,link,74,img)
 		if not items:
-			title = 'الملف ليس فيديو'
+			title = 'الرابط ليس فيديو'
 			addLink(title,'',9999,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 
@@ -98,20 +102,12 @@ def PLAY(url):
 	html = openURL(url,'',headers)
 	items = re.findall('direct_link":"(.*?)"',html,re.DOTALL)
 	url = items[0].replace('\/','/')
-	play_item = xbmcgui.ListItem(path=url)
-	play_item.setProperty('IsPlayable', 'true')
-	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
+	PLAY_VIDEO(url,script_name)
 
 def SEARCH():
-	search =''
-	keyboard = xbmc.Keyboard(search, 'Search')
-	keyboard.doModal()
-	if keyboard.isConfirmed(): search = keyboard.getText()
-	if len(search)<2:
-		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
-		return
-	search = search.replace(' ','%20')
-	new_search = mixARABIC(search)
+	search = KEYBOARD()
+	if search == '': return
+	new_search = search.replace(' ','%20')
 	#xbmcgui.Dialog().ok(str(len(search)) , str(len(new_search)) )
 	url = website0a + '/search/' + new_search
 	html = openURL(url,'',headers)

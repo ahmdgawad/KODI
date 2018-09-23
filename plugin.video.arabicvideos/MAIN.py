@@ -2,17 +2,16 @@
 from lib.LIBRARY import *
 
 def MAIN():
-	website1 = 'موقع كل العرب'
-	website2 = 'موقع قناة اي فيلم'
-	website3 = 'موقع بانيت'
 	website4 = 'موقع قناة المعارف'
-	website5 = 'موقع شوف ماكس'
 	website6 = 'موقع المنبر الفاطمي'
+	website2 = 'موقع قناة اي فيلم'
 	website7 = 'موقع اكوام'
+	website5 = 'موقع شوف ماكس'
+	website1 = 'موقع كل العرب'
+	website3 = 'موقع بانيت'
 	website0a = '========================='
-	website0f = '--------------------------------'
-	website0g = 'ـProblems & Solutions       مشاكل وحلول'
 	website0d = 'ـMessage to developer       رسالة الى المبرمج'
+	website0g = 'ـProblems & Solutions       مشاكل وحلول'
 	website0e = 'Testing'
 	addDir(website4,'',40)
 	addDir(website6,'',60)
@@ -22,21 +21,10 @@ def MAIN():
 	addDir(website1,'',10)
 	addDir(website3,'',30)
 	addDir(website0a,'',9999)
-	addDir(website0d,'',4)
-	addDir(website0g,'',1111)
+	addDir(website0d,'',2)
+	addDir(website0g,'',1000)
 	#addLink(website0e,'',9)
 	xbmcplugin.endOfDirectory(addon_handle)
-
-def problemsMENU():
-	website0b = 'Problem:   Can\'t see Arabic Text'
-	website0c = 'الفيديو لا يظهر في موقع كل العرب   :مشكلة'
-	website0d = 'بعض الروابط لا تعمل   :مشكلة'
-	addDir(website0b,'',2)
-	addDir(website0c,'',3)
-	addDir(website0d,'',5)
-	xbmcplugin.endOfDirectory(addon_handle)
-	
-
 
 def get_params():
 	param=[]
@@ -73,15 +61,16 @@ try: text=params["text"]
 except: pass
 
 if mode=='': MAIN()
-if mode==1111: problemsMENU() 
-if mode>=0 and mode<=9: from lib.PROGRAM2 import MAIN ; MAIN(mode,text)
-if mode>=10 and mode<=19: from lib.ALARAB import MAIN ; MAIN(mode,url)
-if mode>=20 and mode<=29: from lib.IFILM import MAIN ; MAIN(mode,url,page)
-if mode>=30 and mode<=39: from lib.PANET import MAIN ; MAIN(mode,url)
-if mode>=40 and mode<=49: from lib.ALMAAREF import MAIN ; MAIN(mode,url,category)
-if mode>=50 and mode<=59: from lib.SHOOFMAX import MAIN ; MAIN(mode,url)
-if mode>=60 and mode<=69: from lib.ALFATIMI import MAIN ; MAIN(mode,url,category)
-if mode>=70 and mode<=79: from lib.AKOAM import MAIN ; MAIN(mode,url)
+elif mode>=10 and mode<=19: from lib.ALARAB import MAIN ; MAIN(mode,url)
+elif mode>=20 and mode<=29: from lib.IFILM import MAIN ; MAIN(mode,url,page)
+elif mode>=30 and mode<=39: from lib.PANET import MAIN ; MAIN(mode,url)
+elif mode>=40 and mode<=49: from lib.ALMAAREF import MAIN ; MAIN(mode,url,category)
+elif mode>=50 and mode<=59: from lib.SHOOFMAX import MAIN ; MAIN(mode,url)
+elif mode>=60 and mode<=69: from lib.ALFATIMI import MAIN ; MAIN(mode,url,category)
+elif mode>=70 and mode<=79: from lib.AKOAM import MAIN ; MAIN(mode,url)
+
+elif mode>=0 and mode<=9: from lib.PROGRAM import MAIN ; MAIN(mode,text)
+elif mode>=1000 and mode<=1009: from lib.PROBLEMS import MAIN ; MAIN(mode)
 
 
 

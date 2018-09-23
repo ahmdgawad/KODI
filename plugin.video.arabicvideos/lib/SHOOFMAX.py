@@ -6,6 +6,7 @@ import requests
 website0a = 'http://shoofmax.com'
 website0b = 'https://static.shoofmax.com'
 website0c = 'https://shoofmax.com'
+script_name = 'SHOOFMAX'
 
 def MAIN(mode,url):
 	if mode==50: MENU()
@@ -112,20 +113,12 @@ def PLAY(url):
 	url = items_url[selection]
 	#url = mixARABIC(url)
 	#xbmcgui.Dialog().ok(url,'' )
-	play_item = xbmcgui.ListItem(path=url)
-	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
-
+	PLAY_VIDEO(url,script_name)
 
 def SEARCH():
-	search =''
-	keyboard = xbmc.Keyboard(search, 'Search')
-	keyboard.doModal()
-	if keyboard.isConfirmed(): search = keyboard.getText()
-	if len(search)<2:
-		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
-		return
-	search = search.replace(' ','%20')
-	new_search = mixARABIC(search)
+	search = KEYBOARD()
+	if search == '': return
+	new_search = search.replace(' ','%20')
 
 	html = openURL(website0c)
 	block = re.findall('name="_csrf" value="(.*?)">',html,re.DOTALL)

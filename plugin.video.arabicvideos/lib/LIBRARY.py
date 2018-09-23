@@ -1,6 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 import urllib2,xbmcplugin,xbmcgui,sys,xbmc,os,unicodedata,re,time
-import HTMLParser
+import urllib,HTMLParser,random
 
 addon_handle = int(sys.argv[1])
 addon_id = sys.argv[0].split('/')[2]
@@ -22,7 +22,7 @@ def addLink(name,url,mode,iconimage=icon,duration=''):
 	xbmcplugin.setContent(addon_handle, 'videos')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=False)
 
-def openURL(url,data='',headers=''):
+def openURL(url,data='',headers='',showError='yes'):
 	#headers={ 'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36' }
 	html = ''
 	start = time.time()
@@ -42,9 +42,10 @@ def openURL(url,data='',headers=''):
 
 	#request.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
 	#request.add_header('Connection', 'close')
+	html = ''
+	code = '200'
+	reason = 'OK'
 	try:
-		code = '200'
-		reason = 'OK'
 		response = urllib2.urlopen(request)
 		html = response.read()
 		code = str(response.code)
@@ -54,15 +55,20 @@ def openURL(url,data='',headers=''):
 	except urllib2.HTTPError as error:
 		code = str(error.code)
 		reason = str(error.reason)
-		html = 'Error {}: {!r}'.format(code, reason)
-	if code != '200':
-		xbmcgui.Dialog().ok('خطأ في الاتصال',html)
+	except urllib2.URLError as error:
+		code = str(error.reason[0])
+		reason = str(error.reason[1])
 
-        #file = open('/data/emad.html', 'w')
-        #file.write(url)
+	if code != '200':
+		html = 'Error {}: {!r}'.format(code, reason)
+		if showError=='yes': xbmcgui.Dialog().ok('خطأ في الاتصال',html)
+		#SEND_EMAIL('Error: From openURL in Arabic Videos',html+'\n'+url,'no')
+
+	#file = open('/data/emad.html', 'w')
+	#file.write(url)
 	#file.write('\n\n\n')
-        #file.write(html)
-        #file.close()
+	#file.write(html)
+	#file.close()
 
 	return html
 
@@ -93,7 +99,6 @@ def addDir(name,url='',mode='',iconimage=icon,page='',category=''):
 	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
 	liz.setInfo( type="Video", infoLabels={ "Title": name } )
 	liz.setProperty('fanart_image', fanart)
-	liz.setProperty('IsPlayable', 'true')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=True)
 
 def mixARABIC(string):
@@ -137,5 +142,39 @@ def PLAY_OLD(url):
 	#playlist.add( url, play_item )
 	#xbmc.Player().play(playlist,play_item)
 	xbmc.Player().play(url,play_item)
+
+def KEYBOARD(label='Search'):
+	search =''
+	keyboard = xbmc.Keyboard(search, label)
+	keyboard.doModal()
+	if keyboard.isConfirmed(): search = keyboard.getText()
+	if len(search)<2:
+		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
+		return ''
+	new_search = mixARABIC(search)
+	return new_search
+
+def PLAY_VIDEO(url,label):
+	randomNumber = str(random.randrange(100000000000, 999999999999))
+	openURL('http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid=KODI_ARABIC_VIDEOS&t=event&sc=end&ea=PLAY_VIDEO&ec='+label+'&z='+randomNumber,'','','no')
+	#xbmcgui.Dialog().ok('start','')
+	play_item = xbmcgui.ListItem(path=url)
+	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
+	#xbmcgui.Dialog().ok('end','')
+
+def SEND_EMAIL(subject,message,showDialogs):
+	yes = True
+	html = ''
+	if showDialogs=='yes':
+		yes = xbmcgui.Dialog().yesno('هل ترسل هذه الرسالة',message)
+	if yes:
+		url = 'http://emadmahdi.pythonanywhere.com/sendemail'
+		payload = { 'subject' : quote(subject) , 'message' : quote(message) }
+		data = urllib.urlencode(payload)
+		html = openURL(url,data)
+		result = html[0:6]
+		if showDialogs=='yes' and result != 'Error ':
+			xbmcgui.Dialog().ok('تم الارسال','')
+	return html
 
 

@@ -2,6 +2,7 @@
 from LIBRARY import *
 
 website0a = 'http://www.almaareftv.com'
+script_name = 'ALMAAREF'
 
 def MAIN(mode,url,category):
 	if mode==40: MENU()
@@ -105,8 +106,7 @@ def PLAY(url):
 	#url = escapeUNICODE(url)
 	url = url.replace(' ','%20')
 	##if '%' not in url: url = quote(url)
-	play_item = xbmcgui.ListItem(path=url)
-	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
+	PLAY_VIDEO(url,script_name)
 
 def CATEGORIES(url,category):
 	#xbmcgui.Dialog().ok(type, url)
@@ -129,15 +129,9 @@ def CATEGORIES(url,category):
 	else: TITLES(url,3)
 	
 def SEARCH():
-	search =''
-	keyboard = xbmc.Keyboard(search, 'Search')
-	keyboard.doModal()
-	if keyboard.isConfirmed(): search = keyboard.getText()
-	if len(search)<2:
-		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
-		return
-	search = search.replace(' ','%20')
-	new_search = mixARABIC(search)
+	search = KEYBOARD()
+	if search == '': return
+	new_search = search.replace(' ','%20')
 	url = website0a + '/?s=' + new_search
 	TITLES(url,3)
 

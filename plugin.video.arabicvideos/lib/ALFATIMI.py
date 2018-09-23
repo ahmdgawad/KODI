@@ -2,6 +2,7 @@
 from LIBRARY import *
 
 website0a = 'http://alfatimi.tv'
+script_name = 'ALFATIMI'
 
 def MAIN(mode,url,category):
 	if mode==60: MENU()
@@ -84,19 +85,12 @@ def PLAY(url):
 	html = openURL(url)
 	items = re.findall('playlistfile:"(.*?)"',html,re.DOTALL)
 	url = items[0]
-	play_item = xbmcgui.ListItem(path=url)
-	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
+	PLAY_VIDEO(url,script_name)
 
 def SEARCH():
-	search =''
-	keyboard = xbmc.Keyboard(search, 'Search')
-	keyboard.doModal()
-	if keyboard.isConfirmed(): search = keyboard.getText()
-	if len(search)<2:
-		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
-		return
-	search = search.replace(' ','+')
-	new_search = mixARABIC(search)
+	search = KEYBOARD()
+	if search == '': return
+	new_search = search.replace(' ','+')
 	url = website0a + '/search_result.php?query=' + new_search
 	html = openURL(url)
 	html_blocks = re.findall('search_subs(.*?)</ul>',html,re.DOTALL)

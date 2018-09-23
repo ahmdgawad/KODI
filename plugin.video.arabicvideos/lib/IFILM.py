@@ -5,6 +5,7 @@ website0a = 'http://ar.ifilmtv.com'
 website0b = 'http://en.ifilmtv.com'
 website0c = 'http://fa.ifilmtv.com'
 website0d = 'http://fa2.ifilmtv.com'
+script_name = 'IFILM'
 
 def MAIN(mode,url,page):
 	if mode==20: LANGUAGE()
@@ -206,8 +207,7 @@ def EPISODES(url,page):
 def PLAY(url):
 	#xbmcgui.Dialog().notification('Finding videos','')
 	#xbmcgui.Dialog().ok(url, str(addon_handle)
-	play_item = xbmcgui.ListItem(path=url)
-	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
+	PLAY_VIDEO(url,script_name)
 	
 def SITE(url):
 	if website0a in url: site = website0a
@@ -224,15 +224,9 @@ def LANG(url):
 	return lang
 
 def SEARCH(url):
-	search =''
-	keyboard = xbmc.Keyboard(search, 'Search')
-	keyboard.doModal()
-	if keyboard.isConfirmed(): search = keyboard.getText()
-	if len(search)<2:
-		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
-		return
-	search = search.replace(' ','+')
-	new_search = mixARABIC(search)
+	search = KEYBOARD()
+	if search == '': return
+	new_search = search.replace(' ','+')
 	searchlink = url + "/Home/Search?searchstring=" + new_search
 	SEARCH_TITLES(searchlink)
 
