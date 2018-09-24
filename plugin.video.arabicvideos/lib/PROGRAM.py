@@ -60,10 +60,14 @@ def MAIN(mode,text):
 		return
 
 	elif mode==9:
-		scriptNAME = os.path.basename(__file__).split('.')[0]
-		xbmcgui.Dialog().ok(scriptNAME,'')
+		#idCode = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
+		idCode = dummyClientID()
+		xbmcgui.Dialog().ok(idCode,'')
+
+		#scriptNAME = os.path.basename(__file__).split('.')[0]
+		#xbmcgui.Dialog().ok(scriptNAME,'')
 		#url = ''
 		#play_item = xbmcgui.ListItem(path=url)
 		#xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
-		return
+		#return
 

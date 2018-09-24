@@ -24,7 +24,6 @@ def addLink(name,url,mode,iconimage=icon,duration=''):
 
 def openURL(url,data='',headers='',showError='yes'):
 	#headers={ 'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36' }
-	html = ''
 	start = time.time()
 	if data=='' and headers=='': request = urllib2.Request(url)
 	elif data=='' and headers!='': request = urllib2.Request(url,headers=headers)
@@ -42,16 +41,16 @@ def openURL(url,data='',headers='',showError='yes'):
 
 	#request.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
 	#request.add_header('Connection', 'close')
-	html = ''
 	code = '200'
 	reason = 'OK'
 	try:
-		response = urllib2.urlopen(request)
-		html = response.read()
-		code = str(response.code)
-		#xbmcgui.Dialog().ok(url,html)
+		connection = urllib2.urlopen(request)
+		response = connection.read()
+		code = str(connection.code)
+		#xbmcgui.Dialog().ok(url,response)
 		#end = time.time()
 		#if end-start > 4 : xbmcgui.Dialog().notification('slower than 4 sec', str(end-start) )
+		connection.close
 	except urllib2.HTTPError as error:
 		code = str(error.code)
 		reason = str(error.reason)
@@ -60,17 +59,17 @@ def openURL(url,data='',headers='',showError='yes'):
 		reason = str(error.reason[1])
 
 	if code != '200':
-		html = 'Error {}: {!r}'.format(code, reason)
-		if showError=='yes': xbmcgui.Dialog().ok('خطأ في الاتصال',html)
-		#SEND_EMAIL('Error: From openURL in Arabic Videos',html+'\n'+url,'no')
+		response = 'Error {}: {!r}'.format(code, reason)
+		if showError=='yes': xbmcgui.Dialog().ok('خطأ في الاتصال',response)
+		SEND_EMAIL('Error: From Arabic Videos',response+'\\n\\n'+url,'yes')
 
 	#file = open('/data/emad.html', 'w')
 	#file.write(url)
 	#file.write('\n\n\n')
-	#file.write(html)
+	#file.write(response)
 	#file.close()
 
-	return html
+	return response
 
 def quote(url):
 	return urllib2.quote(url,':/')
@@ -155,8 +154,9 @@ def KEYBOARD(label='Search'):
 	return new_search
 
 def PLAY_VIDEO(url,label):
+	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(100000000000, 999999999999))
-	openURL('http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid=KODI_ARABIC_VIDEOS&t=event&sc=end&ea=PLAY_VIDEO&ec='+label+'&z='+randomNumber,'','','no')
+	openURL('http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid='+dummyClientID()+'&an=KODI_ARABIC_VIDEOS&av='+addonVersion+'&t=event&sc=end&ea=PLAY_VIDEO&ec='+label+'&z='+randomNumber,'','','no')
 	#xbmcgui.Dialog().ok('start','')
 	play_item = xbmcgui.ListItem(path=url)
 	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
@@ -166,15 +166,37 @@ def SEND_EMAIL(subject,message,showDialogs):
 	yes = True
 	html = ''
 	if showDialogs=='yes':
-		yes = xbmcgui.Dialog().yesno('هل ترسل هذه الرسالة',message)
+		yes = xbmcgui.Dialog().yesno('هل ترسل هذه الرسالة الى المبرمج',message)
 	if yes:
+		addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 		url = 'http://emadmahdi.pythonanywhere.com/sendemail'
-		payload = { 'subject' : quote(subject) , 'message' : quote(message) }
+		payload = { 'subject' : quote(subject) , 'message' : quote(message+'\\n\\nAddon Version = '+addonVersion) }
 		data = urllib.urlencode(payload)
 		html = openURL(url,data)
 		result = html[0:6]
 		if showDialogs=='yes' and result != 'Error ':
 			xbmcgui.Dialog().ok('تم الارسال','')
 	return html
+
+def dummyClientID():
+	hostName = xbmc.getInfoLabel( "System.FriendlyName" )
+	ipAddress = xbmc.getInfoLabel( "Network.IPAddress" )
+	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
+	xbmc.sleep(500)
+	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
+	osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
+	idComponents = osVersion + macAddress + ipAddress + hostName
+	sizeTotal = len(idComponents)
+	sizeItem = int(sizeTotal/3)
+	idComponentsNew = [0,0,0,0,0]
+	for i in range(sizeItem*0,sizeItem*1): idComponentsNew[0] += ord(idComponents[i])
+	for i in range(sizeItem*1,sizeItem*2): idComponentsNew[1] += ord(idComponents[i])
+	for i in range(sizeItem*2,sizeItem*3): idComponentsNew[2] += ord(idComponents[i])
+	idCode = ''		
+	for i in range(0,3):
+		idCode += str(idComponentsNew[i])
+	#xbmcgui.Dialog().ok(idCode,idComponents)
+	return idCode
+
 
 
