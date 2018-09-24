@@ -61,7 +61,8 @@ def openURL(url,data='',headers='',showError='yes'):
 	if code != '200':
 		response = 'Error {}: {!r}'.format(code, reason)
 		if showError=='yes': xbmcgui.Dialog().ok('خطأ في الاتصال',response)
-		SEND_EMAIL('Error: From Arabic Videos',response+'\\n\\n'+url,'yes')
+		if 'google-analytics' not in url:
+			SEND_EMAIL('Error: From Arabic Videos',response+' \\n\\n '+url,'yes')
 
 	#file = open('/data/emad.html', 'w')
 	#file.write(url)
@@ -170,7 +171,7 @@ def SEND_EMAIL(subject,message,showDialogs):
 	if yes:
 		addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 		url = 'http://emadmahdi.pythonanywhere.com/sendemail'
-		payload = { 'subject' : quote(subject) , 'message' : quote(message+'\\n\\nAddon Version = '+addonVersion) }
+		payload = { 'subject' : quote(subject) , 'message' : quote(message+' \\n\\n Addon Version = '+addonVersion) }
 		data = urllib.urlencode(payload)
 		html = openURL(url,data)
 		result = html[0:6]
