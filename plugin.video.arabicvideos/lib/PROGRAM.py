@@ -32,7 +32,7 @@ def MAIN(mode,text):
 		if search == '': return
 		message = search
 		subject = 'Message: From Arabic Videos'
-		result = SEND_EMAIL(subject,message,'yes')
+		result = SEND_EMAIL(subject,message,'yes','')
 
 		#	url = 'my API and/or SMTP server'
 		#	payload = '{"api_key":"MY API KEY","to":["me@email.com"],"sender":"me@email.com","subject":"From Arabic Videos","text_body":"'+message+'"}'
@@ -61,8 +61,8 @@ def MAIN(mode,text):
 
 	elif mode==9:
 		#idCode = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
-		idCode = dummyClientID()
-		xbmcgui.Dialog().ok(idCode,'')
+		var1 = dummyClientID()
+		xbmcgui.Dialog().ok(var1,'')
 
 		#scriptNAME = os.path.basename(__file__).split('.')[0]
 		#xbmcgui.Dialog().ok(scriptNAME,'')

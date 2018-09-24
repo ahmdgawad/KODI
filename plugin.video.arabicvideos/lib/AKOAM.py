@@ -2,7 +2,7 @@
 from LIBRARY import *
 
 website0a = 'http://akoam.net'
-headers={ 'User-Agent' : '' }
+headers = { 'User-Agent' : '' }
 script_name='AKOAM'
 
 def MAIN(mode,url):
@@ -76,8 +76,8 @@ def EPISODES(url):
 			else:
 				addLink(title,link,74,img)
 	else:
-		#title = 'رابط التشغيل'
-		title = name
+		title = 'رابط التشغيل'
+		#title = name
 		items = re.findall('sub_file_title\'>(.*?)</span>.*?href=\'(.*?)\'>',block,re.DOTALL)
 		for file,link in items:
 			if any(value in file for value in notvideosLIST):
@@ -91,17 +91,28 @@ def EPISODES(url):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
-	id = url.split('/')[3]
+	id = url.split('/')[-1]
 	url = 'http://load.is/link/read?hash=' + id
 	html = openURL(url)
 	items = re.findall('route":"(.*?)"',html,re.DOTALL)
 	url = items[0].replace('\/','/')
-	headers['X-Requested-With'] = 'XMLHttpRequest'
-	headers['Referer'] = url
-	##xbmcgui.Dialog().ok(url , str(headers))
-	html = openURL(url,'',headers)
-	items = re.findall('direct_link":"(.*?)"',html,re.DOTALL)
-	url = items[0].replace('\/','/')
+	if 'catch.is' in url:
+		#xbmcgui.Dialog().ok('catch.is',str(headers))
+		id = url.split('%2F')[-1]
+		url = 'http://catch.is/'+id
+		payload = { 'op' : 'download2' , 'id' : id }
+		headers['Content-Type'] = 'application/x-www-form-urlencoded'
+		data = urllib.urlencode(payload)
+		html = openURL(url,data,headers)
+		items = re.findall('direct_link.*?href="(.*?)"',html,re.DOTALL)
+		url = items[0]
+	else:
+		#xbmcgui.Dialog().ok('load.is',str(headers))
+		headers['X-Requested-With'] = 'XMLHttpRequest'
+		headers['Referer'] = url
+		html = openURL(url,'',headers)
+		items = re.findall('direct_link":"(.*?)"',html,re.DOTALL)
+		url = items[0].replace('\/','/')
 	PLAY_VIDEO(url,script_name)
 
 def SEARCH():

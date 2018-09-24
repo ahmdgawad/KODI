@@ -5,7 +5,7 @@ website0a = 'http://vod.alarab.com'
 website0b = 'http://tv1.alarab.com'
 website0c = 'http://tv.alarab.com'
 website0d = 'http://vod.alarab.com/view-1/افلام-عربية'
-website0d = 'http://vod.alarab.com/index.php'
+website0e = 'http://vod.alarab.com/index.php'
 script_name = 'ALARAB'
 
 def MAIN(mode,url):

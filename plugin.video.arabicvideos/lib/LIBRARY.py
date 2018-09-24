@@ -22,7 +22,7 @@ def addLink(name,url,mode,iconimage=icon,duration=''):
 	xbmcplugin.setContent(addon_handle, 'videos')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=False)
 
-def openURL(url,data='',headers='',showError='yes'):
+def openURL(url,data='',headers='',showDialogs='yes'):
 	#headers={ 'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36' }
 	start = time.time()
 	if data=='' and headers=='': request = urllib2.Request(url)
@@ -60,9 +60,9 @@ def openURL(url,data='',headers='',showError='yes'):
 
 	if code != '200':
 		response = 'Error {}: {!r}'.format(code, reason)
-		if showError=='yes': xbmcgui.Dialog().ok('خطأ في الاتصال',response)
-		if 'google-analytics' not in url:
-			SEND_EMAIL('Error: From Arabic Videos',response+' \\n\\n '+url,'yes')
+		if showDialogs=='yes':
+			xbmcgui.Dialog().ok('خطأ في الاتصال',response)
+		SEND_EMAIL('Error: From Arabic Videos',response,showDialogs,url)
 
 	#file = open('/data/emad.html', 'w')
 	#file.write(url)
@@ -157,21 +157,25 @@ def KEYBOARD(label='Search'):
 def PLAY_VIDEO(url,label):
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(100000000000, 999999999999))
-	openURL('http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid='+dummyClientID()+'&an=KODI_ARABIC_VIDEOS&av='+addonVersion+'&t=event&sc=end&ea=PLAY_VIDEO&ec='+label+'&z='+randomNumber,'','','no')
+	openURL('http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid='+dummyClientID()+'&an=KODI_ARABIC_VIDEOS&el='+addonVersion+'&t=event&sc=end&ea=PLAY_VIDEO&ec='+label+'&z='+randomNumber,'','','no')
 	#xbmcgui.Dialog().ok('start','')
 	play_item = xbmcgui.ListItem(path=url)
 	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
 	#xbmcgui.Dialog().ok('end','')
 
-def SEND_EMAIL(subject,message,showDialogs):
+def SEND_EMAIL(subject,message,showDialogs='yes',url=''):
 	yes = True
 	html = ''
 	if showDialogs=='yes':
-		yes = xbmcgui.Dialog().yesno('هل ترسل هذه الرسالة الى المبرمج',message)
+		yes = xbmcgui.Dialog().yesno('هل ترسل هذه الرسالة الى المبرمج',message.replace('\\n',''))
 	if yes:
 		addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
+		kodiVersion = xbmc.getInfoLabel( "System.BuildVersion" )	
+		kodiName = xbmc.getInfoLabel( "System.FriendlyName" )
+		message = message+' \\n\\n==== ==== ==== \\nVersion: '+addonVersion+' \\nSender: '+dummyClientID()+' \\nKodi Version: '+kodiVersion+' \\nKodi Name: '+kodiName
+		if url != '': message += ' \\nURL: ' + url
 		url = 'http://emadmahdi.pythonanywhere.com/sendemail'
-		payload = { 'subject' : quote(subject) , 'message' : quote(message+' \\n\\n Addon Version = '+addonVersion) }
+		payload = { 'subject' : quote(subject) , 'message' : quote(message) }
 		data = urllib.urlencode(payload)
 		html = openURL(url,data)
 		result = html[0:6]
@@ -183,18 +187,19 @@ def dummyClientID():
 	hostName = xbmc.getInfoLabel( "System.FriendlyName" )
 	ipAddress = xbmc.getInfoLabel( "Network.IPAddress" )
 	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
-	xbmc.sleep(500)
+	xbmc.sleep(600)
 	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
 	osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
 	idComponents = osVersion + macAddress + ipAddress + hostName
 	sizeTotal = len(idComponents)
-	sizeItem = int(sizeTotal/3)
-	idComponentsNew = [0,0,0,0,0]
+	sizeItem = int(sizeTotal/4)
+	idComponentsNew = [0,0,0,0,0,0]
 	for i in range(sizeItem*0,sizeItem*1): idComponentsNew[0] += ord(idComponents[i])
 	for i in range(sizeItem*1,sizeItem*2): idComponentsNew[1] += ord(idComponents[i])
 	for i in range(sizeItem*2,sizeItem*3): idComponentsNew[2] += ord(idComponents[i])
+	for i in range(sizeItem*3,sizeItem*4): idComponentsNew[3] += ord(idComponents[i])
 	idCode = ''		
-	for i in range(0,3):
+	for i in range(0,4):
 		idCode += str(idComponentsNew[i])
 	#xbmcgui.Dialog().ok(idCode,idComponents)
 	return idCode
