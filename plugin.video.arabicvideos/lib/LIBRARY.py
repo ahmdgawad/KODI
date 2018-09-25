@@ -157,7 +157,7 @@ def KEYBOARD(label='Search'):
 def PLAY_VIDEO(url,label):
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(100000000000, 999999999999))
-	openURL('http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid='+dummyClientID()+'&an=KODI_ARABIC_VIDEOS&el='+addonVersion+'&t=event&sc=end&ea=PLAY_VIDEO&ec='+label+'&z='+randomNumber,'','','no')
+	openURL('http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&ea='+label+'&z='+randomNumber,'','','no')
 	#xbmcgui.Dialog().ok('start','')
 	play_item = xbmcgui.ListItem(path=url)
 	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
@@ -192,13 +192,15 @@ def dummyClientID():
 	osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
 	resultNumber = 1
 	idComponents = hostName+ipAddress+macAddress+osVersion
-	for i in range(0,len(idComponents)): resultNumber *= ord(idComponents[i])
+	length = len(idComponents)
+	if length < 12: step = 1
+	else: step = int(length/12)
+	for i in range(0,length,step): resultNumber *= ord(idComponents[i])
 	resultText = str(resultNumber)
 	length = len(resultText)
 	position = int((length-16)/2)
-	result = resultText[position-8:position+8]
-	#xbmcgui.Dialog().ok(str(length),str(position))
+	result = resultText[position:position+16]
+	#xbmcgui.Dialog().ok(str(length),str(step))
 	return result
 
-
-
+	
