@@ -190,19 +190,15 @@ def dummyClientID():
 	xbmc.sleep(600)
 	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
 	osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
-	idComponents = osVersion + macAddress + ipAddress + hostName
-	sizeTotal = len(idComponents)
-	sizeItem = int(sizeTotal/4)
-	idComponentsNew = [0,0,0,0,0,0]
-	for i in range(sizeItem*0,sizeItem*1): idComponentsNew[0] += ord(idComponents[i])
-	for i in range(sizeItem*1,sizeItem*2): idComponentsNew[1] += ord(idComponents[i])
-	for i in range(sizeItem*2,sizeItem*3): idComponentsNew[2] += ord(idComponents[i])
-	for i in range(sizeItem*3,sizeItem*4): idComponentsNew[3] += ord(idComponents[i])
-	idCode = ''		
-	for i in range(0,4):
-		idCode += str(idComponentsNew[i])
-	#xbmcgui.Dialog().ok(idCode,idComponents)
-	return idCode
+	resultNumber = 1
+	idComponents = hostName+ipAddress+macAddress+osVersion
+	for i in range(0,len(idComponents)): resultNumber *= ord(idComponents[i])
+	resultText = str(resultNumber)
+	length = len(resultText)
+	position = int((length-16)/2)
+	result = resultText[position-8:position+8]
+	#xbmcgui.Dialog().ok(str(length),str(position))
+	return result
 
 
 

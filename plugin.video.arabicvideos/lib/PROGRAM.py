@@ -62,7 +62,8 @@ def MAIN(mode,text):
 	elif mode==9:
 		#idCode = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 		var1 = dummyClientID()
-		xbmcgui.Dialog().ok(var1,'')
+		var2 = ''
+		xbmcgui.Dialog().ok(var2,var1)
 
 		#scriptNAME = os.path.basename(__file__).split('.')[0]
 		#xbmcgui.Dialog().ok(scriptNAME,'')
