@@ -101,7 +101,7 @@ def PLAY(url):
 		items_url.append(url)
 		items_name.append('From download')
 	if count == 0:
-		xbmcgui.Dialog().notification('No video file found','')
+		xbmcgui.Dialog().ok('No video file found','لا يوجد ملف فيديو')
 		return
 	elif count == 1:
 		selection = 0

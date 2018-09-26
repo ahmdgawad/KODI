@@ -59,10 +59,17 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 		reason = str(error.reason[1])
 
 	if code != '200':
+		message = ''
 		response = 'Error {}: {!r}'.format(code, reason)
 		if showDialogs=='yes':
 			xbmcgui.Dialog().ok('خطأ في الاتصال',response)
-		SEND_EMAIL('Error: From Arabic Videos',response,showDialogs,url)
+			if code=='502' or code=='7':
+				xbmcgui.Dialog().ok('Website is currently off','الموقع حاليا مغلق من المصدر لغرض التحديث او الصيانة. يرجى المحاولة لاحقا')
+			else:
+				yes = xbmcgui.Dialog().yesno('سؤال','اذا كنت تريد ارسال هذا الخطأ الى المبرمج فهل تريد ايضا اضافة رسالة مع الخطأ ؟')
+				if yes:
+					message = ' \\n\\n' + KEYBOARD('Write a message   اكتب رسالة')
+				SEND_EMAIL('Error: From Arabic Videos',response+message,showDialogs,url)
 
 	#file = open('/data/emad.html', 'w')
 	#file.write(url)
@@ -149,30 +156,30 @@ def KEYBOARD(label='Search'):
 	keyboard.doModal()
 	if keyboard.isConfirmed(): search = keyboard.getText()
 	if len(search)<2:
-		xbmcgui.Dialog().ok('غير مقبول. اعد المحاولة.','Not acceptable. Try again.')
+		xbmcgui.Dialog().ok('Wrong entry. Try again','خطأ في الادخال. أعد المحاولة')
 		return ''
 	new_search = mixARABIC(search)
 	return new_search
 
 def PLAY_VIDEO(url,label):
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
-	randomNumber = str(random.randrange(100000000000, 999999999999))
+	randomNumber = str(random.randrange(1,999999999999))
 	openURL('http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&ea='+label+'&z='+randomNumber,'','','no')
-	#xbmcgui.Dialog().ok('start','')
+	#xbmcgui.Dialog().ok('start',url)
 	play_item = xbmcgui.ListItem(path=url)
 	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
-	#xbmcgui.Dialog().ok('end','')
+	#xbmcgui.Dialog().ok('emad'+str(response),'')
 
 def SEND_EMAIL(subject,message,showDialogs='yes',url=''):
 	yes = True
 	html = ''
 	if showDialogs=='yes':
-		yes = xbmcgui.Dialog().yesno('هل ترسل هذه الرسالة الى المبرمج',message.replace('\\n',''))
+		yes = xbmcgui.Dialog().yesno('هل ترسل هذه الرسالة الى المبرمج',message.replace('\\n','\n'))
 	if yes:
 		addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 		kodiVersion = xbmc.getInfoLabel( "System.BuildVersion" )	
 		kodiName = xbmc.getInfoLabel( "System.FriendlyName" )
-		message = message+' \\n\\n==== ==== ==== \\nVersion: '+addonVersion+' \\nSender: '+dummyClientID()+' \\nKodi Version: '+kodiVersion+' \\nKodi Name: '+kodiName
+		message = message+' \\n\\n==== ==== ==== \\nِAddon Version: '+addonVersion+' \\nEmail Sender: '+dummyClientID()+' \\nKodi Version: '+kodiVersion+' \\nKodi Name: '+kodiName
 		if url != '': message += ' \\nURL: ' + url
 		url = 'http://emadmahdi.pythonanywhere.com/sendemail'
 		payload = { 'subject' : quote(subject) , 'message' : quote(message) }
@@ -180,7 +187,7 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url=''):
 		html = openURL(url,data)
 		result = html[0:6]
 		if showDialogs=='yes' and result != 'Error ':
-			xbmcgui.Dialog().ok('تم الارسال','')
+			xbmcgui.Dialog().ok('Message sent','تم ارسال الرسالة')
 	return html
 
 def dummyClientID():
@@ -191,16 +198,14 @@ def dummyClientID():
 	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
 	osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
 	resultNumber = 1
-	idComponents = hostName+ipAddress+macAddress+osVersion
+	idComponents = hostName + ipAddress + macAddress + osVersion
 	length = len(idComponents)
-	if length < 12: step = 1
-	else: step = int(length/12)
+	if length < 11: step = 1
+	else: step = int(length/11)
 	for i in range(0,length,step): resultNumber *= ord(idComponents[i])
 	resultText = str(resultNumber)
-	length = len(resultText)
-	position = int((length-16)/2)
-	result = resultText[position:position+16]
-	#xbmcgui.Dialog().ok(str(length),str(step))
+	result = resultText[0:16]
+	#xbmcgui.Dialog().ok(str(len(resultText)),str(step))
 	return result
 
-	
+
