@@ -69,7 +69,7 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 				yes = xbmcgui.Dialog().yesno('سؤال','اذا كنت تريد ارسال هذا الخطأ الى المبرمج فهل تريد ايضا اضافة رسالة مع الخطأ ؟')
 				if yes:
 					message = ' \\n\\n' + KEYBOARD('Write a message   اكتب رسالة')
-				SEND_EMAIL('Error: From Arabic Videos',response+message,showDialogs,url)
+		SEND_EMAIL('Error: From Arabic Videos',response+message,showDialogs,url)
 
 	#file = open('/data/emad.html', 'w')
 	#file.write(url)
@@ -163,7 +163,7 @@ def KEYBOARD(label='Search'):
 
 def PLAY_VIDEO(url,label):
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
-	randomNumber = str(random.randrange(1,999999999999))
+	randomNumber = str(random.randrange(111111111111,999999999999))
 	openURL('http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&ea='+label+'&z='+randomNumber,'','','no')
 	#xbmcgui.Dialog().ok('start',url)
 	play_item = xbmcgui.ListItem(path=url)
