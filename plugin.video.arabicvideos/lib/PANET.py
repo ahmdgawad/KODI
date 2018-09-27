@@ -11,17 +11,20 @@ def MAIN(mode,url):
 	elif mode==32: ITEMS(url)
 	elif mode==33: PLAY(url)
 	elif mode==34: SEARCH(url)
+	elif mode==35: CATEGORIES(url,'1')
+	elif mode==36: CATEGORIES(url,'2')
 
 def MENU():
 	addDir('بحث عن افلام',website0a+'/search/result/title/movies',34,icon)
 	addDir('بحث عن مسلسلات',website0a+'/search/result/title/series',34,icon)
-	addDir('افلام',website0a+'/movies',32,icon)
-	addDir('افلام مصنفة',website0a+'/movies',31,icon)
 	addDir('مسلسلات مصنفة',website0a+'/series',31,icon)
+	addDir('افلام مصنفة حسب النوع',website0a+'/movies',35,icon)
+	addDir('افلام مصنفة حسب الممثل',website0a+'/movies',36,icon)
+	addDir('اجدد الافلام',website0a+'/movies',32,icon)
 	addDir('مسرحيات',website0a+'/movies/genre/4/1',32,icon)
 	xbmcplugin.endOfDirectory(addon_handle)
 
-def CATEGORIES(url):
+def CATEGORIES(url,select=''):
 	info = url.split('/')
 	type = info[3]
 	#xbmcgui.Dialog().ok(type, url)
@@ -36,18 +39,20 @@ def CATEGORIES(url):
 			addDir(name,url,32,icon)
 	if type=='movies':
 		html = openURL(url)
-		html_blocks=re.findall('moviesGender(.*?)select',html,re.DOTALL)
-		block = html_blocks[0]
-		items=re.findall('option><option value="(.*?)">(.*?)<',block,re.DOTALL)
-		for value,name in items:
-			url = website0a + '/movies/genre/' + value
-			addDir(name,url,32,icon)
-		html_blocks=re.findall('moviesActor(.*?)select',html,re.DOTALL)
-		block = html_blocks[0]
-		items=re.findall('option><option value="(.*?)">(.*?)<',block,re.DOTALL)
-		for value,name in items:
-			url = website0a + '/movies/actor/' + value
-			addDir(name,url,32,icon)
+		if select=='1':
+			html_blocks=re.findall('moviesGender(.*?)select',html,re.DOTALL)
+			block = html_blocks[0]
+			items=re.findall('option><option value="(.*?)">(.*?)<',block,re.DOTALL)
+			for value,name in items:
+				url = website0a + '/movies/genre/' + value
+				addDir(name,url,32,icon)
+		elif select=='2':
+			html_blocks=re.findall('moviesActor(.*?)select',html,re.DOTALL)
+			block = html_blocks[0]
+			items=re.findall('option><option value="(.*?)">(.*?)<',block,re.DOTALL)
+			for value,name in items:
+				url = website0a + '/movies/actor/' + value
+				addDir(name,url,32,icon)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def ITEMS(url):

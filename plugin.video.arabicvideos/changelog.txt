@@ -25,3 +25,9 @@ Added new website "Akoam"
 
 v1.6.0
 Added "Analytics"
+
+
+v1.7.0
+Changed "Analytics" Number
+
+

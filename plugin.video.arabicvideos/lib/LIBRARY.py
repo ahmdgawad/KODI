@@ -171,7 +171,7 @@ def KEYBOARD(label='Search'):
 def PLAY_VIDEO(url,label):
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	url2 = 'http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&ea='+label+'&z='+randomNumber
+	url2 = 'http://www.google-analytics.com/collect?v=1&tid=UA-126285740-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&ea='+label+'&z='+randomNumber
 	openURL(url2,'','','no')
 	#xbmcgui.Dialog().ok('start',url)
 	play_item = xbmcgui.ListItem(path=url)

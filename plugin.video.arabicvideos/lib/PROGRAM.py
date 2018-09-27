@@ -63,8 +63,11 @@ def MAIN(mode,text):
 		#idCode = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 		var1 = dummyClientID()
 		var2 = ''
-		xbmcgui.Dialog().ok(var2,var1)
-
+		#xbmcgui.Dialog().ok(var2,var1)
+		html = openURL('http://emademad.com/testtest.html')
+		xbmcgui.Dialog().ok(html,html)
+		
+		
 		#scriptNAME = os.path.basename(__file__).split('.')[0]
 		#xbmcgui.Dialog().ok(scriptNAME,'')
 		#url = ''
