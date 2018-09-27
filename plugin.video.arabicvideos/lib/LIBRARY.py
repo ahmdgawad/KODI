@@ -58,23 +58,24 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 		code = str(error.reason[0])
 		reason = str(error.reason[1])
 
-	if code != '200':
+	if code!='200':
 		message = ''
+		send = 'yes'
 		response = 'Error {}: {!r}'.format(code, reason)
 		if showDialogs=='yes':
 			xbmcgui.Dialog().ok('خطأ في الاتصال',response)
-			send = 'yes'
-			if code=='502' or code=='7':
+			if 'google-analytics' in url:
+				send = 'no'
+			elif code=='502' or code=='7':
 				xbmcgui.Dialog().ok('Website is currently off','الموقع حاليا مغلق من المصدر لغرض التحديث او الصيانة. يرجى المحاولة لاحقا')
 				send = 'no'
 			elif code=='404':
 				xbmcgui.Dialog().ok('File not found','الملف غير موجود والسبب غالبا هو من المصدر ومن الموقع الاصلي الذي يغذي هذا البرنامج')
-				send = 'yes'
-			if send =='yes':
+			if send=='yes':
 				yes = xbmcgui.Dialog().yesno('سؤال','هل تربد اضافة رسالة مع هذا الخطأ لكي ترسلهم الى المبرمج ؟')
 				if yes:
 					message = ' \\n\\n' + KEYBOARD('Write a message   اكتب رسالة')
-		if 'google-analytics' not in url:
+		if send=='yes':
 			SEND_EMAIL('Error: From Arabic Videos',response+message,showDialogs,url)
 
 	#file = open('/data/emad.html', 'w')
