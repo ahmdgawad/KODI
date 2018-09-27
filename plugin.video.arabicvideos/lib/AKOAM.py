@@ -49,7 +49,7 @@ def TITLES(url):
 	block = html_blocks[0]
 	items = re.findall('li>\n<a href=\'(.*?)\'>(.*?)<',block,re.DOTALL)
 	for link,title in items:
-		addDir(title,link,72,img)
+		addDir('صفحة '+title,link,72,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def EPISODES(url):

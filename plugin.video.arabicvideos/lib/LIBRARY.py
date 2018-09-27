@@ -63,13 +63,19 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 		response = 'Error {}: {!r}'.format(code, reason)
 		if showDialogs=='yes':
 			xbmcgui.Dialog().ok('خطأ في الاتصال',response)
+			send = 'yes'
 			if code=='502' or code=='7':
 				xbmcgui.Dialog().ok('Website is currently off','الموقع حاليا مغلق من المصدر لغرض التحديث او الصيانة. يرجى المحاولة لاحقا')
-			else:
-				yes = xbmcgui.Dialog().yesno('سؤال','اذا كنت تريد ارسال هذا الخطأ الى المبرمج فهل تريد ايضا اضافة رسالة مع الخطأ ؟')
+				send = 'no'
+			elif code=='404':
+				xbmcgui.Dialog().ok('File not found','الملف غير موجود والسبب غالبا هو من المصدر ومن الموقع الاصلي الذي يغذي هذا البرنامج')
+				send = 'yes'
+			if send =='yes':
+				yes = xbmcgui.Dialog().yesno('سؤال','هل تربد اضافة رسالة مع هذا الخطأ لكي ترسلهم الى المبرمج ؟')
 				if yes:
 					message = ' \\n\\n' + KEYBOARD('Write a message   اكتب رسالة')
-		SEND_EMAIL('Error: From Arabic Videos',response+message,showDialogs,url)
+		if 'google-analytics' not in url:
+			SEND_EMAIL('Error: From Arabic Videos',response+message,showDialogs,url)
 
 	#file = open('/data/emad.html', 'w')
 	#file.write(url)
@@ -164,7 +170,8 @@ def KEYBOARD(label='Search'):
 def PLAY_VIDEO(url,label):
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	openURL('http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&ea='+label+'&z='+randomNumber,'','','no')
+	url2 = 'http://www.google-analytics.com/collect?v=1&tid=UA-125980264-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&ea='+label+'&z='+randomNumber
+	openURL(url2,'','','no')
 	#xbmcgui.Dialog().ok('start',url)
 	play_item = xbmcgui.ListItem(path=url)
 	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
