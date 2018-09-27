@@ -62,17 +62,17 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 		message = ''
 		send = 'yes'
 		response = 'Error {}: {!r}'.format(code, reason)
+		if 'google-analytics' in url:
+			send = 'no'
 		if showDialogs=='yes':
 			xbmcgui.Dialog().ok('خطأ في الاتصال',response)
-			if 'google-analytics' in url:
-				send = 'no'
-			elif code=='502' or code=='7':
+			if code=='502' or code=='7':
 				xbmcgui.Dialog().ok('Website is currently off','الموقع حاليا مغلق من المصدر لغرض التحديث او الصيانة. يرجى المحاولة لاحقا')
 				send = 'no'
 			elif code=='404':
 				xbmcgui.Dialog().ok('File not found','الملف غير موجود والسبب غالبا هو من المصدر ومن الموقع الاصلي الذي يغذي هذا البرنامج')
 			if send=='yes':
-				yes = xbmcgui.Dialog().yesno('سؤال','هل تربد اضافة رسالة مع هذا الخطأ لكي ترسلهم الى المبرمج ؟')
+				yes = xbmcgui.Dialog().yesno('سؤال','هل تربد اضافة رسالة مع الخطأ لكي ترسلهم الى المبرمج ؟')
 				if yes:
 					message = ' \\n\\n' + KEYBOARD('Write a message   اكتب رسالة')
 		if send=='yes':
