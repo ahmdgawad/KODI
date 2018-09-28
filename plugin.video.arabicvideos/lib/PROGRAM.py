@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
-def MAIN(mode,text):
+def MAIN(mode,text=''):
 	if (mode==0 or mode==1):
 		keyboard=text
 		if keyboard=='': return
@@ -28,6 +28,7 @@ def MAIN(mode,text):
 		return
 
 	elif mode==2:
+		xbmcgui.Dialog().ok('انا لا اعلم الغيب','اذا كانت لديك مشكلة فاذن أقرأ قسم المشاكل واذا لم تجد الحل هناك فاذن اكتب رسالة عن المكان والوقت والحال الذي تحدث فيه المشكلة واكتب جميع التفاصيل لاني لا اعلم الغيب')
 		search = KEYBOARD('Write a message   اكتب رسالة')
 		if search == '': return
 		message = search

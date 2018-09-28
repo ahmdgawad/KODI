@@ -3,14 +3,16 @@ from LIBRARY import *
 
 def MAIN(mode):
         if mode==1000:
-        	website0b = 'Problem:   Can\'t see Arabic Text'
-        	website0c = 'في موقع كل العرب - الفيديو لا يعمل   :مشكلة'
-        	website0d = 'بعض الروابط لا تعمل   :مشكلة'
-        	website0e = 'اين مواقع الافلام والمسلسلات الاجنبية   :سؤال'
-        	addDir(website0b,'',1001)
-       		addDir(website0c,'',1002)
-        	addDir(website0d,'',1003)
-        	addDir(website0e,'',1004)
+        	website0a = 'Problem:   Can\'t see Arabic Text'
+        	website0b = 'في موقع كل العرب - الفيديو لا يعمل   :مشكلة'
+        	website0c = 'بعض الروابط لا تعمل   :مشكلة'
+        	website0d = 'لا توجد مواقع مخصصة للافلام والمسلسلات الاجنبية   :مشكلة'
+        	website0e = 'بعض الروابط بطيئة   :مشكلة'
+        	addDir(website0a,'',1001)
+       		addDir(website0b,'',1002)
+        	addDir(website0c,'',1003)
+        	addDir(website0d,'',1004)
+        	addDir(website0e,'',1005)
         	xbmcplugin.endOfDirectory(addon_handle)
 
 	elif mode==1001:
@@ -24,10 +26,18 @@ def MAIN(mode):
 		xbmcgui.Dialog().ok('المواقع المشفرة',message1)
 
 	elif mode==1003:
-		yes = xbmcgui.Dialog().yesno('الحل هو اخبار المبرمج بالتفاصيل','هل تريد اخبار المبرمج الان ؟')	
-		if yes: MAIN(4,'')
+		yes = xbmcgui.Dialog().yesno('روابط لا تعمل','غالبا السبب هو من الموقع الاصلي المغذي للبرنامج وللتأكد تستطيع اخبار المبرمج بجميع التفاصيل فهل تريد اخبار المبرمج الان ؟')	
+		if yes: 
+			import PROGRAM
+			PROGRAM.MAIN(2)
 
 	elif mode==1004:
-		message = 'البرنامج مخصص للغة العربية ومع هذا وبالصدفة يوجد فيه مواقع فيها افلام ومسلسلات مترجمة او مدبلجة الى اللغة العربية والى لغات اخرى'
+		message = 'السبب هو ان هذا البرنامج مخصص فقط للغة العربية ولكن مع هذا وبالصدفة يوجد فيه مواقع فيها افلام ومسلسلات مترجمة او مدبلجة الى اللغة العربية والى لغات اخرى ولا يوجد سبب للتكرار'
 		xbmcgui.Dialog().ok('مواقع اجنبية',message)
+
+	elif mode==1005:
+		message = 'الروابط البطيئة لا علاقة لها بالبرنامج وغالبا السبب هو من الموقع الاصلي المغذي للبرنامج'
+		xbmcgui.Dialog().ok('روابط بطيئة',message)
+
+
 

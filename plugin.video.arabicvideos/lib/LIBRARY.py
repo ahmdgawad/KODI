@@ -63,7 +63,7 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 		send = 'yes'
 		response = 'Error {}: {!r}'.format(code, reason)
 		if 'google-analytics' in url:
-			send = 'no'
+			send = showDialogs
 		if showDialogs=='yes':
 			xbmcgui.Dialog().ok('خطأ في الاتصال',response)
 			if code=='502' or code=='7':
@@ -72,7 +72,7 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 			elif code=='404':
 				xbmcgui.Dialog().ok('File not found','الملف غير موجود والسبب غالبا هو من المصدر ومن الموقع الاصلي الذي يغذي هذا البرنامج')
 			if send=='yes':
-				yes = xbmcgui.Dialog().yesno('سؤال','هل تربد اضافة رسالة مع الخطأ لكي ترسلهم الى المبرمج ؟')
+				yes = xbmcgui.Dialog().yesno('سؤال','هل تربد اضافة رسالة مع الخطأ لكي تشرح فيها كيف واين حصل الخطأ وترسل التفاصيل الى المبرمج ؟')
 				if yes:
 					message = ' \\n\\n' + KEYBOARD('Write a message   اكتب رسالة')
 		if send=='yes':
@@ -169,14 +169,13 @@ def KEYBOARD(label='Search'):
 	return new_search
 
 def PLAY_VIDEO(url,label):
-	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
-	randomNumber = str(random.randrange(111111111111,999999999999))
-	url2 = 'http://www.google-analytics.com/collect?v=1&tid=UA-126285740-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&ea='+label+'&z='+randomNumber
-	openURL(url2,'','','no')
-	#xbmcgui.Dialog().ok('start',url)
 	play_item = xbmcgui.ListItem(path=url)
 	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
-	#xbmcgui.Dialog().ok('emad'+str(response),'')
+	#xbmcgui.Dialog().ok('start',url)
+	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
+	randomNumber = str(random.randrange(111111111111,999999999999))
+	url2 = 'http://www.google-analytics.com/collect?v=1&tid=UA-126658243-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&ea='+label+'&z='+randomNumber
+	openURL(url2,'','','no')
 
 def SEND_EMAIL(subject,message,showDialogs='yes',url=''):
 	yes = True
@@ -188,6 +187,12 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url=''):
 		kodiVersion = xbmc.getInfoLabel( "System.BuildVersion" )	
 		kodiName = xbmc.getInfoLabel( "System.FriendlyName" )
 		message = message+' \\n\\n==== ==== ==== \\nِAddon Version: '+addonVersion+' \\nEmail Sender: '+dummyClientID()+' \\nKodi Version: '+kodiVersion+' \\nKodi Name: '+kodiName
+		#xbmc.sleep(4000)
+		#playerTitle = xbmc.getInfoLabel( "Player.Title" )
+		#playerPath = xbmc.getInfoLabel( "Player.Filenameandpath" )
+		#if playerTitle != '': message += ' \\nPlayer Title: '+playerTitle
+		#if playerPath != '': message += ' \\nPlayer Path: '+playerPath
+		#xbmcgui.Dialog().ok(playerTitle,playerPath)
 		if url != '': message += ' \\nURL: ' + url
 		url = 'http://emadmahdi.pythonanywhere.com/sendemail'
 		payload = { 'subject' : quote(subject) , 'message' : quote(message) }

@@ -31,3 +31,5 @@ v1.7.0
 Changed "Analytics" Number
 
 
+v1.8.0
+Got new "Analytics" Number
