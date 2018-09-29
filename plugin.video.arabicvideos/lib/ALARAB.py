@@ -58,10 +58,11 @@ def ITEMS(url):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
-	html = openURL(url)
+	#url = url.replace('http:','https:')
 	id = re.findall('com/v(.*?)-',url,re.DOTALL)[0]
-	url = 'http://alarabplayers.alarab.com/?vid='+id
-	html = html + openURL(url)
+	url2 = 'http://alarabplayers.alarab.com/?vid='+id
+	html = openURL(url)
+	html += openURL(url2)
 	#xbmcgui.Dialog().ok(url,'')
 	#progress = xbmcgui.DialogProgress()
 	#progress.create('Opening website')
@@ -77,7 +78,9 @@ def PLAY(url):
 	#file.write(html)
 	#file.close()
 	html_blocks = re.findall('playerInstance.setup(.*?)primary',html,re.DOTALL)
-	block = html_blocks[0] + html_blocks[1]
+	block = html_blocks[0]
+	try: block += html_blocks[1]
+	except: pass
 	count = 0
 	items_url = []
 	items_name = []

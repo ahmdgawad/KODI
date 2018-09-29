@@ -87,6 +87,7 @@ def EPISODES(url):
 			link = link.replace('\/','/')
 			title = escapeUNICODE(title)
 			link = escapeUNICODE(link)
+			title = title.split(' ')[-1]
 			title = name + ' - ' + title
 			duration = re.findall('length_formatted":"(.*?)"',meta,re.DOTALL)
 			if duration: addLink(title,link,43,img2,duration[0])

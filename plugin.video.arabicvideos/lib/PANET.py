@@ -35,7 +35,7 @@ def CATEGORIES(url,select=''):
 		items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
 		for link,name in items:
 			url = website0a + link
-			name = name.replace('  ','')
+			name = name.strip(' ')
 			addDir(name,url,32,icon)
 	if type=='movies':
 		html = openURL(url)
@@ -65,13 +65,14 @@ def ITEMS(url):
 		items = re.findall('href="(.*?)""><img src="(.*?)".*?h2>(.*?)<',block,re.DOTALL)
 		for link,img,name in items:
 			url = website0a + link 
-			name = name.replace('  ','')
+			name = name.strip(' ')
 			addDir(name,url,32,img)
 	if type=='movies':
 		html_blocks = re.findall('panet-mars-adv-panel.*?advBarMars(.+?)panet-pagination',html,re.DOTALL)
 		block = html_blocks[0]
 		items = re.findall('panet-thumbnail.*?href="(.*?)"><img src="(.*?)" alt="(.+?)"',block,re.DOTALL)
 		for link,img,name in items:
+			name = name.strip(' ')
 			url = website0a + link
 			addLink(name,url,33,img)
 	if type=='episodes':
@@ -92,8 +93,8 @@ def ITEMS(url):
 		block = html_blocks[0]
 		items = re.findall('panet-thumbnail.*?href="(.*?)""><img src="(.*?)".*?panet-title"><h2>(.*?)</h2.*?panet-info"><h2>(.*?)</h2',block,re.DOTALL)
 		for link,img,title,episode in items:
-			episode = episode.replace('  ','')
-			title = title.replace('  ','')
+			episode = episode.strip(' ')
+			title = title.strip(' ')
 			name = title + ' - ' + episode
 			url = website0a + link
 			addLink(name,url,33,img)
@@ -118,7 +119,6 @@ def PLAY(url):
 		url = url.replace('\/','/')
 	else:
 		html = openURL(url)
-		#items = re.findall('article-player.*?url="(.*?)".*?article-player',html,re.DOTALL)
 		items = re.findall('contentURL" content="(.*?)"',html,re.DOTALL)
 		url = items[0]
 	PLAY_VIDEO(url,script_name)

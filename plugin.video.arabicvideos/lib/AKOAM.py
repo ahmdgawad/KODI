@@ -33,6 +33,7 @@ def CATEGORIES(url):
 		block = html_blocks[0]
 		items = re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 		for link,title in items:
+			title = title.strip(' ')
 			addDir(title,link,72)
 		addDir('الجميع',url,72)
 		xbmcplugin.endOfDirectory(addon_handle)
@@ -44,6 +45,7 @@ def TITLES(url):
 	block = html_blocks[0]
 	items = re.findall('subject_box.*?href="(.*?)".*?src="(.*?)".*?<h3>(.*?)<',block,re.DOTALL)
 	for link,img,title in items:
+		title = title.strip(' ')
 		addDir(title,link,73,img)
 	html_blocks = re.findall('pagination(.*?)</div',html,re.DOTALL)
 	block = html_blocks[0]
