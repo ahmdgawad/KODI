@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
+script_name='PROGRAM'
+
 def MAIN(mode,text=''):
 	if (mode==0 or mode==1):
 		keyboard=text
@@ -63,13 +65,13 @@ def MAIN(mode,text=''):
 
 	elif mode==9:
 		#idCode = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
-		var1 = dummyClientID()
-		var2 = ''
+		#var1 = KEYBOARD()
+		#var2 = ''
 		#xbmcgui.Dialog().ok(var2,var1)
-		html = openURL('http://emademad.com/testtest.html')
-		xbmcgui.Dialog().ok(html,html)
-		
-		
+		#html = openURL('http://emademad.com/testtest.html','','','','PROGRAM-MAIN-1st')
+		#xbmcgui.Dialog().ok(var1,var2)
+		url = ''
+		PLAY_VIDEO(url,script_name)
 		#scriptNAME = os.path.basename(__file__).split('.')[0]
 		#xbmcgui.Dialog().ok(scriptNAME,'')
 		#url = ''

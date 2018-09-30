@@ -33,7 +33,7 @@ def TITLES(url):
 	if type=='movie': type1='فيلم'
 	if type=='series': type1='مسلسل'
 	url = website0a+'/filter-programs/'+quote(type1)+'/'+page+'/'+sort
-	html = openURL(url)
+	html = openURL(url,'','','','SHOOFMAX-TITLES-1st')
 	items = re.findall('"ref":(.*?),.*?"title":"(.*?)".+?"numep":(.*?),"res":"(.*?)"',html,re.DOTALL)
 	count_items=0
 	for id,title,episodes_number,name in items:
@@ -68,7 +68,7 @@ def EPISODES(url):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
-	html = openURL(url)
+	html = openURL(url,'','','','SHOOFMAX-PLAY-1st')
 	block = re.findall('intro_end(.*?)initialize',html,re.DOTALL)[0]
 	#file = open('/data/emad.html', 'w')
 	#file.write(url)
@@ -90,7 +90,7 @@ def PLAY(url):
 	items_name.append('Main server: mp4')
 	items_url.append(video2)
 	items_name.append('Backup server: mp4')
-	html = openURL(multiple1)
+	html = openURL(multiple1,'','','','SHOOFMAX-PLAY-2nd')
 	base = multiple1.replace('variant.m3u8','')
 	items = re.findall('RESOLUTION=(.*?),.*?\n(.*?)u8',html,re.DOTALL)
         for quality,link in items:
@@ -99,7 +99,7 @@ def PLAY(url):
 		items_url.append(url)
 		items_name.append('Main server: m3u8 '+quality)
 	count += 1
-	html = openURL(multiple2)
+	html = openURL(multiple2,'','','','SHOOFMAX-PLAY-3rd')
 	base = multiple2.replace('variant.m3u8','')
 	items = re.findall('RESOLUTION=(.*?),.*?\n(.*?)u8',html,re.DOTALL)
         for quality,link in items:
@@ -120,7 +120,7 @@ def SEARCH():
 	if search == '': return
 	new_search = search.replace(' ','%20')
 
-	html = openURL(website0c)
+	html = openURL(website0c,'','','','SHOOFMAX-SEARCH-1st')
 	block = re.findall('name="_csrf" value="(.*?)">',html,re.DOTALL)
 	csrf = block[0]
 
@@ -149,7 +149,7 @@ def SEARCH():
 
 	payload = "{ '_csrf='"+ csrf+" }"
 	data = urllib.urlencode(payload)
-	html = openURL(url,data,headers)
+	html = openURL(url,data,headers,'','SHOOFMAX-SEARCH-2nd')
 
 	#headers = { "content-type": "application/x-www-form-urlencoded" }
 	#payload = '{ _csrf :'+ csrf +'}'

@@ -26,9 +26,9 @@ def TITLES(url,category):
 	moviesLIST = ['1239','1250','1245','20','1259','218','485','1238','1258','292']
 	englishLIST = ['3030','628']
 	if category in ['-1','-2','-3']:
-		html = openURL(website0a+'/menu_level.php')
+		html = openURL(website0a+'/menu_level.php','','','','ALFATIMI-TITLES-1st')
 	else:
-		html = openURL(website0a+'/menu_level.php?cat='+category)
+		html = openURL(website0a+'/menu_level.php?cat='+category,'','','','ALFATIMI-TITLES-2nd')
 	items = re.findall('href=\'(.*?)\'.*?>(.*?)<.*?>(.*?)</span>',html,re.DOTALL)
 	startADD = False
 	for link,title,count in items:
@@ -54,7 +54,7 @@ def TITLES(url,category):
 
 def EPISODES(url):
 	#xbmcgui.Dialog().ok(url , url)
-	html = openURL(url)
+	html = openURL(url,'','','','ALFATIMI-EPISODES-1st')
 	html_blocks = re.findall('pagination(.*?)pagination',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('grid_view.*?src="(.*?)".*?<h2.*?href="(.*?)">(.*?)<',block,re.DOTALL)
@@ -82,7 +82,7 @@ def PLAY(url):
 	#xbmcgui.Dialog().ok('step 2', url)
 	if 'videos.php' in url:
 		url = EPISODES(url)
-	html = openURL(url)
+	html = openURL(url,'','','','ALFATIMI-PLAY-1st')
 	items = re.findall('playlistfile:"(.*?)"',html,re.DOTALL)
 	url = items[0]
 	PLAY_VIDEO(url,script_name)
@@ -92,7 +92,7 @@ def SEARCH():
 	if search == '': return
 	new_search = search.replace(' ','+')
 	url = website0a + '/search_result.php?query=' + new_search
-	html = openURL(url)
+	html = openURL(url,'','','','ALFATIMI-SEARCH-1st')
 	html_blocks = re.findall('search_subs(.*?)</ul>',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('cat=(.*?)&.*?>(.*?)<',block,re.DOTALL)

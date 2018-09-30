@@ -22,14 +22,13 @@ def addLink(name,url,mode,iconimage=icon,duration=''):
 	xbmcplugin.setContent(addon_handle, 'videos')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=False)
 
-def openURL(url,data='',headers='',showDialogs='yes'):
+def openURL(url,data='',headers='',showDialogs='yes',source=''):
 	#headers={ 'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36' }
-	start = time.time()
+	#start = time.time()
 	if data=='' and headers=='': request = urllib2.Request(url)
 	elif data=='' and headers!='': request = urllib2.Request(url,headers=headers)
 	elif data!='' and headers=='': request = urllib2.Request(url,data=data)
 	elif data!='' and headers!='': request = urllib2.Request(url,headers=headers,data=data)
-
 	#request.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
 	#request.add_header('Referer',' http://www.panet.co.il/Ext/players/flv5/player.swf')
 	#request.add_header('Accept',' text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
@@ -38,9 +37,9 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 	#request.add_header('Accept-Encoding', 'deflate')
 	#request.add_header('Cookie',' __auc=82d7ffe213cb1b4ce1d273c7ba1; __utma=31848767.848342890.1360191082.1360611183.1360620657.4; __utmz=31848767.1360191082.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmb=31848767.4.10.1360620660; __utmc=31848767; __asc=169c084d13ccb4fa36df421055e')
 	#request.add_header('Connection',' keep-alive')
-
 	#request.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
 	#request.add_header('Connection', 'close')
+	response = ''
 	code = '200'
 	reason = 'OK'
 	try:
@@ -57,7 +56,6 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 	except urllib2.URLError as error:
 		code = str(error.reason[0])
 		reason = str(error.reason[1])
-
 	if code!='200':
 		message = ''
 		send = 'yes'
@@ -67,7 +65,7 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 		if showDialogs=='yes':
 			xbmcgui.Dialog().ok('خطأ في الاتصال',response)
 			if code=='502' or code=='7':
-				xbmcgui.Dialog().ok('Website is currently off','الموقع حاليا مغلق من المصدر لغرض التحديث او الصيانة. يرجى المحاولة لاحقا')
+				xbmcgui.Dialog().ok('Website is not available','لا يمكن الوصول الى الموقع والسبب قد يكون من جهازك او من الانترنيت الخاصة بك او من الموقع كونه مغلق للصيانة او التحديث لذا يرجى المحاولة لاحقا')
 				send = 'no'
 			elif code=='404':
 				xbmcgui.Dialog().ok('File not found','الملف غير موجود والسبب غالبا هو من المصدر ومن الموقع الاصلي الذي يغذي هذا البرنامج')
@@ -76,14 +74,13 @@ def openURL(url,data='',headers='',showDialogs='yes'):
 				if yes:
 					message = ' \\n\\n' + KEYBOARD('Write a message   اكتب رسالة')
 		if send=='yes':
-			SEND_EMAIL('Error: From Arabic Videos',response+message,showDialogs,url)
-
+			SEND_EMAIL('Error: From Arabic Videos',response+message,showDialogs,url,source)
+	#xbmcgui.Dialog().ok('',source)
 	#file = open('/data/emad.html', 'w')
 	#file.write(url)
 	#file.write('\n\n\n')
 	#file.write(response)
 	#file.close()
-
 	return response
 
 def quote(url):
@@ -135,10 +132,6 @@ def mixARABIC(string):
 	new_string = new_string.encode('utf-8')
 	return new_string
 
-
-#xbmcgui.Dialog().ok('test','')
-
-
 def PLAY_FROM_DIRECTORY(url):
 	url=escapeUNICODE(url)
 	url=url.replace(' ','%20')
@@ -162,7 +155,8 @@ def KEYBOARD(label='Search'):
 	keyboard = xbmc.Keyboard(search, label)
 	keyboard.doModal()
 	if keyboard.isConfirmed(): search = keyboard.getText()
-	if len(search)<2:
+	search = search.strip(' ')
+	if len(search.decode('utf8'))<2:
 		xbmcgui.Dialog().ok('Wrong entry. Try again','خطأ في الادخال. أعد المحاولة')
 		return ''
 	new_search = mixARABIC(search)
@@ -174,10 +168,10 @@ def PLAY_VIDEO(url,label):
 	#xbmcgui.Dialog().ok('start',url)
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	url2 = 'http://www.google-analytics.com/collect?v=1&tid=UA-126658243-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&ea='+label+'&z='+randomNumber
-	openURL(url2,'','','no')
+	url2 = 'http://www.google-analytics.com/collect?v=1&tid=UA-126658243-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
+	openURL(url2,'','','no','LIBRARY-PLAY_VIDEO-1st')
 
-def SEND_EMAIL(subject,message,showDialogs='yes',url=''):
+def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 	yes = True
 	html = ''
 	if showDialogs=='yes':
@@ -194,10 +188,11 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url=''):
 		#if playerPath != '': message += ' \\nPlayer Path: '+playerPath
 		#xbmcgui.Dialog().ok(playerTitle,playerPath)
 		if url != '': message += ' \\nURL: ' + url
+		if source != '': message += ' \\nSource: ' + source
 		url = 'http://emadmahdi.pythonanywhere.com/sendemail'
 		payload = { 'subject' : quote(subject) , 'message' : quote(message) }
 		data = urllib.urlencode(payload)
-		html = openURL(url,data)
+		html = openURL(url,data,'','','LIBRARY-SEND_EMAIL-1st')
 		result = html[0:6]
 		if showDialogs=='yes' and result != 'Error ':
 			xbmcgui.Dialog().ok('Message sent','تم ارسال الرسالة')

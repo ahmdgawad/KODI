@@ -17,7 +17,7 @@ def MAIN(mode,url):
 def MENU():
 	addDir('بحث عن افلام',website0a+'/search/result/title/movies',34,icon)
 	addDir('بحث عن مسلسلات',website0a+'/search/result/title/series',34,icon)
-	addDir('مسلسلات مصنفة',website0a+'/series',31,icon)
+	addDir('مسلسلات مصنفة',website0a+'/series/v1',31,icon)
 	addDir('افلام مصنفة حسب النوع',website0a+'/movies',35,icon)
 	addDir('افلام مصنفة حسب الممثل',website0a+'/movies',36,icon)
 	addDir('اجدد الافلام',website0a+'/movies',32,icon)
@@ -29,7 +29,7 @@ def CATEGORIES(url,select=''):
 	type = info[3]
 	#xbmcgui.Dialog().ok(type, url)
 	if type=='series':
-		html = openURL(url)
+		html = openURL(url,'','','','PANET-CATEGORIES-1st')
 		html_blocks=re.findall('categoriesMenu(.*?)seriesForm',html,re.DOTALL)
 		block= html_blocks[0]
 		items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
@@ -38,7 +38,7 @@ def CATEGORIES(url,select=''):
 			name = name.strip(' ')
 			addDir(name,url,32,icon)
 	if type=='movies':
-		html = openURL(url)
+		html = openURL(url,'','','','PANET-CATEGORIES-2nd')
 		if select=='1':
 			html_blocks=re.findall('moviesGender(.*?)select',html,re.DOTALL)
 			block = html_blocks[0]
@@ -56,7 +56,7 @@ def CATEGORIES(url,select=''):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def ITEMS(url):
-	html = openURL(url)
+	html = openURL(url,'','','','PANET-ITEMS-1st')
 	type = url.split('/')[3]
 	if 'home' in url: type='episodes'
 	if type=='series':
@@ -110,15 +110,16 @@ def ITEMS(url):
 def PLAY(url):
 	#xbmcgui.Dialog().ok(url,'')
 	#url = url.replace(website0a,website0b)
+	#xbmcgui.Dialog().ok(url, url)
 
 	if 'series' in url:
 		url = website0a + '/series/v1/seriesLink/' + url.split('/')[-1]
-		html = openURL(url)
+		html = openURL(url,'','','','PANET-PLAY-1st')
 		items = re.findall('url":"(.*?)"',html,re.DOTALL)
 		url = items[0]
 		url = url.replace('\/','/')
 	else:
-		html = openURL(url)
+		html = openURL(url,'','','','PANET-PLAY-2nd')
 		items = re.findall('contentURL" content="(.*?)"',html,re.DOTALL)
 		url = items[0]
 	PLAY_VIDEO(url,script_name)
@@ -129,7 +130,7 @@ def SEARCH(url):
 	new_search = search.replace(' ','-')
 	type=url.split('/')[-1]
 	data = 'query='+new_search+'&searchDomain='+type
-	html = openURL(website0a+'/search',data)
+	html = openURL(website0a+'/search',data,'','','PANET-SEARCH-1st')
 	#xbmcgui.Dialog().ok(html, new_search)
 	items=re.findall('title":"(.*?)".*?link":"(.*?)"',html,re.DOTALL)
 	for title,link in items:

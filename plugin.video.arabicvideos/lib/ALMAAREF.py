@@ -17,7 +17,7 @@ def MAIN(mode,url,category):
 def MENU():
 	name = 'بحث في الموقع'
 	addDir(name,website0a,41,icon)
-	html = openURL(website0a)
+	html = openURL(website0a,'','','','ALMAAREF-MENU-1st')
 	##name = re.findall('main-content.*?<h2><a href=".*?">(.*?)</a></h2>',html,re.DOTALL)[0]
 	##addDir(name,website0a,45,icon)
 	items = re.findall('<h2><a href="(.*?)">(.*?)</a></h2>',html,re.DOTALL)
@@ -33,7 +33,7 @@ def MENU():
 
 def TITLES(url,select):
 	notvideosLIST = ['تطبيقات الاجهزة الذكية','جدول البرامج','اوقات برامجنا']
-	html = openURL(url)
+	html = openURL(url,'','','','ALMAAREF-TITLES-1st')
 	if select==1:
 		html_blocks1=re.findall('main-content(.*?)class="clear"',html,re.DOTALL)
 		if html_blocks1:
@@ -73,7 +73,7 @@ def TITLES(url,select):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def EPISODES(url):
-	html = openURL(url)
+	html = openURL(url,'','','','ALMAAREF-EPISODES-1st')
 	html_blocks=re.findall('entry-title"><span itemprop="name">(.*?)<',html,re.DOTALL)
 	name = html_blocks[0]
 	name = unescapeHTML(name)
@@ -111,7 +111,7 @@ def PLAY(url):
 
 def CATEGORIES(url,category):
 	#xbmcgui.Dialog().ok(type, url)
-	html = openURL(url)
+	html = openURL(url,'','','','ALMAAREF-CATEGORIES-1st')
 	html_blocks=re.findall('cat1.a\(0,(.*?)document.write',html,re.DOTALL)
 	block= html_blocks[0]
 	items=re.findall('cat1.a\((.*?),(.*?),\'(.*?)\',\'\',\'(.*?)\'',block,re.DOTALL)

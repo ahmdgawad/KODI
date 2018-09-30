@@ -19,7 +19,7 @@ def MAIN(mode,url):
 def MENU():
 	addDir('بحث في الموقع',website0a,13,icon)
 	addDir('مسلسلات جديدة',website0a,14,icon)
-	html = openURL(website0d)
+	html = openURL(website0d,'','','','ALARAB-MENU-1st')
 	html_blocks=re.findall('footer_sec(.*?)social-network',html,re.DOTALL)
 	block=html_blocks[0]
 	#xbmcgui.Dialog().ok(str(len(html)), str(len(block)) )
@@ -30,7 +30,7 @@ def MENU():
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def LATEST():
-	html = openURL(website0d)
+	html = openURL(website0d,'','','','ALARAB-LATEST-1st')
 	html_blocks=re.findall('right_content.*?heading-top(.*?)heading-top',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
@@ -41,7 +41,7 @@ def LATEST():
 
 def ITEMS(url):
 	#xbmcgui.Dialog().ok(url,'')
-	html = openURL(url)
+	html = openURL(url,'','','','ALARAB-ITEMS-1st')
 	html_blocks = re.findall('heading-list(.*?)right_content',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('video-box.*?href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
@@ -61,8 +61,8 @@ def PLAY(url):
 	#url = url.replace('http:','https:')
 	id = re.findall('com/v(.*?)-',url,re.DOTALL)[0]
 	url2 = 'http://alarabplayers.alarab.com/?vid='+id
-	html = openURL(url)
-	html += openURL(url2)
+	html = openURL(url,'','','','ALARAB-PLAY-1st')
+	html += openURL(url2,'','','','ALARAB-PLAY-2nd')
 	#xbmcgui.Dialog().ok(url,'')
 	#progress = xbmcgui.DialogProgress()
 	#progress.create('Opening website')
@@ -96,7 +96,7 @@ def PLAY(url):
 		items_url.append(url)
 		items_name.append('From youtube')
 	url = website0a + '/download.php?file='+id
-	html = openURL(url)
+	html = openURL(url,'','','','ALARAB-PLAY-3rd')
 	items = re.findall('</h2>.*?href="(.*?)mp4"',html,re.DOTALL)
 	if items:
 		url = items[0] + 'mp4'

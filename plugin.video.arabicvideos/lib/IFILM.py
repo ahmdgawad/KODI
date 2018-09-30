@@ -26,7 +26,7 @@ def LANGUAGE():
 def MENU(url):
 	menu=['Series', 'Program', 'Music']
 	website0 = SITE(url)
-	html = openURL(url)
+	html = openURL(url,'','','','IFILM-MENU-1st')
 	html_blocks=re.findall('input_Search_" placeholder="(.*?)"',html,re.DOTALL)
 	title = html_blocks[0]
 	addDir(title,website0,26,icon)
@@ -45,7 +45,7 @@ def MENU(url):
 
 def MUSIC_MENU(url):
 	website0 = SITE(url)
-	html = openURL(url)
+	html = openURL(url,'','','','IFILM-MUSIC_MENU-1st')
 	html_blocks = re.findall('Music-tools-header(.*?)Music-body',html,re.DOTALL)
 	block = html_blocks[0]
 	title = re.findall('<p>(.*?)</p>',block,re.DOTALL)[0]
@@ -66,7 +66,7 @@ def TITLES(url,page):
 	page = str(int(page)%100)
 	#xbmcgui.Dialog().ok(page, order)
 	if type=='Series' and page=='0':
-		html = openURL(url)
+		html = openURL(url,'','','','IFILM-TITLES-1st')
 		html_blocks = re.findall('serial-body(.*?)class="row',html,re.DOTALL)
 		block = html_blocks[0]
 		items = re.findall('href="(.*?)".*?src=(.*?)>.*?h3>(.*?)<',block,re.DOTALL)
@@ -80,7 +80,7 @@ def TITLES(url,page):
 	if type=='Program': category='7'
 	if (type=='Series' or type=='Program') and page!='0':
 		url2 = website0+'/Home/PageingItem?category='+category+'&page='+page+'&size=30&orderby='+order
-		html = openURL(url2)
+		html = openURL(url2,'','','','IFILM-TITLES-2nd')
 		items = re.findall('"Id":(.*?),"Title":(.*?),.+?"ImageAddress_S":"(.*?)"',html,re.DOTALL)
 		for id,title,img in items:
 			title = escapeUNICODE(title)
@@ -91,7 +91,7 @@ def TITLES(url,page):
 			img = website0 + quote(img)
 			addDir(title,link,23,img,order+'01')
 	if type=='Music':
-		html = openURL(website0+'/Music/Index?page='+page)
+		html = openURL(website0+'/Music/Index?page='+page,'','','','IFILM-TITLES-3rd')
 		html_blocks = re.findall('pagination-demo(.*?)pagination-demo',html,re.DOTALL)
 		block = html_blocks[0]
 		items = re.findall('href="(.*?)".*?src="(.*?)".*?<h3>(.*?)</h3>',block,re.DOTALL)
@@ -122,7 +122,7 @@ def EPISODES(url,page):
 	count_items=0
 	#xbmcgui.Dialog().ok(url, type)
 	if type=='Series':
-		html = openURL(url)
+		html = openURL(url,'','','','IFILM-EPISODES-1st')
 		items = re.findall('Comment_panel_Item.*?p>(.*?)<i.+?var inter_ = (.*?);.*?src="(.*?)\'.*?data-url="(.*?)\'',html,re.DOTALL)
 		title = ' - الحلقة '
 		if lang=='en': title = ' - Episode '
@@ -139,7 +139,7 @@ def EPISODES(url,page):
 				addLink(name1,link1,24,img1)
 	if type=='Program':
 		url2 = website0+'/Home/PageingAttachmentItem?id='+str(id)+'&page='+page+'&size=30&orderby=1'
-		html = openURL(url2)
+		html = openURL(url2,'','','','IFILM-EPISODES-2nd')
 		items = re.findall('Episode":(.*?),.*?ImageAddress_S":"(.*?)".*?VideoAddress":"(.*?)".*?Discription":"(.*?)".*?Caption":"(.*?)"',html,re.DOTALL)
 		title = ' - الحلقة '
 		if lang=='en': title = ' - Episode '
@@ -157,7 +157,7 @@ def EPISODES(url,page):
 	if type=='Music':
 		if 'Content' in url and 'category' not in url:
 			url2 = website0+'/Music/GetTracksBy?id='+str(id)+'&page='+page+'&size=30&type=0'
-			html = openURL(url2)
+			html = openURL(url2,'','','','IFILM-EPISODES-3rd')
 			#xbmcgui.Dialog().ok(url2, str(len(html)) )
 			items = re.findall('ImageAddress_S":"(.*?)".*?VoiceAddress":"(.*?)".*?Caption":"(.*?)","Title":"(.*?)"',html,re.DOTALL)
 			for img,link,name,title in items:
@@ -169,7 +169,7 @@ def EPISODES(url,page):
 				name1 = escapeUNICODE(name1)
 				addLink(name1,link1,24,img1)
 		elif 'Clips' in url:
-			html = openURL(website0+'/Music/GetTracksBy?id=0&page='+page+'&size=30&type=15')
+			html = openURL(website0+'/Music/GetTracksBy?id=0&page='+page+'&size=30&type=15','','','','IFILM-EPISODES-4th')
 			items = re.findall('ImageAddress_S":"(.*?)".*?Caption":"(.*?)".*?VideoAddress":"(.*?)"',html,re.DOTALL)
 			for img,title,link in items:
 				count_items += 1
@@ -180,9 +180,9 @@ def EPISODES(url,page):
 				addLink(name1,link1,24,img1)
 		elif 'category' in url:
 			if 'category=6' in url:
-				html = openURL(website0+'/Music/GetTracksBy?id=0&page='+page+'&size=30&type=6')
+				html = openURL(website0+'/Music/GetTracksBy?id=0&page='+page+'&size=30&type=6','','','','IFILM-EPISODES-5th')
 			elif 'category=4' in url:
-				html = openURL(website0+'/Music/GetTracksBy?id=0&page='+page+'&size=30&type=4')
+				html = openURL(website0+'/Music/GetTracksBy?id=0&page='+page+'&size=30&type=4','','','','IFILM-EPISODES-6th')
 			items = re.findall('ImageAddress_S":"(.*?)".*?VoiceAddress":"(.*?)".*?Caption":"(.*?)","Title":"(.*?)"',html,re.DOTALL)
 			for img,link,name,title in items:
 				count_items += 1
@@ -233,7 +233,7 @@ def SEARCH(url):
 def SEARCH_TITLES(url):
 	website0 = SITE(url)
 	lang = LANG(url)
-	html = openURL(url)
+	html = openURL(url,'','','','IFILM-SEARCH_TITLES-1st')
 	items = re.findall('"ImageAddress_S":"(.*?)".*?"CategoryId":(.*?),"Id":(.*?),"Title":(.*?),',html,re.DOTALL)
 	for img,category,id,title in items:
 		if category=='3' or category=='7':
