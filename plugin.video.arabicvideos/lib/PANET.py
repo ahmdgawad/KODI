@@ -3,6 +3,7 @@ from LIBRARY import *
 
 website0a = 'http://www.panet.co.il'
 website0b = 'http://m.panet.co.il'
+headers = { 'User-Agent' : '' }
 script_name = 'PANET'
 
 def MAIN(mode,url):
@@ -29,7 +30,7 @@ def CATEGORIES(url,select=''):
 	type = info[3]
 	#xbmcgui.Dialog().ok(type, url)
 	if type=='series':
-		html = openURL(url,'','','','PANET-CATEGORIES-1st')
+		html = openURL(url,'',headers,'','PANET-CATEGORIES-1st')
 		html_blocks=re.findall('categoriesMenu(.*?)seriesForm',html,re.DOTALL)
 		block= html_blocks[0]
 		items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
@@ -38,7 +39,7 @@ def CATEGORIES(url,select=''):
 			name = name.strip(' ')
 			addDir(name,url,32,icon)
 	if type=='movies':
-		html = openURL(url,'','','','PANET-CATEGORIES-2nd')
+		html = openURL(url,'',headers,'','PANET-CATEGORIES-2nd')
 		if select=='1':
 			html_blocks=re.findall('moviesGender(.*?)select',html,re.DOTALL)
 			block = html_blocks[0]
@@ -56,7 +57,7 @@ def CATEGORIES(url,select=''):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def ITEMS(url):
-	html = openURL(url,'','','','PANET-ITEMS-1st')
+	html = openURL(url,'',headers,'','PANET-ITEMS-1st')
 	type = url.split('/')[3]
 	if 'home' in url: type='episodes'
 	if type=='series':
@@ -114,12 +115,12 @@ def PLAY(url):
 
 	if 'series' in url:
 		url = website0a + '/series/v1/seriesLink/' + url.split('/')[-1]
-		html = openURL(url,'','','','PANET-PLAY-1st')
+		html = openURL(url,'',headers,'','PANET-PLAY-1st')
 		items = re.findall('url":"(.*?)"',html,re.DOTALL)
 		url = items[0]
 		url = url.replace('\/','/')
 	else:
-		html = openURL(url,'','','','PANET-PLAY-2nd')
+		html = openURL(url,'',headers,'','PANET-PLAY-2nd')
 		items = re.findall('contentURL" content="(.*?)"',html,re.DOTALL)
 		url = items[0]
 	PLAY_VIDEO(url,script_name)
@@ -130,7 +131,7 @@ def SEARCH(url):
 	new_search = search.replace(' ','-')
 	type=url.split('/')[-1]
 	data = 'query='+new_search+'&searchDomain='+type
-	html = openURL(website0a+'/search',data,'','','PANET-SEARCH-1st')
+	html = openURL(website0a+'/search',data,headers,'','PANET-SEARCH-1st')
 	#xbmcgui.Dialog().ok(html, new_search)
 	items=re.findall('title":"(.*?)".*?link":"(.*?)"',html,re.DOTALL)
 	for title,link in items:

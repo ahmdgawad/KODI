@@ -22,7 +22,8 @@ def addLink(name,url,mode,iconimage=icon,duration=''):
 	xbmcplugin.setContent(addon_handle, 'videos')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=False)
 
-def openURL(url,data='',headers='',showDialogs='yes',source=''):
+def openURL(url,data='',headers='',showDialogs='',source=''):
+	if showDialogs=='': showDialogs='yes'
 	#headers={ 'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36' }
 	#start = time.time()
 	if data=='' and headers=='': request = urllib2.Request(url)
@@ -194,8 +195,11 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 		data = urllib.urlencode(payload)
 		html = openURL(url,data,'','','LIBRARY-SEND_EMAIL-1st')
 		result = html[0:6]
-		if showDialogs=='yes' and result != 'Error ':
-			xbmcgui.Dialog().ok('Message sent','تم ارسال الرسالة')
+		if showDialogs=='yes':
+			if result == 'Error ':
+				xbmcgui.Dialog().ok('Failed sending the message','خطأ وفشل في ارسال الرسالة')
+			else:
+				xbmcgui.Dialog().ok('Message sent','تم ارسال الرسالة')
 	return html
 
 def dummyClientID():
