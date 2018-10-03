@@ -19,7 +19,6 @@ def MENU():
 	items = re.findall('<a href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	#xbmcgui.Dialog().ok(block,str(items))
 	ignoreLIST = ['مسلسلات انمي']
-	ignoreLIST = []
 	for link,title in items:
 		title = title.strip(' ')
 		if not any(value in title for value in ignoreLIST):
@@ -70,9 +69,6 @@ def PLAY(url):
 	items = re.findall(' = \'(.*?)\'',block,re.DOTALL)
 	artID = items[0]
 	#xbmcgui.Dialog().ok('',artID)
-	count = 0
-	items_url = []
-	items_name = []
 	url = 'https://www.halacima.net/ajax/getVideoPlayer'
 	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
 	items = re.findall('getVideoPlayer\(\'(.*?)\'.*?href.*?server">(.*?)<',block,re.DOTALL)
@@ -89,6 +85,8 @@ def PLAY(url):
 		urlLIST.append(link)
 	urlLIST = set(urlLIST)
 	serversLIST = RESOLVERS.SERVERS(urlLIST)
+	items_url = []
+	items_name = []
 	for i in range(1,len(serversLIST)):
 		if serversLIST[i]!='':
 			items_url.append(serversLIST[i])
@@ -110,7 +108,7 @@ def SEARCH():
 	payload = { 'name' : new_search , 'search' : 'البحث' }
 	data = urllib.urlencode(payload)
 	html = openURL(url,data,headers,'','HALACIMA-SEARCH-1st')
-	if 'art_list' in html: ITEMS(url,html)
+	if 'art_list' in html: ITEMS('',html)
 	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 
 

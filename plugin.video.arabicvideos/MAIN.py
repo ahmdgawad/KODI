@@ -10,6 +10,7 @@ def MAIN():
 	website8 = 'موقع هلا سيما'
 	website1 = 'موقع كل العرب'
 	website3 = 'موقع بانيت'
+	website9 = 'موقع فور هلال'
 	website0a = '========================='
 	website0d = 'ـMessage to developer       رسالة الى المبرمج'
 	website0g = 'ـProblems & Solutions       مشاكل وحلول'
@@ -22,6 +23,7 @@ def MAIN():
 	addDir(website1,'',10)
 	addDir(website3,'',30)
 	addDir(website8,'',80)
+	addDir(website9,'',90)
 	addDir(website0a,'',9999)
 	addDir(website0d,'',2)
 	addDir(website0g,'',1000)
@@ -71,6 +73,7 @@ elif mode>=50 and mode<=59: from lib.SHOOFMAX import MAIN ; MAIN(mode,url)
 elif mode>=60 and mode<=69: from lib.ALFATIMI import MAIN ; MAIN(mode,url,category)
 elif mode>=70 and mode<=79: from lib.AKOAM import MAIN ; MAIN(mode,url)
 elif mode>=80 and mode<=89: from lib.HALACIMA import MAIN ; MAIN(mode,url)
+elif mode>=90 and mode<=99: from lib._4HELAL import MAIN ; MAIN(mode,url)
 
 elif mode>=0 and mode<=9: from lib.PROGRAM import MAIN ; MAIN(mode,text)
 elif mode>=1000 and mode<=1009: from lib.PROBLEMS import MAIN ; MAIN(mode)
