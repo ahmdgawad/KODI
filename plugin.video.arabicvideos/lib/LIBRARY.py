@@ -169,7 +169,7 @@ def PLAY_VIDEO(url,label):
 	#xbmcgui.Dialog().ok('start',url)
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	url2 = 'http://www.google-analytics.com/collect?v=1&tid=UA-126658243-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
+	url2 = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
 	openURL(url2,'','','no','LIBRARY-PLAY_VIDEO-1st')
 
 def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):

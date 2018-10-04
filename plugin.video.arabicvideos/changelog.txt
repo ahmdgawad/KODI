@@ -43,4 +43,9 @@ v2.0.0
 Added new website "4Helal"
 
 
+v2.1.0
+Added Search to "ShoofMax"
+Changed "Analytics" Number
+
+
 
