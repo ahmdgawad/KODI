@@ -110,9 +110,6 @@ def ITEMS(url):
 
 def PLAY(url):
 	#xbmcgui.Dialog().ok(url,'')
-	#url = url.replace(website0a,website0b)
-	#xbmcgui.Dialog().ok(url, url)
-
 	if 'series' in url:
 		url = website0a + '/series/v1/seriesLink/' + url.split('/')[-1]
 		html = openURL(url,'',headers,'','PANET-PLAY-1st')

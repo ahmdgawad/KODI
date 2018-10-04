@@ -2,19 +2,23 @@
 from lib.LIBRARY import *
 
 def MAIN():
-	website4 = 'موقع قناة المعارف'
-	website6 = 'موقع المنبر الفاطمي'
-	website2 = 'موقع قناة اي فيلم'
-	website7 = 'موقع اكوام'
-	website5 = 'موقع شوف ماكس'
-	website8 = 'موقع هلا سيما'
-	website1 = 'موقع كل العرب'
-	website3 = 'موقع بانيت'
-	website9 = 'موقع فور هلال'
+	website4 = 'موقع قناة المعارف' + '   .9'
+	website6 = 'موقع المنبر الفاطمي' + '   .8'
+	website2 = 'موقع قناة اي فيلم' + '   .7'
+	website7 = 'موقع اكوام' + '   .6'
+	website5 = 'موقع شوف ماكس' + '   .5'
+	website1 = 'موقع كل العرب' + '   .4'
+	website3 = 'موقع بانيت' + '   .3'
+	website8 = 'موقع هلا سيما' + '   .2'
+	website9 = 'موقع فور هلال' + '   .1'
 	website0a = '========================='
-	website0d = 'ـMessage to developer       رسالة الى المبرمج'
-	website0g = 'ـProblems & Solutions       مشاكل وحلول'
+	website0g = 'ـProblems & Solutions    مشاكل وحلول' + '   .11'
+	website0d = 'ـMessage to developer    رسالة الى المبرمج' + '   .10'
 	website0e = 'Testing'
+	#addLink(website0e,'',9)
+	addDir(website0g,'',1000)
+	addDir(website0d,'',2)
+	#addDir(website0a,'',9999)
 	addDir(website4,'',40)
 	addDir(website6,'',60)
 	addDir(website2,'',20)
@@ -24,10 +28,6 @@ def MAIN():
 	addDir(website3,'',30)
 	addDir(website8,'',80)
 	addDir(website9,'',90)
-	addDir(website0a,'',9999)
-	addDir(website0d,'',2)
-	addDir(website0g,'',1000)
-	#addLink(website0e,'',9)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def get_params():

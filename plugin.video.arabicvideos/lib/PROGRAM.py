@@ -64,14 +64,11 @@ def MAIN(mode,text=''):
 		return
 
 	elif mode==9:
-		#idCode = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
-		#var1 = KEYBOARD()
-		#var2 = ''
-		#xbmcgui.Dialog().ok(var2,var1)
-		#html = openURL('http://emademad.com/testtest.html','','','','PROGRAM-MAIN-1st')
-		#xbmcgui.Dialog().ok(var1,var2)
-		url = ''
-		PLAY_VIDEO(url,script_name)
+		#html = openURL('http://thevideo.me/embed-w8svy75ojdvo.html','','','','PROGRAM-MAIN-1st')
+		var1 = dummyClientID()
+		xbmcgui.Dialog().ok(var1,'')
+		#url = ''
+		#PLAY_VIDEO(url,script_name)
 		#scriptNAME = os.path.basename(__file__).split('.')[0]
 		#xbmcgui.Dialog().ok(scriptNAME,'')
 		#url = ''

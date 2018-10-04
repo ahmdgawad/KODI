@@ -204,16 +204,17 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 
 def dummyClientID():
 	hostName = xbmc.getInfoLabel( "System.FriendlyName" )
-	ipAddress = xbmc.getInfoLabel( "Network.IPAddress" )
+	#ipAddress = xbmc.getInfoLabel( "Network.IPAddress" )
 	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
 	xbmc.sleep(600)
 	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
 	osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
-	resultNumber = 1
-	idComponents = hostName + ipAddress + macAddress + osVersion
+	#idComponents = hostName + ipAddress + macAddress + osVersion
+	idComponents = hostName + macAddress + osVersion
 	length = len(idComponents)
 	if length < 11: step = 1
 	else: step = int(length/11)
+	resultNumber = 1
 	for i in range(0,length,step): resultNumber *= ord(idComponents[i])
 	resultText = str(resultNumber)
 	result = resultText[0:16]

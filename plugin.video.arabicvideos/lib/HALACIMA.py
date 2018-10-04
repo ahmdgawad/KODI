@@ -2,7 +2,7 @@
 from LIBRARY import *
 import RESOLVERS
 
-website0a = 'http://halacima.net'
+website0a = 'https://www.halacima.net'
 script_name='HALACIMA'
 
 def MAIN(mode,url):
@@ -69,7 +69,7 @@ def PLAY(url):
 	items = re.findall(' = \'(.*?)\'',block,re.DOTALL)
 	artID = items[0]
 	#xbmcgui.Dialog().ok('',artID)
-	url = 'https://www.halacima.net/ajax/getVideoPlayer'
+	url = website0a + '/ajax/getVideoPlayer'
 	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
 	items = re.findall('getVideoPlayer\(\'(.*?)\'.*?href.*?server">(.*?)<',block,re.DOTALL)
 	#xbmcgui.Dialog().ok(str(len(items)),'')
@@ -101,11 +101,10 @@ def PLAY(url):
 def SEARCH():
 	search = KEYBOARD()
 	if search == '': return
-	new_search = search.replace(' ','%20')
-	#xbmcgui.Dialog().ok(str(len(search)) , str(len(new_search)) )
-	url = 'https://www.halacima.net/search.html'
+	#search = search.replace(' ','+')
+	url = website0a + '/search.html'
 	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
-	payload = { 'name' : new_search , 'search' : 'البحث' }
+	payload = { 'name' : search , 'search' : 'البحث' }
 	data = urllib.urlencode(payload)
 	html = openURL(url,data,headers,'','HALACIMA-SEARCH-1st')
 	if 'art_list' in html: ITEMS('',html)

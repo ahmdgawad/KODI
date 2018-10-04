@@ -22,6 +22,10 @@ def SERVERS(urlLIST):
 		elif 'intoupload' 	in url 	and serverLIST[12]=='': serverLIST[12] = url
 		elif 'estream'	 	in url 	and serverLIST[13]=='': serverLIST[13] = url
 		elif 'vev.io'	 	in url 	and serverLIST[14]=='': serverLIST[14] = url
+		elif 'youtu'	 	in url 	and serverLIST[15]=='': serverLIST[15] = url
+		elif 'catch.is'	 	in url 	and serverLIST[16]=='': serverLIST[16] = url
+		elif 'load.is'	 	in url 	and serverLIST[17]=='': serverLIST[17] = url
+		elif 'golink'	 	in url 	and serverLIST[18]=='': serverLIST[18] = url
 
 		elif 'vidbom' 		in url 	and serverLIST[101]=='': serverLIST[101] = url
 		elif 'rapidvideo' 	in url 	and serverLIST[102]=='': serverLIST[102] = url
@@ -37,6 +41,10 @@ def SERVERS(urlLIST):
 		elif 'intoupload' 	in url 	and serverLIST[112]=='': serverLIST[112] = url
 		elif 'estream'	 	in url 	and serverLIST[113]=='': serverLIST[113] = url
 		elif 'vev.io'	 	in url 	and serverLIST[114]=='': serverLIST[114] = url
+		elif 'youtu'	 	in url 	and serverLIST[115]=='': serverLIST[115] = url
+		elif 'catch.is'	 	in url 	and serverLIST[116]=='': serverLIST[116] = url
+		elif 'load.is'	 	in url 	and serverLIST[117]=='': serverLIST[117] = url
+		elif 'golink'	 	in url 	and serverLIST[118]=='': serverLIST[118] = url
 
 		elif 'vidbom' 		in url 	and serverLIST[201]=='': serverLIST[201] = url
 		elif 'rapidvideo' 	in url 	and serverLIST[202]=='': serverLIST[202] = url
@@ -52,6 +60,10 @@ def SERVERS(urlLIST):
 		elif 'intoupload' 	in url 	and serverLIST[212]=='': serverLIST[212] = url
 		elif 'estream'	 	in url 	and serverLIST[213]=='': serverLIST[213] = url
 		elif 'vev.io'	 	in url 	and serverLIST[214]=='': serverLIST[214] = url
+		elif 'youtu'	 	in url 	and serverLIST[215]=='': serverLIST[215] = url
+		elif 'catch.is'	 	in url 	and serverLIST[216]=='': serverLIST[216] = url
+		elif 'load.is'	 	in url 	and serverLIST[217]=='': serverLIST[217] = url
+		elif 'golink'	 	in url 	and serverLIST[218]=='': serverLIST[218] = url
 	return serverLIST
 
 def VIDEO_URL(url):
@@ -70,6 +82,10 @@ def VIDEO_URL(url):
 	elif 'intoupload' 	in url: videoURL = INTOUPLOAD(url)
 	elif 'estream'	 	in url: videoURL = ESTREAM(url)
 	elif 'vev.io'	 	in url: videoURL = VEVIO(url)
+	elif 'youtu'	 	in url: videoURL = YOUTUBE(url)
+	elif 'catch.is'	 	in url: videoURL = CATCH(url)
+	elif 'load.is'	 	in url: videoURL = LOAD(url)
+	elif 'golink'	 	in url: videoURL = GOLINK(url)
 	return videoURL
 
 def VIDBOM(url):
@@ -104,7 +120,7 @@ def UQLOAD(url):
 
 def VCSTREAM(url):
 	id = url.split('/')[-2]
-	url = 'http://vcstream.to/player?fid=' + id
+	url = 'https://vcstream.to/player?fid=' + id
 	headers = { 'User-Agent' : '' }
 	html = openURL(url,'',headers,'','RESOLVERS-VCSTREAM-1st')
 	html = html.replace('\\','')
@@ -190,6 +206,39 @@ def VEVIO(url):
 	#xbmcgui.Dialog().ok(url,html)
 	items = re.findall('http(.*?)"',html,re.DOTALL)
 	return 'http'+items[0]
+
+def YOUTUBE(url):
+	id = url.split('/')[-1]
+	youtubeID = id.split('?')[0]
+	url = 'plugin://plugin.video.youtube/play/?video_id='+youtubeID
+	return url
+
+def CATCH(url):
+	id = url.split('/')[-1]
+	payload = { 'op' : 'download2' , 'id' : id }
+	headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
+	data = urllib.urlencode(payload)
+	html = openURL(url,data,headers,'','RESOLVERS-CATCH-1st')
+	items = re.findall('direct_link.*?href="(.*?)"',html,re.DOTALL)
+	return items[0]
+
+def LOAD(url):
+	id = url.split('/')[-1]
+	url = 'http://load.is/link/read?hash=' + id
+	html = openURL(url,'','','','RESOLVERS-LOAD-1st')
+	items = re.findall('route":"(.*?)"',html,re.DOTALL)
+	url = items[0].replace('\/','/')
+	#xbmcgui.Dialog().ok('load.is',str(url))
+	return url
+
+def GOLINK(url):
+	id = url.split('/')[-1]
+	url = 'http://golink.to/link/read?hash=' + id
+	html = openURL(url,'','','','RESOLVERS-GOLINK-1st')
+	items = re.findall('route":"(.*?)"',html,re.DOTALL)
+	url = items[0].replace('\/','/')
+	#xbmcgui.Dialog().ok('load.is',str(url))
+	return url
 
 
 

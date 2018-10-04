@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
+import RESOLVERS
 
-website0a = 'http://akoam.net'
+website0a = 'https://akoam.net'
 headers = { 'User-Agent' : '' }
 script_name='AKOAM'
 
@@ -55,7 +56,7 @@ def TITLES(url):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def EPISODES(url):
-	notvideosLIST = ['zip','rar','txt','pdf','htm','tar','iso']
+	notvideosLIST = ['zip','rar','txt','pdf','htm','tar','iso','html']
 	html = openURL(url,'',headers,'','AKOAM-EPISODES-1st')
 	image = re.findall('class="main_img".*?src="(.*?)"',html,re.DOTALL)
 	img = image[0]
@@ -68,11 +69,12 @@ def EPISODES(url):
 		xbmcplugin.endOfDirectory(addon_handle)
 		return	
 	block = html_blocks[0]
-	items = re.findall('sub_epsiode_title">(.*?)</h2>.*?sub_file_title\'>(.*?)</span.*?href=\'(.*?)\'>',block,re.DOTALL)
+	items = re.findall('sub_epsiode_title">(.*?)</h2>.*?sub_file_title\'>(.*?) - <i>.*?href=\'(.*?)\'>',block,re.DOTALL)
 	if items:
 		for title,file,link in items:
+			filetype = file.split('.')[-1]
 			title = name + ' - ' + title.replace('\n','')
-			if any(value in file for value in notvideosLIST):
+			if any(value in filetype for value in notvideosLIST):
 				title = 'الرابط ليس فيديو'
 				addLink(title,link,9999,img)
 			else:
@@ -80,9 +82,10 @@ def EPISODES(url):
 	else:
 		title = 'رابط التشغيل'
 		#title = name
-		items = re.findall('sub_file_title\'>(.*?)</span>.*?href=\'(.*?)\'>',block,re.DOTALL)
+		items = re.findall('sub_file_title\'>(.*?) - <i>.*?href=\'(.*?)\'>',block,re.DOTALL)
 		for file,link in items:
-			if any(value in file for value in notvideosLIST):
+			filetype = file.split('.')[-1]
+			if any(value in filetype for value in notvideosLIST):
 				title = 'الرابط ليس فيديو'
 				addLink(title,link,9999,img)
 			else:
@@ -94,22 +97,13 @@ def EPISODES(url):
 
 def PLAY(url):
 	id = url.split('/')[-1]
-	url = 'http://load.is/link/read?hash=' + id
-	html = openURL(url,'','','','AKOAM-PLAY-1st')
-	items = re.findall('route":"(.*?)"',html,re.DOTALL)
-	url = items[0].replace('\/','/')
+	url = 'http://load.is/' + id
+	url = RESOLVERS.VIDEO_URL(url)
 	if 'catch.is' in url:
-		#xbmcgui.Dialog().ok('catch.is',str(headers))
 		id = url.split('%2F')[-1]
 		url = 'http://catch.is/'+id
-		payload = { 'op' : 'download2' , 'id' : id }
-		headers['Content-Type'] = 'application/x-www-form-urlencoded'
-		data = urllib.urlencode(payload)
-		html = openURL(url,data,headers,'','AKOAM-PLAY-2nd')
-		items = re.findall('direct_link.*?href="(.*?)"',html,re.DOTALL)
-		url = items[0]
+		url = RESOLVERS.VIDEO_URL(url)
 	else:
-		#xbmcgui.Dialog().ok('load.is',str(headers))
 		headers['X-Requested-With'] = 'XMLHttpRequest'
 		headers['Referer'] = url
 		html = openURL(url,'',headers,'','AKOAM-PLAY-3rd')

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
-website0a = 'http://vod.alarab.com'
-website0b = 'http://tv1.alarab.com'
+website0a = 'https://vod.alarab.com'
+website0b = 'https://vod.alarab.com/view-1/افلام-عربية'
 website0c = 'http://tv.alarab.com'
-website0d = 'http://vod.alarab.com/view-1/افلام-عربية'
+website0d = 'http://tv1.alarab.com'
 website0e = 'http://vod.alarab.com/index.php'
 script_name = 'ALARAB'
 
@@ -19,18 +19,17 @@ def MAIN(mode,url):
 def MENU():
 	addDir('بحث في الموقع',website0a,13,icon)
 	addDir('مسلسلات جديدة',website0a,14,icon)
-	html = openURL(website0d,'','','','ALARAB-MENU-1st')
+	html = openURL(website0b,'','','','ALARAB-MENU-1st')
 	html_blocks=re.findall('footer_sec(.*?)social-network',html,re.DOTALL)
 	block=html_blocks[0]
 	#xbmcgui.Dialog().ok(str(len(html)), str(len(block)) )
 	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	for url,name in items:
-		#url = url.replace(website0b,website0a)
 		addDir(name,url,11,icon)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def LATEST():
-	html = openURL(website0d,'','','','ALARAB-LATEST-1st')
+	html = openURL(website0b,'','','','ALARAB-LATEST-1st')
 	html_blocks=re.findall('right_content.*?heading-top(.*?)heading-top',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
@@ -58,25 +57,11 @@ def ITEMS(url):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
-	#url = url.replace('http:','https:')
 	id = re.findall('com/v(.*?)-',url,re.DOTALL)[0]
-	url2 = 'http://alarabplayers.alarab.com/?vid='+id
+	url2 = 'https://alarabplayers.alarab.com/?vid='+id
 	html = openURL(url,'','','','ALARAB-PLAY-1st')
 	html += openURL(url2,'','','','ALARAB-PLAY-2nd')
 	#xbmcgui.Dialog().ok(url,'')
-	#progress = xbmcgui.DialogProgress()
-	#progress.create('Opening website')
-	#progress.update(25,'Finding videos')
-	#progress.update(50,'','Getting Links')
-	#progress.update(75,'','','Playing now')
-	#progress.close()
-	#xbmcgui.Dialog().ok('Finding videos', url)
-	#xbmcgui.Dialog().notification('Finding videos','')
-	#file = open('/data/emad.html', 'w')
-	#file.write(url)
-	#file.write('\n\n\n')
-	#file.write(html)
-	#file.close()
 	html_blocks = re.findall('playerInstance.setup(.*?)primary',html,re.DOTALL)
 	block = html_blocks[0]
 	try: block += html_blocks[1]

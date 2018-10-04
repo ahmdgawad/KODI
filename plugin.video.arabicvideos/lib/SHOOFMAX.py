@@ -3,7 +3,7 @@ from LIBRARY import *
 import urllib
 import requests
 
-website0a = 'http://shoofmax.com'
+website0a = 'https://www.shoofmax.com'
 website0b = 'https://static.shoofmax.com'
 website0c = 'https://shoofmax.com'
 script_name = 'SHOOFMAX'
@@ -120,46 +120,70 @@ def SEARCH():
 	if search == '': return
 	new_search = search.replace(' ','%20')
 
-	html = openURL(website0c,'','','','SHOOFMAX-SEARCH-1st')
+	#xbmcgui.Dialog().ok('1st','' )
+	html = openURL(website0a,'','','','SHOOFMAX-SEARCH-1st')
 	block = re.findall('name="_csrf" value="(.*?)">',html,re.DOTALL)
 	csrf = block[0]
+	#xbmcgui.Dialog().ok('csrf',csrf )
+	#url = website0c + '/search'
+	#headers = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36' , 'Content-Type': 'application/x-www-form-urlencoded' , 'cookie': "Cookie:session=M1OVdmuuF-Z_-fBksMKbLA.8g09huC1ZlrvkOKk1JAR7n4ZA9hzZ_8kEdILV5s1kSRw7iSkZXXWtxqMHwyfzTXEWZFAF2k50CyayaW73h-JFH3bYFS9MD5ErAXDx3jgPCs.1538632348795.86400000.HBZ7kGD-s_BJ9Hif_nNw5BCZ6rvJFfgCmP1O8LQXfUs; ybjng=" }
+	#payload = { '_csrf' : 'QfYvyNyr-IchGQH-GRFgri9MZsFSg-nxOcDs' , 'q' : 'خفة يد' }
+	#payload = "_csrf=QfYvyNyr-IchGQH-GRFgri9MZsFSg-nxOcDs&q=خفة"
 
-	url = website0c + '/search'
-	url = "https://shoofmax.com/search"
-
-	#headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
-	#payload = { '_csrf' : 'test' , '_csrf' : csrf }
-
-	payload = '_csrf=' + csrf
+	import requests
+	url = website0a + "/search"
+	payload = { "_csrf":csrf , "q":"خفة" }
+	headers = { 'content-type': 'application/x-www-form-urlencoded' , 'cookie': "session=M1OVdmuuF-Z_-fBksMKbLA.8g09huC1ZlrvkOKk1JAR7n4ZA9hzZ_8kEdILV5s1kSRw7iSkZXXWtxqMHwyfzTXEWZFAF2k50CyayaW73h-JFH3bYFS9MD5ErAXDx3jgPCs.1538632348795.86400000.HBZ7kGD-s_BJ9Hif_nNw5BCZ6rvJFfgCmP1O8LQXfUs; ybjng=" }
+	response = requests.request("POST", url, data=payload, headers=headers)
+	html = response.text
+	
+	
+	#payload = '_csrf=' + csrf
 	#payload = 'q=test&_csrf=' + csrf
 	#headers = { 'content-type': 'application/x-www-form-urlencoded' }
-	headers = {
-	    'origin': "https://shoofmax.com",
-	    'upgrade-insecure-requests': "1",
-	    'dnt': "1",
-	    'content-type': "application/x-www-form-urlencoded",
-	    'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
-	    'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-	    'referer': "https://shoofmax.com/",
-	    'accept-encoding': "gzip, deflate, br",
-	    'accept-language': "en-US,en;q=0.9,ar;q=0.8",
-	    'cookie': "session=5ak_HSvwBq8_3vj0BugdPQ.GG6OU4k90qNPndLi51oyyAwzgJPiEIMxh8KJ7Bp39WT1_bOIrguhyyHQRX7psG6hY5l1YP1A2F4KB7DxwABdyp1g_r0JQBhCrB6xZtFDy80.1537480566514.86400000.eQdjvbMrOIYBLzTjXhPCNicnOc3UNBAYpEspiue7a4g; ybjg="
-	    }
+	#headers = {
+	#    'origin': "https://shoofmax.com",
+	#    'upgrade-insecure-requests': "1",
+	#    'dnt': "1",
+	#    'content-type': "application/x-www-form-urlencoded",
+	#    'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
+	#    'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+	#    'referer': "https://shoofmax.com/",
+	#    'accept-encoding': "gzip, deflate, br",
+	#    'accept-language': "en-US,en;q=0.9,ar;q=0.8",
+	#    'cookie': "Cookie:session=M1OVdmuuF-Z_-fBksMKbLA.8g09huC1ZlrvkOKk1JAR7n4ZA9hzZ_8kEdILV5s1kSRw7iSkZXXWtxqMHwyfzTXEWZFAF2k50CyayaW73h-JFH3bYFS9MD5ErAXDx3jgPCs.1538632348795.86400000.HBZ7kGD-s_BJ9Hif_nNw5BCZ6rvJFfgCmP1O8LQXfUs; ybjng="
+    #	}
 	#html = requests.request("POST", url, data=payload, headers=headers)
 
-	payload = "{ '_csrf='"+ csrf+" }"
-	data = urllib.urlencode(payload)
-	html = openURL(url,data,headers,'','SHOOFMAX-SEARCH-2nd')
+	#payload = "{ '_csrf='"+ csrf+" }"
+
+	#data = urllib.urlencode(payload)
+
+	#xbmcgui.Dialog().ok('2nd','' )
+	#html = openURL(url,data,headers,'','SHOOFMAX-SEARCH-2nd')
+	#xbmcgui.Dialog().ok('3rd','' )
 
 	#headers = { "content-type": "application/x-www-form-urlencoded" }
 	#payload = '{ _csrf :'+ csrf +'}'
 	#html = requests.post(url, data=payload, headers=headers, auth='')
 
-	xbmcgui.Dialog().ok(str(url),str(html))
+	#xbmcgui.Dialog().ok(str(url),str(html))
 
-	html_blocks = re.findall('general-body(.*?)search-bottom-padding',html,re.DOTALL)
+	
+	
+	file = open('s:/emad.html', 'w')
+	file.write(html)
+	file.write('\n\n\n')
+	file.close()
+
+
+
+
+	html_blocks = re.findall('class="row(.*?)class="search',html,re.DOTALL)
+	#xbmcgui.Dialog().ok('1st',html)
 	block = html_blocks[0]
 	items = re.findall('href="(.*?)".*?background-image: url\((.*?)\).*?<span>(.*?)</span>',block,re.DOTALL)
+	xbmcgui.Dialog().ok('2nd','')
 	for link,img,title in items:
 		title = title.replace('\n','')
 		link = website0a + link

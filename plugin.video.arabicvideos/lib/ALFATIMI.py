@@ -13,7 +13,7 @@ def MAIN(mode,url,category):
 
 def MENU():
 	name = 'بحث في الموقع'
-	addDir(name,website0a,64,icon)
+	addDir(name,'',64,icon)
 	name = '[[ افلام ومسلسلات ]]'
 	addDir(name,website0a,61,icon,'',-1)
 	name = '[[ اخرى ]]'

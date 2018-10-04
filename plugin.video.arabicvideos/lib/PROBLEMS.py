@@ -3,16 +3,16 @@ from LIBRARY import *
 
 def MAIN(mode):
         if mode==1000:
-        	website0a = 'Problem:   Can\'t see Arabic Text'
-        	website0b = 'في موقع كل العرب - الفيديو لا يعمل   :مشكلة'
-        	website0c = 'بعض الروابط لا تعمل   :مشكلة'
-        	website0d = 'لا توجد مواقع مخصصة للافلام والمسلسلات الاجنبية   :مشكلة'
-        	website0e = 'بعض الروابط بطيئة   :مشكلة'
-        	addDir(website0a,'',1001)
-       		addDir(website0b,'',1002)
-        	addDir(website0c,'',1003)
-        	addDir(website0d,'',1004)
-        	addDir(website0e,'',1005)
+        	title0a = 'Problem:   Can\'t see Arabic Text'
+        	title0b = 'في موقع كل العرب - الفيديو لا يعمل   :مشكلة'
+        	title0c = 'بعض الروابط لا تعمل   :مشكلة'
+        	title0d = 'لا توجد مواقع مخصصة للافلام والمسلسلات الاجنبية   :مشكلة'
+        	title0e = 'بعض الروابط بطيئة   :مشكلة'
+        	addDir(title0a,'',1001)
+       		addDir(title0b,'',1002)
+        	addDir(title0c,'',1003)
+        	addDir(title0d,'',1004)
+        	addDir(title0e,'',1005)
         	xbmcplugin.endOfDirectory(addon_handle)
 
 	elif mode==1001:

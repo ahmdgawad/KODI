@@ -2,7 +2,7 @@
 from LIBRARY import *
 import RESOLVERS
 
-website0a = 'http://www.4helal.tv'
+website0a = 'https://www.4helal.tv'
 script_name='4HELAL'
 headers = { 'User-Agent' : '' }
 
@@ -17,10 +17,12 @@ def MENU():
 	html = openURL(website0a,'',headers,'','4HELAL-MENU-1st')
 	html_blocks = re.findall('mainmenu(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
+	html_blocks = re.findall('class="f-cats(.*?)div',html,re.DOTALL)
+	block += html_blocks[0]
 	items = re.findall('<li><a href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	#xbmcgui.Dialog().ok(block,str(items))
-	ignoreLIST = ['مسلسلات انمي']
 	ignoreLIST = []
+	ignoreLIST = ['مسلسلات انمي','افلام للكبار فقط']
 	for link,title in items:
 		title = title.strip(' ')
 		if not any(value in title for value in ignoreLIST):
@@ -32,21 +34,11 @@ def ITEMS(url,html=''):
 	html_blocks = re.findall('movies-items(.*?)class="clear',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('background-image:url\((.*?)\).*?href="(.*?)".*?movie-title">(.*?)<',block,re.DOTALL)
-	allTitles = []
 	for img,link,title in items:
-		#title = title.replace('\n','')
-		#title = title.strip(' ')
-		if 'الحلقة' in title and '/c/' not in url:
-			episode = re.findall(' الحلقة [0-9]*',title,re.DOTALL)
-			if episode:
-				title = title.replace(episode[0],'')
-		#title = unescapeHTML(title)
-		if title not in allTitles:
-			allTitles.append(title)
-			if '/video/' in link:
-				addLink(title,link,92,img)
-			else:
-				addDir(title,link,91,img)
+		if '/video/' in link:
+			addLink(title,link,92,img)
+		else:
+			addDir(title,link,91,img)
 	html_blocks = re.findall('pagination(.*?)</div>',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]
@@ -61,10 +53,11 @@ def PLAY(url):
 	urlLIST = []
 	html = openURL(url,'',headers,'','4HELAL-PLAY-1st')
 	html_blocks = re.findall('links-panel(.*?)div',html,re.DOTALL)
-	block = html_blocks[0]
-	items = re.findall('href="(.*?)"',block,re.DOTALL)
-	for link in items:
-		urlLIST.append(link)
+	if html_blocks:
+		block = html_blocks[0]
+		items = re.findall('href="(.*?)"',block,re.DOTALL)
+		for link in items:
+			urlLIST.append(link)
 	html_blocks = re.findall('nav-tabs(.*?)video-panel-more',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('ajax-file-id.*?value="(.*?)"',block,re.DOTALL)
@@ -72,7 +65,7 @@ def PLAY(url):
 	#xbmcgui.Dialog().ok('',id)
 	items = re.findall('data-server="(.*?)".*?false;">(.*?)<',block,re.DOTALL)
 	for link,title in items:
-		url = 'http://www.4helal.tv/ajax.php?id='+id+'&ajax=true&server='+link
+		url = website0a + '/ajax.php?id='+id+'&ajax=true&server='+link
 		link = openURL(url,'',headers,'','4HELAL-PLAY-2nd')
 		urlLIST.append(link)
 	urlLIST = set(urlLIST)
@@ -93,11 +86,10 @@ def PLAY(url):
 def SEARCH():
 	search = KEYBOARD()
 	if search == '': return
-	new_search = search.replace(' ','%20')
-	#xbmcgui.Dialog().ok(str(len(search)) , str(len(new_search)) )
-	url = 'https://www.4helal.tv/search.php'
+	#search = search.replace(' ','+')
+	url = website0a + '/search.php'
 	headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
-	payload = { 't' : new_search }
+	payload = { 't' : search }
 	data = urllib.urlencode(payload)
 	html = openURL(url,data,headers,'','4HELAL-SEARCH-1st')
 	if 'movies-items' in html: ITEMS('',html)
