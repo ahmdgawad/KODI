@@ -53,11 +53,13 @@ Husham website that take care of internet videos issues
 <h2>3. &nbsp; skin.metropolisEMAD</h2>
 My own mod of the Metropolis skin focused on list view
 <br />
+جلد خاص بكودي يوفر سهولة لاستخدام الريموت كونترول
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>4. &nbsp; skin.phenomenalEMAD</h2>
 My own mod of the Phenomenal skin focused on list view
 <br />
+جلد خاص بكودي يوفر سهولة لاستخدام الريموت كونترول<br />
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>5. &nbsp; resource.images.moviegenreicons.metropolisEMAD</h2>
