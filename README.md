@@ -33,7 +33,7 @@ Husham website that take care of internet videos issues
 <br />
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<h2>2. &nbsp; Arabic Videos Plugin &nbsp; &nbsp; &nbsp; ( plugin.video.arabicvideos )</h2>
+<h2>2. &nbsp; Arabic Videos For Kodi Plugin &nbsp; &nbsp; &nbsp; ( plugin.video.arabicvideos )</h2>
 اضافة جديدة الى كودي تسمح باستخدام المواقع المكتوبة ادناه:
 <br />
 New video plugin for KODI that provide Arabic video contents from the following websites:
