@@ -42,13 +42,6 @@ The following links teach how to download and install this addon using Kodi
 <a href="http://www.youtube.com/watch?v=0fDi_7l_1Yw">3. &nbsp; مقطع يوتيوب يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي باللغة العربية - شكرا للاخ هشام</a><br />
 <a href="http://www.youtube.com/watch?v=_w58WScaObk">4. &nbsp; مقطع يوتيوب يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي باللغة الانكليزية - شكرا للاخ هشام</a><br />
 <br />
-<br />
-موقع الاخ هشام الذي يهتم بجميع امور الفيديو عن طريق الانترنيت
-<br />
-Husham website that take care of internet videos issues
-<br />
-<a href="http://www.husham.com">http://www.husham.com</a><br />
-<br />
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>3. &nbsp; skin.metropolisEMAD</h2>
