@@ -5,7 +5,8 @@
 These addons modified to suit my personal needs
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<h2>1. &nbsp; Arabic Videos For Kodi Plugin &nbsp; &nbsp; &nbsp; ( plugin.video.arabicvideos )</h2>
+<h2>1. &nbsp; Arabic Videos For Kodi Plugin<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(plugin.video.arabicvideos )</h2>
 اضافة جديدة الى كودي تسمح باستخدام المواقع المكتوبة ادناه:
 <br />
 New video plugin for KODI that provide Arabic video contents from the following websites:
@@ -37,10 +38,11 @@ Download and install these two files using Kodi Addons installer:
 The following links teach how to download and install this addon using Kodi
 <br />
 <br />
-<a href="http://www.kodiarabic.net/2015/09/kodi_22.html">1. &nbsp; صفحة تبين بالصور كيفية تنصيب برنامج كودي على الاندرويد في حال عدم وجوده سابقا</a><br />
-<a href="http://www.husham.com/new-2018-arabic-videos-kodi-addon">2. &nbsp; صفحة توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا للاخ هشام</a><br />
-<a href="http://www.youtube.com/watch?v=0fDi_7l_1Yw">3. &nbsp; مقطع يوتيوب يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي باللغة العربية - شكرا للاخ هشام</a><br />
-<a href="http://www.youtube.com/watch?v=_w58WScaObk">4. &nbsp; مقطع يوتيوب يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي باللغة الانكليزية - شكرا للاخ هشام</a><br />
+<a href="http://www.kodiarabic.net/2015/09/kodi_22.html">1. &nbsp; صفحة باللغة العربية تبين بالصور كيفية تنصيب برنامج كودي على الاندرويد في حال عدم وجوده سابقا</a><br /><br />
+<a href="http://www.kodiarabic.net/2018/10/arabic-video-kodi.html">2. &nbsp; صفحة باللغة العربية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا لموقع كودي العربي</a><br /><br />
+<a href="http://www.youtube.com/watch?v=0fDi_7l_1Yw">3. &nbsp; مقطع يوتيوب باللغة العربية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a><br /><br />
+<a href="http://www.husham.com/new-2018-arabic-videos-kodi-addon">4. &nbsp; صفحة باللغة الانكليزية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا للاخ هشام</a><br /><br />
+<a href="http://www.youtube.com/watch?v=_w58WScaObk">5. &nbsp; مقطع يوتيوب باللغة الانكليزية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a><br />
 <br />
 <p>&nbsp;</p>
 <p>&nbsp;</p>
