@@ -13,13 +13,12 @@ def MAIN(mode,url,category):
 	elif mode==45: TITLES(url,1)
 	elif mode==46: TITLES(url,2)
 	elif mode==47: TITLES(url,3)
+	elif mode==48: PROGRAMS()
 
 def MENU():
-	name = 'بحث في الموقع'
-	addDir(name,website0a,41,icon)
+	addDir('بحث في الموقع','',41,icon)
+	addDir('برامج القناة','',48,icon)
 	html = openURL(website0a,'','','','ALMAAREF-MENU-1st')
-	##name = re.findall('main-content.*?<h2><a href=".*?">(.*?)</a></h2>',html,re.DOTALL)[0]
-	##addDir(name,website0a,45,icon)
 	items = re.findall('<h2><a href="(.*?)">(.*?)</a></h2>',html,re.DOTALL)
 	for link,name in items:
 		addDir(name,link,47,icon)
@@ -46,7 +45,6 @@ def TITLES(url,select):
 		items=re.findall('src="(.*?)".*?href="(.*?)" rel="bookmark">(.*?)<',block,re.DOTALL)
 		for img,url,title in items:
 			if not any(value in title for value in notvideosLIST):
-				#title = title.replace('&#8211;','-')
 				title = unescapeHTML(title)
 				addDir(title,url,42,img)
 	if select==3:
@@ -56,7 +54,6 @@ def TITLES(url,select):
 			items=re.findall('h2.*?href="(.*?)">(.*?)<.*?src="(.*?)"',block,re.DOTALL)
 			for url,title,img in items:
 				if not any(value in title for value in notvideosLIST):
-					#title = title.replace('&#8211;','-')
 					title = unescapeHTML(title)
 					addDir(title,url,42,img)
 	if select>=2:
@@ -65,7 +62,6 @@ def TITLES(url,select):
 			block = html_blocks4[0]
 			items=re.findall('href="(.*?)".*?title="(.*?)"',block,re.DOTALL)
 			for url,title in items:
-				#title = title.replace('&raquo;','')
 				title = unescapeHTML(title)
 				title = 'صفحة ' + title
 				if select==2: addDir(title,url,46,'')
@@ -103,10 +99,7 @@ def EPISODES(url):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
-	#xbmcgui.Dialog().ok(url, url)
-	#url = escapeUNICODE(url)
 	url = url.replace(' ','%20')
-	##if '%' not in url: url = quote(url)
 	PLAY_VIDEO(url,script_name)
 
 def CATEGORIES(url,category):
@@ -119,7 +112,6 @@ def CATEGORIES(url,category):
 	notvideosLIST = ['-399','5643','2306','5654','10716','10277','7946']
 	for cat,parent,title,link in items:
 		if parent == category and cat not in notvideosLIST:
-			#title = title.replace('&#8211;','-')
 			title = unescapeHTML(title)
 			url = website0a + '/' + link
 			if cat == '-165': title = 'السيد صباح شبر (60)'
@@ -136,4 +128,13 @@ def SEARCH():
 	url = website0a + '/?s=' + new_search
 	TITLES(url,3)
 
+def PROGRAMS():
+	#xbmcgui.Dialog().ok(type, url)
+	html = openURL(website0a,'','','','ALMAAREF-PROGRAMS-1st')
+	html_blocks=re.findall('mega-menu-block(.*?)mega-menu',html,re.DOTALL)
+	block= html_blocks[0]
+	items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
+	for link,title in items:
+		addDir(title,link,44,icon)
+	xbmcplugin.endOfDirectory(addon_handle)
 

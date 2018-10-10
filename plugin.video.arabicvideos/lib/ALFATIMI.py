@@ -10,19 +10,21 @@ def MAIN(mode,url,category):
 	elif mode==62: EPISODES(url)
 	elif mode==63: PLAY(url)
 	elif mode==64: SEARCH()
+	elif mode==65: MOSTS(category)
 
 def MENU():
-	name = 'بحث في الموقع'
-	addDir(name,'',64,icon)
-	name = '[[ افلام ومسلسلات ]]'
-	addDir(name,website0a,61,icon,'',-1)
-	name = '[[ اخرى ]]'
-	addDir(name,website0a,61,icon,'',-2)
-	name = '[[ English ]]'
-	addDir(name,website0a,61,icon,'',-3)
+	addDir('بحث في الموقع','',64,icon)
+	addDir('ما يتم مشاهدته الان',website0a,65,icon,'',1)
+	addDir('الاكثر مشاهدة',website0a,65,icon,'',2)
+	addDir('اضيفت مؤخرا',website0a,65,icon,'',3)
+	addDir('فيديو عشوائي',website0a,65,icon,'',4)
+	addDir('افلام ومسلسلات',website0a,61,icon,'',-1)
+	addDir('اخرى',website0a,61,icon,'',-2)
+	addDir('English',website0a,61,icon,'',-3)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def TITLES(url,category):
+	#xbmcgui.Dialog().ok('', category)
 	moviesLIST = ['1239','1250','1245','20','1259','218','485','1238','1258','292']
 	englishLIST = ['3030','628']
 	if category in ['-1','-2','-3']:
@@ -79,12 +81,13 @@ def EPISODES(url):
 	return link
 
 def PLAY(url):
-	#xbmcgui.Dialog().ok('step 2', url)
+	#xbmcgui.Dialog().ok(url,'')
 	if 'videos.php' in url:
 		url = EPISODES(url)
 	html = openURL(url,'','','','ALFATIMI-PLAY-1st')
 	items = re.findall('playlistfile:"(.*?)"',html,re.DOTALL)
 	url = items[0]
+	#xbmcgui.Dialog().ok(url,'')
 	PLAY_VIDEO(url,script_name)
 
 def SEARCH():
@@ -98,6 +101,21 @@ def SEARCH():
 	items = re.findall('cat=(.*?)&.*?>(.*?)<',block,re.DOTALL)
 	for category,title in items:
 		addDir(title,website0a,61,icon,'',category)
+	xbmcplugin.endOfDirectory(addon_handle)
+
+def MOSTS(category):
+	if   category=='1': payload = { 'mode' : 'recent_viewed_vids' }
+	elif category=='2': payload = { 'mode' : 'most_viewed_vids' }
+	elif category=='3': payload = { 'mode' : 'recently_added_vids' }
+	elif category=='4': payload = { 'mode' : 'random_vids' }
+	url = 'http://alfatimi.tv/ajax.php'
+	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
+	data = urllib.urlencode(payload)
+	html = openURL(url,data,headers,'','ALFATIMI-GROUPS-1st')
+	items = re.findall('href="(.*?)".*?title="(.*?)".*?src="(.*?)".*?href',html,re.DOTALL)
+	for link,title,img in items:
+		title = title.strip(' ')
+		addLink(title,link,63,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 

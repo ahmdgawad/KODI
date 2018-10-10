@@ -59,7 +59,8 @@ def openURL(url,data='',headers='',showDialogs='',source=''):
 		reason = str(error.reason[1])
 	if code!='200':
 		message = ''
-		send = 'yes'
+		send = 'no'
+		showDialogs = 'no'
 		response = 'Error {}: {!r}'.format(code, reason)
 		if 'google-analytics' in url:
 			send = showDialogs
@@ -181,7 +182,7 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 		addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 		kodiVersion = xbmc.getInfoLabel( "System.BuildVersion" )	
 		kodiName = xbmc.getInfoLabel( "System.FriendlyName" )
-		message = message+' \\n\\n==== ==== ==== \\nِAddon Version: '+addonVersion+' \\nEmail Sender: '+dummyClientID()+' \\nKodi Version: '+kodiVersion+' \\nKodi Name: '+kodiName
+		message = message+' \\n\\n==== ==== ==== \\nAddon Version: '+addonVersion+' \\nEmail Sender: '+dummyClientID()+' \\nKodi Version: '+kodiVersion+' \\nKodi Name: '+kodiName
 		#xbmc.sleep(4000)
 		#playerTitle = xbmc.getInfoLabel( "Player.Title" )
 		#playerPath = xbmc.getInfoLabel( "Player.Filenameandpath" )

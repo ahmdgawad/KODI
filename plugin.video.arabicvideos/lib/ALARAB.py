@@ -9,16 +9,17 @@ website0e = 'http://vod.alarab.com/index.php'
 script_name = 'ALARAB'
 
 def MAIN(mode,url):
-	#return
 	if mode==10: MENU()
 	elif mode==11: ITEMS(url)
 	elif mode==12: PLAY(url)
 	elif mode==13: SEARCH()
 	elif mode==14: LATEST()
+	#elif mode==15: RAMADAN('?year=2018')
 
 def MENU():
-	addDir('بحث في الموقع',website0a,13,icon)
-	addDir('مسلسلات جديدة',website0a,14,icon)
+	addDir('بحث في الموقع','',13,icon)
+	addDir('مسلسلات جديدة','',14,icon)
+	#addDir('مسلسلات رمضان','',15,icon)
 	html = openURL(website0b,'','','','ALARAB-MENU-1st')
 	html_blocks=re.findall('footer_sec(.*?)social-network',html,re.DOTALL)
 	block=html_blocks[0]
@@ -33,13 +34,13 @@ def LATEST():
 	html_blocks=re.findall('right_content.*?heading-top(.*?)heading-top',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
-	for url,img,name in items:
-		url = website0a + url
+	for link,img,name in items:
+		url = website0a + link
 		addDir(name,url,11,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def ITEMS(url):
-	#xbmcgui.Dialog().ok(url,'')
+	xbmcgui.Dialog().ok(url,'')
 	html = openURL(url,'','','','ALARAB-ITEMS-1st')
 	html_blocks = re.findall('heading-list(.*?)right_content',html,re.DOTALL)
 	block = html_blocks[0]
@@ -113,4 +114,23 @@ def SEARCH():
 	searchlink = website0a + "/q/" + new_search
 	#xbmcgui.Dialog().ok('',searchlink)
 	ITEMS(searchlink)
+"""
+def RAMADAN(url):
+	year = url.split('?year=')[1]
+	#xbmcgui.Dialog().ok(url,year)
+	html = openURL(website0b,'','','','ALARAB-RAMADAN-1st')
+	html_blocks=re.findall('</a> </div></div>(.*?)ramadanseriesTOP',html,re.DOTALL)
+	block = html_blocks[0]
+	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
+	for link,name in items:
+		name = name.strip(' ')
+		url = website0a + link.replace('2018',year)
+		addDir(name,url,11)
+	xbmcplugin.endOfDirectory(addon_handle)
 
+def RAMADAN_YEARS_MENU():
+	for year in range(2018,2000,-1):
+		url = '?year=' + str(year)
+		addDir(str(year),url,16)
+	xbmcplugin.endOfDirectory(addon_handle)
+"""

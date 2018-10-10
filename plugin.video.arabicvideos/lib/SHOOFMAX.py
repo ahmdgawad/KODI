@@ -14,7 +14,7 @@ def MAIN(mode,url):
 	elif mode==54: SEARCH()
 
 def MENU():
-	addDir('بحث في الموقع',website0a,54,icon)
+	addDir('بحث في الموقع','',54,icon)
 	addDir('افلام بحسب السنة',website0a+'/movie/1/yop',51,icon)
 	addDir('افلام بحسب التقييم',website0a+'/movie/1/review',51,icon)
 	addDir('افلام بحسب المشاهدة',website0a+'/movie/1/views',51,icon)

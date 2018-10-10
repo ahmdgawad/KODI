@@ -48,4 +48,10 @@ Added Search to "ShoofMax"
 Changed "Analytics" Number
 
 
+v2.2.0
+Added new sections to "Alfatimi", 'Akoam', "HalaCima", & "4Helal"
+Added new resolvers
+Added DMCA message
+
+
 

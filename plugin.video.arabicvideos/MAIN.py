@@ -10,14 +10,16 @@ def MAIN():
 	website1 = 'موقع كل العرب' + '   .4'
 	website3 = 'موقع بانيت' + '   .3'
 	website8 = 'موقع هلا سيما' + '   .2'
-	website9 = 'موقع فور هلال' + '   .1'
+	website9 = 'موقع هلال يوتيوب' + '   .1'
 	website0a = '========================='
-	website0g = 'ـProblems & Solutions    مشاكل وحلول' + '   .11'
-	website0d = 'ـMessage to developer    رسالة الى المبرمج' + '   .10'
-	website0e = 'Testing'
-	#addLink(website0e,'',9)
-	addDir(website0g,'',1000)
-	addDir(website0d,'',2)
+	website0b = 'ـProblems & Solutions    مشاكل وحلول' + '   .12'
+	website0c = 'ـMessage to developer    رسالة الى المبرمج' + '   .11'
+	website0d = 'ـ DMCA     قانون الألفية للملكية الرقمية' + '   .10'
+	website0z = 'Testing'
+	#addLink(website0z,'',9)
+	addDir(website0b,'',1000)
+	addDir(website0c,'',2)
+	addDir(website0d,'',3)
 	#addDir(website0a,'',9999)
 	addDir(website4,'',40)
 	addDir(website6,'',60)
@@ -72,7 +74,7 @@ elif mode>=40 and mode<=49: from lib.ALMAAREF import MAIN ; MAIN(mode,url,catego
 elif mode>=50 and mode<=59: from lib.SHOOFMAX import MAIN ; MAIN(mode,url)
 elif mode>=60 and mode<=69: from lib.ALFATIMI import MAIN ; MAIN(mode,url,category)
 elif mode>=70 and mode<=79: from lib.AKOAM import MAIN ; MAIN(mode,url)
-elif mode>=80 and mode<=89: from lib.HALACIMA import MAIN ; MAIN(mode,url)
+elif mode>=80 and mode<=89: from lib.HALACIMA import MAIN ; MAIN(mode,url,page)
 elif mode>=90 and mode<=99: from lib._4HELAL import MAIN ; MAIN(mode,url)
 
 elif mode>=0 and mode<=9: from lib.PROGRAM import MAIN ; MAIN(mode,text)

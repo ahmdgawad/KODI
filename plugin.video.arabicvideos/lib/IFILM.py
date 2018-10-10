@@ -8,28 +8,32 @@ website0d = 'http://fa2.ifilmtv.com'
 script_name = 'IFILM'
 
 def MAIN(mode,url,page):
-	if mode==20: LANGUAGE()
-	elif mode==21: MENU(url)
+	if mode==20: LANGUAGE_MENU()
+	elif mode==21: MAIN_MENU(url)
 	elif mode==22: TITLES(url,page)
 	elif mode==23: EPISODES(url,page)
 	elif mode==24: PLAY(url)
 	elif mode==25: MUSIC_MENU(url)
 	elif mode==26: SEARCH(url)
 
-def LANGUAGE():
+def LANGUAGE_MENU():
 	addDir('عربي',website0a,21,icon,101)
 	addDir('English',website0b,21,icon,101)
 	addDir('فارسى',website0c,21,icon,101)
 	addDir('فارسى 2',website0d,21,icon,101)
 	xbmcplugin.endOfDirectory(addon_handle)
 
-def MENU(url):
+def MAIN_MENU(website0):
 	menu=['Series', 'Program', 'Music']
-	website0 = SITE(url)
-	html = openURL(url,'','','','IFILM-MENU-1st')
-	html_blocks=re.findall('input_Search_" placeholder="(.*?)"',html,re.DOTALL)
-	title = html_blocks[0]
-	addDir(title,website0,26,icon)
+	html = openURL(website0,'','','','IFILM-MAIN_MENU-1st')
+	#html_blocks=re.findall('input_Search_" placeholder="(.*?)"',html,re.DOTALL)
+	#name = html_blocks[0]
+	lang = LANG(website0)
+	if lang=='ar': name = 'بحث في الموقع'
+	elif lang=='en': name = 'Search in site'
+	elif lang=='fa': name = 'جستجو در سایت'
+	elif lang=='fa2': name = 'جستجو در سایت'
+	addDir(name,website0,26,icon)
 	html_blocks=re.findall('main-body.*?menu(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
@@ -61,10 +65,8 @@ def TITLES(url,page):
 	lang = LANG(url)
 	info = url.split('/')
 	type = info[ len(info)-2 ]
-	#xbmcgui.Dialog().ok(url, website0)
 	order = str(int(page)/100)
 	page = str(int(page)%100)
-	#xbmcgui.Dialog().ok(page, order)
 	if type=='Series' and page=='0':
 		html = openURL(url,'','','','IFILM-TITLES-1st')
 		html_blocks = re.findall('serial-body(.*?)class="row',html,re.DOTALL)
@@ -150,15 +152,12 @@ def EPISODES(url,page):
 			img1 = website0 + quote(img)
 			link1 = website0 + quote(link) 
 			name = escapeUNICODE(name)
-			#if desc=='': 
 			name1 = name + title + str(episode)
-			#else: name1 = name + title + str(episode) + ' - ' + desc
 			addLink(name1,link1,24,img1)
 	if type=='Music':
 		if 'Content' in url and 'category' not in url:
 			url2 = website0+'/Music/GetTracksBy?id='+str(id)+'&page='+page+'&size=30&type=0'
 			html = openURL(url2,'','','','IFILM-EPISODES-3rd')
-			#xbmcgui.Dialog().ok(url2, str(len(html)) )
 			items = re.findall('ImageAddress_S":"(.*?)".*?VoiceAddress":"(.*?)".*?Caption":"(.*?)","Title":"(.*?)"',html,re.DOTALL)
 			for img,link,name,title in items:
 				count_items += 1
@@ -205,8 +204,6 @@ def EPISODES(url,page):
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
-	#xbmcgui.Dialog().notification('Finding videos','')
-	#xbmcgui.Dialog().ok(url, str(addon_handle)
 	PLAY_VIDEO(url,script_name)
 	
 def SITE(url):
@@ -223,16 +220,12 @@ def LANG(url):
 	elif website0d in url: lang = 'fa2'
 	return lang
 
-def SEARCH(url):
+def SEARCH(website0):
 	search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','+')
-	searchlink = url + "/Home/Search?searchstring=" + new_search
-	SEARCH_TITLES(searchlink)
-
-def SEARCH_TITLES(url):
-	website0 = SITE(url)
-	lang = LANG(url)
+	lang = LANG(website0)
+	url = website0 + "/Home/Search?searchstring=" + new_search
 	html = openURL(url,'','','','IFILM-SEARCH_TITLES-1st')
 	items = re.findall('"ImageAddress_S":"(.*?)".*?"CategoryId":(.*?),"Id":(.*?),"Title":(.*?),',html,re.DOTALL)
 	for img,category,id,title in items:
@@ -241,16 +234,16 @@ def SEARCH_TITLES(url):
 			title = title.replace('"','')
 			if category=='3':
 				type = 'Series'
-				name = 'مسلسل : '
-				if lang=='en': name = 'Series : '
-				if lang=='fa': name = 'سريال ها : '
-				if lang=='fa2': name = 'سريال ها : '
+				if lang=='ar': name = 'مسلسل : '
+				elif lang=='en': name = 'Series : '
+				elif lang=='fa': name = 'سريال ها : '
+				elif lang=='fa2': name = 'سريال ها : '
 			if category=='7':
 				type = 'Program'
-				name = 'برنامج : '
-				if lang=='en': name = 'Program : '
-				if lang=='fa': name = 'برنامه ها : '
-				if lang=='fa2': name = 'برنامه ها : '
+				if lang=='ar': name = 'برنامج : '
+				elif lang=='en': name = 'Program : '
+				elif lang=='fa': name = 'برنامه ها : '
+				elif lang=='fa2': name = 'برنامه ها : '
 			title = name + title
 			link = website0 + '/' + type + '/Content/' + id
 			img = website0 + quote(img)

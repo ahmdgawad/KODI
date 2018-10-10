@@ -18,10 +18,10 @@ def MAIN(mode,url):
 def MENU():
 	addDir('بحث عن افلام',website0a+'/search/result/title/movies',34,icon)
 	addDir('بحث عن مسلسلات',website0a+'/search/result/title/series',34,icon)
-	addDir('مسلسلات مصنفة',website0a+'/series/v1',31,icon)
+	addDir('مسلسلات وبرامج',website0a+'/series/v1',31,icon)
 	addDir('افلام مصنفة حسب النوع',website0a+'/movies',35,icon)
 	addDir('افلام مصنفة حسب الممثل',website0a+'/movies',36,icon)
-	addDir('اجدد الافلام',website0a+'/movies',32,icon)
+	addDir('احدث الافلام',website0a+'/movies',32,icon)
 	addDir('مسرحيات',website0a+'/movies/genre/4/1',32,icon)
 	xbmcplugin.endOfDirectory(addon_handle)
 

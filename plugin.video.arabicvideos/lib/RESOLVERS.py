@@ -3,72 +3,35 @@ from LIBRARY import *
 
 script_name='RESOLVERS'
 
-def SERVERS(urlLIST):
-	serverLIST = []
-	for i in range(0,220):
-		serverLIST.append('')
-	for url in urlLIST:
-		if   'vidbom' 		in url 	and serverLIST[1]=='': 	serverLIST[1] = url
-		elif 'rapidvideo' 	in url 	and serverLIST[2]=='': 	serverLIST[2] = url
-		elif 'mystream' 	in url 	and serverLIST[3]=='': 	serverLIST[3] = url
-		elif 'vidshare' 	in url 	and serverLIST[4]=='': 	serverLIST[4] = url
-		elif 'uqload' 		in url 	and serverLIST[5]=='': 	serverLIST[5] = url
-		elif 'vcstream' 	in url 	and serverLIST[6]=='': 	serverLIST[6] = url
-		elif 'vidoza' 		in url 	and serverLIST[7]=='': 	serverLIST[7] = url
-		elif 'watchvideo' 	in url 	and serverLIST[8]=='': 	serverLIST[8] = url
-		elif 'upbom' 		in url 	and serverLIST[9]=='': 	serverLIST[9] = url
-		elif 'liivideo' 	in url 	and serverLIST[10]=='': serverLIST[10] = url
-		elif 'vidhd' 		in url 	and serverLIST[11]=='': serverLIST[11] = url
-		elif 'intoupload' 	in url 	and serverLIST[12]=='': serverLIST[12] = url
-		elif 'estream'	 	in url 	and serverLIST[13]=='': serverLIST[13] = url
-		elif 'vev.io'	 	in url 	and serverLIST[14]=='': serverLIST[14] = url
-		elif 'youtu'	 	in url 	and serverLIST[15]=='': serverLIST[15] = url
-		elif 'catch.is'	 	in url 	and serverLIST[16]=='': serverLIST[16] = url
-		elif 'load.is'	 	in url 	and serverLIST[17]=='': serverLIST[17] = url
-		elif 'golink'	 	in url 	and serverLIST[18]=='': serverLIST[18] = url
+def RESOLVABLE(url):
+	result = 0
+	if 'akoam.net' in url and '?' not in url: result = 1
+	elif 'rapidvideo' 	in url: result = 2
+	elif 'mystream' 	in url: result = 3
+	elif 'vidshare' 	in url: result = 4
+	elif 'uqload' 		in url: result = 5
+	elif 'vcstream' 	in url: result = 6
+	elif 'vidoza' 		in url: result = 7
+	elif 'watchvideo' 	in url: result = 8
+	elif 'upbom' 		in url: result = 9
+	elif 'liivideo' 	in url: result = 10
+	elif 'vidhd' 		in url: result = 11
+	elif 'intoupload' 	in url: result = 12
+	elif 'estream'	 	in url: result = 13
+	elif 'vev.io'	 	in url: result = 14
+	elif 'youtu'	 	in url: result = 15
+	elif 'catch.is'	 	in url: result = 16
+	elif 'load.is'	 	in url: result = 17
+	elif 'golink'	 	in url: result = 18
+	elif 'go2ooo'		in url: result = 19
+	elif 'vidbom'		in url: result = 20
+	elif 'vidbob'		in url: result = 21
+	elif 'uptostream'	in url: result = 22
+	return result
 
-		elif 'vidbom' 		in url 	and serverLIST[101]=='': serverLIST[101] = url
-		elif 'rapidvideo' 	in url 	and serverLIST[102]=='': serverLIST[102] = url
-		elif 'mystream' 	in url 	and serverLIST[103]=='': serverLIST[103] = url
-		elif 'vidshare' 	in url 	and serverLIST[104]=='': serverLIST[104] = url
-		elif 'uqload' 		in url 	and serverLIST[105]=='': serverLIST[105] = url
-		elif 'vcstream' 	in url 	and serverLIST[106]=='': serverLIST[106] = url
-		elif 'vidoza' 		in url 	and serverLIST[107]=='': serverLIST[107] = url
-		elif 'watchvideo' 	in url 	and serverLIST[108]=='': serverLIST[108] = url
-		elif 'upbom' 		in url 	and serverLIST[109]=='': serverLIST[109] = url
-		elif 'liivideo' 	in url 	and serverLIST[110]=='': serverLIST[110] = url
-		elif 'vidhd' 		in url 	and serverLIST[111]=='': serverLIST[111] = url
-		elif 'intoupload' 	in url 	and serverLIST[112]=='': serverLIST[112] = url
-		elif 'estream'	 	in url 	and serverLIST[113]=='': serverLIST[113] = url
-		elif 'vev.io'	 	in url 	and serverLIST[114]=='': serverLIST[114] = url
-		elif 'youtu'	 	in url 	and serverLIST[115]=='': serverLIST[115] = url
-		elif 'catch.is'	 	in url 	and serverLIST[116]=='': serverLIST[116] = url
-		elif 'load.is'	 	in url 	and serverLIST[117]=='': serverLIST[117] = url
-		elif 'golink'	 	in url 	and serverLIST[118]=='': serverLIST[118] = url
-
-		elif 'vidbom' 		in url 	and serverLIST[201]=='': serverLIST[201] = url
-		elif 'rapidvideo' 	in url 	and serverLIST[202]=='': serverLIST[202] = url
-		elif 'mystream' 	in url 	and serverLIST[203]=='': serverLIST[203] = url
-		elif 'vidshare' 	in url 	and serverLIST[204]=='': serverLIST[204] = url
-		elif 'uqload' 		in url 	and serverLIST[205]=='': serverLIST[205] = url
-		elif 'vcstream' 	in url 	and serverLIST[206]=='': serverLIST[206] = url
-		elif 'vidoza' 		in url 	and serverLIST[207]=='': serverLIST[207] = url
-		elif 'watchvideo' 	in url 	and serverLIST[208]=='': serverLIST[208] = url
-		elif 'upbom' 		in url 	and serverLIST[209]=='': serverLIST[209] = url
-		elif 'liivideo' 	in url 	and serverLIST[210]=='': serverLIST[210] = url
-		elif 'vidhd' 		in url 	and serverLIST[211]=='': serverLIST[211] = url
-		elif 'intoupload' 	in url 	and serverLIST[212]=='': serverLIST[212] = url
-		elif 'estream'	 	in url 	and serverLIST[213]=='': serverLIST[213] = url
-		elif 'vev.io'	 	in url 	and serverLIST[214]=='': serverLIST[214] = url
-		elif 'youtu'	 	in url 	and serverLIST[215]=='': serverLIST[215] = url
-		elif 'catch.is'	 	in url 	and serverLIST[216]=='': serverLIST[216] = url
-		elif 'load.is'	 	in url 	and serverLIST[217]=='': serverLIST[217] = url
-		elif 'golink'	 	in url 	and serverLIST[218]=='': serverLIST[218] = url
-	return serverLIST
-
-def VIDEO_URL(url):
+def RESOLVE(url):
 	videoURL = ''
-	if   'vidbom' 		in url: videoURL = VIDBOM(url)
+	if 'akoam.net' in url and '?' not in url: videoURL = AKOAMNET(url)
 	elif 'rapidvideo' 	in url: videoURL = RAPIDVIDEO(url)
 	elif 'mystream' 	in url: videoURL = MYSTREAM(url)
 	elif 'vidshare' 	in url: videoURL = VIDSHARE(url)
@@ -83,15 +46,45 @@ def VIDEO_URL(url):
 	elif 'estream'	 	in url: videoURL = ESTREAM(url)
 	elif 'vev.io'	 	in url: videoURL = VEVIO(url)
 	elif 'youtu'	 	in url: videoURL = YOUTUBE(url)
-	elif 'catch.is'	 	in url: videoURL = CATCH(url)
-	elif 'load.is'	 	in url: videoURL = LOAD(url)
+	elif 'catch.is'	 	in url: videoURL = CATCHIS(url)
+	elif 'load.is'	 	in url: videoURL = LOADIS(url)
 	elif 'golink'	 	in url: videoURL = GOLINK(url)
+	elif 'go2ooo'		in url: videoURL = GO2OOO(url)
+	elif 'vidbom'		in url: videoURL = VIDBOM(url)
+	elif 'vidbob'		in url: videoURL = VIDBOB(url)
+	elif 'uptostream'	in url: videoURL = UPTOSTREAM(url)
 	return videoURL
 
-def VIDBOM(url):
-	html = openURL(url,'','','','RESOLVERS-VIDBOM-1st')
-	items = re.findall('file:"(.*?)"',html,re.DOTALL)
-	return items[0]
+def SERVERS(linkLIST):
+	serversLIST = []
+	urlLIST = []
+	serversSTATUS = []
+	serversDICT = {}
+	linkLIST = set(linkLIST)
+	for i in range(0,25):
+		serversSTATUS.append('')
+	for link in linkLIST:
+		server = RESOLVABLE(link)
+		if server>0:
+			if server<10: serverNum = '0' + str(server)
+			else: serverNum = str(server)
+			serversDICT[serverNum+serversSTATUS[server]] = link
+			if serversSTATUS[server]=='': serversSTATUS[server] = 'a'
+			else: serversSTATUS[server] = chr(ord(serversSTATUS[server])+1)
+	for i in sorted(serversDICT.keys()):
+		serversLIST.append('سيرفر '+i)
+		urlLIST.append(serversDICT[i])
+	return serversLIST,urlLIST
+
+def PLAY(linkLIST,script_name,play='yes'):
+	serversLIST,urlLIST = SERVERS(linkLIST)
+	selection = xbmcgui.Dialog().select('اختر السيرفر المناسب:', serversLIST)
+	if selection == -1 : return
+	url = urlLIST[selection]
+	videoURL = RESOLVE(url)
+	#xbmcgui.Dialog().ok(url,'')
+	if play=='yes': PLAY_VIDEO(videoURL,script_name)
+	return videoURL
 
 def RAPIDVIDEO(url):
 	headers = { 'User-Agent' : '' }
@@ -213,7 +206,7 @@ def YOUTUBE(url):
 	url = 'plugin://plugin.video.youtube/play/?video_id='+youtubeID
 	return url
 
-def CATCH(url):
+def CATCHIS(url):
 	id = url.split('/')[-1]
 	payload = { 'op' : 'download2' , 'id' : id }
 	headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
@@ -222,7 +215,7 @@ def CATCH(url):
 	items = re.findall('direct_link.*?href="(.*?)"',html,re.DOTALL)
 	return items[0]
 
-def LOAD(url):
+def LOADIS(url):
 	id = url.split('/')[-1]
 	url = 'http://load.is/link/read?hash=' + id
 	html = openURL(url,'','','','RESOLVERS-LOAD-1st')
@@ -240,5 +233,42 @@ def GOLINK(url):
 	#xbmcgui.Dialog().ok('load.is',str(url))
 	return url
 
+def GO2OOO(url):
+	id = url.split('/')[-1]
+	url = 'http://load.is/link/read?hash=' + id
+	html = openURL(url,'','','','RESOLVERS-LOAD-1st')
+	items = re.findall('route":"(.*?)"',html,re.DOTALL)
+	url = items[0].replace('\/','/')
+	#xbmcgui.Dialog().ok('load.is',url)
+	return url
+
+def AKOAMNET(url):
+	return url
+
+def VIDBOM(url):
+	html = openURL(url,'','','','RESOLVERS-VIDBOM-1st')
+	xbmc.sleep(1500)
+	items = re.findall('file: "(.*?)"',html,re.DOTALL)
+	slides = items[0]
+	html2 = openURL(slides,'','','','RESOLVERS-VIDBOM-2nd')
+	xbmc.sleep(1500)
+	items = re.findall('file:"(.*?)"',html,re.DOTALL)
+	url = items[0]
+	return url
+
+def VIDBOB(url):
+	headers = { 'User-Agent' : '' }
+	url = url.replace('https:','http:')
+	html = openURL(url,'',headers,'','RESOLVERS-VIDBOB-1st')
+	items = re.findall('file:"(.*?)"',html,re.DOTALL)
+	return items[0]
+
+def UPTOSTREAM(url):
+	headers = { 'User-Agent' : '' }
+	html = openURL(url,'',headers,'','RESOLVERS-UPTOSTREAM-1st')
+	items = re.findall('src":"(.*?)"',html,re.DOTALL)
+	url = items[0].replace('\/','/')
+	#xbmcgui.Dialog().ok('load.is',url)
+	return url
 
 

@@ -63,12 +63,23 @@ def MAIN(mode,text=''):
 		#	xbmcgui.Dialog().ok('Response',str(response))
 		return
 
+	elif mode==3:
+		text = ' نفي: البرنامج لا يوجد له اي سيرفر يستضيف اي محتويات. البرنامج يستخدم روابط وتضمين لمحتويات مرفوعة على سيرفرات خارجية. البرنامج غير مسؤول عن اي محتويات تم تحميلها على سيرفرات ومواقع خارجية "مواقع طرف 3". جميع الاسماء والماركات والصور والمنشورات هي خاصة باصحابها. البرنامج لا ينتهك حقوق الطبع والنشر وقانون الألفية للملكية الرقمية DMCA اذا كان لديك شكوى خاصة بالروابط والتضامين الخارجية فالرجاء التواصل مع ادارة هذه السيرفرات والمواقع الخارجية'
+		xbmcgui.Dialog().textviewer('حقوق الطبع والنشر وقانون الألفية للملكية الرقمية',text)
+		text = 'Disclaimer: The program does not host any content on any server. The program just use linking to or embedding content that was uploaded to popular Online Video hosting sites. All trademarks, Videos, trade names, service marks, copyrighted work, logos referenced herein belong to their respective owners/companies. The program is not responsible for what other people upload to 3rd party sites. We urge all copyright owners, to recognize that the links contained within this site are located somewhere else on the web or video embedded are from other various site. If you have any legal issues please contact appropriate media file owners/hosters.'
+		xbmcgui.Dialog().textviewer('Digital Millennium Copyright Act (DMCA)',text)
+		return
+
 	elif mode==9:
 		#html = openURL('http://thevideo.me/embed-w8svy75ojdvo.html','','','','PROGRAM-MAIN-1st')
-		var1 = dummyClientID()
-		xbmcgui.Dialog().ok(var1,'')
-		#url = ''
-		#PLAY_VIDEO(url,script_name)
+		#var1 = dummyClientID()
+		#xbmcgui.Dialog().ok(var1,'')
+		url = 'http://188.165.206.211:8000/live/90ce6ba8b2/d1203v5/1379.ts'
+		url = 'http://38.99.146.94:7777/AlIraqiya_VL.m3u8?user=tyty4&session=30aa8bbb363ab593568bb5f2a346412c43a688cacf7f89aa26d7abe5050c7821'
+		url = 'https://edge-1192-ch-gv.filmon.com/live/6037.low.stream/1539117189615.ts'
+		url = 'http://162.244.80.182:1935/liveTrans/ngrp:channel23_all/chunklist_w2117295837_b298304.m3u8'
+		url = 'http://212.18.231.213:1935/7/7_360p/media_w1650628949_2534.ts'
+		PLAY_VIDEO(url,script_name)
 		#scriptNAME = os.path.basename(__file__).split('.')[0]
 		#xbmcgui.Dialog().ok(scriptNAME,'')
 		#url = ''
