@@ -2,34 +2,20 @@
 from lib.LIBRARY import *
 
 def MAIN():
-	website4 = 'موقع قناة المعارف' + '   .9'
-	website6 = 'موقع المنبر الفاطمي' + '   .8'
-	website2 = 'موقع قناة اي فيلم' + '   .7'
-	website7 = 'موقع اكوام' + '   .6'
-	website5 = 'موقع شوف ماكس' + '   .5'
-	website1 = 'موقع كل العرب' + '   .4'
-	website3 = 'موقع بانيت' + '   .3'
-	website8 = 'موقع هلا سيما' + '   .2'
-	website9 = 'موقع هلال يوتيوب' + '   .1'
-	website0a = '========================='
-	website0b = 'ـProblems & Solutions    مشاكل وحلول' + '   .12'
-	website0c = 'ـMessage to developer    رسالة الى المبرمج' + '   .11'
-	website0d = 'ـ DMCA     قانون الألفية للملكية الرقمية' + '   .10'
-	website0z = 'Testing'
-	#addLink(website0z,'',9)
-	addDir(website0b,'',1000)
-	addDir(website0c,'',2)
-	addDir(website0d,'',3)
-	#addDir(website0a,'',9999)
-	addDir(website4,'',40)
-	addDir(website6,'',60)
-	addDir(website2,'',20)
-	addDir(website7,'',70)
-	addDir(website5,'',50)
-	addDir(website1,'',10)
-	addDir(website3,'',30)
-	addDir(website8,'',80)
-	addDir(website9,'',90)
+	#addLink('Testing','',9)
+	addDir('ـMessage to developer    رسالة الى المبرمج'+'   .12','',2)
+	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'   .11','',3)
+	addDir('ـProblems & Solutions    مشاكل وحلول'+'   .10','',1000)
+	#addDir('=========================','',9999)
+	addDir('موقع قناة المعارف'+'   .9','',40)
+	addDir('موقع المنبر الفاطمي'+'   .8','',60)
+	addDir('موقع قناة اي فيلم'+'   .7','',20)
+	addDir('موقع شوف ماكس'+'   .6','',50)
+	addDir('موقع اكوام'+'   .5','',70)
+	addDir('موقع هلا سيما'+'   .4','',80)
+	addDir('موقع هلال يوتيوب'+'   .3','',90)
+	addDir('موقع كل العرب'+'   .2','',10)
+	addDir('موقع بانيت'+'   .1','',30)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def get_params():

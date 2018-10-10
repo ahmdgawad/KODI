@@ -40,7 +40,7 @@ def LATEST():
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def ITEMS(url):
-	xbmcgui.Dialog().ok(url,'')
+	#xbmcgui.Dialog().ok(url,'')
 	html = openURL(url,'','','','ALARAB-ITEMS-1st')
 	html_blocks = re.findall('heading-list(.*?)right_content',html,re.DOTALL)
 	block = html_blocks[0]
