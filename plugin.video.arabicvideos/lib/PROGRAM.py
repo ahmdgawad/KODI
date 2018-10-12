@@ -71,19 +71,13 @@ def MAIN(mode,text=''):
 		return
 
 	elif mode==9:
-		#html = openURL('http://thevideo.me/embed-w8svy75ojdvo.html','','','','PROGRAM-MAIN-1st')
-		#var1 = dummyClientID()
-		#xbmcgui.Dialog().ok(var1,'')
-		url = 'http://188.165.206.211:8000/live/90ce6ba8b2/d1203v5/1379.ts'
-		url = 'http://38.99.146.94:7777/AlIraqiya_VL.m3u8?user=tyty4&session=30aa8bbb363ab593568bb5f2a346412c43a688cacf7f89aa26d7abe5050c7821'
-		url = 'https://edge-1192-ch-gv.filmon.com/live/6037.low.stream/1539117189615.ts'
-		url = 'http://162.244.80.182:1935/liveTrans/ngrp:channel23_all/chunklist_w2117295837_b298304.m3u8'
-		url = 'http://212.18.231.213:1935/7/7_360p/media_w1650628949_2534.ts'
-		PLAY_VIDEO(url,script_name)
-		#scriptNAME = os.path.basename(__file__).split('.')[0]
-		#xbmcgui.Dialog().ok(scriptNAME,'')
-		#url = ''
-		#play_item = xbmcgui.ListItem(path=url)
-		#xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
-		#return
+		#PLAY_VIDEO(url,script_name,'yes')
+		#import logging
+		var1 = dummyClientID()
+		xbmcgui.Dialog().ok(var1,'')
+
+
+
+
+
 

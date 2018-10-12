@@ -125,7 +125,7 @@ def SEARCH():
 	search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','%20')
-	response = requests.request("GET", website0a, data='', headers='')
+	response = requests.get(website0a, data='', headers='')
 	html = response.text
 	cookies = response.cookies.get_dict()
 	cookie = cookies['session']
@@ -134,7 +134,7 @@ def SEARCH():
 	payload = '_csrf=' + csrf + '&q=' + quote(new_search)
 	headers = { 'content-type':'application/x-www-form-urlencoded' , 'cookie':'session='+cookie }
 	url = website0a + "/search"
-	response = requests.request("POST", url, data=payload, headers=headers)
+	response = requests.post(url, data=payload, headers=headers)
 	html = response.text
 	html_blocks = re.findall('general-body(.*?)search-bottom-padding',html,re.DOTALL)
 	block = html_blocks[0]

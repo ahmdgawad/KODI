@@ -54,4 +54,7 @@ Added new resolvers
 Added DMCA message
 
 
+v2.3.0
+Added "Tv Channels"
+
 

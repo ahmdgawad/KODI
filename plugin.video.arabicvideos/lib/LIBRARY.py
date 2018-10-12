@@ -7,7 +7,7 @@ addon_id = sys.argv[0].split('/')[2]
 fanart = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'fanart.jpg'))
 icon = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
 
-def addLink(name,url,mode,iconimage=icon,duration=''):
+def addLink(name,url,mode,iconimage=icon,duration='',isPlayable='yes'):
 	#xbmcgui.Dialog().ok(duration,'')
 	u='plugin://'+addon_id+'/?mode='+str(mode)+'&url='+quote(url)
 	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
@@ -18,7 +18,7 @@ def addLink(name,url,mode,iconimage=icon,duration=''):
 		if len(duration)<=5 : duration = '00:' + duration
 		duration = sum(x * int(t) for x, t in zip([3600,60,1], duration.split(":"))) 	
 		liz.setInfo('Video', {'duration': duration})
-	liz.setProperty('IsPlayable', 'true')
+	if isPlayable=='yes': liz.setProperty('IsPlayable', 'true')
 	xbmcplugin.setContent(addon_handle, 'videos')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=False)
 
@@ -134,24 +134,6 @@ def mixARABIC(string):
 	new_string = new_string.encode('utf-8')
 	return new_string
 
-def PLAY_FROM_DIRECTORY(url):
-	url=escapeUNICODE(url)
-	url=url.replace(' ','%20')
-	###if '%' not in url: url = quote(url)
-	title = xbmc.getInfoLabel('ListItem.Title')
-	play_item = xbmcgui.ListItem(title)
-	xbmc.Player().play(url, play_item)
-
-def PLAY_OLD(url):
-	title = 'testing'
-	play_item = xbmcgui.ListItem( title, iconImage=icon, )
-	play_item.setInfo( "video", { "Title": title } )
-	#playlist = xbmc.PlayList( xbmc.PLAYLIST_VIDEO )
-	#playlist.clear()
-	#playlist.add( url, play_item )
-	#xbmc.Player().play(playlist,play_item)
-	xbmc.Player().play(url,play_item)
-
 def KEYBOARD(label='Search'):
 	search =''
 	keyboard = xbmc.Keyboard(search, label)
@@ -164,14 +146,18 @@ def KEYBOARD(label='Search'):
 	new_search = mixARABIC(search)
 	return new_search
 
-def PLAY_VIDEO(url,label):
+def PLAY_VIDEO(url,label,showWatched='yes'):
 	play_item = xbmcgui.ListItem(path=url)
-	xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
-	#xbmcgui.Dialog().ok('start',url)
+	if showWatched=='yes':
+		xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
+	else:
+		title = xbmc.getInfoLabel('ListItem.Label')
+		play_item.setInfo( "video", { "Title": title } )
+		xbmc.Player().play(url,play_item)
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	url2 = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
-	openURL(url2,'','','no','LIBRARY-PLAY_VIDEO-1st')
+	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
+	openURL(url,'','','no','LIBRARY-PLAY_VIDEO-1st')
 
 def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 	yes = True

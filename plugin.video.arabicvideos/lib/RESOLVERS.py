@@ -6,8 +6,8 @@ script_name='RESOLVERS'
 def RESOLVABLE(url):
 	result = 0
 	if 'akoam.net' in url and '?' not in url: result = 1
-	elif 'rapidvideo' 	in url: result = 2
-	elif 'mystream' 	in url: result = 3
+	#elif 'rapidvideo' 	in url: result = 2
+	#elif 'mystream' 	in url: result = 3
 	elif 'vidshare' 	in url: result = 4
 	elif 'uqload' 		in url: result = 5
 	elif 'vcstream' 	in url: result = 6

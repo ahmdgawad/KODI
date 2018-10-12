@@ -3,9 +3,10 @@ from lib.LIBRARY import *
 
 def MAIN():
 	#addLink('Testing','',9)
-	addDir('ـMessage to developer    رسالة الى المبرمج'+'   .12','',2)
-	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'   .11','',3)
-	addDir('ـProblems & Solutions    مشاكل وحلول'+'   .10','',1000)
+	addDir('ـMessage to developer    رسالة الى المبرمج'+'   .13','',2)
+	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'   .12','',3)
+	addDir('ـProblems & Solutions    مشاكل وحلول'+'   .11','',1000)
+	addDir('قنوات تلفزونية'+'   .10','',100)
 	#addDir('=========================','',9999)
 	addDir('موقع قناة المعارف'+'   .9','',40)
 	addDir('موقع المنبر الفاطمي'+'   .8','',60)
@@ -62,6 +63,7 @@ elif mode>=60 and mode<=69: from lib.ALFATIMI import MAIN ; MAIN(mode,url,catego
 elif mode>=70 and mode<=79: from lib.AKOAM import MAIN ; MAIN(mode,url)
 elif mode>=80 and mode<=89: from lib.HALACIMA import MAIN ; MAIN(mode,url,page)
 elif mode>=90 and mode<=99: from lib._4HELAL import MAIN ; MAIN(mode,url)
+elif mode>=100 and mode<=109: from lib.TV1 import MAIN ; MAIN(mode,url)
 
 elif mode>=0 and mode<=9: from lib.PROGRAM import MAIN ; MAIN(mode,text)
 elif mode>=1000 and mode<=1009: from lib.PROBLEMS import MAIN ; MAIN(mode)
