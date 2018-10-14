@@ -1,0 +1,104 @@
+# -*- coding: utf-8 -*-
+from LIBRARY import *
+
+website0a = 'http://shahid4u.me'
+script_name='SHAHID4U'
+headers = { 'User-Agent' : '' }
+
+def MAIN(mode,url):
+	if mode==110: MENU()
+	elif mode==111: ITEMS(url)
+	elif mode==112: PLAY(url)
+	elif mode==113: SEARCH()
+
+def MENU():
+	addDir('بحث في الموقع','',113)
+	addDir('المضاف حديثا',website0a,111,'',0)
+	html = openURL(website0a,'',headers,'','SHAHID4U-MENU-1st')
+	html_blocks = re.findall('menu-master(.*?)header>',html,re.DOTALL)
+	#xbmcgui.Dialog().ok(html,html)
+	block = html_blocks[0]
+	items = re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
+	ignoreLIST = ['مسلسلات انمي']
+	for link,title in items:
+		title = title.strip(' ')
+		if not any(value in title for value in ignoreLIST):
+			addDir(title,link,111)
+	xbmcplugin.endOfDirectory(addon_handle)
+
+def ITEMS(url):
+	dirLIST = [ '/series/' , '/ramadan/' , '?s=' ]
+	if any(value in url for value in dirLIST):
+		directory = True
+	else:
+		directory = False
+	html = openURL(url,'',headers,'','SHAHID4U-ITEMS-1st')
+	html_blocks = re.findall('class="blocksFilms"(.*?)<div class="header ">',html,re.DOTALL)
+	if not html_blocks:
+		html_blocks = re.findall('class="cats da_Sa"(.*?)<div class="header ">',html,re.DOTALL)
+	if not html_blocks:
+		PLAY(url)
+		return
+	block = html_blocks[0]
+	items = re.findall('src="(.*?)".*?movief"><a href="(.*?)">(.*?)<',block,re.DOTALL)
+	allTitles = []
+	itemLIST = ['الحلقة','فيلم','اغنية','كليب']
+	for img,link,title in items:
+		link = unquote(link)
+		#title = title.replace('\n','')
+		#title = title.strip(' ')
+		if directory is True:
+			episode = re.findall(' الحلقة [0-9]*',title,re.DOTALL)
+			if episode:
+				title = title.replace(episode[0],'')
+				title = title.replace(' والاخيرة','')
+		title = unescapeHTML(title)
+		if title not in allTitles:
+			allTitles.append(title)
+			if any(value in title for value in itemLIST):
+				addLink(title,link,112,img)
+			elif directory is True:
+				addDir(title,link,111,img)
+	html_blocks = re.findall('class="pagination(.*?)</div>',html,re.DOTALL)
+	if html_blocks:
+		block = html_blocks[0]
+		items = re.findall('<li><a href=["\'](.*?)["\'].*?>(.*?)<',block,re.DOTALL)
+		for link,title in items:
+			title = unescapeHTML(title)
+			title = title.replace('الصفحة ','')
+			addDir('صفحة '+title,link,111)
+	xbmcplugin.endOfDirectory(addon_handle)
+
+def PLAY(url):
+	linkLIST = []
+	html = openURL(url,'',headers,'','SHAHID4U-PLAY-1st')
+	html_blocks = re.findall('class="servers2(.*?)</div>',html,re.DOTALL)
+	block = html_blocks[0]
+	items = re.findall('href="(.*?)"',block,re.DOTALL)
+	for link in items:
+		linkLIST.append(link)
+	url = url + '?watch=1'
+	html = openURL(url,'',headers,'','SHAHID4U-PLAY-2nd')
+	#xbmcgui.Dialog().ok(html,html)
+	html_blocks = re.findall('li.server"(.*?)id="DataServers',html,re.DOTALL)
+	block = html_blocks[0]
+	items = re.findall('url: \'(.*?)\'.*?data: \'(.*?)\'',block,re.DOTALL)
+	url = items[0][0]+'?'+items[0][1]
+	items = re.findall('server\((.*?)\)',block,re.DOTALL)
+	for link in items:
+		html = openURL(url+link,'',headers,'','SHAHID4U-PLAY-3rd')
+		#html = html.replace('SRC=','src=')
+		links = re.findall('src="(.*?)"',html,re.DOTALL)
+		linkLIST.append(links[0])
+	from RESOLVERS import PLAY as RESOLVERS_PLAY
+	RESOLVERS_PLAY(linkLIST,script_name,'yes')
+
+def SEARCH():
+	search = KEYBOARD()
+	if search == '': return
+	search = search.replace(' ','+')
+	url = website0a + '/?s=' + search
+	ITEMS(url)
+
+
+

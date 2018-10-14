@@ -58,3 +58,8 @@ v2.3.0
 Added "Tv Channels"
 
 
+v2.4.0
+Added new website "SHAHID4U"
+
+
+

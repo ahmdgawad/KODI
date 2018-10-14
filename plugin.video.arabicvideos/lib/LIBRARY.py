@@ -112,6 +112,7 @@ def addDir(name,url='',mode='',iconimage=icon,page='',category=''):
 	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
 	liz.setInfo( type="Video", infoLabels={ "Title": name } )
 	liz.setProperty('fanart_image', fanart)
+	#liz.setProperty('IsPlayable', 'true')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=True)
 
 def mixARABIC(string):
@@ -149,6 +150,9 @@ def KEYBOARD(label='Search'):
 def PLAY_VIDEO(url,label,showWatched='yes'):
 	play_item = xbmcgui.ListItem(path=url)
 	if showWatched=='yes':
+		#xbmcgui.Dialog().ok(url,label)
+		#title = xbmc.getInfoLabel('ListItem.Label')
+		#play_item.setInfo( "video", { "Title": title } )
 		xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
 	else:
 		title = xbmc.getInfoLabel('ListItem.Label')

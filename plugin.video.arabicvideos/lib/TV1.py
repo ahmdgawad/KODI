@@ -24,7 +24,8 @@ def ITEMS():
 		for link,img,title in itemsSorted:
 			addLink(title,link,101,img,'','no')
 	else:
-		addLink('للأسف القنوات لا تعمل على جهازك','',9999)
+		addLink('للأسف القنوات التلفزونية غير متاحة لك','',9999)
+		addLink('Unfortunately TV channels not for you','',9999)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(id):
