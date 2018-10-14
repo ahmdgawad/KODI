@@ -17,15 +17,20 @@ def ITEMS():
 		html = openURL(website0a,data,'','','TV1-ITEMS-1st')
 		html = html.replace('Al ','Al')
 		items = re.findall('&ppoint=(.*?)_.*?src="(.*?)"/>(.*?)<',html,re.DOTALL)
+		if not items: break
 		itemsAll += items
-	itemsAll = set(itemsAll)
-	itemsSorted = sorted(itemsAll, reverse=False, key=lambda key: key[2])
-	if itemsSorted:
+	if itemsAll:
+		#xbmcgui.Dialog().ok(html,html)
+		itemsAll = set(itemsAll)
+		itemsSorted = sorted(itemsAll, reverse=False, key=lambda key: key[2])
 		for link,img,title in itemsSorted:
 			addLink(title,link,101,img,'','no')
 	else:
-		addLink('للأسف القنوات التلفزونية غير متاحة لك','',9999)
-		addLink('Unfortunately TV channels not for you','',9999)
+		addLink('للأسف لا توجد قنوات تلفزونية لك','',9999)
+		addLink('هذه الخدمة مخصصة للاقرباء والاصدقاء فقط','',9999)
+		addLink('=========================','',9999)
+		addLink('Unfortunately, no TV channels for you','',9999)
+		addLink('It is for relatives & friends only','',9999)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(id):

@@ -27,7 +27,7 @@ def MENU():
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def ITEMS(url):
-	dirLIST = [ '/series/' , '/ramadan/' , '?s=' ]
+	dirLIST = ['/category/series','/category/ramadan','?s=',quote('/category/برامج-تلفزيونية').lower()]
 	if any(value in url for value in dirLIST):
 		directory = True
 	else:
@@ -42,7 +42,8 @@ def ITEMS(url):
 	block = html_blocks[0]
 	items = re.findall('src="(.*?)".*?movief"><a href="(.*?)">(.*?)<',block,re.DOTALL)
 	allTitles = []
-	itemLIST = ['الحلقة','فيلم','اغنية','كليب']
+	itemLIST = ['الحلقة','فيلم','اغنية','كليب','اعلان']
+	#xbmcgui.Dialog().ok(quote('/category/برامج-تلفزيونية'),'')
 	for img,link,title in items:
 		link = unquote(link)
 		#title = title.replace('\n','')
@@ -52,13 +53,15 @@ def ITEMS(url):
 			if episode:
 				title = title.replace(episode[0],'')
 				title = title.replace(' والاخيرة','')
+		if any(value in title for value in itemLIST):
+			directory = False
 		title = unescapeHTML(title)
 		if title not in allTitles:
 			allTitles.append(title)
-			if any(value in title for value in itemLIST):
-				addLink(title,link,112,img)
-			elif directory is True:
+			if directory is True:
 				addDir(title,link,111,img)
+			else:
+				addLink(title,link,112,img)
 	html_blocks = re.findall('class="pagination(.*?)</div>',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]

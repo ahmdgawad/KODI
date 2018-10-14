@@ -62,4 +62,6 @@ v2.4.0
 Added new website "SHAHID4U"
 
 
+v2.5.0
+Modified addon icon
 
