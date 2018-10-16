@@ -16,15 +16,15 @@ def MAIN(mode,url,category):
 	elif mode==48: PROGRAMS()
 
 def MENU():
-	addDir('بحث في الموقع','',41,icon)
-	addDir('برامج القناة','',48,icon)
+	addDir('بحث في الموقع','',41)
+	addDir('برامج القناة','',48)
 	html = openURL(website0a,'','','','ALMAAREF-MENU-1st')
 	items = re.findall('<h2><a href="(.*?)">(.*?)</a></h2>',html,re.DOTALL)
 	for link,name in items:
-		addDir(name,link,47,icon)
+		addDir(name,link,47)
 	name = re.findall('recent-default.*?<h2>(.*?)</h2>',html,re.DOTALL)
 	if name:
-		addDir(name[0],website0a,46,icon)
+		addDir(name[0],website0a,46)
 	name = re.findall('categories"><div class="widget-top"><h4>(.*?)</h4>',html,re.DOTALL)
 	if name:
 		addDir(name[0],website0a,44,icon,'','0')
@@ -64,8 +64,8 @@ def TITLES(url,select):
 			for url,title in items:
 				title = unescapeHTML(title)
 				title = 'صفحة ' + title
-				if select==2: addDir(title,url,46,'')
-				else: addDir(title,url,47,'')
+				if select==2: addDir(title,url,46)
+				else: addDir(title,url,47)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def EPISODES(url):
@@ -101,6 +101,7 @@ def EPISODES(url):
 def PLAY(url):
 	url = url.replace(' ','%20')
 	PLAY_VIDEO(url,script_name)
+	return
 
 def CATEGORIES(url,category):
 	#xbmcgui.Dialog().ok(type, url)
@@ -116,7 +117,7 @@ def CATEGORIES(url,category):
 			url = website0a + '/' + link
 			if cat == '-165': title = 'السيد صباح شبر (60)'
 			if '-' in cat: addDir(title,url,44,icon,'',cat)
-			else: addDir(title,url,42,icon)
+			else: addDir(title,url,42)
 			exist=True
 	if exist: xbmcplugin.endOfDirectory(addon_handle)
 	else: TITLES(url,3)
@@ -135,6 +136,6 @@ def PROGRAMS():
 	block= html_blocks[0]
 	items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
 	for link,title in items:
-		addDir(title,link,44,icon)
+		addDir(title,link,44)
 	xbmcplugin.endOfDirectory(addon_handle)
 

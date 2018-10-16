@@ -4,9 +4,9 @@ from LIBRARY import *
 script_name='RESOLVERS'
 
 def RESOLVABLE(url):
-	result = 0
+	result = 33
 	if 'akoam.net' in url and '?' not in url: result = 1
-	#elif 'rapidvideo' 	in url: result = 2
+	elif 'rapidvideo' 	in url: result = 2
 	#elif 'mystream' 	in url: result = 3
 	elif 'vidshare' 	in url: result = 4
 	elif 'uqload' 		in url: result = 5
@@ -27,13 +27,51 @@ def RESOLVABLE(url):
 	elif 'vidbom'		in url: result = 20
 	elif 'vidbob'		in url: result = 21
 	elif 'uptostream'	in url: result = 22
+	elif 'arabloads'	in url: result = 23
+	elif 'top4top'		in url: result = 24
+	elif 'zippyshare'	in url: result = 25
+	elif 'gounlimited'	in url: result = 26
+	return result
+
+def SERVERNAME(url):
+	result = ''
+	if 'akoam.net' in url and '?' not in url: result = 'akoam'
+	elif 'rapidvideo' 	in url: result = 'rapidvideo'
+	#elif 'mystream' 	in url: result = 'mystream'
+	elif 'vidshare' 	in url: result = 'vidshare'
+	elif 'uqload' 		in url: result = 'uqload'
+	elif 'vcstream' 	in url: result = 'vcstream'
+	elif 'vidoza' 		in url: result = 'vidoza'
+	elif 'watchvideo' 	in url: result = 'watchvideo'
+	elif 'upbom' 		in url: result = 'upbom'
+	elif 'liivideo' 	in url: result = 'liivideo'
+	elif 'vidhd' 		in url: result = 'vidhd'
+	elif 'intoupload' 	in url: result = 'intoupload'
+	elif 'estream'	 	in url: result = 'estream'
+	elif 'vev.io'	 	in url: result = 'vev'
+	elif 'youtu'	 	in url: result = 'youtube'
+	elif 'catch.is'	 	in url: result = 'catch'
+	elif 'load.is'	 	in url: result = 'load'
+	elif 'golink'	 	in url: result = 'golink'
+	elif 'go2ooo'		in url: result = 'go2ooo'
+	elif 'vidbom'		in url: result = 'vidbom'
+	elif 'vidbob'		in url: result = 'vidbob'
+	elif 'uptostream'	in url: result = 'uptostream'
+	elif 'arabloads'	in url: result = 'arabloads'
+	elif 'top4top'		in url: result = 'top4top'
+	elif 'zippyshare'	in url: result = 'zippyshare'
+	elif 'gounlimited'	in url: result = 'gounlimited'
+	#elif 'ok.ru'		in url: result = 'ok.ru'
+	#elif 'openload'		in url: result = 'openload'
+	#elif 'streamango'	in url: result = 'streamango'
+	#elif 'uptobox'		in url: result = 'uptobox'
 	return result
 
 def RESOLVE(url):
 	videoURL = ''
 	if 'akoam.net' in url and '?' not in url: videoURL = AKOAMNET(url)
 	elif 'rapidvideo' 	in url: videoURL = RAPIDVIDEO(url)
-	elif 'mystream' 	in url: videoURL = MYSTREAM(url)
+	#elif 'mystream' 	in url: videoURL = MYSTREAM(url)
 	elif 'vidshare' 	in url: videoURL = VIDSHARE(url)
 	elif 'uqload' 		in url: videoURL = UQLOAD(url)
 	elif 'vcstream' 	in url: videoURL = VCSTREAM(url)
@@ -53,6 +91,10 @@ def RESOLVE(url):
 	elif 'vidbom'		in url: videoURL = VIDBOM(url)
 	elif 'vidbob'		in url: videoURL = VIDBOB(url)
 	elif 'uptostream'	in url: videoURL = UPTOSTREAM(url)
+	elif 'arabloads'	in url: videoURL = ARABLOADS(url)
+	elif 'top4top'		in url: videoURL = TOP4TOP(url)
+	elif 'zippyshare'	in url: videoURL = ZIPPYSHARE(url)
+	elif 'gounlimited'	in url: videoURL = GOUNLIMITED(url)
 	return videoURL
 
 def SERVERS(linkLIST):
@@ -61,29 +103,33 @@ def SERVERS(linkLIST):
 	serversSTATUS = []
 	serversDICT = {}
 	linkLIST = set(linkLIST)
-	for i in range(0,25):
+	for i in range(0,34):
 		serversSTATUS.append('')
 	for link in linkLIST:
 		server = RESOLVABLE(link)
-		if server>0:
-			if server<10: serverNum = '0' + str(server)
-			else: serverNum = str(server)
-			serversDICT[serverNum+serversSTATUS[server]] = link
-			if serversSTATUS[server]=='': serversSTATUS[server] = 'a'
-			else: serversSTATUS[server] = chr(ord(serversSTATUS[server])+1)
-	for i in sorted(serversDICT.keys()):
-		serversLIST.append('سيرفر '+i)
+		if server<10: serverNum = '0' + str(server)
+		else: serverNum = str(server)
+		#xbmcgui.Dialog().ok(link,serverNum)
+		serversDICT[serverNum+serversSTATUS[server]] = link
+		if serversSTATUS[server]=='': serversSTATUS[server] = 'a'
+		else: serversSTATUS[server] = chr(ord(serversSTATUS[server])+1)
+	sortedList = sorted(serversDICT.keys())
+	for i in sortedList:
+		if i[0:2]=='33': serversLIST.append('سيرفر مجهول ' + SERVERNAME(serversDICT[i]))
+		else: serversLIST.append('سيرفر ' + SERVERNAME(serversDICT[i]))
 		urlLIST.append(serversDICT[i])
 	return serversLIST,urlLIST
 
 def PLAY(linkLIST,script_name,play='yes'):
 	serversLIST,urlLIST = SERVERS(linkLIST)
 	selection = xbmcgui.Dialog().select('اختر السيرفر المناسب:', serversLIST)
-	if selection == -1 : return
+	if selection == -1 : return ''
 	url = urlLIST[selection]
 	videoURL = RESOLVE(url)
-	#xbmcgui.Dialog().ok(url,'')
-	if play=='yes': PLAY_VIDEO(videoURL,script_name)
+	if videoURL=='':
+		import PROBLEMS
+		PROBLEMS.MAIN(1006)
+	elif play=='yes': PLAY_VIDEO(videoURL,script_name)
 	return videoURL
 
 def RAPIDVIDEO(url):
@@ -269,6 +315,65 @@ def UPTOSTREAM(url):
 	items = re.findall('src":"(.*?)"',html,re.DOTALL)
 	url = items[0].replace('\/','/')
 	#xbmcgui.Dialog().ok('load.is',url)
+	return url
+
+def ARABLOADS(url):
+	html = openURL(url,'','','','RESOLVERS-ARABLOADS-1st')
+	items = re.findall('color="red">(.*?)<',html,re.DOTALL)
+	return url
+
+def TOP4TOP(url):
+	return url
+
+def ZIPPYSHARE(url):
+	#xbmcgui.Dialog().ok(url,'')
+	server = url.split('/')
+	basename = '/'.join(server[0:3])
+	html = openURL(url,'','','','RESOLVERS-ZIPPYSHARE-1st')
+	items = re.findall('dlbutton\'\).href = "(.*?)" \+ \((.*?) \% (.*?) \+ (.*?) \% (.*?)\) \+ "(.*?)"',html,re.DOTALL)
+	var1,var2,var3,var4,var5,var6 = items[0]
+	var = int(var2) % int(var3) + int(var4) % int(var5)
+	url = basename + var1 + str(var) + var6
+	#xbmcgui.Dialog().ok(url,str(var))
+	return url
+
+def GOUNLIMITED_TEST(url):
+	url = url.replace('embed-','')
+	headers = { 'User-Agent' : '' }
+	html = openURL(url,'',headers,'','RESOLVERS-GOUNLIMITED-1st')
+	items = re.findall('data(.*?)hide.*?embed(.*?)hash',html,re.DOTALL)
+	id = items[0][0].replace('|','')
+	hash = items[0][1].split('|')
+	newhash = ''
+	for i in reversed(hash):
+		newhash += i + '-'
+	newhash = newhash.strip('-')
+	#url = 'https://gounlimited.to/dl?op=view&file_code='+id+'&hash='+newhash+'&embed=&adb=1'
+	#html = openURL(url,'',headers,'','RESOLVERS-GOUNLIMITED-1st')
+
+	import requests
+	url = "https://gounlimited.to/dl"
+	querystring = { "op":"view","file_code":"o1yo2xwdmk0l","hash":newhash,"embed":"","adb":"1" }
+	headers = {
+		'accept': "*/*",
+		'dnt': "1",
+		'x-requested-with': "XMLHttpRequest",
+		'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
+		'referer': "https://gounlimited.to/o1yo2xwdmk0l.html",
+		'accept-encoding': "gzip, deflate, br",
+		'accept-language': "en-US,en;q=0.9,ar;q=0.8"
+		}
+	html = requests.request("GET", url, headers=headers, params=querystring)
+
+	items = re.findall('video="" src="(.*?)"',html.text,re.DOTALL)
+	xbmcgui.Dialog().ok(str(html.content),str(len(html.content)))
+	return items[0]
+
+def GOUNLIMITED(url):
+	headers = { 'User-Agent' : '' }
+	html = openURL(url,'',headers,'','RESOLVERS-GOUNLIMITED-1st')
+	items = re.findall('preload\|mp4\|(.*?)\|sources\|Player',html,re.DOTALL)
+	url = 'https://shuwaikh.gounlimited.to/'+items[0]+'/v.mp4'
 	return url
 
 

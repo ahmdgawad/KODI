@@ -14,13 +14,13 @@ def MAIN(mode,url):
 	elif mode==54: SEARCH()
 
 def MENU():
-	addDir('بحث في الموقع','',54,icon)
-	addDir('افلام بحسب السنة',website0a+'/movie/1/yop',51,icon)
-	addDir('افلام بحسب التقييم',website0a+'/movie/1/review',51,icon)
-	addDir('افلام بحسب المشاهدة',website0a+'/movie/1/views',51,icon)
-	addDir('مسلسلات بحسب السنة',website0a+'/series/1/yop',51,icon)
-	addDir('مسلسلات بحسب التقييم',website0a+'/series/1/review',51,icon)
-	addDir('مسلسلات بحسب المشاهدة',website0a+'/series/1/views',51,icon)
+	addDir('بحث في الموقع','',54)
+	addDir('افلام بحسب السنة',website0a+'/movie/1/yop',51)
+	addDir('افلام بحسب التقييم',website0a+'/movie/1/review',51)
+	addDir('افلام بحسب المشاهدة',website0a+'/movie/1/views',51)
+	addDir('مسلسلات بحسب السنة',website0a+'/series/1/yop',51)
+	addDir('مسلسلات بحسب التقييم',website0a+'/series/1/review',51)
+	addDir('مسلسلات بحسب المشاهدة',website0a+'/series/1/views',51)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def TITLES(url):
@@ -45,7 +45,7 @@ def TITLES(url):
 		for count_page in range(1,13) :
 			if not page==str(count_page):
 				url = website0a+'/filter-programs/'+type+'/'+str(count_page)+'/'+sort
-				addDir(title+str(count_page),url,51,icon)
+				addDir(title+str(count_page),url,51)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def EPISODES(url):
@@ -120,6 +120,7 @@ def PLAY(url):
 	#url = mixARABIC(url)
 	#xbmcgui.Dialog().ok(url,'' )
 	PLAY_VIDEO(url,script_name)
+	return
 
 def SEARCH():
 	search = KEYBOARD()

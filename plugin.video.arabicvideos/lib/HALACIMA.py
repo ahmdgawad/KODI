@@ -15,9 +15,9 @@ def MAIN(mode,url,page):
 
 def MENU():
 	addDir('بحث في الموقع','',83)
-	addDir('جديد المسلسلات','',84,'',0)
-	addDir('افلام ومسلسلات مميزة','',85,'',0)
-	addDir('الاكثر مشاهدة','',86,'',0)
+	addDir('جديد المسلسلات','',84,icon,0)
+	addDir('افلام ومسلسلات مميزة','',85,icon,0)
+	addDir('الاكثر مشاهدة','',86,icon,0)
 	html = openURL(website0a,'','','','HALACIMA-MENU-1st')
 	html_blocks = re.findall('dropdown(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
@@ -66,9 +66,9 @@ def ITEMS(url,html='',type='',page=0):
 		for link,title in items:
 			title = title.replace('الصفحة ','')
 			addDir('صفحة '+title,link,81)
-	if type=='lastRecent': addDir('صفحة المزيد','',84,'',page+1)
-	elif type=='pin': addDir('صفحة المزيد','',85,'',page+1)
-	elif type=='views': addDir('صفحة المزيد','',86,'',page+1)
+	if type=='lastRecent': addDir('صفحة المزيد','',84,icon,page+1)
+	elif type=='pin': addDir('صفحة المزيد','',85,icon,page+1)
+	elif type=='views': addDir('صفحة المزيد','',86,icon,page+1)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
@@ -98,6 +98,7 @@ def PLAY(url):
 		linkLIST.append(links[0])
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
+	return
 
 def SEARCH():
 	search = KEYBOARD()

@@ -13,7 +13,7 @@ def MAIN(mode,url):
 
 def MENU():
 	addDir('بحث في الموقع','',113)
-	addDir('المضاف حديثا',website0a,111,'',0)
+	addDir('المضاف حديثا',website0a,111)
 	html = openURL(website0a,'',headers,'','SHAHID4U-MENU-1st')
 	html_blocks = re.findall('menu-master(.*?)header>',html,re.DOTALL)
 	#xbmcgui.Dialog().ok(html,html)
@@ -95,6 +95,7 @@ def PLAY(url):
 		linkLIST.append(links[0])
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
+	return
 
 def SEARCH():
 	search = KEYBOARD()

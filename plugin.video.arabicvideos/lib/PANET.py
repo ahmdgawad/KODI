@@ -16,13 +16,13 @@ def MAIN(mode,url):
 	elif mode==36: CATEGORIES(url,'2')
 
 def MENU():
-	addDir('بحث عن افلام',website0a+'/search/result/title/movies',34,icon)
-	addDir('بحث عن مسلسلات',website0a+'/search/result/title/series',34,icon)
-	addDir('مسلسلات وبرامج',website0a+'/series/v1',31,icon)
-	addDir('افلام مصنفة حسب النوع',website0a+'/movies',35,icon)
-	addDir('افلام مصنفة حسب الممثل',website0a+'/movies',36,icon)
-	addDir('احدث الافلام',website0a+'/movies',32,icon)
-	addDir('مسرحيات',website0a+'/movies/genre/4/1',32,icon)
+	addDir('بحث عن افلام',website0a+'/search/result/title/movies',34)
+	addDir('بحث عن مسلسلات',website0a+'/search/result/title/series',34)
+	addDir('مسلسلات وبرامج',website0a+'/series/v1',31)
+	addDir('افلام مصنفة حسب النوع',website0a+'/movies',35)
+	addDir('افلام مصنفة حسب الممثل',website0a+'/movies',36)
+	addDir('احدث الافلام',website0a+'/movies',32)
+	addDir('مسرحيات',website0a+'/movies/genre/4/1',32)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def CATEGORIES(url,select=''):
@@ -37,7 +37,7 @@ def CATEGORIES(url,select=''):
 		for link,name in items:
 			url = website0a + link
 			name = name.strip(' ')
-			addDir(name,url,32,icon)
+			addDir(name,url,32)
 	if type=='movies':
 		html = openURL(url,'',headers,'','PANET-CATEGORIES-2nd')
 		if select=='1':
@@ -46,14 +46,14 @@ def CATEGORIES(url,select=''):
 			items=re.findall('option><option value="(.*?)">(.*?)<',block,re.DOTALL)
 			for value,name in items:
 				url = website0a + '/movies/genre/' + value
-				addDir(name,url,32,icon)
+				addDir(name,url,32)
 		elif select=='2':
 			html_blocks=re.findall('moviesActor(.*?)select',html,re.DOTALL)
 			block = html_blocks[0]
 			items=re.findall('option><option value="(.*?)">(.*?)<',block,re.DOTALL)
 			for value,name in items:
 				url = website0a + '/movies/actor/' + value
-				addDir(name,url,32,icon)
+				addDir(name,url,32)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def ITEMS(url):
@@ -105,7 +105,7 @@ def ITEMS(url):
 	for link,page in items:
 		url = website0a + link 
 		name = 'صفحة ' + page
-		addDir(name,url,32,icon)
+		addDir(name,url,32)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
@@ -121,6 +121,7 @@ def PLAY(url):
 		items = re.findall('contentURL" content="(.*?)"',html,re.DOTALL)
 		url = items[0]
 	PLAY_VIDEO(url,script_name)
+	return
 
 def SEARCH(url):
 	search = KEYBOARD()
@@ -134,8 +135,8 @@ def SEARCH(url):
 	for title,link in items:
 		url = website0a + link.replace('\/','/')
 		#xbmcgui.Dialog().ok(title, url.split('/')[-1]   )
-		if type=='movies': addLink(title,url,33,icon)
-		else: addDir(title,url+'/1',32,icon)
+		if type=='movies': addLink(title,url,33)
+		else: addDir(title,url+'/1',32)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 

@@ -13,7 +13,7 @@ def MAIN(mode,url,category):
 	elif mode==65: MOSTS(category)
 
 def MENU():
-	addDir('بحث في الموقع','',64,icon)
+	addDir('بحث في الموقع','',64)
 	addDir('ما يتم مشاهدته الان',website0a,65,icon,'',1)
 	addDir('الاكثر مشاهدة',website0a,65,icon,'',2)
 	addDir('اضيفت مؤخرا',website0a,65,icon,'',3)
@@ -48,7 +48,7 @@ def TITLES(url,category):
                                	addDir(titleCAT,website0a,61,icon,'',cat)
 		elif startADD==False:
 			if category==cat: startADD = True
-		elif count=='1': addLink(title,link,63,icon)
+		elif count=='1': addLink(title,link,63)
 		else: addDir(titleCAT,website0a,61,icon,'',cat)
 	if category!='-1' and category!='-2' and category!='-3':
 		EPISODES(website0a+'/videos.php?cat='+category)
@@ -76,7 +76,7 @@ def EPISODES(url):
 		#xbmcgui.Dialog().ok(category, page)
 		if page=='1':
 			addDir(title,website0a,61,icon,'',category)
-		else: addDir(title,link,62,icon)
+		else: addDir(title,link,62)
 	if 'page' in url: xbmcplugin.endOfDirectory(addon_handle)
 	return link
 
@@ -89,6 +89,7 @@ def PLAY(url):
 	url = items[0]
 	#xbmcgui.Dialog().ok(url,'')
 	PLAY_VIDEO(url,script_name)
+	return
 
 def SEARCH():
 	search = KEYBOARD()

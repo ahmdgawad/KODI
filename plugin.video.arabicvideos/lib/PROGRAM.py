@@ -71,10 +71,14 @@ def MAIN(mode,text=''):
 		return
 
 	elif mode==9:
-		#PLAY_VIDEO(url,script_name,'yes')
+		import RESOLVERS
+		#url = RESOLVERS.ZIPPYSHARE('https://www92.zippyshare.com/v/rkVC21XW/file.html')
+		urllist = ['https://gounlimited.to/embed-o1yo2xwdmk0l.html']
+		url = RESOLVERS.PLAY(urllist,script_name,'no')
+		PLAY_VIDEO(url,script_name,'yes')
 		#import logging
-		var1 = dummyClientID()
-		xbmcgui.Dialog().ok(var1,'')
+		#var1 = dummyClientID()
+		#xbmcgui.Dialog().ok(url,url)
 
 
 

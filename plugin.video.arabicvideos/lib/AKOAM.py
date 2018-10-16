@@ -57,7 +57,7 @@ def TITLES(url,type):
 		block = html_blocks[0]
 		items = re.findall('li>\n<a href=\'(.*?)\'>(.*?)<',block,re.DOTALL)
 		for link,title in items:
-			addDir('صفحة '+title,link,72,img)
+			addDir('صفحة '+title,link,72)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def EPISODES(url):
@@ -112,6 +112,7 @@ def PLAY(url):
 	url = RESOLVERS_PLAY(linkLIST,script_name,'no')
 	vidoeURL = RESOLVE_AKOAM(url)
 	PLAY_VIDEO(vidoeURL,script_name)
+	return
 
 def SEARCH():
 	search = KEYBOARD()

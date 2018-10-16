@@ -76,6 +76,7 @@ def PLAY(url):
 		linkLIST.append(link)
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
+	return
 
 def SEARCH():
 	search = KEYBOARD()

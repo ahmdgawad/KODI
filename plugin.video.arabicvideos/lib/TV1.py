@@ -43,5 +43,6 @@ def PLAY(id):
 	url = items[0]
 	url = url.replace('\\','')
 	PLAY_VIDEO(url,script_name,'no')
+	return
 
 

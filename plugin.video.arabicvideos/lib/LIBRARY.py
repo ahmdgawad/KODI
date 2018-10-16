@@ -8,9 +8,10 @@ fanart = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , '
 icon = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
 
 def addLink(name,url,mode,iconimage=icon,duration='',isPlayable='yes'):
+	if iconimage=='': iconimage=icon
 	#xbmcgui.Dialog().ok(duration,'')
 	u='plugin://'+addon_id+'/?mode='+str(mode)+'&url='+quote(url)
-	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
+	liz=xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 	liz.setProperty('fanart_image', fanart)
 	liz.setInfo('Video', {'mediatype': 'video'})
 	if duration != '' :
@@ -21,6 +22,7 @@ def addLink(name,url,mode,iconimage=icon,duration='',isPlayable='yes'):
 	if isPlayable=='yes': liz.setProperty('IsPlayable', 'true')
 	xbmcplugin.setContent(addon_handle, 'videos')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=False)
+	return
 
 def openURL(url,data='',headers='',showDialogs='',source=''):
 	if showDialogs=='': showDialogs='yes'
@@ -105,15 +107,17 @@ def escapeUNICODE(string):
 	return string
 
 def addDir(name,url='',mode='',iconimage=icon,page='',category=''):
+	if iconimage=='': iconimage=icon
 	u='plugin://'+addon_id+'/?mode='+str(mode)
 	if url != '' : u = u + '&url=' + quote(url)
 	if page != '' : u = u + '&page=' + str(page)
 	if category != '' : u = u + '&category=' + str(category)
-	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
+	liz=xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 	liz.setInfo( type="Video", infoLabels={ "Title": name } )
 	liz.setProperty('fanart_image', fanart)
 	#liz.setProperty('IsPlayable', 'true')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=True)
+	return
 
 def mixARABIC(string):
 	#if '\u' in string:
@@ -162,6 +166,7 @@ def PLAY_VIDEO(url,label,showWatched='yes'):
 	randomNumber = str(random.randrange(111111111111,999999999999))
 	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
 	openURL(url,'','','no','LIBRARY-PLAY_VIDEO-1st')
+	return
 
 def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 	yes = True

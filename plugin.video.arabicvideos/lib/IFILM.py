@@ -33,7 +33,7 @@ def MAIN_MENU(website0):
 	elif lang=='en': name = 'Search in site'
 	elif lang=='fa': name = 'جستجو در سایت'
 	elif lang=='fa2': name = 'جستجو در سایت'
-	addDir(name,website0,26,icon)
+	addDir(name,website0,26)
 	html_blocks=re.findall('main-body.*?menu(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
@@ -205,6 +205,7 @@ def EPISODES(url,page):
 
 def PLAY(url):
 	PLAY_VIDEO(url,script_name)
+	return
 	
 def SITE(url):
 	if website0a in url: site = website0a

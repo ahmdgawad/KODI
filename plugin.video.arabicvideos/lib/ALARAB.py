@@ -17,16 +17,16 @@ def MAIN(mode,url):
 	#elif mode==15: RAMADAN('?year=2018')
 
 def MENU():
-	addDir('بحث في الموقع','',13,icon)
-	addDir('مسلسلات جديدة','',14,icon)
-	#addDir('مسلسلات رمضان','',15,icon)
+	addDir('بحث في الموقع','',13)
+	addDir('مسلسلات جديدة','',14)
+	#addDir('مسلسلات رمضان','',15)
 	html = openURL(website0b,'','','','ALARAB-MENU-1st')
 	html_blocks=re.findall('footer_sec(.*?)social-network',html,re.DOTALL)
 	block=html_blocks[0]
 	#xbmcgui.Dialog().ok(str(len(html)), str(len(block)) )
 	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	for url,name in items:
-		addDir(name,url,11,icon)
+		addDir(name,url,11)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def LATEST():
@@ -54,7 +54,7 @@ def ITEMS(url):
 	items = re.findall('tsc_3d_button red.*?href="(.*?)" title="(.*?)"',block,re.DOTALL)
 	for link,page in items:
 		url = website0a + link
-		addDir(page,url,11,icon)
+		addDir(page,url,11)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def PLAY(url):
@@ -106,6 +106,7 @@ def PLAY(url):
 		if selection == -1 : return
 		url = new_items_url[selection]
 	PLAY_VIDEO(url,script_name)
+	return
 
 def SEARCH():
 	search = KEYBOARD()

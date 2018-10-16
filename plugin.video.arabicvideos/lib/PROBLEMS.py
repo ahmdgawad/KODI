@@ -3,16 +3,12 @@ from LIBRARY import *
 
 def MAIN(mode):
         if mode==1000:
-        	title0a = 'Problem:   Can\'t see Arabic Text'
-        	title0b = 'في موقع كل العرب - الفيديو لا يعمل   :مشكلة'
-        	title0c = 'بعض الروابط لا تعمل   :مشكلة'
-        	title0d = 'لا توجد مواقع مخصصة للافلام والمسلسلات الاجنبية   :مشكلة'
-        	title0e = 'بعض الروابط بطيئة   :مشكلة'
-        	addDir(title0a,'',1001)
-       		addDir(title0b,'',1002)
-        	addDir(title0c,'',1003)
-        	addDir(title0d,'',1004)
-        	addDir(title0e,'',1005)
+        	addDir('Problem:   Can\'t see Arabic Text or Letters','',1001)
+       		addDir('في موقع كل العرب - الفيديو لا يعمل   :مشكلة','',1002)
+        	addDir('بعض الروابط لا تعمل   :مشكلة','',1003)
+        	addDir('لا توجد مواقع مخصصة للافلام والمسلسلات الاجنبية   :مشكلة','',1004)
+        	addDir('بعض الروابط بطيئة   :مشكلة','',1005)
+        	addDir('لماذا يوجد سيرفرات مجهولة او سيئة   :مشكلة','',1006)
         	xbmcplugin.endOfDirectory(addon_handle)
 
 	elif mode==1001:
@@ -41,5 +37,10 @@ def MAIN(mode):
 		message = 'الروابط البطيئة لا علاقة لها بالبرنامج وغالبا السبب هو من الموقع الاصلي المغذي للبرنامج'
 		xbmcgui.Dialog().ok('روابط بطيئة',message)
 
+	elif mode==1006:
+		message = 'هي سيرفرات لا يستطيع البرنامج استخدامها بسبب كونها محمية من المصدر او بحاجة الى اشتراك رسمي او جديدة او لا يعرفها البرنامج'
+		xbmcgui.Dialog().ok('سيرفرات سيئة او مجهولة',message)
 
+	return
+		
 
