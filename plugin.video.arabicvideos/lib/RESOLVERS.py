@@ -118,7 +118,7 @@ def RESOLVE(url):
 	elif 'mp4upload'	in url: videoURL = MP4UPLOAD(url)
 	return videoURL
 
-def SERVERS(linkLIST):
+def SERVERS(linkLIST,script_name=''):
 	serversLIST = []
 	urlLIST = []
 	unknownLIST = ''
@@ -148,11 +148,11 @@ def SERVERS(linkLIST):
 	if lines>0:
 		message = '\\n'+unknownLIST
 		subject = 'Unknown Resolvers = ' + str(lines)
-		result = SEND_EMAIL(subject,message,'no','','EMAIL-FROM-RESOLVERS')
+		result = SEND_EMAIL(subject,message,'no','','FROM-RESOLVERS-'+script_name)
 	return serversLIST,urlLIST
 
 def PLAY(linkLIST,script_name,play='yes'):
-	serversLIST,urlLIST = SERVERS(linkLIST)
+	serversLIST,urlLIST = SERVERS(linkLIST,script_name)
 	selection = xbmcgui.Dialog().select('اختر السيرفر المناسب:', serversLIST)
 	if selection == -1 : return ''
 	url = urlLIST[selection]
