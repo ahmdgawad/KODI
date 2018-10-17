@@ -73,7 +73,7 @@ def MAIN(mode,text=''):
 	elif mode==9:
 		import RESOLVERS
 		#url = RESOLVERS.ZIPPYSHARE('https://www92.zippyshare.com/v/rkVC21XW/file.html')
-		urllist = ['https://gounlimited.to/embed-o1yo2xwdmk0l.html']
+		urllist = ['https://www.mp4upload.com/embed-6we8hbajr3c4.html']
 		url = RESOLVERS.PLAY(urllist,script_name,'no')
 		PLAY_VIDEO(url,script_name,'yes')
 		#import logging

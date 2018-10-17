@@ -3,11 +3,27 @@ from LIBRARY import *
 
 script_name='RESOLVERS'
 
+def CHECK(link):
+	#if RESOLVABLE(link)==33:
+	url = 'http://emadmahdi.pythonanywhere.com/check?url='
+	result = openURL(url+link,'','','','RESOLVERS-UNKNOWN-1st')
+	#else:
+	#	result='known'
+	return result
+	"""
+	result = 'unknown'
+	if   'openload' 	in link: result = 'known'
+	elif 'streamango' 	in link: result = 'known'
+	elif 'ok.ru' 		in link: result = 'known'
+	elif '1fichier' 	in link: result = 'known'
+	return result
+	"""
+
 def RESOLVABLE(url):
 	result = 33
-	if 'akoam.net' in url and '?' not in url: result = 1
+	if 'akoam.net' 		in url and '?' not in url: result = 1
 	elif 'rapidvideo' 	in url: result = 2
-	#elif 'mystream' 	in url: result = 3
+	elif 'uptobox' 		in url: result = 3
 	elif 'vidshare' 	in url: result = 4
 	elif 'uqload' 		in url: result = 5
 	elif 'vcstream' 	in url: result = 6
@@ -31,13 +47,15 @@ def RESOLVABLE(url):
 	elif 'top4top'		in url: result = 24
 	elif 'zippyshare'	in url: result = 25
 	elif 'gounlimited'	in url: result = 26
+	elif 'thevideo'		in url: result = 27
+	elif 'mp4upload'	in url: result = 28
 	return result
 
 def SERVERNAME(url):
 	result = ''
 	if 'akoam.net' in url and '?' not in url: result = 'akoam'
 	elif 'rapidvideo' 	in url: result = 'rapidvideo'
-	#elif 'mystream' 	in url: result = 'mystream'
+	elif 'uptobox' 		in url: result = 'uptobox'
 	elif 'vidshare' 	in url: result = 'vidshare'
 	elif 'uqload' 		in url: result = 'uqload'
 	elif 'vcstream' 	in url: result = 'vcstream'
@@ -61,17 +79,18 @@ def SERVERNAME(url):
 	elif 'top4top'		in url: result = 'top4top'
 	elif 'zippyshare'	in url: result = 'zippyshare'
 	elif 'gounlimited'	in url: result = 'gounlimited'
+	elif 'thevideo'		in url: result = 'thevideo'
+	elif 'mp4upload'	in url: result = 'mp4upload'
 	#elif 'ok.ru'		in url: result = 'ok.ru'
-	#elif 'openload'		in url: result = 'openload'
+	#elif 'openload'	in url: result = 'openload'
 	#elif 'streamango'	in url: result = 'streamango'
-	#elif 'uptobox'		in url: result = 'uptobox'
 	return result
 
 def RESOLVE(url):
 	videoURL = ''
 	if 'akoam.net' in url and '?' not in url: videoURL = AKOAMNET(url)
 	elif 'rapidvideo' 	in url: videoURL = RAPIDVIDEO(url)
-	#elif 'mystream' 	in url: videoURL = MYSTREAM(url)
+	elif 'uptobox' 		in url: videoURL = UPTOBOX(url)
 	elif 'vidshare' 	in url: videoURL = VIDSHARE(url)
 	elif 'uqload' 		in url: videoURL = UQLOAD(url)
 	elif 'vcstream' 	in url: videoURL = VCSTREAM(url)
@@ -95,11 +114,14 @@ def RESOLVE(url):
 	elif 'top4top'		in url: videoURL = TOP4TOP(url)
 	elif 'zippyshare'	in url: videoURL = ZIPPYSHARE(url)
 	elif 'gounlimited'	in url: videoURL = GOUNLIMITED(url)
+	elif 'thevideo'		in url: videoURL = THEVIDEO(url)
+	elif 'mp4upload'	in url: videoURL = MP4UPLOAD(url)
 	return videoURL
 
 def SERVERS(linkLIST):
 	serversLIST = []
 	urlLIST = []
+	unknownLIST = ''
 	serversSTATUS = []
 	serversDICT = {}
 	linkLIST = set(linkLIST)
@@ -115,9 +137,18 @@ def SERVERS(linkLIST):
 		else: serversSTATUS[server] = chr(ord(serversSTATUS[server])+1)
 	sortedList = sorted(serversDICT.keys())
 	for i in sortedList:
-		if i[0:2]=='33': serversLIST.append('سيرفر مجهول ' + SERVERNAME(serversDICT[i]))
+		if i[0:2]=='33':
+			serversLIST.append('سيرفر مجهول ' + SERVERNAME(serversDICT[i]))
+			if CHECK(serversDICT[i])=='unknown':
+				unknownLIST += serversDICT[i]+'\\n'
 		else: serversLIST.append('سيرفر ' + SERVERNAME(serversDICT[i]))
 		urlLIST.append(serversDICT[i])
+	lines = len(unknownLIST.split('\\n'))-1
+	#xbmcgui.Dialog().ok(str(lines),'')
+	if lines>0:
+		message = '\\n'+unknownLIST
+		subject = 'Unknown Resolvers = ' + str(lines)
+		result = SEND_EMAIL(subject,message,'no','','EMAIL-FROM-RESOLVERS')
 	return serversLIST,urlLIST
 
 def PLAY(linkLIST,script_name,play='yes'):
@@ -135,12 +166,6 @@ def PLAY(linkLIST,script_name,play='yes'):
 def RAPIDVIDEO(url):
 	headers = { 'User-Agent' : '' }
 	html = openURL(url,'',headers,'','RESOLVERS-RAPIDVIDEO-1st')
-	items = re.findall('poster=.*?src="(.*?)"',html,re.DOTALL)
-	return items[0]
-
-def MYSTREAM(url):
-	headers = { 'User-Agent' : '' }
-	html = openURL(url,'',headers,'','RESOLVERS-MYSTREAM-1st')
 	items = re.findall('poster=.*?src="(.*?)"',html,re.DOTALL)
 	return items[0]
 
@@ -210,10 +235,10 @@ def INTOUPLOAD(url):
 	html_blocks = re.findall('POST.*?(.*?)clearfix',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('op" value="(.*?)".*?id" value="(.*?)".*?rand" value="(.*?)".*?left:(.*?)px;.*?&#(.*?);.*?left:(.*?)px;.*?&#(.*?);.*?left:(.*?)px;.*?&#(.*?);.*?left:(.*?)px;.*?&#(.*?);',block,re.DOTALL)
-	code = ''
 	for op,id,rand,pos1,num1,pos2,num2,pos3,num3,pos4,num4 in items:
 		a=1
 	captcha = { int(pos1):chr(int(num1)) , int(pos2):chr(int(num2)) , int(pos3):chr(int(num3)) , int(pos4):chr(int(num4)) }
+	code = ''
 	for char in sorted(captcha):
 		code += captcha[char]
 	#xbmcgui.Dialog().ok(code,str(captcha))
@@ -375,5 +400,51 @@ def GOUNLIMITED(url):
 	items = re.findall('preload\|mp4\|(.*?)\|sources\|Player',html,re.DOTALL)
 	url = 'https://shuwaikh.gounlimited.to/'+items[0]+'/v.mp4'
 	return url
+
+def UPTOBOX(url):
+	headers = { 'User-Agent' : '' }
+	html = openURL(url,'',headers,'','RESOLVERS-UPTOBOX-1st')
+	#xbmcgui.Dialog().ok(url,html)
+	items = re.findall('waitingToken\' value=\'(.*?)\'',html,re.DOTALL)
+	if items:
+		token = items[0]
+		headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
+		payload = { 'waitingToken' : token }
+		data = urllib.urlencode(payload)
+		progress = xbmcgui.DialogProgress()
+		progress.create('Waiting 35 seconds ...')
+		for i in range(0,35):
+			progress.update(i*100/35,str(35-i))
+			xbmc.sleep(1000)
+			if progress.iscanceled(): return
+		progress.close()
+		html = openURL(url,data,headers,'','RESOLVERS-UPTOBOX-2nd')
+		#xbmcgui.Dialog().ok(str(html),html)
+		#file = open('S:\emad3.html', 'w')
+		#file.write(token)
+		#file.write('\n\n\n')
+		#file.write(html)
+		#file.close()
+	items = re.findall('comparison-table.*?<a href="(.*?)"',html,re.DOTALL)
+	return items[0]
+
+def THEVIDEO(url):
+	url = url.replace('embed-','')
+	html = openURL(url,'','','','RESOLVERS-THEVIDEO-1st')
+	items = re.findall('direct link" value="(.*?)"',html,re.DOTALL)
+	link = items[0]
+	url = VEVIO(link)
+	#xbmcgui.Dialog().ok(str(items),html)
+	return url
+
+def MP4UPLOAD(url):
+	url = url.replace('embed-','')
+	url = url.replace('.html','')
+	id = url.split('/')[-1]
+	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
+	payload = { "id":id , "op":"download2" }
+	import requests
+	request = requests.post(url, headers=headers, data=payload, allow_redirects=False)
+	return request.headers['Location']
 
 
