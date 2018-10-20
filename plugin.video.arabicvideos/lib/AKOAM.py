@@ -13,6 +13,7 @@ def MAIN(mode,url):
 	elif mode==74: PLAY(url)
 	elif mode==75: SEARCH()
 	elif mode==76: TITLES(url,2)
+	return
 
 def MENU():
 	addDir('بحث في الموقع','',75)
@@ -26,6 +27,7 @@ def MENU():
 		if title not in ignoreLIST:
 			addDir(title,link,71)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def CATEGORIES(url):
 	html = openURL(url,'',headers,'','AKOAM-CATEGORIES-1st')
@@ -39,6 +41,7 @@ def CATEGORIES(url):
 		addDir('جميع الفروع',url,72)
 		xbmcplugin.endOfDirectory(addon_handle)
 	else: TITLES(url,1)
+	return
 
 def TITLES(url,type):
 	html = openURL(url,'',headers,'','AKOAM-TITLES-1st')
@@ -59,6 +62,7 @@ def TITLES(url,type):
 		for link,title in items:
 			addDir('صفحة '+title,link,72)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def EPISODES(url):
 	notvideosLIST = ['zip','rar','txt','pdf','htm','tar','iso','html']
@@ -86,20 +90,21 @@ def EPISODES(url):
 			link = url + '?ep='+str(count)
 			addLink(title,link,74,img)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def PLAY(url):
 	var = url.split('?ep=')
 	url = var[0]
 	episode = int(var[1])
 	#xbmcgui.Dialog().ok(url,'')
-	html = openURL(url,'',headers,'','AKOAM-EPISODES-1st')
+	html = openURL(url,'',headers,'','AKOAM-PLAY-1st')
 	html_blocks = re.findall('ad-300-250.*?ad-300-250(.*?)ako-feedback',html,re.DOTALL)
 	html_block = html_blocks[0].replace('\'direct_link_box\'','"direct_link_box epsoide_box"')
 	html_block = html_block + 'direct_link_box'
 	blocks = re.findall('epsoide_box(.*?)direct_link_box',html_block,re.DOTALL)
 	block = blocks[episode-1]
 	linkLIST = []
-	serversDICT = { '1430052371':'ok.ru' , '1477487601':'estream' , '1505328404':'streammango' , '1423080015':'flashx' , '1458117295':'openload' }
+	serversDICT = { '1430052371':'ok.ru' , '1477487601':'estream' , '1505328404':'streamango' , '1423080015':'flashx' , '1458117295':'openload' }
 	items = re.findall('download_btn\' target=\'_blank\' href=\'(.*?)\'',block,re.DOTALL)
 	for link in items:
 		linkLIST.append(link)
@@ -108,10 +113,9 @@ def PLAY(url):
 		serverIMG = serverIMG.split('/')[-1]
 		serverIMG = serverIMG.split('.')[0]
 		linkLIST.append(link+'?'+serversDICT[serverIMG])
+	linkLIST = set(linkLIST)
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
-	url = RESOLVERS_PLAY(linkLIST,script_name,'no')
-	vidoeURL = RESOLVE_AKOAM(url)
-	PLAY_VIDEO(vidoeURL,script_name)
+	RESOLVERS_PLAY(linkLIST,script_name)
 	return
 
 def SEARCH():
@@ -129,28 +133,8 @@ def SEARCH():
 		title = unescapeHTML(title)
 		addDir(title,link,73,img)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
-def RESOLVE_AKOAM(url):
-	id = url.split('/')[-1]
-	from RESOLVERS import RESOLVE as RESOLVERS_RESOLVE
-	url = 'http://load.is/' + id
-	url = RESOLVERS_RESOLVE(url)
-	if 'catch.is' in url:
-		id = url.split('%2F')[-1]
-		url = 'http://catch.is/'+id
-		url = RESOLVERS_RESOLVE(url)
-	else:
-		headers['X-Requested-With'] = 'XMLHttpRequest'
-		headers['Referer'] = url
-		html = openURL(url,'',headers,'','AKOAM-PLAY-3rd')
-		items1 = re.findall('<IFRAME SRC="(.*?)"',html,re.DOTALL)
-		items2 = re.findall('<iframe src="(.*?)"',html,re.DOTALL)
-	if items1:
-		url = items1[0].replace('\/','/')
-	elif items2:
-		url = items2[0].replace('\/','/')
-	else:
-		items = re.findall('direct_link":"(.*?)"',html,re.DOTALL)
-		url = items[0].replace('\/','/')
-	return url
+
+
 

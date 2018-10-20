@@ -10,6 +10,7 @@ def MAIN(mode,url):
 	elif mode==111: ITEMS(url)
 	elif mode==112: PLAY(url)
 	elif mode==113: SEARCH()
+	return
 
 def MENU():
 	addDir('بحث في الموقع','',113)
@@ -25,6 +26,7 @@ def MENU():
 		if not any(value in title for value in ignoreLIST):
 			addDir(title,link,111)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def ITEMS(url):
 	dirLIST = ['/category/series','/category/ramadan','?s=',quote('/category/برامج-تلفزيونية').lower()]
@@ -71,6 +73,7 @@ def ITEMS(url):
 			title = title.replace('الصفحة ','')
 			addDir('صفحة '+title,link,111)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def PLAY(url):
 	linkLIST = []
@@ -103,6 +106,7 @@ def SEARCH():
 	search = search.replace(' ','+')
 	url = website0a + '/?s=' + search
 	ITEMS(url)
+	return
 
 
 

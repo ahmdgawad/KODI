@@ -12,6 +12,7 @@ def MAIN(mode,url):
 	elif mode==52: EPISODES(url)
 	elif mode==53: PLAY(url)
 	elif mode==54: SEARCH()
+	return
 
 def MENU():
 	addDir('بحث في الموقع','',54)
@@ -22,6 +23,7 @@ def MENU():
 	addDir('مسلسلات بحسب التقييم',website0a+'/series/1/review',51)
 	addDir('مسلسلات بحسب المشاهدة',website0a+'/series/1/views',51)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def TITLES(url):
 	info = url.split('/')
@@ -47,6 +49,7 @@ def TITLES(url):
 				url = website0a+'/filter-programs/'+type+'/'+str(count_page)+'/'+sort
 				addDir(title+str(count_page),url,51)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def EPISODES(url):
 	info = url.split('=')
@@ -71,6 +74,7 @@ def EPISODES(url):
 		title = name1 + name + name2 + str(episode)
 		addLink(title,link,53,img)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def PLAY(url):
 	html = openURL(url,'','','','SHOOFMAX-PLAY-1st')
@@ -151,6 +155,7 @@ def SEARCH():
 			else:
 				addLink(title,url,53,img)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 
 

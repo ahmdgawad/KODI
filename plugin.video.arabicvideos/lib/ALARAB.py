@@ -15,6 +15,7 @@ def MAIN(mode,url):
 	elif mode==13: SEARCH()
 	elif mode==14: LATEST()
 	#elif mode==15: RAMADAN('?year=2018')
+	return
 
 def MENU():
 	addDir('بحث في الموقع','',13)
@@ -28,6 +29,7 @@ def MENU():
 	for url,name in items:
 		addDir(name,url,11)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def LATEST():
 	html = openURL(website0b,'','','','ALARAB-LATEST-1st')
@@ -38,6 +40,7 @@ def LATEST():
 		url = website0a + link
 		addDir(name,url,11,img)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def ITEMS(url):
 	#xbmcgui.Dialog().ok(url,'')
@@ -56,6 +59,7 @@ def ITEMS(url):
 		url = website0a + link
 		addDir(page,url,11)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def PLAY(url):
 	id = re.findall('com/v(.*?)-',url,re.DOTALL)[0]
@@ -115,6 +119,8 @@ def SEARCH():
 	searchlink = website0a + "/q/" + new_search
 	#xbmcgui.Dialog().ok('',searchlink)
 	ITEMS(searchlink)
+	return
+
 """
 def RAMADAN(url):
 	year = url.split('?year=')[1]

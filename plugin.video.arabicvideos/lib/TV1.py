@@ -8,6 +8,7 @@ website0a = 'http://emadmahdi.pythonanywhere.com/listplay'
 def MAIN(mode,url):
 	if mode==100: ITEMS()
 	elif mode==101: PLAY(url)
+	return
 
 def ITEMS():
 	itemsAll = []
@@ -32,6 +33,7 @@ def ITEMS():
 		addLink('Unfortunately, no TV channels for you','',9999)
 		addLink('It is for relatives & friends only','',9999)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def PLAY(id):
 	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }

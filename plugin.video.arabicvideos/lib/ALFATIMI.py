@@ -11,6 +11,7 @@ def MAIN(mode,url,category):
 	elif mode==63: PLAY(url)
 	elif mode==64: SEARCH()
 	elif mode==65: MOSTS(category)
+	return
 
 def MENU():
 	addDir('بحث في الموقع','',64)
@@ -22,6 +23,7 @@ def MENU():
 	addDir('اخرى',website0a,61,icon,'',-2)
 	addDir('English',website0a,61,icon,'',-3)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def TITLES(url,category):
 	#xbmcgui.Dialog().ok('', category)
@@ -53,6 +55,7 @@ def TITLES(url,category):
 	if category!='-1' and category!='-2' and category!='-3':
 		EPISODES(website0a+'/videos.php?cat='+category)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def EPISODES(url):
 	#xbmcgui.Dialog().ok(url , url)
@@ -103,6 +106,7 @@ def SEARCH():
 	for category,title in items:
 		addDir(title,website0a,61,icon,'',category)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def MOSTS(category):
 	if   category=='1': payload = { 'mode' : 'recent_viewed_vids' }
@@ -118,6 +122,7 @@ def MOSTS(category):
 		title = title.strip(' ')
 		addLink(title,link,63,img)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 
 

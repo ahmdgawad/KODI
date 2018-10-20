@@ -14,6 +14,7 @@ def MAIN(mode,url,category):
 	elif mode==46: TITLES(url,2)
 	elif mode==47: TITLES(url,3)
 	elif mode==48: PROGRAMS()
+	return
 
 def MENU():
 	addDir('بحث في الموقع','',41)
@@ -29,6 +30,7 @@ def MENU():
 	if name:
 		addDir(name[0],website0a,44,icon,'','0')
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def TITLES(url,select):
 	notvideosLIST = ['تطبيقات الاجهزة الذكية','جدول البرامج','اوقات برامجنا']
@@ -67,6 +69,7 @@ def TITLES(url,select):
 				if select==2: addDir(title,url,46)
 				else: addDir(title,url,47)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def EPISODES(url):
 	html = openURL(url,'','','','ALMAAREF-EPISODES-1st')
@@ -97,6 +100,7 @@ def EPISODES(url):
 			addLink(title,link,43,img)
 		#PLAY_FROM_DIRECTORY(url)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def PLAY(url):
 	url = url.replace(' ','%20')
@@ -121,6 +125,7 @@ def CATEGORIES(url,category):
 			exist=True
 	if exist: xbmcplugin.endOfDirectory(addon_handle)
 	else: TITLES(url,3)
+	return
 	
 def SEARCH():
 	search = KEYBOARD()
@@ -128,6 +133,7 @@ def SEARCH():
 	new_search = search.replace(' ','%20')
 	url = website0a + '/?s=' + new_search
 	TITLES(url,3)
+	return
 
 def PROGRAMS():
 	#xbmcgui.Dialog().ok(type, url)
@@ -138,4 +144,5 @@ def PROGRAMS():
 	for link,title in items:
 		addDir(title,link,44)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 

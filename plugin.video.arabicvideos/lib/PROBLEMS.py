@@ -2,14 +2,14 @@
 from LIBRARY import *
 
 def MAIN(mode):
-        if mode==1000:
-        	addDir('Problem:   Can\'t see Arabic Text or Letters','',1001)
-       		addDir('في موقع كل العرب - الفيديو لا يعمل   :مشكلة','',1002)
-        	addDir('بعض الروابط لا تعمل   :مشكلة','',1003)
-        	addDir('لا توجد مواقع مخصصة للافلام والمسلسلات الاجنبية   :مشكلة','',1004)
-        	addDir('بعض الروابط بطيئة   :مشكلة','',1005)
-        	addDir('لماذا يوجد سيرفرات مجهولة او سيئة   :مشكلة','',1006)
-        	xbmcplugin.endOfDirectory(addon_handle)
+	if mode==1000:
+		addDir('Problem:   Can\'t see Arabic Text or Letters','',1001)
+		addDir('في موقع كل العرب - الفيديو لا يعمل   :مشكلة','',1002)
+		addDir('بعض الروابط لا تعمل   :مشكلة','',1003)
+		addDir('لا توجد مواقع مخصصة للافلام والمسلسلات الاجنبية   :مشكلة','',1004)
+		addDir('بعض الروابط بطيئة   :مشكلة','',1005)
+		addDir('لماذا يوجد سيرفرات مجهولة او سيئة   :مشكلة','',1006)
+		xbmcplugin.endOfDirectory(addon_handle)
 
 	elif mode==1001:
 		message1 = '1.   If you can\'t see Arabic Letters then go to "Kodi Interface Settings" and change the font to "Arial"'

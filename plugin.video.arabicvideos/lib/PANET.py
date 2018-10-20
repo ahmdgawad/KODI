@@ -14,6 +14,7 @@ def MAIN(mode,url):
 	elif mode==34: SEARCH(url)
 	elif mode==35: CATEGORIES(url,'1')
 	elif mode==36: CATEGORIES(url,'2')
+	return
 
 def MENU():
 	addDir('بحث عن افلام',website0a+'/search/result/title/movies',34)
@@ -24,6 +25,7 @@ def MENU():
 	addDir('احدث الافلام',website0a+'/movies',32)
 	addDir('مسرحيات',website0a+'/movies/genre/4/1',32)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def CATEGORIES(url,select=''):
 	info = url.split('/')
@@ -55,6 +57,7 @@ def CATEGORIES(url,select=''):
 				url = website0a + '/movies/actor/' + value
 				addDir(name,url,32)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def ITEMS(url):
 	html = openURL(url,'',headers,'','PANET-ITEMS-1st')
@@ -107,6 +110,7 @@ def ITEMS(url):
 		name = 'صفحة ' + page
 		addDir(name,url,32)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def PLAY(url):
 	#xbmcgui.Dialog().ok(url,'')
@@ -138,5 +142,6 @@ def SEARCH(url):
 		if type=='movies': addLink(title,url,33)
 		else: addDir(title,url+'/1',32)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 

@@ -65,3 +65,9 @@ Added new website "SHAHID4U"
 v2.5.0
 Modified addon icon
 
+
+v2.6.0
+Added and used "script.module.urlresolver"
+
+
+

@@ -12,6 +12,7 @@ def MAIN(mode,url,page):
 	elif mode==84: ITEMS('','','lastRecent',page)
 	elif mode==85: ITEMS('','','pin',page)
 	elif mode==86: ITEMS('','','views',page)
+	return
 
 def MENU():
 	addDir('بحث في الموقع','',83)
@@ -29,6 +30,7 @@ def MENU():
 		if not any(value in title for value in ignoreLIST):
 			addDir(title,link,81)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def ITEMS(url,html='',type='',page=0):
 	if type=='':
@@ -70,6 +72,7 @@ def ITEMS(url,html='',type='',page=0):
 	elif type=='pin': addDir('صفحة المزيد','',85,icon,page+1)
 	elif type=='views': addDir('صفحة المزيد','',86,icon,page+1)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def PLAY(url):
 	linkLIST = []
@@ -78,6 +81,7 @@ def PLAY(url):
 	block = html_blocks[0]
 	items = re.findall('href="(.*?)"',block,re.DOTALL)
 	for link in items:
+		if 'http' not in link: link = 'http:' + link
 		linkLIST.append(link)
 	url = url.replace('/article/','/online/')
 	html = openURL(url,'','','','HALACIMA-PLAY-2nd')
@@ -94,7 +98,7 @@ def PLAY(url):
 		html = openURL(url,data,headers,'','HALACIMA-PLAY-2nd')
 		html = html.replace('SRC=','src=')
 		links = re.findall('src=\'(.*?)\'',html,re.DOTALL)
-		if 'http' not in link: 		link = 'http:' + link
+		if 'http' not in link: link = 'http:' + link
 		linkLIST.append(links[0])
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
@@ -111,6 +115,7 @@ def SEARCH():
 	html = openURL(url,data,headers,'','HALACIMA-SEARCH-1st')
 	if 'art_list' in html: ITEMS('',html)
 	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	return
 
 
 

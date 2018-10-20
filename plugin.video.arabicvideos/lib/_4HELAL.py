@@ -11,6 +11,7 @@ def MAIN(mode,url):
 	elif mode==92: PLAY(url)
 	elif mode==93: SEARCH()
 	elif mode==94: LATEST()
+	return
 
 def MENU():
 	addDir('بحث في الموقع','',93)
@@ -30,6 +31,7 @@ def MENU():
 		if not any(value in title for value in ignoreLIST):
 			addDir(title,link,91)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def ITEMS(url,html=''):
 	if html=='': html = openURL(url,'',headers,'','4HELAL-ITEMS-1st')
@@ -50,6 +52,7 @@ def ITEMS(url,html=''):
 			title = title.replace('الصفحة ','')
 			addDir('صفحة '+title,link,91)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def PLAY(url):
 	linkLIST = []
@@ -89,6 +92,7 @@ def SEARCH():
 	html = openURL(url,data,headers,'','4HELAL-SEARCH-1st')
 	if 'movies-items' in html: ITEMS('',html)
 	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	return
 
 def LATEST():
 	html = openURL(website0a,'',headers,'','4HELAL-LATEST-1st')
@@ -101,6 +105,7 @@ def LATEST():
 		else:
 			addDir(title,link,91,img)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 
 

@@ -31,68 +31,69 @@ def MAIN(mode,keyboard):
 		new2=str(type(keyboard))+' '+keyboard+' '+ttype+' '
 		for i in range(0,len(keyboard),1):
 			new2 += hex(ord(keyboard[i])).replace('0x','')+' '
-		xbmcgui.Dialog().ok(new1,new2)
-		return
+		#xbmcgui.Dialog().ok(new1,new2)
 
-		#for i in range(0,len(keyboard)-2,3):
-		#	string=hex(ord(keyboard[i+0]))+'  '+hex(ord(keyboard[i+1]))+'  '+hex(ord(keyboard[i+2]))
-		#	xbmcgui.Dialog().ok('',string)
-		#return
-		#keyboard = keyboard.decode('utf8')
-		#xbmcgui.Dialog().ok('',keyboard)
+	return
 
-		#keyboard = mixARABIC(keyboard)
-		#keyboard = keyboard.decode('utf8')
-		#keyboard = unicodedata.normalize('NFKD',keyboard)
-		#xbmcgui.Dialog().ok('',   hex(  unicodedata.combining(keyboard[0])  )   )
-		#xbmcgui.Dialog().ok(keyboard,   hex(ord(  keyboard[0]  ))   )
+	#for i in range(0,len(keyboard)-2,3):
+	#	string=hex(ord(keyboard[i+0]))+'  '+hex(ord(keyboard[i+1]))+'  '+hex(ord(keyboard[i+2]))
+	#	xbmcgui.Dialog().ok('',string)
+	#return
+	#keyboard = keyboard.decode('utf8')
+	#xbmcgui.Dialog().ok('',keyboard)
 
-		#new = ''
-		#for letter in keyboard:
-		#	xbmcgui.Dialog().ok('Mode 0',unicodedata.decomposition(letter) )
-		#	new += '\u0' + hex(ord(letter)).replace('0x','')
-		#keyboard = new
-		#xbmcgui.Dialog().ok('',keyboard)
+	#keyboard = mixARABIC(keyboard)
+	#keyboard = keyboard.decode('utf8')
+	#keyboard = unicodedata.normalize('NFKD',keyboard)
+	#xbmcgui.Dialog().ok('',   hex(  unicodedata.combining(keyboard[0])  )   )
+	#xbmcgui.Dialog().ok(keyboard,   hex(ord(  keyboard[0]  ))   )
 
-		#new = ''
-		#for i in range(len(keyboard)-6,-5,-6):
-		#	#xbmcgui.Dialog().ok('',str(i))
-		#	new += keyboard[i] + keyboard[i+1] + keyboard[i+2] + keyboard[i+3] + keyboard[i+4] + keyboard[i+5]
-		#keyboard = new
-		#xbmcgui.Dialog().ok('',keyboard)
+	#new = ''
+	#for letter in keyboard:
+	#	xbmcgui.Dialog().ok('Mode 0',unicodedata.decomposition(letter) )
+	#	new += '\u0' + hex(ord(letter)).replace('0x','')
+	#keyboard = new
+	#xbmcgui.Dialog().ok('',keyboard)
 
-		#keyboard = keyboard.decode('unicode_escape')
-		#xbmcgui.Dialog().ok('',keyboard)
+	#new = ''
+	#for i in range(len(keyboard)-6,-5,-6):
+	#	#xbmcgui.Dialog().ok('',str(i))
+	#	new += keyboard[i] + keyboard[i+1] + keyboard[i+2] + keyboard[i+3] + keyboard[i+4] + keyboard[i+5]
+	#keyboard = new
+	#xbmcgui.Dialog().ok('',keyboard)
 
-		#keyboard = keyboard.encode('utf8')
-		#xbmcgui.Dialog().ok('',keyboard)
+	#keyboard = keyboard.decode('unicode_escape')
+	#xbmcgui.Dialog().ok('',keyboard)
+
+	#keyboard = keyboard.encode('utf8')
+	#xbmcgui.Dialog().ok('',keyboard)
 
 
-		#keyboard = 'emad'
-		#json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Input.SendText","params":{"text":"'+keyboard+'","done":false},"id":1}')
-		#json.loads(json_query)
+	#keyboard = 'emad'
+	#json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Input.SendText","params":{"text":"'+keyboard+'","done":false},"id":1}')
+	#json.loads(json_query)
 
-		#keyboard = keyboard.encode('utf8')
-		#new = keyboard.decode('unicode_escape')
-		#keyboard = new
-		#xbmcgui.Dialog().ok('',keyboard)
-		#keyboard = mixARABIC(keyboard)
-		#xbmcgui.Dialog().ok('',keyboard)
+	#keyboard = keyboard.encode('utf8')
+	#new = keyboard.decode('unicode_escape')
+	#keyboard = new
+	#xbmcgui.Dialog().ok('',keyboard)
+	#keyboard = mixARABIC(keyboard)
+	#xbmcgui.Dialog().ok('',keyboard)
 
-		#new = ''
-		#for i in range(len(keyboard)-2,-1,-2):
-		#	new += keyboard[i] + keyboard[i+1]
-		#keyboard = new
-		#xbmcgui.Dialog().ok('',keyboard)
+	#new = ''
+	#for i in range(len(keyboard)-2,-1,-2):
+	#	new += keyboard[i] + keyboard[i+1]
+	#keyboard = new
+	#xbmcgui.Dialog().ok('',keyboard)
 
-		#keyboard = keyboard.encode('utf8')
-		#xbmcgui.Dialog().ok('',keyboard)
+	#keyboard = keyboard.encode('utf8')
+	#xbmcgui.Dialog().ok('',keyboard)
 
-		#new = ''
-		#for i in range(len(keyboard)-2,-1,-2):
-		#	new += keyboard[i] + keyboard[i+1]
-		#keyboard = new
-		#xbmcgui.Dialog().ok('',keyboard)
+	#new = ''
+	#for i in range(len(keyboard)-2,-1,-2):
+	#	new += keyboard[i] + keyboard[i+1]
+	#keyboard = new
+	#xbmcgui.Dialog().ok('',keyboard)
 
 
 

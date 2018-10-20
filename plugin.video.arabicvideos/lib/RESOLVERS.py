@@ -1,26 +1,13 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
+from urlresolver import HostedMediaFile as urlresolver_HostedMediaFile
 
 script_name='RESOLVERS'
+notResolvableLIST = [ 'mystream' ]
 
-def CHECK(link):
-	#if RESOLVABLE(link)==33:
-	url = 'http://emadmahdi.pythonanywhere.com/check?url='
-	result = openURL(url+link,'','','','RESOLVERS-UNKNOWN-1st')
-	#else:
-	#	result='known'
-	return result
-	"""
-	result = 'unknown'
-	if   'openload' 	in link: result = 'known'
-	elif 'streamango' 	in link: result = 'known'
-	elif 'ok.ru' 		in link: result = 'known'
-	elif '1fichier' 	in link: result = 'known'
-	return result
-	"""
-
-def RESOLVABLE(url):
-	result = 33
+"""
+def RESOLVABLE_OLD(url):
+	result = 44
 	if 'akoam.net' 		in url and '?' not in url: result = 1
 	elif 'rapidvideo' 	in url: result = 2
 	elif 'uptobox' 		in url: result = 3
@@ -51,44 +38,94 @@ def RESOLVABLE(url):
 	elif 'mp4upload'	in url: result = 28
 	return result
 
-def SERVERNAME(url):
-	result = ''
-	if 'akoam.net' in url and '?' not in url: result = 'akoam'
-	elif 'rapidvideo' 	in url: result = 'rapidvideo'
-	elif 'uptobox' 		in url: result = 'uptobox'
-	elif 'vidshare' 	in url: result = 'vidshare'
-	elif 'uqload' 		in url: result = 'uqload'
-	elif 'vcstream' 	in url: result = 'vcstream'
-	elif 'vidoza' 		in url: result = 'vidoza'
-	elif 'watchvideo' 	in url: result = 'watchvideo'
-	elif 'upbom' 		in url: result = 'upbom'
-	elif 'liivideo' 	in url: result = 'liivideo'
-	elif 'vidhd' 		in url: result = 'vidhd'
-	elif 'intoupload' 	in url: result = 'intoupload'
-	elif 'estream'	 	in url: result = 'estream'
-	elif 'vev.io'	 	in url: result = 'vev'
-	elif 'youtu'	 	in url: result = 'youtube'
-	elif 'catch.is'	 	in url: result = 'catch'
-	elif 'load.is'	 	in url: result = 'load'
-	elif 'golink'	 	in url: result = 'golink'
-	elif 'go2ooo'		in url: result = 'go2ooo'
-	elif 'vidbom'		in url: result = 'vidbom'
-	elif 'vidbob'		in url: result = 'vidbob'
-	elif 'uptostream'	in url: result = 'uptostream'
-	elif 'arabloads'	in url: result = 'arabloads'
-	elif 'top4top'		in url: result = 'top4top'
-	elif 'zippyshare'	in url: result = 'zippyshare'
-	elif 'gounlimited'	in url: result = 'gounlimited'
-	elif 'thevideo'		in url: result = 'thevideo'
-	elif 'mp4upload'	in url: result = 'mp4upload'
-	#elif 'ok.ru'		in url: result = 'ok.ru'
-	#elif 'openload'	in url: result = 'openload'
-	#elif 'streamango'	in url: result = 'streamango'
+def SERVERS_OLD(linkLIST,script_name=''):
+	serversLIST = []
+	urlLIST = []
+	unknownLIST = ''
+	serversSTATUS = []
+	serversDICT = {}
+	linkLIST = set(linkLIST)
+	for i in range(0,44):
+		serversSTATUS.append('')
+	for link in linkLIST:
+		server = RESOLVABLE(link)
+		if server<10: serverNum = '0' + str(server)
+		else: serverNum = str(server)
+		#xbmcgui.Dialog().ok(link,serverNum)
+		serversDICT[serverNum+serversSTATUS[server]] = link
+		if serversSTATUS[server]=='': serversSTATUS[server] = 'a'
+		else: serversSTATUS[server] = chr(ord(serversSTATUS[server])+1)
+	sortedList = sorted(serversDICT.keys())
+	for i in sortedList:
+		if i[0:2]=='44':
+			serversLIST.append('سيرفر مجهول ' + SERVERNAME(serversDICT[i]))
+			if CHECK(serversDICT[i])=='unknown':
+				unknownLIST += serversDICT[i]+'\\n'
+		else: serversLIST.append('سيرفر ' + SERVERNAME(serversDICT[i]))
+		urlLIST.append(serversDICT[i])
+	lines = len(unknownLIST.split('\\n'))-1
+	#xbmcgui.Dialog().ok(str(lines),'')
+	if lines>0:
+		message = '\\n'+unknownLIST
+		subject = 'Unknown Resolvers = ' + str(lines)
+		result = SEND_EMAIL(subject,message,'no','','FROM-RESOLVERS-'+script_name)
+	return serversLIST,urlLIST
+"""
+
+def CHECK(link):
+	url = 'http://emadmahdi.pythonanywhere.com/check?url='
+	result = openURL(url+link,'','','','RESOLVERS-CHECK-1st')
+	return result
+
+def RESOLVABLE(url):
+	result1 = ''
+	result2 = ''
+	if any(value in url for value in notResolvableLIST): return ''
+	elif 'go.akoam.net'	in url and '?' not in url: result1 = 'akoam'
+	elif 'go.akoam.net'	in url and '?estream' in url: result1 = 'estream'
+	elif 'go.akoam.net'	in url and '?' in url: result2 = url.split('?')[1]
+	elif 'rapidvideo' 	in url: result1 = 'rapidvideo'
+	elif 'uptobox' 		in url: result1 = 'uptobox'
+	elif 'vidshare' 	in url: result1 = 'vidshare'
+	elif 'uqload' 		in url: result1 = 'uqload'
+	elif 'vcstream' 	in url: result1 = 'vcstream'
+	elif 'vidoza' 		in url: result1 = 'vidoza'
+	elif 'watchvideo' 	in url: result1 = 'watchvideo'
+	elif 'upbom' 		in url: result1 = 'upbom'
+	elif 'liivideo' 	in url: result1 = 'liivideo'
+	elif 'vidhd' 		in url: result1 = 'vidhd'
+	elif 'intoupload' 	in url: result1 = 'intoupload'
+	elif 'estream'	 	in url: result1 = 'estream'
+	elif 'vev.io'	 	in url: result1 = 'vev'
+	elif 'youtu'	 	in url: result1 = 'youtube'
+	elif 'catch.is'	 	in url: result1 = 'catch'
+	elif 'load.is'	 	in url: result1 = 'load'
+	elif 'golink'	 	in url: result1 = 'golink'
+	elif 'go2ooo'		in url: result1 = 'go2ooo'
+	elif 'vidbom'		in url: result1 = 'vidbom'
+	elif 'vidbob'		in url: result1 = 'vidbob'
+	elif 'uptostream'	in url: result1 = 'uptostream'
+	elif 'arabloads'	in url: result1 = 'arabloads'
+	elif 'top4top'		in url: result1 = 'top4top'
+	elif 'zippyshare'	in url: result1 = 'zippyshare'
+	elif 'gounlimited'	in url: result1 = 'gounlimited'
+	elif 'thevideo'		in url: result1 = 'thevideo'
+	elif 'mp4upload'	in url: result1 = 'mp4upload'
+	elif 'wintv.live'	in url: result1 = 'wintv.live'
+	elif 'filerio'		in url: result1 = 'filerio'
+	else:
+		resolvable = urlresolver_HostedMediaFile(url).valid_url()
+		if resolvable:
+			result2 = url.split('//')[1].split('/')[0]
+	if result1!='': result = '1. '+'سيرفر محلي ' + result1
+	elif result2!='': result = '2. '+'سيرفر غريب ' + result2
+	else: result = ''
 	return result
 
 def RESOLVE(url):
 	videoURL = ''
-	if 'akoam.net' in url and '?' not in url: videoURL = AKOAMNET(url)
+	if any(value in url for value in notResolvableLIST): return ''
+	elif 'go.akoam.net'	in url: videoURL = AKOAMNET(url)
 	elif 'rapidvideo' 	in url: videoURL = RAPIDVIDEO(url)
 	elif 'uptobox' 		in url: videoURL = UPTOBOX(url)
 	elif 'vidshare' 	in url: videoURL = VIDSHARE(url)
@@ -116,37 +153,38 @@ def RESOLVE(url):
 	elif 'gounlimited'	in url: videoURL = GOUNLIMITED(url)
 	elif 'thevideo'		in url: videoURL = THEVIDEO(url)
 	elif 'mp4upload'	in url: videoURL = MP4UPLOAD(url)
+	elif 'wintv.live'	in url: videoURL = WINTVLIVE(url)
+	elif 'filerio'		in url: videoURL = FILERIO(url)
+	else:
+		resolvable = urlresolver_HostedMediaFile(url).valid_url()
+		if resolvable:
+			videoURL = URLRESOLVER(url)
 	return videoURL
 
 def SERVERS(linkLIST,script_name=''):
 	serversLIST = []
 	urlLIST = []
-	unknownLIST = ''
-	serversSTATUS = []
-	serversDICT = {}
+	unknownLIST = []
+	serversDICT = []
+	message = '\\n'
 	linkLIST = set(linkLIST)
-	for i in range(0,34):
-		serversSTATUS.append('')
 	for link in linkLIST:
 		server = RESOLVABLE(link)
-		if server<10: serverNum = '0' + str(server)
-		else: serverNum = str(server)
-		#xbmcgui.Dialog().ok(link,serverNum)
-		serversDICT[serverNum+serversSTATUS[server]] = link
-		if serversSTATUS[server]=='': serversSTATUS[server] = 'a'
-		else: serversSTATUS[server] = chr(ord(serversSTATUS[server])+1)
-	sortedList = sorted(serversDICT.keys())
-	for i in sortedList:
-		if i[0:2]=='33':
-			serversLIST.append('سيرفر مجهول ' + SERVERNAME(serversDICT[i]))
-			if CHECK(serversDICT[i])=='unknown':
-				unknownLIST += serversDICT[i]+'\\n'
-		else: serversLIST.append('سيرفر ' + SERVERNAME(serversDICT[i]))
-		urlLIST.append(serversDICT[i])
-	lines = len(unknownLIST.split('\\n'))-1
-	#xbmcgui.Dialog().ok(str(lines),'')
+		if server=='':
+			serverNAME = '3. ' + 'سيرفر مجهول ' + link.split('//')[1].split('/')[0]
+			if CHECK(link)=='unknown':
+				unknownLIST.append(link)
+		else:
+			serverNAME = server
+		serversDICT.append( [link,serverNAME] )
+	sortedDICT = sorted(serversDICT, reverse=False, key=lambda key: key[1])
+	for i in range(0,len(sortedDICT)):
+		urlLIST.append(sortedDICT[i][0])
+		serversLIST.append(sortedDICT[i][1])
+	lines = len(unknownLIST)
 	if lines>0:
-		message = '\\n'+unknownLIST
+		for link in unknownLIST:
+			message += link + '\\n'
 		subject = 'Unknown Resolvers = ' + str(lines)
 		result = SEND_EMAIL(subject,message,'no','','FROM-RESOLVERS-'+script_name)
 	return serversLIST,urlLIST
@@ -162,6 +200,12 @@ def PLAY(linkLIST,script_name,play='yes'):
 		PROBLEMS.MAIN(1006)
 	elif play=='yes': PLAY_VIDEO(videoURL,script_name)
 	return videoURL
+
+def	URLRESOLVER(url):
+	link = 'Error'
+	try: link = urlresolver_HostedMediaFile(url).resolve()
+	except: xbmcgui.Dialog().notification('خطأ خارجي','الرابط ليس فيديو')
+	return link
 
 def RAPIDVIDEO(url):
 	headers = { 'User-Agent' : '' }
@@ -259,6 +303,7 @@ def INTOUPLOAD(url):
 def ESTREAM(url):
 	html = openURL(url,'','','','RESOLVERS-ESTREAM-1st')
 	items = re.findall('video preload.*?src=.*?src="(.*?)"',html,re.DOTALL)
+	#xbmcgui.Dialog().ok(str(items),html)
 	return items[0]
 
 def VEVIO(url):
@@ -289,7 +334,7 @@ def CATCHIS(url):
 def LOADIS(url):
 	id = url.split('/')[-1]
 	url = 'http://load.is/link/read?hash=' + id
-	html = openURL(url,'','','','RESOLVERS-LOAD-1st')
+	html = openURL(url,'','','','RESOLVERS-LOADIS-1st')
 	items = re.findall('route":"(.*?)"',html,re.DOTALL)
 	url = items[0].replace('\/','/')
 	#xbmcgui.Dialog().ok('load.is',str(url))
@@ -307,13 +352,10 @@ def GOLINK(url):
 def GO2OOO(url):
 	id = url.split('/')[-1]
 	url = 'http://load.is/link/read?hash=' + id
-	html = openURL(url,'','','','RESOLVERS-LOAD-1st')
+	html = openURL(url,'','','','RESOLVERS-GO2OOO-1st')
 	items = re.findall('route":"(.*?)"',html,re.DOTALL)
 	url = items[0].replace('\/','/')
 	#xbmcgui.Dialog().ok('load.is',url)
-	return url
-
-def AKOAMNET(url):
 	return url
 
 def VIDBOM(url):
@@ -391,7 +433,7 @@ def GOUNLIMITED_TEST(url):
 	html = requests.request("GET", url, headers=headers, params=querystring)
 
 	items = re.findall('video="" src="(.*?)"',html.text,re.DOTALL)
-	xbmcgui.Dialog().ok(str(html.content),str(len(html.content)))
+	#xbmcgui.Dialog().ok(str(html.content),str(len(html.content)))
 	return items[0]
 
 def GOUNLIMITED(url):
@@ -446,5 +488,44 @@ def MP4UPLOAD(url):
 	import requests
 	request = requests.post(url, headers=headers, data=payload, allow_redirects=False)
 	return request.headers['Location']
+
+def WINTVLIVE(url):
+	html = openURL(url,'','','','RESOLVERS-WINTVLIVE-1st')
+	items = re.findall('mp4: \[\'(.*?)\'',html,re.DOTALL)
+	link = items[0]
+	return link
+
+def AKOAMNET(link):
+	#xbmcgui.Dialog().ok(link,link)
+	id = link.split('/')[-1].split('?')[0]
+	url = 'http://load.is/' + id
+	url = LOADIS(url)
+	if 'catch.is' in url:
+		id = url.split('%2F')[-1]
+		url = 'http://catch.is/'+id
+		url = CATCHIS(url)
+	else:
+		headers = { 'User-Agent':'' , 'X-Requested-With':'XMLHttpRequest' , 'Referer':url }
+		html = openURL(url,'',headers,'','AKOAM-RESOLVE_AKOAM-1st')
+		items = re.findall('<IFRAME.*?SRC="(.*?)"',html,re.DOTALL)
+		if not items: 
+			items = re.findall('<iframe.*?src="(.*?)"',html,re.DOTALL)
+			if not items:
+				items = re.findall('direct_link":"(.*?)"',html,re.DOTALL)
+		url = items[0].replace('\/','/')
+		if 'http' not in url: url = 'http:' + url
+		#xbmcgui.Dialog().ok(url,url)
+		if '?' in link: url = RESOLVE(url)
+	return url
+
+def	FILERIO(url):
+	id = url.split('/')[-1]
+	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
+	payload = { 'id':id , 'op':'download2' }
+	data = urllib.urlencode(payload)
+	html = openURL(url,data,headers,'','RESOLVERS-FILERIO-2nd')
+	items = re.findall('direct_link.*?href="(.*?)"',html,re.DOTALL)
+	return items[0]
+
 
 

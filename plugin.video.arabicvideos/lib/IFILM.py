@@ -15,6 +15,7 @@ def MAIN(mode,url,page):
 	elif mode==24: PLAY(url)
 	elif mode==25: MUSIC_MENU(url)
 	elif mode==26: SEARCH(url)
+	return
 
 def LANGUAGE_MENU():
 	addDir('عربي',website0a,21,icon,101)
@@ -22,6 +23,7 @@ def LANGUAGE_MENU():
 	addDir('فارسى',website0c,21,icon,101)
 	addDir('فارسى 2',website0d,21,icon,101)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def MAIN_MENU(website0):
 	menu=['Series', 'Program', 'Music']
@@ -46,6 +48,7 @@ def MAIN_MENU(website0):
 			else: addDir(title,url,22,icon,101)
 			if 'Series' in link: addDir(title+' 3',url,22,icon,201)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def MUSIC_MENU(url):
 	website0 = SITE(url)
@@ -59,6 +62,7 @@ def MUSIC_MENU(url):
 		link = website0 + link
 		addDir(title,link,23,icon,101)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def TITLES(url,page):
 	website0 = SITE(url)
@@ -112,6 +116,7 @@ def TITLES(url,page):
 				counter = '0'+str(count_page)
 				addDir(title+str(count_page),url,22,icon,order+counter[-2:])
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def EPISODES(url,page):
 	website0 = SITE(url)
@@ -150,7 +155,7 @@ def EPISODES(url,page):
 		for episode,img,link,desc,name in items:
 			count_items += 1
 			img1 = website0 + quote(img)
-			link1 = website0 + quote(link) 
+			link1 = website0 + quote(link)
 			name = escapeUNICODE(name)
 			name1 = name + title + str(episode)
 			addLink(name1,link1,24,img1)
@@ -202,6 +207,7 @@ def EPISODES(url,page):
 					counter = '0'+str(count_page)
 					addDir(title+str(count_page),url,23,icon,order+counter[-2:])
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def PLAY(url):
 	PLAY_VIDEO(url,script_name)
@@ -250,5 +256,6 @@ def SEARCH(website0):
 			img = website0 + quote(img)
 			addDir(title,link,23,img,101)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 

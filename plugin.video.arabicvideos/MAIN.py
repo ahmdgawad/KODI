@@ -19,6 +19,7 @@ def MAIN():
 	addDir('موقع كل العرب'+'   .2','',10)
 	addDir('موقع بانيت'+'   .1','',30)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 def get_params():
 	param=[]
