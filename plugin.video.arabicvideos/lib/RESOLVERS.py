@@ -72,9 +72,44 @@ def SERVERS_OLD(linkLIST,script_name=''):
 	return serversLIST,urlLIST
 """
 
-def CHECK(link):
-	url = 'http://emadmahdi.pythonanywhere.com/check?url='
-	result = openURL(url+link,'','','','RESOLVERS-CHECK-1st')
+def CHECK(url):
+	result = 'unknown'
+	if   '1fichier'		in url: result = 'known'
+	elif 'allmyvideos'	in url: result = 'known'
+	elif 'allvid'		in url: result = 'known'
+	elif 'allvid'		in url: result = 'known'
+	elif 'cloudy.ec'	in url: result = 'known'
+	elif 'dailymotion'	in url: result = 'known'
+	elif 'downace'		in url: result = 'known'
+	elif 'estream'		in url: result = 'known'
+	elif 'filerio'		in url: result = 'known'
+	elif 'firedrive'	in url: result = 'known'
+	elif 'flashx'		in url: result = 'known'
+	elif 'hqq'			in url: result = 'known'
+	elif 'mystream'		in url: result = 'known'
+	elif 'nitroflare'	in url: result = 'known'
+	elif 'nowvideo'		in url: result = 'known'
+	elif 'ok.ru'		in url: result = 'known'
+	elif 'oload'		in url: result = 'known'
+	elif 'streamango'	in url: result = 'known'
+	elif 'streamin'		in url: result = 'known'
+	elif 'streammango'	in url: result = 'known'
+	elif 'thevid.net'	in url: result = 'known'
+	elif 'upload'		in url: result = 'known'
+	elif 'uptobox'		in url: result = 'known'
+	elif 'videorev'		in url: result = 'known'
+	elif 'vidfast'		in url: result = 'known'
+	elif 'vidgg'		in url: result = 'known'
+	elif 'vidlox'		in url: result = 'known'
+	elif 'vidzi'		in url: result = 'known'
+	elif 'watchers'		in url: result = 'known'
+	elif 'watchers.to'	in url: result = 'known'
+	elif 'wintv.live'	in url: result = 'known'
+	elif 'youwatch'		in url: result = 'known'
+	elif 'openload'		in url: result = 'known'
+	else:
+		link = 'http://emadmahdi.pythonanywhere.com/check?url=' + url
+		result = openURL(link,'','','','RESOLVERS-CHECK-1st')
 	return result
 
 def RESOLVABLE(url):
@@ -113,12 +148,13 @@ def RESOLVABLE(url):
 	elif 'mp4upload'	in url: result1 = 'mp4upload'
 	elif 'wintv.live'	in url: result1 = 'wintv.live'
 	elif 'filerio'		in url: result1 = 'filerio'
+	elif 'govid'		in url: result1 = 'govid'
 	else:
 		resolvable = urlresolver_HostedMediaFile(url).valid_url()
 		if resolvable:
 			result2 = url.split('//')[1].split('/')[0]
-	if result1!='': result = '1. '+'سيرفر محلي ' + result1
-	elif result2!='': result = '2. '+'سيرفر غريب ' + result2
+	if result1!='': result = '1. '+'سيرفر معروف ' + result1
+	elif result2!='': result = '2. '+'سيرفر مقبول ' + result2
 	else: result = ''
 	return result
 
@@ -155,6 +191,7 @@ def RESOLVE(url):
 	elif 'mp4upload'	in url: videoURL = MP4UPLOAD(url)
 	elif 'wintv.live'	in url: videoURL = WINTVLIVE(url)
 	elif 'filerio'		in url: videoURL = FILERIO(url)
+	elif 'govid'		in url: videoURL = GOVID(url)
 	else:
 		resolvable = urlresolver_HostedMediaFile(url).valid_url()
 		if resolvable:
@@ -527,5 +564,9 @@ def	FILERIO(url):
 	items = re.findall('direct_link.*?href="(.*?)"',html,re.DOTALL)
 	return items[0]
 
+def GOVID(url):
+	html = openURL(url,'','','','RESOLVERS-GOVID-1st')
+	items = re.findall('file:"(.*?)"',html,re.DOTALL)
+	return items[0]
 
 

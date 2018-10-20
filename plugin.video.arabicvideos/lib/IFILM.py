@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
+#import logging
 
 website0a = 'http://ar.ifilmtv.com'
 website0b = 'http://en.ifilmtv.com'
 website0c = 'http://fa.ifilmtv.com'
 website0d = 'http://fa2.ifilmtv.com'
+website1  = 'http://93.190.24.122'
+
 script_name = 'IFILM'
 
 def MAIN(mode,url,page):
@@ -154,8 +157,8 @@ def EPISODES(url,page):
 		if lang=='fa2': title = ' - قسمت '
 		for episode,img,link,desc,name in items:
 			count_items += 1
-			img1 = website0 + quote(img)
-			link1 = website0 + quote(link)
+			img1 = website1 + quote(img)
+			link1 = website1 + quote(link)
 			name = escapeUNICODE(name)
 			name1 = name + title + str(episode)
 			addLink(name1,link1,24,img1)
@@ -166,8 +169,8 @@ def EPISODES(url,page):
 			items = re.findall('ImageAddress_S":"(.*?)".*?VoiceAddress":"(.*?)".*?Caption":"(.*?)","Title":"(.*?)"',html,re.DOTALL)
 			for img,link,name,title in items:
 				count_items += 1
-				img1 = website0 + quote(img)
-				link1 = website0 + quote(link)
+				img1 = website1 + quote(img)
+				link1 = website1 + quote(link)
 				name1 = name + ' - ' + title
 				name1 = name1.strip(' ')
 				name1 = escapeUNICODE(name1)
@@ -177,8 +180,8 @@ def EPISODES(url,page):
 			items = re.findall('ImageAddress_S":"(.*?)".*?Caption":"(.*?)".*?VideoAddress":"(.*?)"',html,re.DOTALL)
 			for img,title,link in items:
 				count_items += 1
-				img1 = website0 + quote(img)
-				link1 = website0 + quote(link)
+				img1 = website1 + quote(img)
+				link1 = website1 + quote(link)
 				name1 = title.strip(' ')
 				name1 = escapeUNICODE(name1)
 				addLink(name1,link1,24,img1)
@@ -190,8 +193,8 @@ def EPISODES(url,page):
 			items = re.findall('ImageAddress_S":"(.*?)".*?VoiceAddress":"(.*?)".*?Caption":"(.*?)","Title":"(.*?)"',html,re.DOTALL)
 			for img,link,name,title in items:
 				count_items += 1
-				img1 = website0 + quote(img)
-				link1 = website0 + quote(link)
+				img1 = website1 + quote(img)
+				link1 = website1 + quote(link)
 				name1 = name + ' - ' + title
 				name1 = name1.strip(' ')
 				name1 = escapeUNICODE(name1)
@@ -210,7 +213,8 @@ def EPISODES(url,page):
 	return
 
 def PLAY(url):
-	PLAY_VIDEO(url,script_name)
+	#logging.warning('emad2:  '+ url)
+	PLAY_VIDEO(url,script_name,'yes')
 	return
 	
 def SITE(url):
@@ -221,7 +225,8 @@ def SITE(url):
 	return site
 
 def LANG(url):
-	if website0a in url: lang = 'ar'
+	lang = ''
+	if   website0a in url: lang = 'ar'
 	elif website0b in url: lang = 'en'
 	elif website0c in url: lang = 'fa'
 	elif website0d in url: lang = 'fa2'
