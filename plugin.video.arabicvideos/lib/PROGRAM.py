@@ -69,10 +69,12 @@ def MAIN(mode,text=''):
 
 	elif mode==9:
 		import RESOLVERS
+		url = ''
 		urllist = [
 			''
 			]
 		url = RESOLVERS.PLAY(urllist,script_name,'no')
+		#xbmcgui.Dialog().ok(url,url)
 		PLAY_VIDEO(url,script_name,'yes')
 		#import logging
 		#var1 = dummyClientID()

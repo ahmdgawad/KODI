@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 from urlresolver import HostedMediaFile as urlresolver_HostedMediaFile
+#import logging
 
 script_name='RESOLVERS'
-notResolvableLIST = [ 'mystream' ]
+doNOTresolveMElist = [ 'mystream','vimple' ]
 
 """
 def RESOLVABLE_OLD(url):
@@ -75,9 +76,10 @@ def SERVERS_OLD(linkLIST,script_name=''):
 def CHECK(url):
 	result = 'unknown'
 	if   '1fichier'		in url: result = 'known'
+	elif '4helal'		in url: result = 'known'
 	elif 'allmyvideos'	in url: result = 'known'
 	elif 'allvid'		in url: result = 'known'
-	elif 'allvid'		in url: result = 'known'
+	elif 'bestcima'		in url: result = 'known'
 	elif 'cloudy.ec'	in url: result = 'known'
 	elif 'dailymotion'	in url: result = 'known'
 	elif 'downace'		in url: result = 'known'
@@ -85,18 +87,22 @@ def CHECK(url):
 	elif 'filerio'		in url: result = 'known'
 	elif 'firedrive'	in url: result = 'known'
 	elif 'flashx'		in url: result = 'known'
+	elif 'govid'		in url: result = 'known'
 	elif 'hqq'			in url: result = 'known'
+	elif 'media4up'		in url: result = 'known'
 	elif 'mystream'		in url: result = 'known'
 	elif 'nitroflare'	in url: result = 'known'
 	elif 'nowvideo'		in url: result = 'known'
 	elif 'ok.ru'		in url: result = 'known'
 	elif 'oload'		in url: result = 'known'
+	elif 'openload'		in url: result = 'known'
 	elif 'streamango'	in url: result = 'known'
 	elif 'streamin'		in url: result = 'known'
 	elif 'streammango'	in url: result = 'known'
 	elif 'thevid.net'	in url: result = 'known'
 	elif 'upload'		in url: result = 'known'
 	elif 'uptobox'		in url: result = 'known'
+	elif 'videobam'		in url: result = 'known'
 	elif 'videorev'		in url: result = 'known'
 	elif 'vidfast'		in url: result = 'known'
 	elif 'vidgg'		in url: result = 'known'
@@ -106,92 +112,102 @@ def CHECK(url):
 	elif 'watchers.to'	in url: result = 'known'
 	elif 'wintv.live'	in url: result = 'known'
 	elif 'youwatch'		in url: result = 'known'
-	elif 'openload'		in url: result = 'known'
+	elif 'vidto.me'		in url: result = 'known'
+	elif 'archive'		in url: result = 'known'
+	elif 'publicvideohost' in url: result = 'known'
 	else:
 		link = 'http://emadmahdi.pythonanywhere.com/check?url=' + url
 		result = openURL(link,'','','','RESOLVERS-CHECK-1st')
 	return result
 
 def RESOLVABLE(url):
+	url2 = url.lower()
 	result1 = ''
 	result2 = ''
-	if any(value in url for value in notResolvableLIST): return ''
-	elif 'go.akoam.net'	in url and '?' not in url: result1 = 'akoam'
-	elif 'go.akoam.net'	in url and '?estream' in url: result1 = 'estream'
-	elif 'go.akoam.net'	in url and '?' in url: result2 = url.split('?')[1]
-	elif 'rapidvideo' 	in url: result1 = 'rapidvideo'
-	elif 'uptobox' 		in url: result1 = 'uptobox'
-	elif 'vidshare' 	in url: result1 = 'vidshare'
-	elif 'uqload' 		in url: result1 = 'uqload'
-	elif 'vcstream' 	in url: result1 = 'vcstream'
-	elif 'vidoza' 		in url: result1 = 'vidoza'
-	elif 'watchvideo' 	in url: result1 = 'watchvideo'
-	elif 'upbom' 		in url: result1 = 'upbom'
-	elif 'liivideo' 	in url: result1 = 'liivideo'
-	elif 'vidhd' 		in url: result1 = 'vidhd'
-	elif 'intoupload' 	in url: result1 = 'intoupload'
-	elif 'estream'	 	in url: result1 = 'estream'
-	elif 'vev.io'	 	in url: result1 = 'vev'
-	elif 'youtu'	 	in url: result1 = 'youtube'
-	elif 'catch.is'	 	in url: result1 = 'catch'
-	elif 'load.is'	 	in url: result1 = 'load'
-	elif 'golink'	 	in url: result1 = 'golink'
-	elif 'go2ooo'		in url: result1 = 'go2ooo'
-	elif 'vidbom'		in url: result1 = 'vidbom'
-	elif 'vidbob'		in url: result1 = 'vidbob'
-	elif 'uptostream'	in url: result1 = 'uptostream'
-	elif 'arabloads'	in url: result1 = 'arabloads'
-	elif 'top4top'		in url: result1 = 'top4top'
-	elif 'zippyshare'	in url: result1 = 'zippyshare'
-	elif 'gounlimited'	in url: result1 = 'gounlimited'
-	elif 'thevideo'		in url: result1 = 'thevideo'
-	elif 'mp4upload'	in url: result1 = 'mp4upload'
-	elif 'wintv.live'	in url: result1 = 'wintv.live'
-	elif 'filerio'		in url: result1 = 'filerio'
-	elif 'govid'		in url: result1 = 'govid'
+	if   any(value in url2 for value in doNOTresolveMElist): return ''
+	elif 'go.akoam.net'	in url2 and '?' not in url2: result1 = 'akoam'
+	elif 'go.akoam.net'	in url2 and '?estream' in url2: result1 = 'estream'
+	elif 'go.akoam.net'	in url2 and '?' in url2: result2 = url2.split('?')[1]
+	elif 'arabloads'	in url2: result1 = 'arabloads'
+	elif 'archive'		in url2: result1 = 'archive'
+	elif 'catch.is'	 	in url2: result1 = 'catch'
+	elif 'estream'	 	in url2: result1 = 'estream'
+	elif 'filerio'		in url2: result1 = 'filerio'
+	elif 'go2ooo'		in url2: result1 = 'go2ooo'
+	elif 'gogoo'		in url2: result1 = 'gogoo'
+	elif 'golink'	 	in url2: result1 = 'golink'
+	elif 'gounlimited'	in url2: result1 = 'gounlimited'
+	elif 'govid'		in url2: result1 = 'govid'
+	elif 'intoupload' 	in url2: result1 = 'intoupload'
+	elif 'liivideo' 	in url2: result1 = 'liivideo'
+	elif 'load.is'	 	in url2: result1 = 'load'
+	elif 'mp4upload'	in url2: result1 = 'mp4upload'
+	elif 'publicvideohost' in url2: result1 = 'publicvideohost'
+	elif 'rapidvideo' 	in url2: result1 = 'rapidvideo'
+	elif 'thevideo'		in url2: result1 = 'thevideo'
+	elif 'top4top'		in url2: result1 = 'top4top'
+	elif 'upbom' 		in url2: result1 = 'upbom'
+	elif 'uptobox' 		in url2: result1 = 'uptobox'
+	elif 'uptostream'	in url2: result1 = 'uptostream'
+	elif 'uqload' 		in url2: result1 = 'uqload'
+	elif 'vcstream' 	in url2: result1 = 'vcstream'
+	elif 'vev.io'	 	in url2: result1 = 'vev'
+	elif 'vidbob'		in url2: result1 = 'vidbob'
+	elif 'vidbom'		in url2: result1 = 'vidbom'
+	elif 'vidhd' 		in url2: result1 = 'vidhd'
+	elif 'vidoza' 		in url2: result1 = 'vidoza'
+	elif 'vidshare' 	in url2: result1 = 'vidshare'
+	elif 'watchvideo' 	in url2: result1 = 'watchvideo'
+	elif 'wintv.live'	in url2: result1 = 'wintv.live'
+	elif 'youtu'	 	in url2: result1 = 'youtube'
+	elif 'zippyshare'	in url2: result1 = 'zippyshare'
 	else:
 		resolvable = urlresolver_HostedMediaFile(url).valid_url()
 		if resolvable:
 			result2 = url.split('//')[1].split('/')[0]
-	if result1!='': result = '1. '+'سيرفر معروف ' + result1
-	elif result2!='': result = '2. '+'سيرفر مقبول ' + result2
+	if result1!='': result = ' سيرفر معروف ' + result1
+	elif result2!='': result = ' سيرفر مقبول ' + result2
 	else: result = ''
 	return result
 
 def RESOLVE(url):
+	url2 = url.lower()
 	videoURL = ''
-	if any(value in url for value in notResolvableLIST): return ''
-	elif 'go.akoam.net'	in url: videoURL = AKOAMNET(url)
-	elif 'rapidvideo' 	in url: videoURL = RAPIDVIDEO(url)
-	elif 'uptobox' 		in url: videoURL = UPTOBOX(url)
-	elif 'vidshare' 	in url: videoURL = VIDSHARE(url)
-	elif 'uqload' 		in url: videoURL = UQLOAD(url)
-	elif 'vcstream' 	in url: videoURL = VCSTREAM(url)
-	elif 'vidoza' 		in url: videoURL = VIDOZA(url)
-	elif 'watchvideo' 	in url: videoURL = WATCHVIDEO(url)
-	elif 'upbom' 		in url: videoURL = UPBOM(url)
-	elif 'liivideo' 	in url: videoURL = LIIVIDEO(url)
-	elif 'vidhd' 		in url: videoURL = VIDHD(url)
-	elif 'intoupload' 	in url: videoURL = INTOUPLOAD(url)
-	elif 'estream'	 	in url: videoURL = ESTREAM(url)
-	elif 'vev.io'	 	in url: videoURL = VEVIO(url)
-	elif 'youtu'	 	in url: videoURL = YOUTUBE(url)
-	elif 'catch.is'	 	in url: videoURL = CATCHIS(url)
-	elif 'load.is'	 	in url: videoURL = LOADIS(url)
-	elif 'golink'	 	in url: videoURL = GOLINK(url)
-	elif 'go2ooo'		in url: videoURL = GO2OOO(url)
-	elif 'vidbom'		in url: videoURL = VIDBOM(url)
-	elif 'vidbob'		in url: videoURL = VIDBOB(url)
-	elif 'uptostream'	in url: videoURL = UPTOSTREAM(url)
-	elif 'arabloads'	in url: videoURL = ARABLOADS(url)
-	elif 'top4top'		in url: videoURL = TOP4TOP(url)
-	elif 'zippyshare'	in url: videoURL = ZIPPYSHARE(url)
-	elif 'gounlimited'	in url: videoURL = GOUNLIMITED(url)
-	elif 'thevideo'		in url: videoURL = THEVIDEO(url)
-	elif 'mp4upload'	in url: videoURL = MP4UPLOAD(url)
-	elif 'wintv.live'	in url: videoURL = WINTVLIVE(url)
-	elif 'filerio'		in url: videoURL = FILERIO(url)
-	elif 'govid'		in url: videoURL = GOVID(url)
+	if any(value in url2 for value in doNOTresolveMElist): return ''
+	elif 'go.akoam.net'	in url2: videoURL = AKOAMNET(url)
+	elif 'arabloads'	in url2: videoURL = ARABLOADS(url)
+	elif 'archive'		in url2: videoURL = ARCHIVE(url)
+	elif 'catch.is'	 	in url2: videoURL = CATCHIS(url)
+	elif 'estream'	 	in url2: videoURL = ESTREAM(url)
+	elif 'filerio'		in url2: videoURL = FILERIO(url)
+	elif 'go2ooo'		in url2: videoURL = GO2OOO(url)
+	elif 'gogoo'		in url2: videoURL = GOGOO(url)
+	elif 'golink'	 	in url2: videoURL = GOLINK(url)
+	elif 'gounlimited'	in url2: videoURL = GOUNLIMITED(url)
+	elif 'govid'		in url2: videoURL = GOVID(url)
+	elif 'intoupload' 	in url2: videoURL = INTOUPLOAD(url)
+	elif 'liivideo' 	in url2: videoURL = LIIVIDEO(url)
+	elif 'load.is'	 	in url2: videoURL = LOADIS(url)
+	elif 'mp4upload'	in url2: videoURL = MP4UPLOAD(url)
+	elif 'publicvideohost' in url2: videoURL = PUBLICVIDEOHOST(url)
+	elif 'rapidvideo' 	in url2: videoURL = RAPIDVIDEO(url)
+	elif 'thevideo'		in url2: videoURL = THEVIDEO(url)
+	elif 'top4top'		in url2: videoURL = TOP4TOP(url)
+	elif 'upbom' 		in url2: videoURL = UPBOM(url)
+	elif 'uptobox' 		in url2: videoURL = UPTOBOX(url)
+	elif 'uptostream'	in url2: videoURL = UPTOSTREAM(url)
+	elif 'uqload' 		in url2: videoURL = UQLOAD(url)
+	elif 'vcstream' 	in url2: videoURL = VCSTREAM(url)
+	elif 'vev.io'	 	in url2: videoURL = VEVIO(url)
+	elif 'vidbob'		in url2: videoURL = VIDBOB(url)
+	elif 'vidbom'		in url2: videoURL = VIDBOM(url)
+	elif 'vidhd' 		in url2: videoURL = VIDHD(url)
+	elif 'vidoza' 		in url2: videoURL = VIDOZA(url)
+	elif 'vidshare' 	in url2: videoURL = VIDSHARE(url)
+	elif 'watchvideo' 	in url2: videoURL = WATCHVIDEO(url)
+	elif 'wintv.live'	in url2: videoURL = WINTVLIVE(url)
+	elif 'youtu'	 	in url2: videoURL = YOUTUBE(url)
+	elif 'zippyshare'	in url2: videoURL = ZIPPYSHARE(url)
 	else:
 		resolvable = urlresolver_HostedMediaFile(url).valid_url()
 		if resolvable:
@@ -208,7 +224,8 @@ def SERVERS(linkLIST,script_name=''):
 	for link in linkLIST:
 		server = RESOLVABLE(link)
 		if server=='':
-			serverNAME = '3. ' + 'سيرفر مجهول ' + link.split('//')[1].split('/')[0]
+			if 'akoam' in link and '?' in link: serverNAME = 'سيرفر مجهول ' + link.split('?')[1]
+			else: serverNAME = 'سيرفر مجهول ' + link.split('//')[1].split('/')[0]
 			if CHECK(link)=='unknown':
 				unknownLIST.append(link)
 		else:
@@ -235,7 +252,7 @@ def PLAY(linkLIST,script_name,play='yes'):
 	if videoURL=='':
 		import PROBLEMS
 		PROBLEMS.MAIN(1006)
-	elif play=='yes': PLAY_VIDEO(videoURL,script_name)
+	elif play=='yes': PLAY_VIDEO(videoURL,script_name,'yes')
 	return videoURL
 
 def	URLRESOLVER(url):
@@ -349,14 +366,44 @@ def VEVIO(url):
 	headers = { 'User-Agent' : '' }
 	data = '{}'
 	html = openURL(url,data,headers,'','RESOLVERS-VEVIO-1st')
-	#xbmcgui.Dialog().ok(url,html)
-	items = re.findall('http(.*?)"',html,re.DOTALL)
-	return 'http'+items[0]
+	items = re.findall('":"(.*?)"',html,re.DOTALL)
+	#xbmcgui.Dialog().ok(url,str(items))
+	return items[0]
 
 def YOUTUBE(url):
 	id = url.split('/')[-1]
 	youtubeID = id.split('?')[0]
 	url = 'plugin://plugin.video.youtube/play/?video_id='+youtubeID
+	return url
+
+def GOLINK(url):
+	#id = url.split('/')[-1]
+	#url = 'http://golink.to/link/read?hash=' + id
+	import requests
+	response = requests.get(url, data='', headers='')
+	html = response.text
+	cookies = response.cookies.get_dict()
+	cookie = cookies['golink']
+	cookie = unquote(escapeUNICODE(cookie))
+	items = re.findall('route":"(.*?)"',cookie,re.DOTALL)
+	url = items[0].replace('\/','/')
+	return url
+
+def GO2OOO(url):
+	url = GOLINK(url)
+	return url
+
+def GOGOO(url):
+	url = GOLINK(url)
+	return url
+
+def LOADIS(url):
+	#id = url.split('/')[-1]
+	#url = 'http://load.is/link/read?hash=' + id
+	#html = openURL(url,'','','','RESOLVERS-LOADIS-1st')
+	#items = re.findall('route":"(.*?)"',html,re.DOTALL)
+	#url = items[0].replace('\/','/')
+	url = GOLINK(url)
 	return url
 
 def CATCHIS(url):
@@ -367,33 +414,6 @@ def CATCHIS(url):
 	html = openURL(url,data,headers,'','RESOLVERS-CATCH-1st')
 	items = re.findall('direct_link.*?href="(.*?)"',html,re.DOTALL)
 	return items[0]
-
-def LOADIS(url):
-	id = url.split('/')[-1]
-	url = 'http://load.is/link/read?hash=' + id
-	html = openURL(url,'','','','RESOLVERS-LOADIS-1st')
-	items = re.findall('route":"(.*?)"',html,re.DOTALL)
-	url = items[0].replace('\/','/')
-	#xbmcgui.Dialog().ok('load.is',str(url))
-	return url
-
-def GOLINK(url):
-	id = url.split('/')[-1]
-	url = 'http://golink.to/link/read?hash=' + id
-	html = openURL(url,'','','','RESOLVERS-GOLINK-1st')
-	items = re.findall('route":"(.*?)"',html,re.DOTALL)
-	url = items[0].replace('\/','/')
-	#xbmcgui.Dialog().ok('load.is',str(url))
-	return url
-
-def GO2OOO(url):
-	id = url.split('/')[-1]
-	url = 'http://load.is/link/read?hash=' + id
-	html = openURL(url,'','','','RESOLVERS-GO2OOO-1st')
-	items = re.findall('route":"(.*?)"',html,re.DOTALL)
-	url = items[0].replace('\/','/')
-	#xbmcgui.Dialog().ok('load.is',url)
-	return url
 
 def VIDBOM(url):
 	html = openURL(url,'','','','RESOLVERS-VIDBOM-1st')
@@ -441,7 +461,7 @@ def ZIPPYSHARE(url):
 	#xbmcgui.Dialog().ok(url,str(var))
 	return url
 
-def GOUNLIMITED_TEST(url):
+def GOUNLIMITED_PROBLEM(url):
 	url = url.replace('embed-','')
 	headers = { 'User-Agent' : '' }
 	html = openURL(url,'',headers,'','RESOLVERS-GOUNLIMITED-1st')
@@ -533,26 +553,33 @@ def WINTVLIVE(url):
 	return link
 
 def AKOAMNET(link):
-	#xbmcgui.Dialog().ok(link,link)
-	id = link.split('/')[-1].split('?')[0]
-	url = 'http://load.is/' + id
-	url = LOADIS(url)
+	import requests
+	response = requests.get(link, headers='', data='', allow_redirects=False)
+	link = response.headers['Location']
+	url = RESOLVE(link)
+	#id = link.split('/')[-1].split('?')[0]
+	#url = 'http://load.is/' + id
+	#xbmcgui.Dialog().ok(url,url)
 	if 'catch.is' in url:
 		id = url.split('%2F')[-1]
 		url = 'http://catch.is/'+id
 		url = CATCHIS(url)
 	else:
 		headers = { 'User-Agent':'' , 'X-Requested-With':'XMLHttpRequest' , 'Referer':url }
-		html = openURL(url,'',headers,'','AKOAM-RESOLVE_AKOAM-1st')
-		items = re.findall('<IFRAME.*?SRC="(.*?)"',html,re.DOTALL)
-		if not items: 
-			items = re.findall('<iframe.*?src="(.*?)"',html,re.DOTALL)
+		response = requests.post(url, headers=headers, data='', allow_redirects=False)
+		html = response.text
+		items = re.findall('direct_link":"(.*?)"',html,re.DOTALL)
+		if not items:
+			items = re.findall('<IFRAME.*?SRC="(.*?)"',html,re.DOTALL)
 			if not items:
-				items = re.findall('direct_link":"(.*?)"',html,re.DOTALL)
+				items = re.findall('<iframe.*?src="(.*?)"',html,re.DOTALL)
+				if not items:
+					items = re.findall('embed src="(.*?)"',html,re.DOTALL)
 		url = items[0].replace('\/','/')
 		if 'http' not in url: url = 'http:' + url
-		#xbmcgui.Dialog().ok(url,url)
 		if '?' in link: url = RESOLVE(url)
+	#xbmcgui.Dialog().ok(url,url)
+	#logging.warning('EMAD 111'+url)
 	return url
 
 def	FILERIO(url):
@@ -568,5 +595,35 @@ def GOVID(url):
 	html = openURL(url,'','','','RESOLVERS-GOVID-1st')
 	items = re.findall('file:"(.*?)"',html,re.DOTALL)
 	return items[0]
+
+def VIMPLE_PROBLEM(link):
+	id = link.split('id=')[1]
+	headers = { 'User-Agent' : '' }
+	url = 'http://player.vimple.ru/iframe/' + id
+	html = openURL(url,'',headers,'','RESOLVERS-VIMPLE-1st')
+	items = re.findall('true,"url":"(.*?)"',html,re.DOTALL)
+	url = items[0].replace('\/','/')
+	return url
+
+def ARCHIVE(url):
+	html = openURL(url,'','','','RESOLVERS-ARCHIVE-1st')
+	items = re.findall('source src="(.*?)"',html,re.DOTALL)
+	#logging.warning('https://archive.org' + items[0])
+	return 'https://archive.org' + items[0]
+
+def PUBLICVIDEOHOST(url):
+	html = openURL(url,'','','','RESOLVERS-PUBLICVIDEOHOST-1st')
+	items = re.findall('file: "(.*?)"',html,re.DOTALL)
+	#xbmcgui.Dialog().ok(str(items),html)
+	return items[0]
+
+
+
+
+
+
+
+
+
 
 

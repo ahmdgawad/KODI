@@ -46,7 +46,7 @@ def openURL(url,data='',headers='',showDialogs='',source=''):
 	code = '200'
 	reason = 'OK'
 	try:
-		connection = urllib2.urlopen(request)
+		connection = urllib2.urlopen(request, timeout=20)
 		response = connection.read()
 		code = str(connection.code)
 		#xbmcgui.Dialog().ok(url,response)

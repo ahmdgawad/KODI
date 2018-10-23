@@ -21,8 +21,10 @@ def MENU():
 	ignoreLIST = ['الكتب و الابحاث','الكورسات التعليمية','الألعاب','البرامج','الاجهزة اللوحية','الصور و الخلفيات']
 	html = openURL(website0a,'',headers,'','AKOAM-MENU-1st')
 	html_blocks = re.findall('big_parts_menu(.*?)main_partions',html,re.DOTALL)
+	#import logging
+	#logging.warning('EMAD111 '+html+' EMAD222')
 	block = html_blocks[0]
-	items = re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
+	items = re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
 	for link,title in items:
 		if title not in ignoreLIST:
 			addDir(title,link,71)
@@ -104,7 +106,7 @@ def PLAY(url):
 	blocks = re.findall('epsoide_box(.*?)direct_link_box',html_block,re.DOTALL)
 	block = blocks[episode-1]
 	linkLIST = []
-	serversDICT = { '1430052371':'ok.ru' , '1477487601':'estream' , '1505328404':'streamango' , '1423080015':'flashx' , '1458117295':'openload' }
+	serversDICT = { '1430052371':'ok.ru' , '1477487601':'estream' , '1505328404':'streamango' , '1423080015':'flashx' , '1458117295':'openload' , '1423079306':'vimple' }
 	items = re.findall('download_btn\' target=\'_blank\' href=\'(.*?)\'',block,re.DOTALL)
 	for link in items:
 		linkLIST.append(link)
@@ -112,7 +114,8 @@ def PLAY(url):
 	for serverIMG,link in items:
 		serverIMG = serverIMG.split('/')[-1]
 		serverIMG = serverIMG.split('.')[0]
-		linkLIST.append(link+'?'+serversDICT[serverIMG])
+		try: linkLIST.append(link+'?'+serversDICT[serverIMG])
+		except: linkLIST.append(link+'?'+serverIMG)
 	linkLIST = set(linkLIST)
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name)
