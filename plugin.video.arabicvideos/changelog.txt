@@ -75,3 +75,6 @@ Changed users ID's
 Changed "Analytics" Number
 
 
+v2.8.0
+Changed users ID's
+Changed "Analytics" Number
