@@ -22,7 +22,8 @@ def MENU():
 	html = openURL(website0a,'',headers,'','AKOAM-MENU-1st')
 	html_blocks = re.findall('big_parts_menu(.*?)main_partions',html,re.DOTALL)
 	#import logging
-	#logging.warning('EMAD111 '+html+' EMAD222')
+	#logging.warning(' EMAD333 '+html+' EMAD444 ')
+
 	block = html_blocks[0]
 	items = re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
 	for link,title in items:

@@ -164,7 +164,7 @@ def PLAY_VIDEO(url,label,showWatched='yes'):
 		xbmc.Player().play(url,play_item)
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-1&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
+	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-2&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
 	openURL(url,'','','no','LIBRARY-PLAY_VIDEO-1st')
 	return
 
@@ -205,16 +205,20 @@ def dummyClientID():
 	xbmc.sleep(600)
 	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
 	osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
-	#idComponents = hostName + ipAddress + macAddress + osVersion
-	idComponents = hostName + macAddress + osVersion
+	idComponents = macAddress + hostName + osVersion
+	listREMOVE = ['Kodi','localhost','Android','API level','kernel','Linux','Windows','NT',' ',':','\.','\(','\)']
+	idComponents2 = re.sub('|'.join(listREMOVE), '', idComponents)
+	idComponents = idComponents2.lower()
 	length = len(idComponents)
-	if length < 11: step = 1
-	else: step = int(length/11)
+	step = 1
+	#if length < 11: step = 1
+	#else: step = int(length/11)
 	resultNumber = 1
 	for i in range(0,length,step): resultNumber *= ord(idComponents[i])
 	resultText = str(resultNumber)
-	result = resultText[0:16]
-	#xbmcgui.Dialog().ok(str(len(resultText)),str(step))
+	middle = int(len(resultText)/2)
+	result = resultText[middle-10:middle+10]
+	#xbmcgui.Dialog().ok(idComponents,str(len(resultText)))
 	return result
 
 

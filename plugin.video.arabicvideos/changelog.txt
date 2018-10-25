@@ -70,4 +70,8 @@ v2.6.0
 Added and used "script.module.urlresolver"
 
 
+v2.7.0
+Changed users ID's
+Changed "Analytics" Number
+
 

@@ -4,7 +4,7 @@ from urlresolver import HostedMediaFile as urlresolver_HostedMediaFile
 #import logging
 
 script_name='RESOLVERS'
-doNOTresolveMElist = [ 'mystream','vimple' ]
+doNOTresolveMElist = [ 'mystream','vimple','vidbom' ]
 
 """
 def RESOLVABLE_OLD(url):
@@ -153,7 +153,7 @@ def RESOLVABLE(url):
 	elif 'vcstream' 	in url2: result1 = 'vcstream'
 	elif 'vev.io'	 	in url2: result1 = 'vev'
 	elif 'vidbob'		in url2: result1 = 'vidbob'
-	elif 'vidbom'		in url2: result1 = 'vidbom'
+	#elif 'vidbom'		in url2: result1 = 'vidbom'
 	elif 'vidhd' 		in url2: result1 = 'vidhd'
 	elif 'vidoza' 		in url2: result1 = 'vidoza'
 	elif 'vidshare' 	in url2: result1 = 'vidshare'
@@ -200,7 +200,7 @@ def RESOLVE(url):
 	elif 'vcstream' 	in url2: videoURL = VCSTREAM(url)
 	elif 'vev.io'	 	in url2: videoURL = VEVIO(url)
 	elif 'vidbob'		in url2: videoURL = VIDBOB(url)
-	elif 'vidbom'		in url2: videoURL = VIDBOM(url)
+	#elif 'vidbom'		in url2: videoURL = VIDBOM(url)
 	elif 'vidhd' 		in url2: videoURL = VIDHD(url)
 	elif 'vidoza' 		in url2: videoURL = VIDOZA(url)
 	elif 'vidshare' 	in url2: videoURL = VIDSHARE(url)
@@ -455,14 +455,16 @@ def CATCHIS(url):
 	items = re.findall('direct_link.*?href="(.*?)"',html,re.DOTALL)
 	return [ items[0].rstrip('/') ]
 
-def VIDBOM(url):
+def VIDBOM_PROBLEM(url):
 	html = openURL(url,'','','','RESOLVERS-VIDBOM-1st')
 	xbmc.sleep(1500)
 	items = re.findall('file: "(.*?)"',html,re.DOTALL)
-	slides = items[0].rstrip('/')
-	html2 = openURL(slides,'','','','RESOLVERS-VIDBOM-2nd')
+	slidesURL = items[0].rstrip('/')
+	html2 = openURL(slidesURL,'','','','RESOLVERS-VIDBOM-2nd')
 	xbmc.sleep(1500)
 	items = re.findall('file:"(.*?)"',html,re.DOTALL)
+	#import logging
+	#logging.warning('EMAD 111'+html)
 	return [ items[0].rstrip('/') ]
 
 def VIDBOB(url):
