@@ -78,3 +78,12 @@ Changed "Analytics" Number
 v2.8.0
 Changed users ID's
 Changed "Analytics" Number
+
+
+v2.9.0
+Skipped
+
+
+v3.0.0
+Back to previous "Analytics" Number (v2.8.0)
+

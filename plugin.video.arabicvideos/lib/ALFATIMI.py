@@ -50,7 +50,9 @@ def TITLES(url,category):
                                	addDir(titleCAT,website0a,61,icon,'',cat)
 		elif startADD==False:
 			if category==cat: startADD = True
-		elif count=='1': addLink(title,link,63)
+		elif count=='1':
+			if 'http' not in link: link = 'http:'+link
+			addLink(title,link,63)
 		else: addDir(titleCAT,website0a,61,icon,'',cat)
 	if category!='-1' and category!='-2' and category!='-3':
 		EPISODES(website0a+'/videos.php?cat='+category)
@@ -65,6 +67,7 @@ def EPISODES(url):
 	items = re.findall('grid_view.*?src="(.*?)".*?<h2.*?href="(.*?)">(.*?)<',block,re.DOTALL)
 	link = ''
 	for img,link,title in items:
+		if 'http' not in link: link = 'http:'+link
 		addLink(title,link,63,img)
 	html_blocks=re.findall('(.*?)div',block,re.DOTALL)
 	block=html_blocks[0]
@@ -84,12 +87,12 @@ def EPISODES(url):
 	return link
 
 def PLAY(url):
-	#xbmcgui.Dialog().ok(url,'')
 	if 'videos.php' in url:
 		url = EPISODES(url)
 	html = openURL(url,'','','','ALFATIMI-PLAY-1st')
 	items = re.findall('playlistfile:"(.*?)"',html,re.DOTALL)
 	url = items[0]
+	if 'http' not in url: url = 'http:'+url
 	#xbmcgui.Dialog().ok(url,'')
 	PLAY_VIDEO(url,script_name)
 	return
@@ -120,6 +123,7 @@ def MOSTS(category):
 	items = re.findall('href="(.*?)".*?title="(.*?)".*?src="(.*?)".*?href',html,re.DOTALL)
 	for link,title,img in items:
 		title = title.strip(' ')
+		if 'http' not in link: link = 'http:'+link
 		addLink(title,link,63,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return

@@ -6,73 +6,6 @@ from urlresolver import HostedMediaFile as urlresolver_HostedMediaFile
 script_name='RESOLVERS'
 doNOTresolveMElist = [ 'mystream','vimple','vidbom' ]
 
-"""
-def RESOLVABLE_OLD(url):
-	result = 44
-	if 'akoam.net' 		in url and '?' not in url: result = 1
-	elif 'rapidvideo' 	in url: result = 2
-	elif 'uptobox' 		in url: result = 3
-	elif 'vidshare' 	in url: result = 4
-	elif 'uqload' 		in url: result = 5
-	elif 'vcstream' 	in url: result = 6
-	elif 'vidoza' 		in url: result = 7
-	elif 'watchvideo' 	in url: result = 8
-	elif 'upbom' 		in url: result = 9
-	elif 'liivideo' 	in url: result = 10
-	elif 'vidhd' 		in url: result = 11
-	elif 'intoupload' 	in url: result = 12
-	elif 'estream'	 	in url: result = 13
-	elif 'vev.io'	 	in url: result = 14
-	elif 'youtu'	 	in url: result = 15
-	elif 'catch.is'	 	in url: result = 16
-	elif 'load.is'	 	in url: result = 17
-	elif 'golink'	 	in url: result = 18
-	elif 'go2ooo'		in url: result = 19
-	elif 'vidbom'		in url: result = 20
-	elif 'vidbob'		in url: result = 21
-	elif 'uptostream'	in url: result = 22
-	elif 'arabloads'	in url: result = 23
-	elif 'top4top'		in url: result = 24
-	elif 'zippyshare'	in url: result = 25
-	elif 'gounlimited'	in url: result = 26
-	elif 'thevideo'		in url: result = 27
-	elif 'mp4upload'	in url: result = 28
-	return result
-
-def SERVERS_OLD(linkLIST,script_name=''):
-	serversLIST = []
-	urlLIST = []
-	unknownLIST = ''
-	serversSTATUS = []
-	serversDICT = {}
-	linkLIST = set(linkLIST)
-	for i in range(0,44):
-		serversSTATUS.append('')
-	for link in linkLIST:
-		server = RESOLVABLE(link)
-		if server<10: serverNum = '0' + str(server)
-		else: serverNum = str(server)
-		#xbmcgui.Dialog().ok(link,serverNum)
-		serversDICT[serverNum+serversSTATUS[server]] = link
-		if serversSTATUS[server]=='': serversSTATUS[server] = 'a'
-		else: serversSTATUS[server] = chr(ord(serversSTATUS[server])+1)
-	sortedList = sorted(serversDICT.keys())
-	for i in sortedList:
-		if i[0:2]=='44':
-			serversLIST.append('سيرفر مجهول ' + SERVERNAME(serversDICT[i]))
-			if CHECK(serversDICT[i])=='unknown':
-				unknownLIST += serversDICT[i]+'\\n'
-		else: serversLIST.append('سيرفر ' + SERVERNAME(serversDICT[i]))
-		urlLIST.append(serversDICT[i])
-	lines = len(unknownLIST.split('\\n'))-1
-	#xbmcgui.Dialog().ok(str(lines),'')
-	if lines>0:
-		message = '\\n'+unknownLIST
-		subject = 'Unknown Resolvers = ' + str(lines)
-		result = SEND_EMAIL(subject,message,'no','','FROM-RESOLVERS-'+script_name)
-	return serversLIST,urlLIST
-"""
-
 def CHECK(url):
 	result = 'unknown'
 	if   '1fichier'		in url: result = 'known'
@@ -250,12 +183,14 @@ def PLAY(linkLIST,script_name,play='yes'):
 	if selection == -1 : return ''
 	url = urlLIST[selection]
 	videoURL = RESOLVE(url)
-	videoURL = videoURL[0]
-	if videoURL=='':
+	if videoURL==[]:
 		import PROBLEMS
 		PROBLEMS.MAIN(1006)
-	elif play=='yes': PLAY_VIDEO(videoURL,script_name,'yes')
-	return videoURL
+		return ''
+	else:
+		videoURL = videoURL[0]
+		if play=='yes': PLAY_VIDEO(videoURL,script_name,'yes')
+		return videoURL
 
 def	URLRESOLVER(url):
 	link = 'Error'
@@ -269,9 +204,6 @@ def AKOAMNET(link):
 	url = response.headers['Location']
 	url = RESOLVE(url)
 	url = url[0]
-	#id = link.split('/')[-1].split('?')[0]
-	#url = 'http://load.is/' + id
-	#xbmcgui.Dialog().ok(url,url)
 	if 'catch.is' in url:
 		id = url.split('%2F')[-1]
 		url = 'http://catch.is/'+id

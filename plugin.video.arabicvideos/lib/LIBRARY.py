@@ -46,7 +46,7 @@ def openURL(url,data='',headers='',showDialogs='',source=''):
 	code = '200'
 	reason = 'OK'
 	try:
-		connection = urllib2.urlopen(request, timeout=20)
+		connection = urllib2.urlopen(request)
 		response = connection.read()
 		code = str(connection.code)
 		#xbmcgui.Dialog().ok(url,response)
@@ -164,7 +164,7 @@ def PLAY_VIDEO(url,label,showWatched='yes'):
 		xbmc.Player().play(url,play_item)
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-3&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
+	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-2&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
 	openURL(url,'','','no','LIBRARY-PLAY_VIDEO-1st')
 	return
 

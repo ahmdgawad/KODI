@@ -68,8 +68,8 @@ def MAIN(mode,text=''):
 		xbmcgui.Dialog().textviewer('Digital Millennium Copyright Act (DMCA)',text)
 
 	elif mode==9:
-		var = dummyClientID()
-		xbmcgui.Dialog().ok(var,var)
+		#var = dummyClientID()
+		#xbmcgui.Dialog().ok(var,var)
 		#import logging
 		#logging.warning('EMAD_' + idComponents + '_EMAD')
 		import RESOLVERS
