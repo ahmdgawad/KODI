@@ -67,7 +67,7 @@ Modified addon icon
 
 
 v2.6.0
-Added and used "script.module.urlresolver"
+Added and used "script.module.urlresolver" to allow for more resolvers
 
 
 v2.7.0
@@ -85,5 +85,11 @@ Skipped
 
 
 v3.0.0
-Back to previous "Analytics" Number (v2.8.0)
+Back to previous (v2.7.0) "Analytics" Number
+
+
+v3.1.0
+Added and used "script.module.futures" to allow for parallel web requests
+
+
 

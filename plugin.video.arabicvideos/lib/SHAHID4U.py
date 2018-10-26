@@ -77,6 +77,7 @@ def ITEMS(url):
 
 def PLAY(url):
 	linkLIST = []
+	urlLIST = []
 	html = openURL(url,'',headers,'','SHAHID4U-PLAY-1st')
 	html_blocks = re.findall('class="servers2(.*?)</div>',html,re.DOTALL)
 	block = html_blocks[0]
@@ -91,8 +92,15 @@ def PLAY(url):
 	items = re.findall('url: \'(.*?)\'.*?data: \'(.*?)\'',block,re.DOTALL)
 	url = items[0][0]+'?'+items[0][1]
 	items = re.findall('server\((.*?)\)',block,re.DOTALL)
-	for link in items:
-		html = openURL(url+link,'',headers,'','SHAHID4U-PLAY-3rd')
+	for server in items:
+		#html = openURL(url+server,'',headers,'','SHAHID4U-PLAY-3rd')
+		urlLIST.append(url+server)
+	count = len(urlLIST)
+	import concurrent.futures
+	with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+		responcesDICT = dict( (executor.submit(openURL, urlLIST[i], '', headers,'','SHAHID4U-PLAY-3rd'), i) for i in range(0,count) )
+	for response in concurrent.futures.as_completed(responcesDICT):
+		html = response.result()
 		#html = html.replace('SRC=','src=')
 		links = re.findall('src="(.*?)"',html,re.DOTALL)
 		linkLIST.append(links[0])

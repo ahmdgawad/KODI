@@ -3,11 +3,12 @@
 
 
 
-<addon id="plugin.video.arabicvideos" name="Arabic Videos" version="3.0.0" provider-name="EMAD MAHDI">
+<addon id="plugin.video.arabicvideos" name="Arabic Videos" version="3.1.0" provider-name="EMAD MAHDI">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.requests" version="2.12.4"/>
 		<import addon="script.module.urlresolver" version="5.0.00"/>
+		<import addon="script.module.futures" version="2.0.00"/>
 	</requires>
 	<extension point="xbmc.python.pluginsource" library="MAIN.py">
 		<provides>video</provides>
@@ -267,6 +268,27 @@
 		<forum>https://www.tvaddons.co/forums</forum>
         <website>https://www.tvaddons.co</website>
 	</extension>
+</addon>
+
+
+
+<addon id="script.module.futures"
+       name="futures"
+       version="2.2.0"
+       provider-name="Brian Quinlan">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.module"
+             library="lib"/>
+  <extension point="xbmc.addon.metadata">
+    <summary>A futures implementation for Python</summary>
+    <description>Backport of the concurrent.futures package from Python 3.2</description>
+    <platform>all</platform>
+    <license>BSD</license>
+    <source>https://code.google.com/p/pythonfutures/source/browse</source>
+    <website>https://code.google.com/p/pythonfutures</website>
+  </extension>
 </addon>
 
 

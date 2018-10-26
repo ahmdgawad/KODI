@@ -48,6 +48,7 @@ def CHECK(url):
 	elif 'vidto.me'		in url: result = 'known'
 	elif 'archive'		in url: result = 'known'
 	elif 'publicvideohost' in url: result = 'known'
+	elif 'vidbom'		in url: result = 'known'
 	else:
 		link = 'http://emadmahdi.pythonanywhere.com/check?url=' + url
 		result = openURL(link,'','','','RESOLVERS-CHECK-1st')

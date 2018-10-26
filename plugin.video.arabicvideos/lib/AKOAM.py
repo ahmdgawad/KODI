@@ -119,7 +119,7 @@ def PLAY(url):
 		except: linkLIST.append(link+'?'+serverIMG)
 	linkLIST = set(linkLIST)
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
-	RESOLVERS_PLAY(linkLIST,script_name)
+	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	return
 
 def SEARCH():

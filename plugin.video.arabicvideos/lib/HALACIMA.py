@@ -75,6 +75,8 @@ def ITEMS(url,html='',type='',page=0):
 	return
 
 def PLAY(url):
+	urlLIST = []
+	dataLIST = []
 	linkLIST = []
 	html = openURL(url,'','','','HALACIMA-PLAY-1st')
 	html_blocks = re.findall('class="download(.*?)div',html,re.DOTALL)
@@ -92,13 +94,21 @@ def PLAY(url):
 	url = website0a + '/ajax/getVideoPlayer'
 	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
 	items = re.findall('getVideoPlayer\(\'(.*?)\'',block,re.DOTALL)
-	for link in items:
-		payload = { 'Ajax' : '1' , 'art' : artID , 'server' : link }
+	for server in items:
+		payload = { 'Ajax' : '1' , 'art' : artID , 'server' : server }
 		data = urllib.urlencode(payload)
-		html = openURL(url,data,headers,'','HALACIMA-PLAY-2nd')
+		#html = openURL(url,data,headers,'','HALACIMA-PLAY-3rd')
+		urlLIST.append(url)
+		dataLIST.append(data)
+	count = len(urlLIST)
+	import concurrent.futures
+	with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+		responcesDICT = dict( (executor.submit(openURL, urlLIST[i], dataLIST[i], headers,'','HALACIMA-PLAY-3rd'), i) for i in range(0,count) )
+	for response in concurrent.futures.as_completed(responcesDICT):
+		html = response.result()
 		html = html.replace('SRC=','src=')
 		links = re.findall('src=\'(.*?)\'',html,re.DOTALL)
-		if 'http' not in link: link = 'http:' + link
+		#if 'http' not in link: link = 'http:' + link
 		linkLIST.append(links[0])
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')

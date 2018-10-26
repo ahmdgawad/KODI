@@ -56,6 +56,7 @@ def ITEMS(url,html=''):
 
 def PLAY(url):
 	linkLIST = []
+	urlLIST = []
 	adultLIST = ['R - للكبار فقط','PG-18','PG-16','TV-MA']
 	html = openURL(url,'',headers,'','4HELAL-PLAY-1st')
 	if any(value in html for value in adultLIST):
@@ -75,8 +76,15 @@ def PLAY(url):
 	items = re.findall('data-server="(.*?)"',block,re.DOTALL)
 	for link in items:
 		url = website0a + '/ajax.php?id='+id+'&ajax=true&server='+link
-		link = openURL(url,'',headers,'','4HELAL-PLAY-2nd')
-		linkLIST.append(link)
+		#link = openURL(url,'',headers,'','4HELAL-PLAY-2nd')
+		#linkLIST.append(link)
+		urlLIST.append(url)
+	count = len(urlLIST)
+	import concurrent.futures
+	with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+		responcesDICT = dict( (executor.submit(openURL, urlLIST[i], '', headers,'','4HELAL-PLAY-2nd'), i) for i in range(0,count) )
+	for response in concurrent.futures.as_completed(responcesDICT):
+		linkLIST.append( response.result() )
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	return
