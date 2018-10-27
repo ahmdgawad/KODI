@@ -69,6 +69,7 @@ def RESOLVABLE(url):
 	elif 'filerio'		in url2: result1 = 'filerio'
 	elif 'go2ooo'		in url2: result1 = 'go2ooo'
 	elif 'gogoo'		in url2: result1 = 'gogoo'
+	elif 'gocoo'		in url2: result1 = 'gocoo'
 	elif 'golink'	 	in url2: result1 = 'golink'
 	elif 'gounlimited'	in url2: result1 = 'gounlimited'
 	elif 'govid'		in url2: result1 = 'govid'
@@ -116,6 +117,7 @@ def RESOLVE(url):
 	elif 'filerio'		in url2: videoURL = FILERIO(url)
 	elif 'go2ooo'		in url2: videoURL = GO2OOO(url)
 	elif 'gogoo'		in url2: videoURL = GOGOO(url)
+	elif 'gocoo'		in url2: videoURL = GOCOO(url)
 	elif 'golink'	 	in url2: videoURL = GOLINK(url)
 	elif 'gounlimited'	in url2: videoURL = GOUNLIMITED(url)
 	elif 'govid'		in url2: videoURL = GOVID(url)
@@ -146,6 +148,7 @@ def RESOLVE(url):
 		resolvable = urlresolver_HostedMediaFile(url).valid_url()
 		if resolvable:
 			videoURL = URLRESOLVER(url)
+
 	return videoURL
 
 def SERVERS(linkLIST,script_name=''):
@@ -196,13 +199,14 @@ def PLAY(linkLIST,script_name,play='yes'):
 def	URLRESOLVER(url):
 	link = 'Error'
 	try: link = urlresolver_HostedMediaFile(url).resolve()
-	except: xbmcgui.Dialog().notification('خطأ خارجي','الرابط ليس فيديو')
+	except: xbmcgui.Dialog().notification('خطأ خارجي','مشكلة في الرابط الاصلي')
 	return [ link.rstrip('/') ]
 
 def AKOAMNET(link):
 	import requests
 	response = requests.get(link, headers='', data='', allow_redirects=False)
 	url = response.headers['Location']
+	#xbmcgui.Dialog().ok(str(url),'')
 	url = RESOLVE(url)
 	url = url[0]
 	if 'catch.is' in url:
@@ -211,14 +215,15 @@ def AKOAMNET(link):
 		url = CATCHIS(url)
 		url = url[0]
 	else:
+		#xbmcgui.Dialog().ok(str(url),'')
 		headers = { 'User-Agent':'' , 'X-Requested-With':'XMLHttpRequest' , 'Referer':url }
 		response = requests.post(url, headers=headers, data='', allow_redirects=False)
 		html = response.text
 		items = re.findall('direct_link":"(.*?)"',html,re.DOTALL)
 		if not items:
-			items = re.findall('<IFRAME.*?SRC="(.*?)"',html,re.DOTALL)
+			items = re.findall('<IFRAME SRC="(.*?)"',html,re.DOTALL)
 			if not items:
-				items = re.findall('<iframe.*?src="(.*?)"',html,re.DOTALL)
+				items = re.findall('<iframe src="(.*?)"',html,re.DOTALL)
 				if not items:
 					items = re.findall('embed src="(.*?)"',html,re.DOTALL)
 		url = items[0].replace('\/','/')
@@ -327,7 +332,6 @@ def INTOUPLOAD(url):
 def ESTREAM(url):
 	html = openURL(url,'','','','RESOLVERS-ESTREAM-1st')
 	items = re.findall('video preload.*?src=.*?src="(.*?)"',html,re.DOTALL)
-	#xbmcgui.Dialog().ok(str(items),html)
 	return [ items[0].rstrip('/') ]
 
 def VEVIO(url):
@@ -357,6 +361,7 @@ def GOLINK(url):
 	cookie = unquote(escapeUNICODE(cookie))
 	items = re.findall('route":"(.*?)"',cookie,re.DOTALL)
 	url = items[0].replace('\/','/')
+	url = escapeUNICODE(url)
 	return [ url.rstrip('/') ]
 
 def GO2OOO(url):
@@ -365,6 +370,11 @@ def GO2OOO(url):
 	return [ url.rstrip('/') ]
 
 def GOGOO(url):
+	url = GOLINK(url)
+	url = url[0]
+	return [ url.rstrip('/') ]
+
+def GOCOO(url):
 	url = GOLINK(url)
 	url = url[0]
 	return [ url.rstrip('/') ]

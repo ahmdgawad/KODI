@@ -26,32 +26,17 @@ def addLink(name,url,mode,iconimage=icon,duration='',isPlayable='yes'):
 
 def openURL(url,data='',headers='',showDialogs='',source=''):
 	if showDialogs=='': showDialogs='yes'
-	#headers={ 'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36' }
-	#start = time.time()
 	if data=='' and headers=='': request = urllib2.Request(url)
 	elif data=='' and headers!='': request = urllib2.Request(url,headers=headers)
 	elif data!='' and headers=='': request = urllib2.Request(url,data=data)
 	elif data!='' and headers!='': request = urllib2.Request(url,headers=headers,data=data)
-	#request.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-	#request.add_header('Referer',' http://www.panet.co.il/Ext/players/flv5/player.swf')
-	#request.add_header('Accept',' text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
-	#request.add_header('Host',' fms-eu0.panet.co.il')
-	#request.add_header('Accept-Language',' en-US,en;q=0.5')
-	#request.add_header('Accept-Encoding', 'deflate')
-	#request.add_header('Cookie',' __auc=82d7ffe213cb1b4ce1d273c7ba1; __utma=31848767.848342890.1360191082.1360611183.1360620657.4; __utmz=31848767.1360191082.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmb=31848767.4.10.1360620660; __utmc=31848767; __asc=169c084d13ccb4fa36df421055e')
-	#request.add_header('Connection',' keep-alive')
-	#request.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
-	#request.add_header('Connection', 'close')
-	response = ''
+	html = ''
 	code = '200'
 	reason = 'OK'
 	try:
 		connection = urllib2.urlopen(request)
-		response = connection.read()
+		html = connection.read()
 		code = str(connection.code)
-		#xbmcgui.Dialog().ok(url,response)
-		#end = time.time()
-		#if end-start > 4 : xbmcgui.Dialog().notification('slower than 4 sec', str(end-start) )
 		connection.close
 	except urllib2.HTTPError as error:
 		code = str(error.code)
@@ -63,11 +48,11 @@ def openURL(url,data='',headers='',showDialogs='',source=''):
 		message = ''
 		send = 'no'
 		showDialogs = 'no'
-		response = 'Error {}: {!r}'.format(code, reason)
+		html = 'Error {}: {!r}'.format(code, reason)
 		if 'google-analytics' in url:
 			send = showDialogs
 		if showDialogs=='yes':
-			xbmcgui.Dialog().ok('خطأ في الاتصال',response)
+			xbmcgui.Dialog().ok('خطأ في الاتصال',html)
 			if code=='502' or code=='7':
 				xbmcgui.Dialog().ok('Website is not available','لا يمكن الوصول الى الموقع والسبب قد يكون من جهازك او من الانترنيت الخاصة بك او من الموقع كونه مغلق للصيانة او التحديث لذا يرجى المحاولة لاحقا')
 				send = 'no'
@@ -78,14 +63,14 @@ def openURL(url,data='',headers='',showDialogs='',source=''):
 				if yes:
 					message = ' \\n\\n' + KEYBOARD('Write a message   اكتب رسالة')
 		if send=='yes':
-			SEND_EMAIL('Error: From Arabic Videos',response+message,showDialogs,url,source)
+			SEND_EMAIL('Error: From Arabic Videos',html+message,showDialogs,url,source)
 	#xbmcgui.Dialog().ok('',source)
 	#file = open('/data/emad.html', 'w')
 	#file.write(url)
 	#file.write('\n\n\n')
-	#file.write(response)
+	#file.write(html)
 	#file.close()
-	return response
+	return html
 
 def quote(url):
 	return urllib2.quote(url,':/')
