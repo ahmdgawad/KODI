@@ -4,7 +4,7 @@ from LIBRARY import *
 website0a = 'https://akoam.net'
 headers = { 'User-Agent' : '' }
 script_name='AKOAM'
-noEpisodesLIST = ['فيلم','كليب','العرض الاسبوعي','مسرحية','اغنية','اعلان']
+noEpisodesLIST = ['فيلم','كليب','العرض الاسبوعي','مسرحية','اغنية','اعلان','لقاء']
 
 def MAIN(mode,url):
 	if mode==70: MENU()
@@ -82,7 +82,7 @@ def EPISODES(url):
 		return
 	block = html_blocks[0]
 	videoTitle = re.findall('class="sub_title".*?<h1>(.*?)</h1>',html,re.DOTALL)
-	videoTitle = videoTitle[0].replace('\n','') + ' - '
+	videoTitle = videoTitle[0].replace('\n','')
 	if 'sub_epsiode_title' in block:
 		items = re.findall('sub_epsiode_title">(.*?)</h2>.*?sub_file_title\'>(.*?) - <i>',block,re.DOTALL)
 	else:
@@ -112,7 +112,7 @@ def EPISODES(url):
 			PLAY(url+'?ep='+str(episodeLIST[selection]+1))
 		else:
 			for i in range(0,len(titleLIST)):
-				title = videoTitle + titleLIST[i]
+				title = videoTitle + '- ' + titleLIST[i]
 				link = url + '?ep='+str(i+1)
 				addLink(title,link,74,img)
 			xbmcplugin.endOfDirectory(addon_handle)

@@ -68,18 +68,19 @@ def MAIN(mode,text=''):
 		xbmcgui.Dialog().textviewer('Digital Millennium Copyright Act (DMCA)',text)
 
 	elif mode==9:
+		#import requests
 		#var = dummyClientID()
 		#xbmcgui.Dialog().ok(var,var)
 		#import logging
-		#logging.warning('EMAD_' + idComponents + '_EMAD')
-		import RESOLVERS
+		#logging.warning('EMAD_' + html + '_EMAD')
+		#import RESOLVERS
 		url = ''
 		urllist = [
 			''
 			]
-		url = RESOLVERS.PLAY(urllist,script_name,'no')
-		#xbmcgui.Dialog().ok(url,url)
+		#url = RESOLVERS.PLAY(urllist,script_name,'no')
 		PLAY_VIDEO(url,script_name,'yes')
+
 	return
 
 

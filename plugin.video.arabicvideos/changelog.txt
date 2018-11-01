@@ -92,4 +92,7 @@ v3.1.0
 Added and used "script.module.futures" to allow for parallel web requests
 
 
+v3.2.0
+Added new website "EGYBEST"
+
 

@@ -68,6 +68,7 @@ def RESOLVABLE(url):
 	elif 'estream'	 	in url2: result1 = 'estream'
 	elif 'filerio'		in url2: result1 = 'filerio'
 	elif 'go2ooo'		in url2: result1 = 'go2ooo'
+	elif 'go2to'		in url2: result1 = 'go2to'
 	elif 'gogoo'		in url2: result1 = 'gogoo'
 	elif 'gocoo'		in url2: result1 = 'gocoo'
 	elif 'golink'	 	in url2: result1 = 'golink'
@@ -116,6 +117,7 @@ def RESOLVE(url):
 	elif 'estream'	 	in url2: videoURL = ESTREAM(url)
 	elif 'filerio'		in url2: videoURL = FILERIO(url)
 	elif 'go2ooo'		in url2: videoURL = GO2OOO(url)
+	elif 'go2to'		in url2: videoURL = GO2TO(url)
 	elif 'gogoo'		in url2: videoURL = GOGOO(url)
 	elif 'gocoo'		in url2: videoURL = GOCOO(url)
 	elif 'golink'	 	in url2: videoURL = GOLINK(url)
@@ -207,8 +209,11 @@ def AKOAMNET(link):
 	response = requests.get(link, headers='', data='', allow_redirects=False)
 	url = response.headers['Location']
 	#xbmcgui.Dialog().ok(str(url),'')
-	url = RESOLVE(url)
-	url = url[0]
+	url = GOLINK(url)
+	try: url = url[0]
+	except:
+		url = RESOLVE(url)
+		url = url[0]
 	if 'catch.is' in url:
 		id = url.split('%2F')[-1]
 		url = 'http://catch.is/'+id
@@ -365,6 +370,11 @@ def GOLINK(url):
 	return [ url.rstrip('/') ]
 
 def GO2OOO(url):
+	url = GOLINK(url)
+	url = url[0]
+	return [ url.rstrip('/') ]
+
+def GO2TO(url):
 	url = GOLINK(url)
 	url = url[0]
 	return [ url.rstrip('/') ]
