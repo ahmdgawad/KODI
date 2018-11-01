@@ -22,7 +22,8 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <a href="http://www.halacima.net">8. &nbsp; http://www.halacima.net</a><br />
 <a href="http://www.4helal.tv">9. &nbsp; http://www.4helal.tv</a><br />
 <a href="http://www.shahid4u.me">10. &nbsp; http://www.shahid4u.me</a><br />
-<a href="http://www.google.com">11. &nbsp; Tv Channels</a><br />
+<a href="http://www.egy.best">11. &nbsp; http://www.egy.best</a><br />
+<a href="http://www.google.com">12. &nbsp; Tv Channels</a><br />
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>2. &nbsp; التنصيب والتنزيل &nbsp;&nbsp;&nbsp;&nbsp; Download & Install</h2>
