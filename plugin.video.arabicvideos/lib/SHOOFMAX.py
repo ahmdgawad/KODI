@@ -29,7 +29,7 @@ def MOVIES_MENU():
 	addDir('افلام كلاسيكية',website0a+'/movie/1/classic',51)
 	addDir('اجدد الافلام',website0a+'/movie/1/yop',51)
 	addDir('الافلام الافضل تقييم',website0a+'/movie/1/review',51)
-	addDir('افلام الاكثر مشاهدة',website0a+'/movie/1/views',51)
+	addDir('الافلام الاكثر مشاهدة',website0a+'/movie/1/views',51)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

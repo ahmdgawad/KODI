@@ -125,7 +125,9 @@ def PLAY(url):
 	watchitem = re.findall('source src=\"\/api\?call=(.*?)"',html,re.DOTALL)
 	url = website0a + '/api?call=' + watchitem[0]
 	EGUserDef = GET_LOGIN_TOKEN()
-	if EGUserDef=='': return
+	if EGUserDef=='':
+		GET_USERNAME_PASSWORD()
+		return
 	headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUserDef='+EGUserDef }
 	import requests
 	response = requests.get(url, headers=headers, allow_redirects=False)
@@ -169,9 +171,7 @@ def GET_LOGIN_TOKEN():
 	settings = xbmcaddon.Addon(id='plugin.video.arabicvideos')
 	username = settings.getSetting('egybest.user')
 	password = settings.getSetting('egybest.pass')
-	if username=='' or password=='':
-		GET_USERNAME_PASSWORD()
-		return ''
+	if username=='' or password=='': return ''
 	import requests
 	#url = 'https://ssl.egexa.com/logout/'
 	#headers = { 'Cookie': 'PHPSESSID='+PHPSESSID }
@@ -201,7 +201,7 @@ def GET_LOGIN_TOKEN():
 			EGUserDef = cookies['EGUserDef']
 			#xbmcgui.Dialog().ok('success','logged in')
 		except:
-			xbmcgui.Dialog().ok('خطأ في اسم الدخول او كلمة السر','يجب عليك اصلاح هذا الخطأ لكي تتمكن من تشغيل الفيديو بصورة صحيحة')
+			xbmcgui.Dialog().ok('خطأ في اسم الدخول او كلمة السر','يجب عليك اصلاح اسم الدخول وكلمة السر لكي تتمكن من تشغيل الفيديو بصورة صحيحة')
 			EGUserDef = ''
 	return EGUserDef
 

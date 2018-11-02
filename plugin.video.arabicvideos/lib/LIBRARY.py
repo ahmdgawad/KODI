@@ -184,22 +184,32 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 	return html
 
 def dummyClientID():
-	hostName = xbmc.getInfoLabel( "System.FriendlyName" )
 	#ipAddress = xbmc.getInfoLabel( "Network.IPAddress" )
-	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
-	xbmc.sleep(600)
-	macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
-	osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
+	for i in range(0,20):
+		hostName = xbmc.getInfoLabel( "System.FriendlyName" )
+		if hostName!='Busy': break
+		xbmc.sleep(100)
+	for j in range(0,20):
+		macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
+		if macAddress!='Busy': break
+		xbmc.sleep(100)
+	for k in range(0,20):
+		osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
+		if osVersion!='Busy': break
+		xbmc.sleep(100)
 	idComponents = macAddress + hostName + osVersion
-	idComponents2 = idComponents.lower()
-	listREMOVE = ['kodi','localhost','android','api level','kernel','linux','windows','nt',' ',':','\.','\(','\)']
-	idComponents = re.sub('|'.join(listREMOVE), '', idComponents2)
-	length = len(idComponents)
+	idComponents1 = idComponents.lower()
+	listREMOVE1 = [' ',':','\.','\(','\)']
+	idComponents2 = re.sub('|'.join(listREMOVE1), '', idComponents1)
+	listREMOVE2 = ['kodi','localhost','android','api level','kernel','linux','windows','nt']
+	idComponents3 = re.sub('|'.join(listREMOVE2), '', idComponents2)
+	length = len(idComponents3)
 	resultNumber = 1
-	for i in range(0,length): resultNumber *= ord(idComponents[i])
+	for i in range(0,length): resultNumber *= ord(idComponents3[i])
 	resultText = str(resultNumber)
 	middle = int(len(resultText)/2)
 	result = resultText[middle-10:middle+10]
+	if len(result)<20: result = idComponents2
 	return result
 
 
