@@ -20,7 +20,7 @@ def MENU():
 	#xbmcgui.Dialog().ok(html,html)
 	block = html_blocks[0]
 	items = re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
-	ignoreLIST = ['مسلسلات انمي']
+	ignoreLIST = ['مسلسلات انمي','الرئيسية']
 	for link,title in items:
 		title = title.strip(' ')
 		if not any(value in title for value in ignoreLIST):

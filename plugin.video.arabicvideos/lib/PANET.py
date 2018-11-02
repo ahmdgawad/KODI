@@ -8,20 +8,22 @@ script_name = 'PANET'
 
 def MAIN(mode,url):
 	if mode==30: MENU()
-	elif mode==31: CATEGORIES(url)
+	elif mode==31: CATEGORIES(url,'3')
 	elif mode==32: ITEMS(url)
 	elif mode==33: PLAY(url)
 	elif mode==34: SEARCH(url)
 	elif mode==35: CATEGORIES(url,'1')
 	elif mode==36: CATEGORIES(url,'2')
+	elif mode==37: CATEGORIES(url,'4')
 	return
 
 def MENU():
 	addDir('بحث عن افلام',website0a+'/search/result/title/movies',34)
 	addDir('بحث عن مسلسلات',website0a+'/search/result/title/series',34)
-	addDir('مسلسلات وبرامج',website0a+'/series/v1',31)
-	addDir('افلام مصنفة حسب النوع',website0a+'/movies',35)
-	addDir('افلام مصنفة حسب الممثل',website0a+'/movies',36)
+	addDir('مسلسلات وبرامج',website0a+'/series',31)
+	addDir('المسلسلات الاكثر مشاهدة',website0a+'/series',37)
+	addDir('افلام حسب النوع',website0a+'/movies',35)
+	addDir('افلام حسب الممثل',website0a+'/movies',36)
 	addDir('احدث الافلام',website0a+'/movies',32)
 	addDir('مسرحيات',website0a+'/movies/genre/4/1',32)
 	xbmcplugin.endOfDirectory(addon_handle)
@@ -33,13 +35,23 @@ def CATEGORIES(url,select=''):
 	#xbmcgui.Dialog().ok(type, url)
 	if type=='series':
 		html = openURL(url,'',headers,'','PANET-CATEGORIES-1st')
-		html_blocks=re.findall('categoriesMenu(.*?)seriesForm',html,re.DOTALL)
-		block= html_blocks[0]
-		items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
-		for link,name in items:
-			url = website0a + link
-			name = name.strip(' ')
-			addDir(name,url,32)
+		if select=='3':
+			html_blocks=re.findall('categoriesMenu(.*?)seriesForm',html,re.DOTALL)
+			block= html_blocks[0]
+			items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
+			for link,name in items:
+				url = website0a + link
+				name = name.strip(' ')
+				addDir(name,url,32)
+		if select=='4':
+			html_blocks=re.findall('video-details-panel(.*?)v></a></div>',html,re.DOTALL)
+			block= html_blocks[0]
+			items=re.findall('panet-thumbnail" href="(.*?)".*?src="(.*?)".*?panet-info">(.*?)<',block,re.DOTALL)
+			for link,img,title in items:
+				url = website0a + link
+				title = title.strip(' ')
+				addDir(title,url,32,img)
+		#xbmcgui.Dialog().ok(url,'')
 	if type=='movies':
 		html = openURL(url,'',headers,'','PANET-CATEGORIES-2nd')
 		if select=='1':
@@ -60,8 +72,8 @@ def CATEGORIES(url,select=''):
 	return
 
 def ITEMS(url):
-	html = openURL(url,'',headers,'','PANET-ITEMS-1st')
 	type = url.split('/')[3]
+	html = openURL(url,'',headers,'','PANET-ITEMS-1st')
 	if 'home' in url: type='episodes'
 	if type=='series':
 		html_blocks = re.findall('panet-thumbnails(.*?)panet-pagination',html,re.DOTALL)

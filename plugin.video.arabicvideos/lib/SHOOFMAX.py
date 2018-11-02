@@ -1,47 +1,81 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
-import requests
 
 website0a = 'https://shoofmax.com'
 website0b = 'https://static.shoofmax.com'
 script_name = 'SHOOFMAX'
 
 def MAIN(mode,url):
-	if mode==50: MENU()
+	if mode==50: MAIN_MENU()
 	elif mode==51: TITLES(url)
 	elif mode==52: EPISODES(url)
 	elif mode==53: PLAY(url)
 	elif mode==54: SEARCH()
+	elif mode==55: MOVIES_MENU()
+	elif mode==56: SERIES_MENU()
 	return
 
-def MENU():
+def MAIN_MENU():
 	addDir('بحث في الموقع','',54)
-	addDir('افلام بحسب السنة',website0a+'/movie/1/yop',51)
-	addDir('افلام بحسب التقييم',website0a+'/movie/1/review',51)
-	addDir('افلام بحسب المشاهدة',website0a+'/movie/1/views',51)
-	addDir('مسلسلات بحسب السنة',website0a+'/series/1/yop',51)
-	addDir('مسلسلات بحسب التقييم',website0a+'/series/1/review',51)
-	addDir('مسلسلات بحسب المشاهدة',website0a+'/series/1/views',51)
+	addDir('الافلام','',55)
+	addDir('المسلسلات','',56)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
+def MOVIES_MENU():
+	addDir('احدث الافلام',website0a+'/movie/1/latest',51)
+	addDir('افلام رائجة',website0a+'/movie/1/popular',51)
+	addDir('اخر اضافات الافلام',website0a+'/movie/1/newest',51)
+	addDir('افلام كلاسيكية',website0a+'/movie/1/classic',51)
+	addDir('اجدد الافلام',website0a+'/movie/1/yop',51)
+	addDir('الافلام الافضل تقييم',website0a+'/movie/1/review',51)
+	addDir('افلام الاكثر مشاهدة',website0a+'/movie/1/views',51)
+	xbmcplugin.endOfDirectory(addon_handle)
+	return
+
+def SERIES_MENU():
+	addDir('احدث المسلسلات',website0a+'/series/1/latest',51)
+	addDir('مسلسلات رائجة',website0a+'/series/1/popular',51)
+	addDir('اخر اضافات المسلسلات',website0a+'/series/1/newest',51)
+	addDir('مسلسلات كلاسيكية',website0a+'/series/1/classic',51)
+	addDir('اجدد المسلسلات',website0a+'/series/1/yop',51)
+	addDir('المسلسلات الافضل تقييم',website0a+'/series/1/review',51)
+	addDir('المسلسلات الاكثر مشاهدة',website0a+'/series/1/views',51)
+	xbmcplugin.endOfDirectory(addon_handle)
+	return
+	
+	
 def TITLES(url):
 	info = url.split('/')
 	sort = info[ len(info)-1 ]
 	page = info[ len(info)-2 ]
 	type = info[ len(info)-3 ]
-	if type=='movie': type1='فيلم'
-	if type=='series': type1='مسلسل'
-	url = website0a+'/filter-programs/'+quote(type1)+'/'+page+'/'+sort
-	html = openURL(url,'','','','SHOOFMAX-TITLES-1st')
-	items = re.findall('"ref":(.*?),.*?"title":"(.*?)".+?"numep":(.*?),"res":"(.*?)"',html,re.DOTALL)
-	count_items=0
-	for id,title,episodes_number,name in items:
-		count_items += 1
-		img = website0b + '/img/program/' + name + '-2.jpg'
-		link = website0a + '/program/' + id
-		if type=='movie': addLink(title,link,53,img)
-		if type=='series': addDir(title,link+'?ep='+episodes_number+'='+title+'='+img,52,img)
+	if sort in ['yop','review','views']:
+		if type=='movie': type1='فيلم'
+		elif type=='series': type1='مسلسل'
+		url = website0a + '/filter-programs/' + quote(type1) + '/' + page + '/' + sort
+		html = openURL(url,'','','','SHOOFMAX-TITLES-1st')
+		items = re.findall('"ref":(.*?),.*?"title":"(.*?)".+?"numep":(.*?),"res":"(.*?)"',html,re.DOTALL)
+		count_items=0
+		for id,title,episodes_number,img in items:
+			count_items += 1
+			img = website0b + '/img/program/' + img + '-2.jpg'
+			link = website0a + '/program/' + id
+			if type=='movie': addLink(title,link,53,img)
+			if type=='series': addDir(title,link+'?ep='+episodes_number+'='+title+'='+img,52,img)
+	else:
+		if type=='movie': type1='movies'
+		elif type=='series': type1='series'
+		url = website0b + '/json/selected/' + sort + '-' + type1 + '-WW.json'
+		html = openURL(url,'','','','SHOOFMAX-TITLES-2nd')
+		items = re.findall('"ref":(.*?),"ep":(.*?),"base":"(.*?)","title":"(.*?)"',html,re.DOTALL)
+		count_items=0
+		for id,episodes_number,img,title in items:
+			count_items += 1
+			img = website0b + '/img/program/' + img + '-2.jpg'
+			link = website0a + '/program/' + id
+			if type=='movie': addLink(title,link,53,img)
+			if type=='series': addDir(title,link+'?ep='+episodes_number+'='+title+'='+img,52,img)
 	title='صفحة '
 	if count_items==16:
 		for count_page in range(1,13) :
@@ -130,6 +164,7 @@ def SEARCH():
 	search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','%20')
+	import requests
 	response = requests.get(website0a, data='', headers='')
 	html = response.text
 	cookies = response.cookies.get_dict()

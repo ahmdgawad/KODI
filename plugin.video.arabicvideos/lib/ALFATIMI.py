@@ -20,8 +20,9 @@ def MENU():
 	addDir('اضيفت مؤخرا',website0a,65,icon,'',3)
 	addDir('فيديو عشوائي',website0a,65,icon,'',4)
 	addDir('افلام ومسلسلات',website0a,61,icon,'',-1)
-	addDir('اخرى',website0a,61,icon,'',-2)
-	addDir('English',website0a,61,icon,'',-3)
+	addDir('البرامج الدينية',website0a,61,icon,'',-2)
+	addDir('English Videos',website0a,61,icon,'',-3)
+	#TITLES(website0a,'-2')
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -41,20 +42,20 @@ def TITLES(url,category):
 		titleCAT = '[[ ' + title + ' ]]'
 		if category=='-1':
 			if cat in moviesLIST:
-                               	addDir(titleCAT,website0a,61,icon,'',cat)
+				addDir(titleCAT,website0a,61,icon,'',cat)
 		elif category=='-2':
 			if cat not in moviesLIST and cat not in englishLIST:
-                               	addDir(titleCAT,website0a,61,icon,'',cat)
+				addDir(titleCAT,website0a,61,icon,'',cat)
 		elif category=='-3':
 			if cat in englishLIST:
-                               	addDir(titleCAT,website0a,61,icon,'',cat)
+				addDir(titleCAT,website0a,61,icon,'',cat)
 		elif startADD==False:
 			if category==cat: startADD = True
 		elif count=='1':
 			if 'http' not in link: link = 'http:'+link
 			addLink(title,link,63)
 		else: addDir(titleCAT,website0a,61,icon,'',cat)
-	if category!='-1' and category!='-2' and category!='-3':
+	if category not in ['-1','-2','-3']:
 		EPISODES(website0a+'/videos.php?cat='+category)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return

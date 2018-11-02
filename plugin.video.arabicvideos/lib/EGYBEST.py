@@ -32,7 +32,7 @@ def FILTERS_MENU(link):
 	#xbmcgui.Dialog().ok(str(link), str(filter))
 	if '/trending/' not in link:
 		addDir('اظهار قائمة الفيديو التي تم اختيارها',link,122,'',1)
-		addDir('[[ ' + filter + ' ]]',link,122,'',1)
+		addDir('[[  ' + filter + '  ]]',link,122,'',1)
 		addDir('===========================',link,9999)
 	html = openURL(link,'',headers,'','EGYBEST-FILTERS_MENU-1st')
 	html_blocks=re.findall('mainLoad(.*?)</div></div>',html,re.DOTALL)
@@ -55,7 +55,8 @@ def FILTERS_MENU(link):
 		block = html_blocks[0]
 		items=re.findall('href="(.*?)" >(.*?)<',block,re.DOTALL)
 		for url,title in items:
-			if '- الكل -' in title: continue
+			ignoreLIST = ['- الكل -','[R]']
+			if any(value in title for value in ignoreLIST): continue
 			if '/movies/' in url: title = 'افلام ' + title
 			elif '/tv/' in url: title = 'مسلسلات ' + title
 			addDir(title,url,121)
@@ -105,9 +106,8 @@ def PLAY(url):
 	#xbmcgui.Dialog().ok(url, '')
 	headers = { 'User-Agent' : '' }
 	html = openURL(url,'',headers,'','EGYBEST-PLAY-1st')
-	adultLIST = ['R','TVMA','TV-MA'       ,'PG-18','PG-16']
 	rating = re.findall('<td>التصنيف</td>.*?">(.*?)<',html,re.DOTALL)
-	if any(value in rating[0] for value in adultLIST):
+	if rating[0] in ['R','TVMA','TV-MA'       ,'PG-18','PG-16']:
 		xbmcgui.Dialog().notification('الفيديو للكبار فقط','البرنامج لا يعرض هكذا افلام')
 		return
 	html_blocks = re.findall('tbody(.*?)tbody',html,re.DOTALL)
@@ -136,7 +136,7 @@ def PLAY(url):
 			qualityLIST.append ('m3u8   '+qualtiy)
 			datacallLIST.append (url)
 	selection = xbmcgui.Dialog().select('اختر الفيديو المناسب:', qualityLIST)
-	if selection == -1 : return ''
+	if selection == -1 : return
 	url = datacallLIST[selection]
 	if 'http' not in url:
 		datacall = datacallLIST[selection]
@@ -161,10 +161,17 @@ def SEARCH():
 def GET_USERNAME_PASSWORD():
 	text = 'هذا الموقع يحتاج اسم دخول وكلمة السر لكي تستطيع تشغيل ملفات الفيديو. للحصول عليهم قم بفتح حساب مجاني من الموقع الاصلي'
 	xbmcgui.Dialog().ok('الموقع الاصلي  http://egy.best',text)
-	xbmc.executebuiltin('Addon.OpenSettings(%s)' % addon_id)
+	xbmc.executebuiltin('Addon.OpenSettings(%s)' %addon_id)
 	return
 
 def GET_LOGIN_TOKEN():
+	import xbmcaddon
+	settings = xbmcaddon.Addon(id='plugin.video.arabicvideos')
+	username = settings.getSetting('egybest.user')
+	password = settings.getSetting('egybest.pass')
+	if username=='' or password=='':
+		GET_USERNAME_PASSWORD()
+		return ''
 	import requests
 	#url = 'https://ssl.egexa.com/logout/'
 	#headers = { 'Cookie': 'PHPSESSID='+PHPSESSID }
@@ -185,10 +192,6 @@ def GET_LOGIN_TOKEN():
 		EGUserDef = cookies['EGUserDef']
 		#xbmcgui.Dialog().ok('You already logged in','')
 	except:
-		import xbmcaddon
-		settings = xbmcaddon.Addon(id='plugin.video.arabicvideos')
-		username = settings.getSetting('egybest.user')
-		password = settings.getSetting('egybest.pass')
 		url = 'https://ssl.egexa.com/login/'
 		headers = { 'Content-Type': 'application/x-www-form-urlencoded' , 'Cookie': 'PHPSESSID='+PHPSESSID }
 		payload = 'LOGIN_SID='+PHPSESSID+'&do=login&login=login&password='+password+'&username='+username

@@ -34,10 +34,21 @@ def MAIN_MENU(website0):
 	#html_blocks=re.findall('input_Search_" placeholder="(.*?)"',html,re.DOTALL)
 	#name = html_blocks[0]
 	lang = LANG(website0)
-	if lang=='ar': name = 'بحث في الموقع'
-	elif lang=='en': name = 'Search in site'
-	elif lang=='fa': name = 'جستجو در سایت'
-	elif lang=='fa2': name = 'جستجو در سایت'
+	if lang=='ar':
+		name = 'بحث في الموقع'
+		name1 = 'المسلسلات الحالية'
+		name2 = 'المسلسلات مرتبة حسب الاحدث'
+		name3 = 'المسلسلات مرتبة حسب الابجدية'
+	elif lang=='en':
+		name = 'Search in site'
+		name1 = 'Current Series'
+		name2 = 'Series sorted by Latest'
+		name3 = 'Series sorted by Alphabet'
+	elif lang in ['fa','fa2']:
+		name = 'جستجو در سایت'
+		name1 = 'سريال ها جاری'
+		name2 = 'سريال ها مرتب سازى براساس'
+		name3 = 'سريال ها مرتب حروف الفبا'
 	addDir(name,website0,26)
 	html_blocks=re.findall('main-body.*?menu(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
@@ -45,11 +56,14 @@ def MAIN_MENU(website0):
 	for link,title in items:
 		if any(value in link for value in menu):
 			url = website0 + link
-			if 'Series' in link: addDir(title+' 1',url,22,icon,100)
-			if 'Series' in link: addDir(title+' 2',url,22,icon,101)
-			elif 'Music' in link: addDir(title,url,25,icon,101)
-			else: addDir(title,url,22,icon,101)
-			if 'Series' in link: addDir(title+' 3',url,22,icon,201)
+			if 'Series' in link:
+				addDir(name1,url,22,icon,100)
+				addDir(name2,url,22,icon,101)
+				addDir(name3,url,22,icon,201)
+			elif 'Music' in link:
+				addDir(title,url,25,icon,101)
+			elif 'Program':
+				addDir(title,url,22,icon,101)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

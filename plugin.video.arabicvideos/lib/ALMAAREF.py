@@ -18,7 +18,7 @@ def MAIN(mode,url,category):
 
 def MENU():
 	addDir('بحث في الموقع','',41)
-	addDir('برامج القناة','',48)
+	addDir('البرامج الحالية','',48)
 	html = openURL(website0a,'','','','ALMAAREF-MENU-1st')
 	items = re.findall('<h2><a href="(.*?)">(.*?)</a></h2>',html,re.DOTALL)
 	for link,name in items:
@@ -26,7 +26,8 @@ def MENU():
 	name = re.findall('recent-default.*?<h2>(.*?)</h2>',html,re.DOTALL)
 	if name:
 		addDir(name[0],website0a,46)
-	name = re.findall('categories"><div class="widget-top"><h4>(.*?)</h4>',html,re.DOTALL)
+	name = ['ارشيف لجميع البرامج']
+	#name = re.findall('categories"><div class="widget-top"><h4>(.*?)</h4>',html,re.DOTALL)
 	if name:
 		addDir(name[0],website0a,44,icon,'','0')
 	xbmcplugin.endOfDirectory(addon_handle)
@@ -118,6 +119,9 @@ def CATEGORIES(url,category):
 	for cat,parent,title,link in items:
 		if parent == category and cat not in notvideosLIST:
 			title = unescapeHTML(title)
+			if 'وقات برامج' in title: continue
+			if '(' in title:
+				title = title.replace(re.findall(' \(.*?\)',title)[0],'')
 			url = website0a + '/' + link
 			if cat == '-165': title = 'السيد صباح شبر (60)'
 			if '-' in cat: addDir(title,url,44,icon,'',cat)
