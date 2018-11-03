@@ -69,8 +69,8 @@ def MAIN(mode,text=''):
 
 	elif mode==9:
 		#import requests
-		#var = dummyClientID()
-		#xbmcgui.Dialog().ok(var,var)
+		var = dummyClientID()
+		xbmcgui.Dialog().ok(var,'')
 		#import logging
 		#logging.warning('EMAD_' + html + '_EMAD')
 		#import RESOLVERS
@@ -79,8 +79,7 @@ def MAIN(mode,text=''):
 			''
 			]
 		#url = RESOLVERS.PLAY(urllist,script_name,'no')
-		PLAY_VIDEO(url,script_name,'yes')
-
+		#PLAY_VIDEO(url,script_name,'yes')
 	return
 
 
