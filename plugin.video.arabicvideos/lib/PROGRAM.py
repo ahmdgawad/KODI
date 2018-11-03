@@ -69,8 +69,8 @@ def MAIN(mode,text=''):
 
 	elif mode==9:
 		#import requests
-		var = dummyClientID()
-		xbmcgui.Dialog().ok(var,'')
+		#var = dummyClientID()
+		#xbmcgui.Dialog().ok(var,'')
 		#import logging
 		#logging.warning('EMAD_' + html + '_EMAD')
 		#import RESOLVERS

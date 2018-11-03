@@ -17,8 +17,8 @@ def MAIN(mode,url):
 
 def MAIN_MENU():
 	addDir('بحث في الموقع','',54)
-	addDir('الافلام','',55)
 	addDir('المسلسلات','',56)
+	addDir('الافلام','',55)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

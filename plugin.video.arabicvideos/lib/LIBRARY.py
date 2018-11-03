@@ -185,18 +185,18 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 
 def dummyClientID():
 	#ipAddress = xbmc.getInfoLabel( "Network.IPAddress" )
-	for i in range(0,5):
+	for i in range(0,6):
 		hostName = xbmc.getInfoLabel( "System.FriendlyName" )
 		if hostName!='Busy': break
-		if i!=4: xbmc.sleep(500*pow(2,i))
-	for j in range(0,5):
+		if i!=5: xbmc.sleep(500*pow(2,i))
+	for j in range(0,6):
 		macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
 		if macAddress!='Busy': break
-		if j!=4: xbmc.sleep(500*pow(2,j))
-	for k in range(0,5):
+		if j!=5: xbmc.sleep(500*pow(2,j))
+	for k in range(0,6):
 		osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
 		if osVersion!='Busy': break
-		if k!=4: xbmc.sleep(500*pow(2,k))
+		if k!=5: xbmc.sleep(500*pow(2,k))
 	idComponents = macAddress + hostName + osVersion
 	#idComponents = 'busykodilocalhostbusy' + 'a'
 	idComponents1 = idComponents.lower().decode('utf8')
@@ -204,6 +204,7 @@ def dummyClientID():
 	idComponents2 = re.sub('|'.join(listREMOVE1), '', idComponents1)
 	listREMOVE2 = ['kodi','localhost','android','api level','kernel','linux','windows','nt','busy']
 	idComponents3 = re.sub('|'.join(listREMOVE2), '', idComponents2)
+	#idComponents3 = 'busybusy'
 	length = len(idComponents3)
 	result = ''
 	if length>0:
@@ -211,8 +212,8 @@ def dummyClientID():
 		for i in range(0,length): resultNumber *= ord(idComponents3[i])
 		resultText = str(resultNumber)
 		middle = int(len(resultText)/2)
-		if middle<10: start = 0
-		else: start = middle-10
+		start = middle - 10
+		if start<0: start = 0
 		result = resultText[start:start+20]
 	if len(result)<20:
 		length = len(result)

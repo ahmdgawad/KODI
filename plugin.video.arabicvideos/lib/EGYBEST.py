@@ -32,7 +32,7 @@ def FILTERS_MENU(link):
 	#xbmcgui.Dialog().ok(str(link), str(filter))
 	if '/trending/' not in link:
 		addDir('اظهار قائمة الفيديو التي تم اختيارها',link,122,'',1)
-		addDir('[[  ' + filter + '  ]]',link,122,'',1)
+		addDir('[[  ' + filter.replace('-','+') + '  ]]',link,122,'',1)
 		addDir('===========================',link,9999)
 	html = openURL(link,'',headers,'','EGYBEST-FILTERS_MENU-1st')
 	html_blocks=re.findall('mainLoad(.*?)</div></div>',html,re.DOTALL)
@@ -46,9 +46,15 @@ def FILTERS_MENU(link):
 				title = 'الاكثر مشاهدة ' + title
 				addDir(title,url,122,'',1)
 			else:
+				link = link.replace('popular','')
+				link = link.replace('top','')
+				link = link.replace('latest','')
+				link = link.replace('new','')
 				newfilter = url.split('/')[-1]
-				if filter!='': newfilter = '-' + newfilter
-				url = link + newfilter
+				url = link + '-' + newfilter
+				url = url.replace('/-','/')
+				url = url.rstrip('-')
+				url = url.replace('--','-')
 				addDir(title,url,121)
 	html_blocks=re.findall('sub_nav(.*?)</div></div></div>',html,re.DOTALL)
 	if html_blocks:
