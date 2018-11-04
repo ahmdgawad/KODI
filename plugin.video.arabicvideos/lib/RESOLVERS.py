@@ -224,21 +224,20 @@ def AKOAMNET(link):
 		headers = { 'User-Agent':'' , 'X-Requested-With':'XMLHttpRequest' , 'Referer':url }
 		response = requests.post(url, headers=headers, data='', allow_redirects=False)
 		html = response.text
-		items = re.findall('direct_link":"(.*?)"',html,re.DOTALL)
+		#import logging
+		#logging.warning('EMAD11 '+html+' EMAD11')
+		items = re.findall('direct_link":"(.*?)"',html,re.DOTALL|re.IGNORECASE)
 		if not items:
-			items = re.findall('<IFRAME SRC="(.*?)"',html,re.DOTALL)
+			items = re.findall('<iframe.*?src="(.*?)"',html,re.DOTALL|re.IGNORECASE)
 			if not items:
-				items = re.findall('<iframe src="(.*?)"',html,re.DOTALL)
-				if not items:
-					items = re.findall('embed src="(.*?)"',html,re.DOTALL)
+				items = re.findall('<embed.*?src="(.*?)"',html,re.DOTALL|re.IGNORECASE)
 		url = items[0].replace('\/','/')
 		url = url.rstrip('/')
 		if 'http' not in url: url = 'http:' + url
+		#xbmcgui.Dialog().ok(str(url),str(items))
 		if '?' in link:
 			url = RESOLVE(url)
 			url = url[0]
-	#import logging
-	#logging.warning('EMAD 111'+url)
 	return [ url.rstrip('/') ]
 
 def RAPIDVIDEO(url):

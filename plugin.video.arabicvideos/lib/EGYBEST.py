@@ -32,7 +32,7 @@ def FILTERS_MENU(link):
 	#xbmcgui.Dialog().ok(str(link), str(filter))
 	if '/trending/' not in link:
 		addDir('اظهار قائمة الفيديو التي تم اختيارها',link,122,'',1)
-		addDir('[[  ' + filter.replace('-','+') + '  ]]',link,122,'',1)
+		addDir('[[   ' + filter.replace('-',' + ') + '   ]]',link,122,'',1)
 		addDir('===========================',link,9999)
 	html = openURL(link,'',headers,'','EGYBEST-FILTERS_MENU-1st')
 	html_blocks=re.findall('mainLoad(.*?)</div></div>',html,re.DOTALL)
@@ -89,7 +89,7 @@ def TITLES(url,page):
 		img = img.replace('\/','/')
 		url2 = website0a + link
 		if '/movie/' in url2 or '/episode/' in url2:
-			addLink(title,url2,123,img)
+			addLink(title,url2.rstrip('/'),123,img)
 		else:
 			addDir(title,url2,122,img,1)
 	pagingLIST = ['/movies/','/tv/','/explore/','/trending/']
@@ -109,7 +109,7 @@ def TITLES(url,page):
 	return
 
 def PLAY(url):
-	#xbmcgui.Dialog().ok(url, '')
+	#xbmcgui.Dialog().ok(url, url[-45:])
 	headers = { 'User-Agent' : '' }
 	html = openURL(url,'',headers,'','EGYBEST-PLAY-1st')
 	rating = re.findall('<td>التصنيف</td>.*?">(.*?)<',html,re.DOTALL)
@@ -155,6 +155,7 @@ def PLAY(url):
 		items = re.findall('"url":"(.*?)"',html,re.DOTALL)
 		url = items[0]
 	url = url.replace('\/','/')
+	#xbmcgui.Dialog().ok(url,url[-45:])
 	PLAY_VIDEO(url,script_name,'yes')
 	return
 
