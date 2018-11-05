@@ -203,8 +203,9 @@ def dummyClientID():
 	idComponents1 = idComponents.lower().decode('utf8')
 	listREMOVE1 = [' ',':','\.','\(','\)']
 	idComponents2 = re.sub('|'.join(listREMOVE1), '', idComponents1)
-	listREMOVE2 = ['kodi','localhost','android','api level','kernel','linux','windows','nt','busy']
+	listREMOVE2 = ['kodi','localhost','android','api','level','kernel','linux','windows','nt','busy']
 	idComponents3 = re.sub('|'.join(listREMOVE2), '', idComponents2)
+	#xbmcgui.Dialog().ok(idComponents3,str(i)+'-'+str(j)+'-'+str(k))
 	#idComponents3 = 'busybusy'
 	length = len(idComponents3)
 	result = ''

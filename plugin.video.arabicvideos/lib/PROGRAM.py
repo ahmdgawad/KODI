@@ -73,11 +73,11 @@ def MAIN(mode,text=''):
 		#xbmcgui.Dialog().ok(var,'')
 		#import logging
 		#logging.warning('EMAD_' + html + '_EMAD')
-		#import RESOLVERS
 		url = ''
 		urllist = [
 			''
 			]
+		#import RESOLVERS
 		#url = RESOLVERS.PLAY(urllist,script_name,'no')
 		#PLAY_VIDEO(url,script_name,'yes')
 	return

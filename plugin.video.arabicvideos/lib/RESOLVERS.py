@@ -421,14 +421,18 @@ def VIDBOM_PROBLEM(url):
 
 def VIDBOB(url):
 	headers = { 'User-Agent' : '' }
-	url = url.replace('https:','http:')
+	#url = url.replace('http:','https:')
 	html = openURL(url,'',headers,'','RESOLVERS-VIDBOB-1st')
 	items = re.findall('file:"(.*?)"',html,re.DOTALL)
+	#import logging
+	#logging.warning('EMAD33 '+html+' EMAD33')
 	return [ items[0].rstrip('/') ]
 
 def UPTOSTREAM(url):
 	headers = { 'User-Agent' : '' }
 	html = openURL(url,'',headers,'','RESOLVERS-UPTOSTREAM-1st')
+	#import logging
+	#logging.warning('EMAD44 '+html+' EMAD44')
 	items = re.findall('src":"(.*?)"',html,re.DOTALL)
 	url = items[0].replace('\/','/')
 	#xbmcgui.Dialog().ok('load.is',url)
@@ -498,6 +502,8 @@ def UPTOBOX(url):
 	html = openURL(url,'',headers,'','RESOLVERS-UPTOBOX-1st')
 	#xbmcgui.Dialog().ok(url,html)
 	items = re.findall('waitingToken\' value=\'(.*?)\'',html,re.DOTALL)
+	#import logging
+	#logging.warning('EMAD55 '+html+' EMAD55')
 	if items:
 		token = items[0]
 		headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
