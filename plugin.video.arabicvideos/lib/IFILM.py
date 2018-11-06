@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
-#import logging
 
 website0a = 'http://ar.ifilmtv.com'
 website0b = 'http://en.ifilmtv.com'

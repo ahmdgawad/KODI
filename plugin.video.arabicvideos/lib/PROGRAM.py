@@ -69,10 +69,9 @@ def MAIN(mode,text=''):
 
 	elif mode==9:
 		#import requests
-		#var = dummyClientID()
-		#xbmcgui.Dialog().ok(var,'')
-		#import logging
-		#logging.warning('EMAD_' + html + '_EMAD')
+		#var = dummyClientID(32)
+		#xbmcgui.Dialog().ok(var,dummyClientID(20))
+		#xbmc.log('EMAD11' + html + '11EMAD',level=xbmc.LOGNOTICE)
 		url = ''
 		urllist = [
 			''

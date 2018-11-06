@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
-import requests
 
 script_name='TV1'
 website0a = 'http://emadmahdi.pythonanywhere.com/listplay'
@@ -13,7 +12,7 @@ def MAIN(mode,url):
 def ITEMS():
 	itemsAll = []
 	for id in ['a','b','c','d','e','f']:
-		payload = { 'id' : id , 'userID' : dummyClientID() , 'functionID' : 'list' }
+		payload = { 'id' : id , 'userID' : dummyClientID(32) , 'functionID' : 'list' }
 		data = urllib.urlencode(payload)
 		html = openURL(website0a,data,'','','TV1-ITEMS-1st')
 		html = html.replace('Al ','Al')
@@ -37,8 +36,9 @@ def ITEMS():
 
 def PLAY(id):
 	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
-	payload = { 'id' : id , 'userID' : dummyClientID() , 'functionID' : 'play' }
-	response = requests.post(website0a, data=payload, headers=headers)
+	payload = { 'id' : id , 'userID' : dummyClientID(32) , 'functionID' : 'play' }
+	from requests import request as requests_request
+	response = requests_request('POST', website0a, data=payload, headers=headers)
 	html = response.text
 	#xbmcgui.Dialog().ok(html,html)
 	items = re.findall('link3":"(.*?)"',html,re.DOTALL)

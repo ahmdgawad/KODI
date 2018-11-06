@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 from urlresolver import HostedMediaFile as urlresolver_HostedMediaFile
-#import logging
 
 script_name='RESOLVERS'
 doNOTresolveMElist = [ 'mystream','vimple','vidbom' ]
@@ -190,8 +189,8 @@ def PLAY(linkLIST,script_name,play='yes'):
 	url = urlLIST[selection]
 	videoURL = RESOLVE(url)
 	if videoURL==[]:
-		import PROBLEMS
-		PROBLEMS.MAIN(1006)
+		from PROBLEMS import MAIN as PROBLEMS_MAIN
+		PROBLEMS_MAIN(1006)
 		return ''
 	else:
 		videoURL = videoURL[0]
@@ -205,8 +204,8 @@ def	URLRESOLVER(url):
 	return [ link.rstrip('/') ]
 
 def AKOAMNET(link):
-	import requests
-	response = requests.get(link, headers='', data='', allow_redirects=False)
+	from requests import request as requests_request
+	response = requests_request('GET', link, headers='', data='', allow_redirects=False)
 	url = response.headers['Location']
 	#xbmcgui.Dialog().ok(str(url),'')
 	url = GOLINK(url)
@@ -222,10 +221,8 @@ def AKOAMNET(link):
 	else:
 		#xbmcgui.Dialog().ok(str(url),'')
 		headers = { 'User-Agent':'' , 'X-Requested-With':'XMLHttpRequest' , 'Referer':url }
-		response = requests.post(url, headers=headers, data='', allow_redirects=False)
+		response = requests_request('POST', url, headers=headers, data='', allow_redirects=False)
 		html = response.text
-		#import logging
-		#logging.warning('EMAD11 '+html+' EMAD11')
 		items = re.findall('direct_link":"(.*?)"',html,re.DOTALL|re.IGNORECASE)
 		if not items:
 			items = re.findall('<iframe.*?src="(.*?)"',html,re.DOTALL|re.IGNORECASE)
@@ -358,7 +355,7 @@ def GOLINK(url):
 	#id = url.split('/')[-1]
 	#url = 'http://golink.to/link/read?hash=' + id
 	import requests
-	response = requests.get(url, data='', headers='')
+	response = requests.request('GET', url, data='', headers='')
 	html = response.text
 	cookies = response.cookies.get_dict()
 	cookie = cookies['golink']
@@ -415,8 +412,6 @@ def VIDBOM_PROBLEM(url):
 	html2 = openURL(slidesURL,'','','','RESOLVERS-VIDBOM-2nd')
 	xbmc.sleep(1500)
 	items = re.findall('file:"(.*?)"',html,re.DOTALL)
-	#import logging
-	#logging.warning('EMAD 111'+html)
 	return [ items[0].rstrip('/') ]
 
 def VIDBOB(url):
@@ -424,15 +419,11 @@ def VIDBOB(url):
 	#url = url.replace('http:','https:')
 	html = openURL(url,'',headers,'','RESOLVERS-VIDBOB-1st')
 	items = re.findall('file:"(.*?)"',html,re.DOTALL)
-	#import logging
-	#logging.warning('EMAD33 '+html+' EMAD33')
 	return [ items[0].rstrip('/') ]
 
 def UPTOSTREAM(url):
 	headers = { 'User-Agent' : '' }
 	html = openURL(url,'',headers,'','RESOLVERS-UPTOSTREAM-1st')
-	#import logging
-	#logging.warning('EMAD44 '+html+' EMAD44')
 	items = re.findall('src":"(.*?)"',html,re.DOTALL)
 	url = items[0].replace('\/','/')
 	#xbmcgui.Dialog().ok('load.is',url)
@@ -472,7 +463,7 @@ def GOUNLIMITED_PROBLEM(url):
 	#url = 'https://gounlimited.to/dl?op=view&file_code='+id+'&hash='+newhash+'&embed=&adb=1'
 	#html = openURL(url,'',headers,'','RESOLVERS-GOUNLIMITED-1st')
 
-	import requests
+	from requests import request as requests_request
 	url = "https://gounlimited.to/dl"
 	querystring = { "op":"view","file_code":"o1yo2xwdmk0l","hash":newhash,"embed":"","adb":"1" }
 	headers = {
@@ -484,7 +475,7 @@ def GOUNLIMITED_PROBLEM(url):
 		'accept-encoding': "gzip, deflate, br",
 		'accept-language': "en-US,en;q=0.9,ar;q=0.8"
 		}
-	html = requests.request("GET", url, headers=headers, params=querystring)
+	html = requests_request('GET', url, headers=headers, params=querystring)
 
 	items = re.findall('video="" src="(.*?)"',html.text,re.DOTALL)
 	#xbmcgui.Dialog().ok(str(html.content),str(len(html.content)))
@@ -502,8 +493,6 @@ def UPTOBOX(url):
 	html = openURL(url,'',headers,'','RESOLVERS-UPTOBOX-1st')
 	#xbmcgui.Dialog().ok(url,html)
 	items = re.findall('waitingToken\' value=\'(.*?)\'',html,re.DOTALL)
-	#import logging
-	#logging.warning('EMAD55 '+html+' EMAD55')
 	if items:
 		token = items[0]
 		headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
@@ -542,8 +531,8 @@ def MP4UPLOAD(url):
 	id = url.split('/')[-1]
 	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
 	payload = { "id":id , "op":"download2" }
-	import requests
-	request = requests.post(url, headers=headers, data=payload, allow_redirects=False)
+	from requests import request as requests_request
+	request = requests_request('POST', url, headers=headers, data=payload, allow_redirects=False)
 	url = request.headers['Location']
 	return [ url.rstrip('/') ]
 

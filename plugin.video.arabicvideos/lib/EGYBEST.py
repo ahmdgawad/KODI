@@ -23,7 +23,7 @@ def MAIN_MENU():
 	block = html_blocks[0]
 	items=re.findall('a><a href="(.*?)".*?></i>(.*?)<',block,re.DOTALL)
 	for url,title in reversed(items):
-		addDir(title,url,121)
+		addDir(title,website0a+url,121)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -44,7 +44,7 @@ def FILTERS_MENU(link):
 			elif '/tv/' in url and 'مسلسل' not in title: title = 'مسلسلات ' + title
 			if '/trending/' in url:
 				title = 'الاكثر مشاهدة ' + title
-				addDir(title,url,122,'',1)
+				addDir(title,website0a+url,122,'',1)
 			else:
 				link = link.replace('popular','')
 				link = link.replace('top','')
@@ -59,13 +59,13 @@ def FILTERS_MENU(link):
 	html_blocks=re.findall('sub_nav(.*?)</div></div></div>',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]
-		items=re.findall('href="(.*?)" >(.*?)<',block,re.DOTALL)
+		items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 		for url,title in items:
 			ignoreLIST = ['- الكل -','[R]']
 			if any(value in title for value in ignoreLIST): continue
 			if '/movies/' in url: title = 'افلام ' + title
 			elif '/tv/' in url: title = 'مسلسلات ' + title
-			addDir(title,url,121)
+			addDir(title,website0a+url,121)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -75,8 +75,6 @@ def TITLES(url,page):
 	else: url2 = url + '?'
 	url2 = url2 + 'output_format=json&output_mode=movies_list&page='+str(page)
 	html = openURL(url2,'',headers,'','EGYBEST-TITLES-1st')
-	import logging
-	logging.warning(html)
 	items = re.findall('n<a href=\\\\"(.*?)\\\\".*?src=\\\\"(.*?)\\\\".*?title\\\\">(.*?)<',html,re.DOTALL)
 	name = ''
 	if '/season/' in url:
@@ -135,8 +133,8 @@ def PLAY(url):
 		GET_USERNAME_PASSWORD()
 		return
 	headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUserDef='+EGUserDef }
-	import requests
-	response = requests.get(url, headers=headers, allow_redirects=False)
+	from requests import request as requests_request
+	response = requests_request('GET', url, headers=headers, allow_redirects=False)
 	html = response.text
 	items = re.findall('#EXT-X-STREAM.*?RESOLUTION=(.*?),.*?\n(.*?)\n',html,re.DOTALL)
 	if len(items)>0:
@@ -150,7 +148,7 @@ def PLAY(url):
 		datacall = datacallLIST[selection]
 		url = website0a + '/api?call=' + datacall
 		headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUserDef='+EGUserDef }
-		response = requests.get(url, headers=headers, allow_redirects=False)
+		response = requests_request('GET', url, headers=headers, allow_redirects=False)
 		html = response.text
 		items = re.findall('"url":"(.*?)"',html,re.DOTALL)
 		url = items[0]
@@ -189,11 +187,12 @@ def GET_LOGIN_TOKEN():
 	#response = requests.get(url, allow_redirects=False)
 	#cookies = response.cookies.get_dict()
 	#PHPSESSID = cookies['PHPSESSID']
-	PHPSESSID = dummyClientID()
+	PHPSESSID = dummyClientID(32)
+	#xbmcgui.Dialog().ok(PHPSESSID,str(len(PHPSESSID)))
 	url = 'https://login.egy.best/setlocalcookie.php'
 	querystring = {"domain":"egy.best","LOGIN_SID":PHPSESSID,"url":"https://egy.best"}
 	headers = { 'Cookie': 'PHPSESSID='+PHPSESSID }
-	response = requests.get(url, headers=headers, params=querystring, allow_redirects=False)
+	response = requests.request('GET', url, headers=headers, params=querystring, allow_redirects=False)
 	cookies = response.cookies.get_dict()
 	try:
 		EGUserDef = cookies['EGUserDef']

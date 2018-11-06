@@ -136,7 +136,7 @@ def KEYBOARD(label='Search'):
 	new_search = mixARABIC(search)
 	return new_search
 
-def PLAY_VIDEO(url,label,showWatched='yes'):
+def PLAY_VIDEO(url,website,showWatched='yes'):
 	play_item = xbmcgui.ListItem(path=url)
 	if showWatched=='yes':
 		#xbmcgui.Dialog().ok(url,label)
@@ -150,7 +150,7 @@ def PLAY_VIDEO(url,label,showWatched='yes'):
 		xbmc.Player().play(url,play_item)
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-2&cid='+dummyClientID()+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+label+'&z='+randomNumber
+	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-3&cid='+dummyClientID(32)+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+website+'&z='+randomNumber
 	openURL(url,'','','no','LIBRARY-PLAY_VIDEO-1st')
 	return
 
@@ -163,7 +163,7 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 		addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 		kodiVersion = xbmc.getInfoLabel( "System.BuildVersion" )	
 		kodiName = xbmc.getInfoLabel( "System.FriendlyName" )
-		message = message+' \\n\\n==== ==== ==== \\nAddon Version: '+addonVersion+' \\nEmail Sender: '+dummyClientID()+' \\nKodi Version: '+kodiVersion+' \\nKodi Name: '+kodiName
+		message = message+' \\n\\n==== ==== ==== \\nAddon Version: '+addonVersion+' \\nEmail Sender: '+dummyClientID(32)+' \\nKodi Version: '+kodiVersion+' \\nKodi Name: '+kodiName
 		#xbmc.sleep(4000)
 		#playerTitle = xbmc.getInfoLabel( "Player.Title" )
 		#playerPath = xbmc.getInfoLabel( "Player.Filenameandpath" )
@@ -184,42 +184,22 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 				xbmcgui.Dialog().ok('Message sent','تم ارسال الرسالة')
 	return html
 
-def dummyClientID():
-	#ipAddress = xbmc.getInfoLabel( "Network.IPAddress" )
-	for i in range(0,6):
-		hostName = xbmc.getInfoLabel( "System.FriendlyName" )
-		if hostName!='Busy': break
-		if i!=5: xbmc.sleep(500*pow(2,i))
-	for j in range(0,6):
-		macAddress = xbmc.getInfoLabel( "Network.MacAddress" )
-		if macAddress!='Busy': break
-		if j!=5: xbmc.sleep(500*pow(2,j))
-	for k in range(0,6):
-		osVersion = xbmc.getInfoLabel( "System.OSVersionInfo" )
-		if osVersion!='Busy': break
-		if k!=5: xbmc.sleep(500*pow(2,k))
-	idComponents = macAddress + hostName + osVersion
-	#idComponents = 'busykodilocalhostbusy' + 'a'
-	idComponents1 = idComponents.lower().decode('utf8')
-	listREMOVE1 = [' ',':','\.','\(','\)']
-	idComponents2 = re.sub('|'.join(listREMOVE1), '', idComponents1)
-	listREMOVE2 = ['kodi','localhost','android','api','level','kernel','linux','windows','nt','busy']
-	idComponents3 = re.sub('|'.join(listREMOVE2), '', idComponents2)
-	#xbmcgui.Dialog().ok(idComponents3,str(i)+'-'+str(j)+'-'+str(k))
-	#idComponents3 = 'busybusy'
-	length = len(idComponents3)
-	result = ''
-	if length>0:
-		resultNumber = 1
-		for i in range(0,length): resultNumber *= ord(idComponents3[i])
-		resultText = str(resultNumber)
-		middle = int(len(resultText)/2)
-		start = middle - 10
-		if start<0: start = 0
-		result = resultText[start:start+20]
-	if len(result)<20:
-		length = len(result)
-		result = '12345678901234567890'[0:20-length] + result
-	return result
+def dummyClientID(length):
+	from uuid import getnode as uuid_getnode
+	mac_num = hex(uuid_getnode())[2:14]		# e1f2ace4a35e
+	#mac = '-'.join(mac_num[i : i + 2].upper() for i in range(0, 11, 2))	# E1:F2:AC:E4:A3:5E
+	#xbmcgui.Dialog().ok(hex(getnode()),mac_num)
+	import platform
+	hostname = platform.node()			# empc12/localhost
+	os_type = platform.system()			# Windows/Linux
+	os_version = platform.release()		# 10.0/3.14.29
+	os_bits = platform.machine()		# AMD64/aarch64
+	processor = platform.processor()	# Intel64 Family 9 Model 68 Stepping 16, GenuineIntel/''
+	idComponents = mac_num + hostname + os_type + os_version + os_bits + processor
+	from hashlib import md5 as hashlib_md5
+	md5 = hashlib_md5(idComponents).hexdigest()
+	md5 = md5[0:length]
+	return md5
+
 
 
