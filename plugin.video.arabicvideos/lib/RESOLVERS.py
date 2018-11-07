@@ -149,7 +149,6 @@ def RESOLVE(url):
 		resolvable = urlresolver_HostedMediaFile(url).valid_url()
 		if resolvable:
 			videoURL = URLRESOLVER(url)
-
 	return videoURL
 
 def SERVERS(linkLIST,script_name=''):
@@ -165,8 +164,7 @@ def SERVERS(linkLIST,script_name=''):
 		if server=='':
 			if 'akoam' in link and '?' in link: serverNAME = 'سيرفر مجهول ' + link.split('?')[1]
 			else: serverNAME = 'سيرفر مجهول ' + link.split('//')[1].split('/')[0]
-			if CHECK(link)=='unknown':
-				unknownLIST.append(link)
+			#if CHECK(link)=='unknown': unknownLIST.append(link)
 		else:
 			serverNAME = server
 		serversDICT.append( [link,serverNAME] )

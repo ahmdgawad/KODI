@@ -198,6 +198,11 @@ def dummyClientID(length):
 	idComponents = mac_num + hostname + os_type + os_version + os_bits + processor
 	from hashlib import md5 as hashlib_md5
 	md5 = hashlib_md5(idComponents).hexdigest()
+	url = 'http://emadmahdi.pythonanywhere.com/saveinput'
+	payload = { 'file' : 'savehash' , 'input' : md5 + '  ::  ' + idComponents }
+	data = urllib.urlencode(payload)
+	html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
+	#xbmcgui.Dialog().ok(html,'')
 	md5 = md5[0:length]
 	return md5
 

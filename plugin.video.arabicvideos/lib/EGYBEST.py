@@ -83,8 +83,10 @@ def TITLES(url,page):
 		if '/series/' in url and '/season\/' not in link: continue
 		if '/season/' in url and '/episode\/' not in link: continue
 		title = name + escapeUNICODE(title).strip(' ')
+		title = title.replace('\n','')
 		link = link.replace('\/','/')
-		img = img.replace('\/','/')
+		#xbmcgui.Dialog().ok(str(img),'')
+		img = 'http:' + img.replace('\/','/')
 		url2 = website0a + link
 		if '/movie/' in url2 or '/episode/' in url2:
 			addLink(title,url2.rstrip('/'),123,img)
