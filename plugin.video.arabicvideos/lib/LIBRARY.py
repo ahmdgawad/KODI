@@ -212,9 +212,10 @@ def dummyClientID(length):
 	savedhash = settings.getSetting('user.hash')
 	if savedhash=='':
 		settings.setSetting('user.hash',md5full)
-	elif savedhash!=md5full:
+	if savedhash!=md5full:
 		url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-		payload = { 'file' : 'savediff' , 'input' : savedhash + '  ::  ' + md5full }
+		if savedhash=='': savedhash = md5full
+		payload = { 'file' : 'savehashdiff' , 'input' : savedhash + '  ::  ' + md5full + '  ::  ' + idComponents }
 		data = urllib.urlencode(payload)
 		for i in range(1,11):
 			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-2nd')
