@@ -23,7 +23,8 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <a href="http://www.4helal.tv">9. &nbsp; http://www.4helal.tv</a><br />
 <a href="http://www.shahid4u.me">10. &nbsp; http://www.shahid4u.me</a><br />
 <a href="http://www.egy.best">11. &nbsp; http://www.egy.best</a><br />
-<a href="http://www.google.com">12. &nbsp; Tv Channels</a><br />
+<a href="http://www.alkawthartv.com">12. &nbsp; http://www.alkawthartv.com</a><br />
+<a href="http://www.google.com">13. &nbsp; Tv Channels</a><br />
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>2. &nbsp; التنصيب والتنزيل &nbsp;&nbsp;&nbsp;&nbsp; Download & Install</h2>
@@ -33,7 +34,7 @@ Download and install these two files using Kodi Addons installer:
 <br />
 <br />
 <a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/repository.emad-1.1.0.zip">1. &nbsp; repository.emad-1.1.0.zip</a><br />
-<a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/plugin.video.arabicvideos-3.3.1.zip">2. &nbsp; arabicvideos-3.3.1.zip</a><br />
+<a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/plugin.video.arabicvideos-3.4.0.zip">2. &nbsp; arabicvideos-3.4.0.zip</a><br />
 <br />
 <br />
 الروابط ادناه توضح طريقة تنزيل وتنصيب هذه الاضافة باستخدام كودي

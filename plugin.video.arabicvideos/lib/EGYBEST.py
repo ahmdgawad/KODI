@@ -85,8 +85,9 @@ def TITLES(url,page):
 		title = name + escapeUNICODE(title).strip(' ')
 		title = title.replace('\n','')
 		link = link.replace('\/','/')
-		#xbmcgui.Dialog().ok(str(img),'')
-		img = 'http:' + img.replace('\/','/')
+		img = img.replace('\/','/')
+		if 'http' not in img: img = 'http:' + img
+		#xbmcgui.Dialog().notification(img,'')
 		url2 = website0a + link
 		if '/movie/' in url2 or '/episode/' in url2:
 			addLink(title,url2.rstrip('/'),123,img)
@@ -128,7 +129,7 @@ def PLAY(url):
 		for qualtiy,datacall in items:
 			qualityLIST.append ('mp4   '+qualtiy)
 			datacallLIST.append (datacall)
-	watchitem = re.findall('source src=\"\/api\?call=(.*?)"',html,re.DOTALL)
+	watchitem = re.findall('x-mpegURL" src="/api/\?call=(.*?)"',html,re.DOTALL)
 	url = website0a + '/api?call=' + watchitem[0]
 	EGUserDef = GET_LOGIN_TOKEN()
 	if EGUserDef=='':

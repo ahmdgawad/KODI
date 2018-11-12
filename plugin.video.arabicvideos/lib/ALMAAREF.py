@@ -14,9 +14,11 @@ def MAIN(mode,url,category):
 	elif mode==46: TITLES(url,2)
 	elif mode==47: TITLES(url,3)
 	elif mode==48: PROGRAMS()
+	elif mode==49: LIVE()
 	return
 
 def MENU():
+	addLink('البث الحي لقناة المعارف','',49,'','','no')
 	addDir('بحث في الموقع','',41)
 	addDir('البرامج الحالية','',48)
 	html = openURL(website0a,'','','','ALMAAREF-MENU-1st')
@@ -142,11 +144,18 @@ def SEARCH():
 def PROGRAMS():
 	#xbmcgui.Dialog().ok(type, url)
 	html = openURL(website0a,'','','','ALMAAREF-PROGRAMS-1st')
-	html_blocks=re.findall('mega-menu-block(.*?)mega-menu',html,re.DOTALL)
-	block= html_blocks[0]
-	items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
+	html_blocks = re.findall('mega-menu-block(.*?)mega-menu',html,re.DOTALL)
+	block = html_blocks[0]
+	items = re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
 	for link,title in items:
 		addDir(title,link,44)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
+def LIVE():
+	html = openURL(website0a+'/البث-3','','','','ALMAAREF-PROGRAMS-1st')
+	items = re.findall('sourceURL":"(.*?)"',html,re.DOTALL)
+	url = unquote(items[0])
+	#xbmcgui.Dialog().ok(url, url)
+	PLAY_VIDEO(url,script_name,'no')
+	return

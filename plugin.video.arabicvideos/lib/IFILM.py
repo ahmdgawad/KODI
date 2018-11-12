@@ -17,6 +17,7 @@ def MAIN(mode,url,page):
 	elif mode==24: PLAY(url)
 	elif mode==25: MUSIC_MENU(url)
 	elif mode==26: SEARCH(url)
+	elif mode==27: LIVE(url)
 	return
 
 def LANGUAGE_MENU():
@@ -38,16 +39,20 @@ def MAIN_MENU(website0):
 		name1 = 'المسلسلات الحالية'
 		name2 = 'المسلسلات مرتبة حسب الاحدث'
 		name3 = 'المسلسلات مرتبة حسب الابجدية'
+		name4 = 'البث الحي لقناة اي فيلم'
 	elif lang=='en':
 		name = 'Search in site'
 		name1 = 'Current Series'
 		name2 = 'Series sorted by Latest'
 		name3 = 'Series sorted by Alphabet'
+		name4 = 'Live broadcast of iFilm channel'
 	elif lang in ['fa','fa2']:
 		name = 'جستجو در سایت'
 		name1 = 'سريال ها جاری'
 		name2 = 'سريال ها مرتب سازى براساس'
 		name3 = 'سريال ها مرتب حروف الفبا'
+		name4 = 'پخش زنده از اي فيلم كانال'
+	addDir(name4,website0,27,'','','no')
 	addDir(name,website0,26)
 	html_blocks=re.findall('main-body.*?menu(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
@@ -189,7 +194,8 @@ def EPISODES(url,page):
 				name1 = escapeUNICODE(name1)
 				addLink(name1,link1,24,img1)
 		elif 'Clips' in url:
-			html = openURL(website0+'/Music/GetTracksBy?id=0&page='+page+'&size=30&type=15','','','','IFILM-EPISODES-4th')
+			url2 = website0+'/Music/GetTracksBy?id=0&page='+page+'&size=30&type=15'
+			html = openURL(url2,'','','','IFILM-EPISODES-4th')
 			items = re.findall('ImageAddress_S":"(.*?)".*?Caption":"(.*?)".*?VideoAddress":"(.*?)"',html,re.DOTALL)
 			for img,title,link in items:
 				count_items += 1
@@ -274,6 +280,15 @@ def SEARCH(website0):
 			img = website0 + quote(img)
 			addDir(title,link,23,img,101)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
+
+def LIVE(website0):
+	lang = LANG(website0)
+	url = website0 + '/Home/Live'
+	html = openURL(url,'','','','IFILM-SEARCH_TITLES-1st')
+	items = re.findall('source src="(.*?)"',html,re.DOTALL)
+	url = items[0]
+	PLAY_VIDEO(url,script_name,'no')
 	return
 
 

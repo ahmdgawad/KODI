@@ -197,14 +197,33 @@ def dummyClientID(length):
 	processor = platform.processor()	# Intel64 Family 9 Model 68 Stepping 16, GenuineIntel/''
 	idComponents = mac_num + hostname + os_type + os_version + os_bits + processor
 	from hashlib import md5 as hashlib_md5
-	md5 = hashlib_md5(idComponents).hexdigest()
-	url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-	payload = { 'file' : 'savehash' , 'input' : md5 + '  ::  ' + idComponents }
-	data = urllib.urlencode(payload)
-	html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
-	#xbmcgui.Dialog().ok(html,'')
-	md5 = md5[0:length]
+	md5full = hashlib_md5(idComponents).hexdigest()
+	#url = 'http://emadmahdi.pythonanywhere.com/saveinput'
+	#payload = { 'file' : 'savehash' , 'input' : md5full + '  ::  ' + idComponents }
+	#data = urllib.urlencode(payload)
+	#for i in range(1,6):
+	#	html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
+	#	if '200 OK' in html: break
+	#	xbmc.sleep(1000)
+	#xbmcgui.Dialog().ok(html,str(i))
+	md5 = md5full[0:length]
+	import xbmcaddon
+	settings = xbmcaddon.Addon(id='plugin.video.arabicvideos')
+	savedhash = settings.getSetting('user.hash')
+	if savedhash=='':
+		settings.setSetting('user.hash',md5full)
+	elif savedhash!=md5full:
+		url = 'http://emadmahdi.pythonanywhere.com/saveinput'
+		payload = { 'file' : 'savediff' , 'input' : savedhash + '  ::  ' + md5full }
+		data = urllib.urlencode(payload)
+		for i in range(1,11):
+			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-2nd')
+			if '200 OK' in html: break
+			xbmc.sleep(1000)
 	return md5
+
+
+
 
 
 

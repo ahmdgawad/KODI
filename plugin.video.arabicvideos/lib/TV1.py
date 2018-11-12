@@ -11,8 +11,9 @@ def MAIN(mode,url):
 
 def ITEMS():
 	itemsAll = []
+	client = dummyClientID(32)
 	for id in ['a','b','c','d','e','f']:
-		payload = { 'id' : id , 'userID' : dummyClientID(32) , 'functionID' : 'list' }
+		payload = { 'id' : id , 'userID' : client , 'functionID' : 'list' }
 		data = urllib.urlencode(payload)
 		html = openURL(website0a,data,'','','TV1-ITEMS-1st')
 		html = html.replace('Al ','Al')

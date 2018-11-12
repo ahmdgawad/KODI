@@ -161,6 +161,7 @@ def SEARCH():
 	items = re.findall('href="(.*?)".*?background-image: url\((.*?)\).*?<h1>(.*?)</h1>',block,re.DOTALL)
 	for link,img,title in items:
 		title = title.replace('\n','')
+		title = title.strip(' ')
 		title = unescapeHTML(title)
 		addDir(title,link,73,img)
 	xbmcplugin.endOfDirectory(addon_handle)
