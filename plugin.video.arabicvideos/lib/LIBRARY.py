@@ -139,14 +139,14 @@ def KEYBOARD(label='Search'):
 def PLAY_VIDEO(url,website,showWatched='yes'):
 	play_item = xbmcgui.ListItem(path=url)
 	if showWatched=='yes':
-		#xbmcgui.Dialog().ok(url,label)
 		#title = xbmc.getInfoLabel('ListItem.Title')
-		#title = xbmc.getInfoLabel('ListItem.Label')
-		#play_item.setInfo( "video", { "Title": title } )
+		#label = xbmc.getInfoLabel('ListItem.Label')
+		#xbmcgui.Dialog().ok(url,label)
+		#play_item.setInfo( "video", { "Title": label } )
 		xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
 	else:
-		title = xbmc.getInfoLabel('ListItem.Label')
-		play_item.setInfo( "video", { "Title": title } )
+		label = xbmc.getInfoLabel('ListItem.Label')
+		play_item.setInfo( "video", { "Title": label } )
 		xbmc.Player().play(url,play_item)
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	import random
@@ -210,19 +210,23 @@ def dummyClientID(length):
 		else: md5full_list.append(md5full)
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
+	savedhash = settings.getSetting('user.hash3')
 	if i<19:
-		#xbmcgui.Dialog().ok(str(i),'')
-		settings.setSetting('user.hash2',md5full)
-	else:
-		savedhash = settings.getSetting('user.hash2')
-		if savedhash!='':
-			md5full = savedhash
-		else:
-			settings.setSetting('user.hash2',md5full)
+		settings.setSetting('user.hash3',md5full)
+		if savedhash=='':
 			url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-			payload = { 'file' : 'savefakehash2' , 'input' : md5full + '  ::  ' + idComponents }
+			payload = { 'file' : 'saverealhash3' , 'input' : md5full + '  ::  ' + idComponents }
 			data = urllib.urlencode(payload)
 			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
+	else:
+		if savedhash=='':
+			settings.setSetting('user.hash3',md5full)
+			url = 'http://emadmahdi.pythonanywhere.com/saveinput'
+			payload = { 'file' : 'savefakehash3' , 'input' : md5full + '  ::  ' + idComponents }
+			data = urllib.urlencode(payload)
+			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-2nd')
+		else:
+			md5full = savedhash
 	md5 = md5full[0:length]
 	#url = 'http://emadmahdi.pythonanywhere.com/saveinput'
 	#payload = { 'file' : 'savehash' , 'input' : md5full + '  ::  ' + idComponents }
