@@ -151,7 +151,7 @@ def PLAY_VIDEO(url,website,showWatched='yes'):
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	import random
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-3&cid='+dummyClientID(32)+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+website+'&z='+randomNumber
+	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-4&cid='+dummyClientID(32)+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+website+'&z='+randomNumber
 	openURL(url,'','','no','LIBRARY-PLAY_VIDEO-1st')
 	return
 
@@ -191,36 +191,38 @@ def dummyClientID(length):
 	#mac = '-'.join(mac_num[i : i + 2].upper() for i in range(0, 11, 2))	# E1:F2:AC:E4:A3:5E
 	#xbmcgui.Dialog().ok(hex(getnode()),mac_num)
 	import platform
-	hostname = platform.node()			# empc12/localhost
+	hostname = platform.node()			# empc12/localhosting
 	os_type = platform.system()			# Windows/Linux
-	os_version = platform.release()		# 10.0/3.14.29
+	os_version = platform.release()		# 10.0/3.14.22
 	os_bits = platform.machine()		# AMD64/aarch64
-	processor = platform.processor()	# Intel64 Family 9 Model 68 Stepping 16, GenuineIntel/''
-	idComponents = mac_num + hostname + os_type + os_version + os_bits + processor
+	#processor = platform.processor()	# Intel64 Family 9 Model 68 Stepping 16, GenuineIntel/''
+	idComponents = mac_num + ':' + hostname + ':' + os_type + ':' + os_version + ':' + os_bits
 	md5full_list = []
 	from hashlib import md5 as hashlib_md5
 	md5full = hashlib_md5(idComponents).hexdigest()
 	md5full_list.append(md5full)
-	for i in range(0,10):
+	for i in range(0,20):
+		xbmc.sleep(100)
 		mac_num = hex(uuid_getnode())[2:14]
-		idComponents = mac_num + hostname + os_type + os_version + os_bits + processor
+		idComponents = mac_num + ':' + hostname + ':' + os_type + ':' + os_version + ':' + os_bits
 		md5full = hashlib_md5(idComponents).hexdigest()
 		if md5full in md5full_list: break
 		else: md5full_list.append(md5full)
-		xbmc.sleep(100)
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
-	if i<9:
-		settings.setSetting('user.hash','')
+	if i<19:
+		#xbmcgui.Dialog().ok(str(i),'')
+		settings.setSetting('user.hash2',md5full)
 	else:
-		savedhash = settings.getSetting('user.hash')
-		if savedhash=='':
-			settings.setSetting('user.hash',md5full)
+		savedhash = settings.getSetting('user.hash2')
+		if savedhash!='':
+			md5full = savedhash
+		else:
+			settings.setSetting('user.hash2',md5full)
 			url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-			payload = { 'file' : 'savefakehash' , 'input' : md5full + '  ::  ' + idComponents }
+			payload = { 'file' : 'savefakehash2' , 'input' : md5full + '  ::  ' + idComponents }
 			data = urllib.urlencode(payload)
 			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
-		else: md5full = savedhash
 	md5 = md5full[0:length]
 	#url = 'http://emadmahdi.pythonanywhere.com/saveinput'
 	#payload = { 'file' : 'savehash' , 'input' : md5full + '  ::  ' + idComponents }

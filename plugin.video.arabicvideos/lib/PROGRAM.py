@@ -69,6 +69,12 @@ def MAIN(mode,text=''):
 
 	elif mode==9:
 
+		#import xbmcaddon
+		#settings = xbmcaddon.Addon(id=addon_id)
+		#settings.setSetting('test1','hello test1')
+		#var = settings.getSetting('test2')
+		#xbmcgui.Dialog().ok(var,'')
+
 		#xbmc.log('EMAD11 ' + str(var) + ' 11EMAD',level=xbmc.LOGNOTICE)
 
 		#import cpuinfo
@@ -80,7 +86,7 @@ def MAIN(mode,text=''):
 		#import os
 		#var = os.popen("wmic diskdrive get serialnumber").read()
 		#xbmc.log('EMAD11 ' + str(var) + ' 11EMAD',level=xbmc.LOGNOTICE)
-
+		"""
 		possible_drives = [
 				r"\\.\PhysicalDrive1", # Windows
 				r"\\.\PhysicalDrive2",
@@ -101,7 +107,7 @@ def MAIN(mode,text=''):
 		disk = os.open(r"\\.\PhysicalDrive1",os.O_BINARY)
 		disk.seek(14000*sector_size)
 		xbmc.log('EMAD11 ' + str(disk.read(7)) + ' 11EMAD',level=xbmc.LOGNOTICE)
-
+		"""
 		#from getmac import get_mac_address
 		#for i in range(0,1):
 		#	#var = dummyClientID(32)

@@ -88,21 +88,26 @@ v3.0.0
 Back to previous (v2.7.0) "Analytics" Number
 
 
-v3.1.0
+v3.1.0	2018-10-25
 Added and used "script.module.futures" to allow for parallel web requests
 
 
-v3.2.0
+v3.2.0	2018-10-31
 Added new website "EGYBEST"
 
 
-v3.3.0
+v3.3.0	2018-11-05
 Changed users ID's
 Changed "Analytics" Number
 
 
-v3.4.0
+v3.4.0	2018-11-11
 Added new website "ALKAWTHAR"
+
+
+v3.5.0	2018-11-13
+Changed users ID's
+Changed "Analytics" Number
 
 
 
