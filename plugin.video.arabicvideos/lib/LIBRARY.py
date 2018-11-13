@@ -1,9 +1,8 @@
 ﻿# -*- coding: utf-8 -*-
-import urllib2,xbmcplugin,xbmcgui,sys,xbmc,os,unicodedata,re,time
-import urllib,HTMLParser,random
+import urllib2,xbmcplugin,xbmcgui,sys,xbmc,os,unicodedata,re,time,urllib
 
 addon_handle = int(sys.argv[1])
-addon_id = sys.argv[0].split('/')[2]
+addon_id = sys.argv[0].split('/')[2] 		# plugin.video.arabicvideos
 fanart = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'fanart.jpg'))
 icon = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
 
@@ -81,6 +80,7 @@ def unquote(url):
 def unescapeHTML(string):
 	if '&' in string and ';' in string:
 		string = string.decode('utf8')
+		import HTMLParser
 		string = HTMLParser.HTMLParser().unescape(string)
 		string = string.encode('utf8')
 	return string
@@ -149,6 +149,7 @@ def PLAY_VIDEO(url,website,showWatched='yes'):
 		play_item.setInfo( "video", { "Title": title } )
 		xbmc.Player().play(url,play_item)
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
+	import random
 	randomNumber = str(random.randrange(111111111111,999999999999))
 	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-3&cid='+dummyClientID(32)+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+website+'&z='+randomNumber
 	openURL(url,'','','no','LIBRARY-PLAY_VIDEO-1st')
@@ -196,8 +197,31 @@ def dummyClientID(length):
 	os_bits = platform.machine()		# AMD64/aarch64
 	processor = platform.processor()	# Intel64 Family 9 Model 68 Stepping 16, GenuineIntel/''
 	idComponents = mac_num + hostname + os_type + os_version + os_bits + processor
+	md5full_list = []
 	from hashlib import md5 as hashlib_md5
 	md5full = hashlib_md5(idComponents).hexdigest()
+	md5full_list.append(md5full)
+	for i in range(0,10):
+		mac_num = hex(uuid_getnode())[2:14]
+		idComponents = mac_num + hostname + os_type + os_version + os_bits + processor
+		md5full = hashlib_md5(idComponents).hexdigest()
+		if md5full in md5full_list: break
+		else: md5full_list.append(md5full)
+		xbmc.sleep(100)
+	import xbmcaddon
+	settings = xbmcaddon.Addon(id=addon_id)
+	if i<9:
+		settings.setSetting('user.hash','')
+	else:
+		savedhash = settings.getSetting('user.hash')
+		if savedhash=='':
+			settings.setSetting('user.hash',md5full)
+			url = 'http://emadmahdi.pythonanywhere.com/saveinput'
+			payload = { 'file' : 'savefakehash' , 'input' : md5full + '  ::  ' + idComponents }
+			data = urllib.urlencode(payload)
+			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
+		else: md5full = savedhash
+	md5 = md5full[0:length]
 	#url = 'http://emadmahdi.pythonanywhere.com/saveinput'
 	#payload = { 'file' : 'savehash' , 'input' : md5full + '  ::  ' + idComponents }
 	#data = urllib.urlencode(payload)
@@ -205,22 +229,6 @@ def dummyClientID(length):
 	#	html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
 	#	if '200 OK' in html: break
 	#	xbmc.sleep(1000)
-	#xbmcgui.Dialog().ok(html,str(i))
-	md5 = md5full[0:length]
-	import xbmcaddon
-	settings = xbmcaddon.Addon(id='plugin.video.arabicvideos')
-	savedhash = settings.getSetting('user.hash')
-	if savedhash=='':
-		settings.setSetting('user.hash',md5full)
-	if savedhash!=md5full:
-		url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-		if savedhash=='': savedhash = md5full
-		payload = { 'file' : 'savehashdiff' , 'input' : savedhash + '  ::  ' + md5full + '  ::  ' + idComponents }
-		data = urllib.urlencode(payload)
-		for i in range(1,11):
-			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-2nd')
-			if '200 OK' in html: break
-			xbmc.sleep(1000)
 	return md5
 
 

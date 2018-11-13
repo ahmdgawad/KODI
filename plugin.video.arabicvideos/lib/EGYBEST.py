@@ -176,7 +176,7 @@ def GET_USERNAME_PASSWORD():
 
 def GET_LOGIN_TOKEN():
 	import xbmcaddon
-	settings = xbmcaddon.Addon(id='plugin.video.arabicvideos')
+	settings = xbmcaddon.Addon(id=addon_id)
 	username = settings.getSetting('egybest.user')
 	password = settings.getSetting('egybest.pass')
 	if username=='' or password=='': return ''
