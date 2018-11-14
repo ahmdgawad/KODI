@@ -1,5 +1,5 @@
 ﻿# -*- coding: utf-8 -*-
-import urllib2,xbmcplugin,xbmcgui,sys,xbmc,os,unicodedata,re,time,urllib
+import urllib2,xbmcplugin,xbmcgui,sys,xbmc,os,re,time,urllib
 
 addon_handle = int(sys.argv[1])
 addon_id = sys.argv[0].split('/')[2] 		# plugin.video.arabicvideos
@@ -105,6 +105,7 @@ def addDir(name,url='',mode='',iconimage=icon,page='',category=''):
 	return
 
 def mixARABIC(string):
+	import unicodedata
 	#if '\u' in string:
 	#	string = string.decode('unicode_escape')
 	#	unicode_strings=re.findall(r'\u[0-9A-F]',string)	
@@ -151,7 +152,8 @@ def PLAY_VIDEO(url,website,showWatched='yes'):
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
 	import random
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-4&cid='+dummyClientID(32)+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+website+'&z='+randomNumber
+	clientID = dummyClientID(32)
+	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-4&cid='+clientID+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+website+'&z='+randomNumber
 	openURL(url,'','','no','LIBRARY-PLAY_VIDEO-1st')
 	return
 
@@ -187,46 +189,47 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 
 def dummyClientID(length):
 	from uuid import getnode as uuid_getnode
-	mac_num = hex(uuid_getnode())[2:14]		# e1f2ace4a35e
+	mac = hex(uuid_getnode())[2:14]		# e1f2ace4a35e
 	#mac = '-'.join(mac_num[i : i + 2].upper() for i in range(0, 11, 2))	# E1:F2:AC:E4:A3:5E
-	#xbmcgui.Dialog().ok(hex(getnode()),mac_num)
 	import platform
 	hostname = platform.node()			# empc12/localhosting
 	os_type = platform.system()			# Windows/Linux
 	os_version = platform.release()		# 10.0/3.14.22
 	os_bits = platform.machine()		# AMD64/aarch64
 	#processor = platform.processor()	# Intel64 Family 9 Model 68 Stepping 16, GenuineIntel/''
-	idComponents = mac_num + ':' + hostname + ':' + os_type + ':' + os_version + ':' + os_bits
-	md5full_list = []
-	from hashlib import md5 as hashlib_md5
-	md5full = hashlib_md5(idComponents).hexdigest()
-	md5full_list.append(md5full)
+	mac_list = []
+	mac_list.append(mac)
 	for i in range(0,20):
 		xbmc.sleep(100)
-		mac_num = hex(uuid_getnode())[2:14]
-		idComponents = mac_num + ':' + hostname + ':' + os_type + ':' + os_version + ':' + os_bits
-		md5full = hashlib_md5(idComponents).hexdigest()
-		if md5full in md5full_list: break
-		else: md5full_list.append(md5full)
+		mac = hex(uuid_getnode())[2:14]
+		if mac in mac_list: break
+		else: mac_list.append(mac)
+	#xbmcgui.Dialog().ok('step1',str(i))
+	idComponents = mac + ':' + hostname + ':' + os_type + ':' + os_version + ':' + os_bits
+	from hashlib import md5 as hashlib_md5
+	md5full = hashlib_md5(idComponents).hexdigest()
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
-	savedhash = settings.getSetting('user.hash3')
-	if i<19:
-		settings.setSetting('user.hash3',md5full)
-		if savedhash=='':
-			url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-			payload = { 'file' : 'saverealhash3' , 'input' : md5full + '  ::  Found at:' + str(i) + '  ::  ' + idComponents }
-			data = urllib.urlencode(payload)
-			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
+	savedhash = settings.getSetting('user.hash4')
+	if savedhash=='':
+		settings.setSetting('user.hash4',md5full)
+		if i==19: file = 'savefakehash4'
+		else: file = 'saverealhash4'
+		url = 'http://emadmahdi.pythonanywhere.com/saveinput'
+		input = md5full + '  ::  Found at:' + str(i) + '  ::  ' + idComponents
+		#payload = { 'file' : file , 'input' : input }
+		#data = urllib.urlencode(payload)
+		#html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
+		import requests
+		headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
+		payload = "file="+file+"&input="+input
+		response = requests.request("POST", url, data=payload, headers=headers)
+		#html = response.text
+		#xbmcgui.Dialog().ok(html,html)
 	else:
-		if savedhash=='':
-			settings.setSetting('user.hash3',md5full)
-			url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-			payload = { 'file' : 'savefakehash3' , 'input' : md5full + '  ::  Found at:' + str(i) + '  ::  ' + idComponents }
-			data = urllib.urlencode(payload)
-			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-2nd')
-		else:
-			md5full = savedhash
+		if i==19: md5full = savedhash
+		else: settings.setSetting('user.hash4',md5full)
+	#xbmcgui.Dialog().ok('step2',str(md5full_list))
 	md5 = md5full[0:length]
 	#url = 'http://emadmahdi.pythonanywhere.com/saveinput'
 	#payload = { 'file' : 'savehash' , 'input' : md5full + '  ::  ' + idComponents }

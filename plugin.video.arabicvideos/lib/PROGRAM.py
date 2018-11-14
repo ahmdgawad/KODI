@@ -110,7 +110,7 @@ def MAIN(mode,text=''):
 		"""
 		#from getmac import get_mac_address
 		#for i in range(0,1):
-		#	#var = dummyClientID(32)
+		#var = dummyClientID(32)
 		#	var = get_mac_address()
 		#	xbmc.log('EMAD11 ' + str(var) + ' 11EMAD',level=xbmc.LOGNOTICE)
 
