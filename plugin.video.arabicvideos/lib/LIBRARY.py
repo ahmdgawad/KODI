@@ -215,14 +215,14 @@ def dummyClientID(length):
 		settings.setSetting('user.hash3',md5full)
 		if savedhash=='':
 			url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-			payload = { 'file' : 'saverealhash3' , 'input' : md5full + '  ::  ' + idComponents }
+			payload = { 'file' : 'saverealhash3' , 'input' : md5full + '  ::  Found at:' + str(i) + '  ::  ' + idComponents }
 			data = urllib.urlencode(payload)
 			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
 	else:
 		if savedhash=='':
 			settings.setSetting('user.hash3',md5full)
 			url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-			payload = { 'file' : 'savefakehash3' , 'input' : md5full + '  ::  ' + idComponents }
+			payload = { 'file' : 'savefakehash3' , 'input' : md5full + '  ::  Found at:' + str(i) + '  ::  ' + idComponents }
 			data = urllib.urlencode(payload)
 			html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-2nd')
 		else:
