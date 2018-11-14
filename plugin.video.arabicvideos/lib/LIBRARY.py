@@ -205,32 +205,39 @@ def dummyClientID(length):
 		if mac in mac_list: break
 		else: mac_list.append(mac)
 	#xbmcgui.Dialog().ok('step1',str(i))
+	#xbmcgui.Dialog().ok(mac,str(mac_list))
 	idComponents = mac + ':' + hostname + ':' + os_type + ':' + os_version + ':' + os_bits
 	from hashlib import md5 as hashlib_md5
 	md5full = hashlib_md5(idComponents).hexdigest()
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
-	savedhash = settings.getSetting('user.hash4')
-	if savedhash=='':
-		settings.setSetting('user.hash4',md5full)
-		if i==19: file = 'savefakehash4'
-		else: file = 'saverealhash4'
-		url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-		input = md5full + '  ::  Found at:' + str(i) + '  ::  ' + idComponents
-		#payload = { 'file' : file , 'input' : input }
-		#data = urllib.urlencode(payload)
-		#html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
-		import requests
-		headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
-		payload = "file="+file+"&input="+input
-		response = requests.request("POST", url, data=payload, headers=headers)
-		#html = response.text
-		#xbmcgui.Dialog().ok(html,html)
-	else:
-		if i==19: md5full = savedhash
-		else: settings.setSetting('user.hash4',md5full)
-	#xbmcgui.Dialog().ok('step2',str(md5full_list))
+	settings.setSetting('user.hash','')
+	settings.setSetting('user.hash2','')
+	settings.setSetting('user.hash3','')
+	settings.setSetting('user.hash4','')
+	#if savedhash=='':
+	if  i<10 : md5full = 'aaaa0' + str(i) + 'bb' + mac + 'cc' + md5full[22:32]
+	elif i>9: md5full = 'aaaa' + str(i) + 'bb' + mac + 'cc' + md5full[22:32]
+	#file = 'savefakehash4'
+	#else: file = 'saverealhash4'
+	#settings.setSetting('user.hash4',md5full)
+	#url = 'http://emadmahdi.pythonanywhere.com/saveinput'
+	#input = md5full + '  ::  Found at:' + str(i) + '  ::  ' + idComponents
+	#	#payload = { 'file' : file , 'input' : input }
+	#	#data = urllib.urlencode(payload)
+	#	#html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
+	#import requests
+	#headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
+	#payload = "file="+file+"&input="+input
+	#response = requests.request("POST", url, data=payload, headers=headers)
+	#	#html = response.text
+	#	#xbmcgui.Dialog().ok(html,html)
+	#else:
+	#	if i==19:
+	#		md5full = 'fake' + savedhash[4:32]
+	#	else: settings.setSetting('user.hash4',md5full)
 	md5 = md5full[0:length]
+	#xbmcgui.Dialog().ok('step2',str(md5full_list))
 	#url = 'http://emadmahdi.pythonanywhere.com/saveinput'
 	#payload = { 'file' : 'savehash' , 'input' : md5full + '  ::  ' + idComponents }
 	#data = urllib.urlencode(payload)
