@@ -150,10 +150,10 @@ def PLAY_VIDEO(url,website,showWatched='yes'):
 		play_item.setInfo( "video", { "Title": label } )
 		xbmc.Player().play(url,play_item)
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
+	clientID = dummyClientID(32)
 	import random
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	clientID = dummyClientID(32)
-	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-4&cid='+clientID+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+website+'&z='+randomNumber
+	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-5&cid='+clientID+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+website+'&z='+randomNumber
 	openURL(url,'','','no','LIBRARY-PLAY_VIDEO-1st')
 	return
 
@@ -188,41 +188,40 @@ def SEND_EMAIL(subject,message,showDialogs='yes',url='',source=''):
 	return html
 
 def dummyClientID(length):
-	from uuid import getnode as uuid_getnode
-	mac = hex(uuid_getnode())[2:14]		# e1f2ace4a35e
-	#mac = '-'.join(mac_num[i : i + 2].upper() for i in range(0, 11, 2))	# E1:F2:AC:E4:A3:5E
+	#from uuid import getnode as uuid_getnode
+	#macfull = hex(uuid_getnode())		# e1f2ace4a35e
+	#mac = '-'.join(mac_num[i:i+2].upper() for i in range(0,11,2))		# E1:F2:AC:E4:A3:5E
 	import platform
 	hostname = platform.node()			# empc12/localhosting
 	os_type = platform.system()			# Windows/Linux
 	os_version = platform.release()		# 10.0/3.14.22
 	os_bits = platform.machine()		# AMD64/aarch64
 	#processor = platform.processor()	# Intel64 Family 9 Model 68 Stepping 16, GenuineIntel/''
-	mac_list = []
-	mac_list.append(mac)
-	for i in range(0,20):
-		xbmc.sleep(100)
-		mac = hex(uuid_getnode())[2:14]
-		if mac in mac_list: break
-		else: mac_list.append(mac)
-	#xbmcgui.Dialog().ok('step1',str(i))
-	#xbmcgui.Dialog().ok(mac,str(mac_list))
-	idComponents = mac + ':' + hostname + ':' + os_type + ':' + os_version + ':' + os_bits
-	from hashlib import md5 as hashlib_md5
-	md5full = hashlib_md5(idComponents).hexdigest()
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
-	settings.setSetting('user.hash','')
-	settings.setSetting('user.hash2','')
-	settings.setSetting('user.hash3','')
-	settings.setSetting('user.hash4','')
-	#if savedhash=='':
-	if  i<10 : md5full = 'aaaa0' + str(i) + 'bb' + mac + 'cc' + md5full[22:32]
-	elif i>9: md5full = 'aaaa' + str(i) + 'bb' + mac + 'cc' + md5full[22:32]
-	#file = 'savefakehash4'
+	savednode = settings.getSetting('node')
+	if savednode=='':
+		from uuid import getnode as uuid_getnode
+		node = str(uuid_getnode())		# 326509845772831
+		settings.setSetting('node',node)
+	else:
+		node = savednode
+	hashComponents = node+':'+hostname+':'+os_type+':'+os_version+':'+os_bits
+	from hashlib import md5 as hashlib_md5
+	md5full = hashlib_md5(hashComponents).hexdigest()
+	md5 = md5full[0:length]
+	#xbmcgui.Dialog().ok(node,md5)
+	return md5
+
+	#import xbmcaddon
+	#settings = xbmcaddon.Addon(id=addon_id)
+	#settings.setSetting('user.hash','')
+	#settings.setSetting('user.hash2','')
+	#settings.setSetting('user.hash3','')
+	#settings.setSetting('user.hash4','')
 	#else: file = 'saverealhash4'
-	#settings.setSetting('user.hash4',md5full)
 	#url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-	#input = md5full + '  ::  Found at:' + str(i) + '  ::  ' + idComponents
+	#input = md5full + '  ::  Found at:' + str(i) + '  ::  ' + hashComponents
 	#	#payload = { 'file' : file , 'input' : input }
 	#	#data = urllib.urlencode(payload)
 	#	#html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
@@ -232,23 +231,9 @@ def dummyClientID(length):
 	#response = requests.request("POST", url, data=payload, headers=headers)
 	#	#html = response.text
 	#	#xbmcgui.Dialog().ok(html,html)
-	#else:
-	#	if i==19:
-	#		md5full = 'fake' + savedhash[4:32]
-	#	else: settings.setSetting('user.hash4',md5full)
-	md5 = md5full[0:length]
-	#xbmcgui.Dialog().ok('step2',str(md5full_list))
 	#url = 'http://emadmahdi.pythonanywhere.com/saveinput'
-	#payload = { 'file' : 'savehash' , 'input' : md5full + '  ::  ' + idComponents }
+	#payload = { 'file' : 'savehash' , 'input' : md5full + '  ::  ' + hashComponents }
 	#data = urllib.urlencode(payload)
-	#for i in range(1,6):
-	#	html = openURL(url,data,'','','LIBRARY-DUMMYCLIENTID-1st')
-	#	if '200 OK' in html: break
-	#	xbmc.sleep(1000)
-	return md5
-
-
-
 
 
 

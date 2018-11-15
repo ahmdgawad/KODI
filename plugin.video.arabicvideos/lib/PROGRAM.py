@@ -68,17 +68,10 @@ def MAIN(mode,text=''):
 		xbmcgui.Dialog().textviewer('Digital Millennium Copyright Act (DMCA)',text)
 
 	elif mode==9:
-
 		#import xbmcaddon
 		#settings = xbmcaddon.Addon(id=addon_id)
 		#settings.setSetting('test1','hello test1')
 		#var = settings.getSetting('test2')
-		#xbmcgui.Dialog().ok(var,'')
-
-		#xbmc.log('EMAD11 ' + str(var) + ' 11EMAD',level=xbmc.LOGNOTICE)
-
-		#import cpuinfo
-		#var = cpuinfo.get_cpu_info()
 		#xbmc.log('EMAD11 ' + str(var) + ' 11EMAD',level=xbmc.LOGNOTICE)
 		#import subprocess
 		#var = subprocess.check_output('wmic csproduct get UUID')
