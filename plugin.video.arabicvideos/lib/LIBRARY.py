@@ -150,10 +150,9 @@ def PLAY_VIDEO(url,website,showWatched='yes'):
 		play_item.setInfo( "video", { "Title": label } )
 		xbmc.Player().play(url,play_item)
 	addonVersion = xbmc.getInfoLabel( "System.AddonVersion(plugin.video.arabicvideos)" )
-	clientID = dummyClientID(32)
 	import random
 	randomNumber = str(random.randrange(111111111111,999999999999))
-	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-5&cid='+clientID+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+website+'&z='+randomNumber
+	url = 'http://www.google-analytics.com/collect?v=1&tid=UA-127045104-5&cid='+dummyClientID(32)+'&t=event&sc=end&ec='+addonVersion+'&av='+addonVersion+'&an=ARABIC_VIDEOS&ea='+website+'&z='+randomNumber
 	openURL(url,'','','no','LIBRARY-PLAY_VIDEO-1st')
 	return
 

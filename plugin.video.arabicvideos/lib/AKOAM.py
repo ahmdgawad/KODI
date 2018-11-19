@@ -82,9 +82,9 @@ def EPISODES(url):
 		return
 	block = html_blocks[0]
 	videoTitle = re.findall('class="sub_title".*?<h1>(.*?)</h1>',html,re.DOTALL)
-	videoTitle = videoTitle[0].replace('\n','')
+	videoTitle = videoTitle[0].replace('\n','').strip(' ')
 	if 'sub_epsiode_title' in block:
-		items = re.findall('sub_epsiode_title">(.*?)</h2>.*?sub_file_title\'>(.*?) - <i>',block,re.DOTALL)
+		items = re.findall('sub_epsiode_title">(.*?)</h2>.*?sub_file_title.*?>(.*?)<',block,re.DOTALL)
 	else:
 		filenames = re.findall('sub_file_title\'>(.*?) - <i>',block,re.DOTALL)
 		items = []
@@ -95,12 +95,17 @@ def EPISODES(url):
 	count = 0
 	titleLIST = []
 	episodeLIST = []
+	size = len(items)
 	for title,filename in items:
 		filetype = ''
+		if ' - ' in filename: filename = filename.split(' - ')[0]
+		else: filename = 'dummy.zip'
 		if '.' in filename: filetype = filename.split('.')[-1]
-		if not any(value in filetype for value in notvideosLIST):
-			titleLIST.append(title.replace('\n',''))
-			episodeLIST.append(count)
+		if any(value in filetype for value in notvideosLIST):
+			if 'رابط التشغيل' not in title: title = title + ':'
+		title = title.replace('\n','').strip(' ')
+		titleLIST.append(title)
+		episodeLIST.append(count)
 		count += 1
 	if len(titleLIST)>0:
 		if any(value in videoTitle for value in noEpisodesLIST):
@@ -112,8 +117,9 @@ def EPISODES(url):
 			PLAY(url+'?ep='+str(episodeLIST[selection]+1))
 		else:
 			for i in range(0,len(titleLIST)):
-				title = videoTitle + '- ' + titleLIST[i]
-				link = url + '?ep='+str(i+1)
+				if ':' in titleLIST[i]: title = titleLIST[i].strip(':') + ' - ملف الفيديو غير موجود'
+				else: title = videoTitle + ' - ' + titleLIST[i]
+				link = url + '?ep='+str(size-i)
 				addLink(title,link,74,img)
 			xbmcplugin.endOfDirectory(addon_handle)
 	else:
@@ -122,15 +128,16 @@ def EPISODES(url):
 		xbmcplugin.endOfDirectory(addon_handle)
 	return
 
-def PLAY(url):
-	url,episode = url.split('?ep=')
-	#xbmcgui.Dialog().ok(url,episode)
+def PLAY(link):
+	url,episode = link.split('?ep=')
 	html = openURL(url,'',headers,'','AKOAM-PLAY-1st')
 	html_blocks = re.findall('ad-300-250.*?ad-300-250(.*?)ako-feedback',html,re.DOTALL)
 	html_block = html_blocks[0].replace('\'direct_link_box','"direct_link_box epsoide_box')
 	html_block = html_block + 'direct_link_box'
 	blocks = re.findall('epsoide_box(.*?)direct_link_box',html_block,re.DOTALL)
-	block = blocks[int(episode)-1]
+	episode = len(blocks)-int(episode)
+	block = blocks[episode]
+	#xbmcgui.Dialog().ok(link,str(len(blocks)-int(episode)-1))
 	linkLIST = []
 	serversDICT = {'1423075862':'dailymotion','1477487601':'estream','1505328404':'streamango',
 		'1423080015':'flashx','1458117295':'openload','1423079306':'vimple','1430052371':'ok.ru'}
