@@ -12,7 +12,6 @@ def MAIN(mode,url,page):
 	elif mode==123: PLAY(url)
 	elif mode==124: SEARCH()
 	elif mode==125: GET_USERNAME_PASSWORD()
-	elif mode==126: GET_LOGIN_TOKEN()
 	return
 
 def MAIN_MENU():
@@ -131,7 +130,7 @@ def PLAY(url):
 			datacallLIST.append (datacall)
 	watchitem = re.findall('x-mpegURL" src="/api/\?call=(.*?)"',html,re.DOTALL)
 	url = website0a + '/api?call=' + watchitem[0]
-	EGUserDef = GET_LOGIN_TOKEN()
+	EGUserDef = GET_USER_TOKEN()
 	if EGUserDef=='':
 		GET_USERNAME_PASSWORD()
 		return
@@ -174,45 +173,60 @@ def GET_USERNAME_PASSWORD():
 	xbmc.executebuiltin('Addon.OpenSettings(%s)' %addon_id)
 	return
 
-def GET_LOGIN_TOKEN():
+def GET_USER_TOKEN():
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
 	username = settings.getSetting('egybest.user')
 	password = settings.getSetting('egybest.pass')
 	if username=='' or password=='': return ''
 	import requests
+
 	#url = 'https://ssl.egexa.com/logout/'
 	#headers = { 'Cookie': 'PHPSESSID='+PHPSESSID }
 	#querystring = { 'domain':'egy.best' }
 	#response = requests.get(url, params=querystring, allow_redirects=False)
 	#response = requests.get(url, allow_redirects=False)
-	#url = 'https://ssl.egexa.com/login/'
-	#response = requests.get(url, allow_redirects=False)
-	#cookies = response.cookies.get_dict()
-	#PHPSESSID = cookies['PHPSESSID']
-	PHPSESSID = dummyClientID(32)
-	#xbmcgui.Dialog().ok(PHPSESSID,str(len(PHPSESSID)))
-	url = 'https://login.egy.best/setlocalcookie.php'
-	querystring = {"domain":"egy.best","LOGIN_SID":PHPSESSID,"url":"https://egy.best"}
-	headers = { 'Cookie': 'PHPSESSID='+PHPSESSID }
-	response = requests.request('GET', url, headers=headers, params=querystring, allow_redirects=False)
-	cookies = response.cookies.get_dict()
-	try:
-		EGUserDef = cookies['EGUserDef']
-		#xbmcgui.Dialog().ok('You already logged in','')
-	except:
-		url = 'https://ssl.egexa.com/login/'
-		headers = { 'Content-Type': 'application/x-www-form-urlencoded' , 'Cookie': 'PHPSESSID='+PHPSESSID }
-		payload = 'LOGIN_SID='+PHPSESSID+'&do=login&login=login&password='+password+'&username='+username
-		response = requests.post(url, data=payload, headers=headers, allow_redirects=False)
+
+	import xbmcaddon
+	settings = xbmcaddon.Addon(id=addon_id)
+	PSESSION_ID = settings.getSetting('egybest.PSESSION_ID')
+	LOGIN_SID = settings.getSetting('egybest.LOGIN_SID')
+
+	if PSESSION_ID!='':
+		url = 'https://login.egy.best/setlocalcookie.php'
+		querystring = { "domain":"egy.best","LOGIN_SID":LOGIN_SID,"url":"https://egy.best/?logout" }
+		headers = { 'Cookie': 'PSESSION_ID='+PSESSION_ID }
+		response = requests.get(url, headers=headers, params=querystring, allow_redirects=False)
 		cookies = response.cookies.get_dict()
 		try:
 			EGUserDef = cookies['EGUserDef']
-			#xbmcgui.Dialog().ok('success','logged in')
-		except:
-			xbmcgui.Dialog().ok('خطأ في اسم الدخول او كلمة السر','يجب عليك اصلاح اسم الدخول وكلمة السر لكي تتمكن من تشغيل الفيديو بصورة صحيحة')
-			EGUserDef = ''
-	return EGUserDef
+			#xbmcgui.Dialog().ok('You were already logged in','')
+			return EGUserDef
+		except: pass
+
+	url = 'https://ssl.egexa.com/login/'
+	querystring = { 'domain':'egy.best' }
+	response = requests.get(url, params=querystring, allow_redirects=False)
+	html = response.text
+	LOGIN_SID = re.findall('LOGIN_SID" value="(.*?)"',html,re.DOTALL)[0]
+	cookies = response.cookies.get_dict()
+	PSESSION_ID = cookies['PSESSION_ID']
+
+	url = 'https://ssl.egexa.com/login/'
+	headers = { 'Content-Type': 'application/x-www-form-urlencoded' , 'Cookie': 'PSESSION_ID='+PSESSION_ID }
+	payload = 'LOGIN_SID='+LOGIN_SID+'&do=login&login=login&password='+password+'&username='+username
+	response = requests.post(url, data=payload, headers=headers, allow_redirects=False)
+	cookies = response.cookies.get_dict()
+	try:
+		EGUserDef = cookies['EGUserDef']
+		#xbmcgui.Dialog().ok('success, you just logged in now','')
+		LOGIN_SID = settings.setSetting('egybest.LOGIN_SID',LOGIN_SID)
+		PSESSION_ID = settings.setSetting('egybest.PSESSION_ID',PSESSION_ID)
+		return EGUserDef
+	except: pass
+
+	xbmcgui.Dialog().ok('خطأ في اسم الدخول او كلمة السر','يجب عليك اصلاح اسم الدخول وكلمة السر لكي تتمكن من تشغيل الفيديو بصورة صحيحة')
+	return ''
 
 
 
