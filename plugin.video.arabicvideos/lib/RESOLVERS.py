@@ -101,7 +101,7 @@ def RESOLVABLE(url):
 		if resolvable:
 			result2 = url.split('//')[1].split('/')[0]
 	if result1!='': result = ' سيرفر معروف ' + result1
-	elif result2!='': result = ' سيرفر مقبول ' + result2
+	elif result2!='': result = ' سيرفر خارجي ' + result2
 	else: result = ''
 	return result
 
@@ -217,9 +217,10 @@ def AKOAMNET(link):
 		url = CATCHIS(url)
 		url = url[0]
 	else:
+		url_akoam = url
 		#xbmcgui.Dialog().ok(str(url),'')
 		headers = { 'User-Agent':'' , 'X-Requested-With':'XMLHttpRequest' , 'Referer':url }
-		response = requests_request('POST', url, headers=headers, data='', allow_redirects=False)
+		response = requests_request('POST', url_akoam, headers=headers, data='', allow_redirects=False)
 		html = response.text
 		items = re.findall('direct_link":"(.*?)"',html,re.DOTALL|re.IGNORECASE)
 		if not items:
@@ -233,7 +234,16 @@ def AKOAMNET(link):
 		if '?' in link:
 			url = RESOLVE(url)
 			url = url[0]
-	return [ url.rstrip('/') ]
+		url1 = url
+		#hash_data = re.findall('hash_data":"(.*?)"',html,re.DOTALL|re.IGNORECASE)[0]
+		#response = requests_request('GET', url_akoam, headers='', data='', allow_redirects=False)
+		#html = response.text
+		#watch_title = re.findall('<h1>(.*?)</h1>',html,re.DOTALL|re.IGNORECASE)[0]
+		#splits = url_akoam.split('/')
+		#server = '/'.join(splits[0:3])
+		#url2 = server + '/watching/'+hash_data+'/'+watch_title
+		#xbmcgui.Dialog().ok(url1,url2)
+	return [ url1.rstrip('/') ]
 
 def RAPIDVIDEO(url):
 	headers = { 'User-Agent' : '' }
