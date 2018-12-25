@@ -68,6 +68,7 @@ def MAIN(mode,text=''):
 		xbmcgui.Dialog().textviewer('Digital Millennium Copyright Act (DMCA)',text)
 
 	elif mode==9:
+
 		#import xbmcaddon
 		#settings = xbmcaddon.Addon(id=addon_id)
 		#settings.setSetting('test1','hello test1')
@@ -79,37 +80,6 @@ def MAIN(mode,text=''):
 		#import os
 		#var = os.popen("wmic diskdrive get serialnumber").read()
 		#xbmc.log('EMAD11 ' + str(var) + ' 11EMAD',level=xbmc.LOGNOTICE)
-		"""
-		possible_drives = [
-				r"\\.\PhysicalDrive1", # Windows
-				r"\\.\PhysicalDrive2",
-				r"\\.\PhysicalDrive3",
-				"/dev/mmcblk0", # Linux - MMC
-				"/dev/mmcblk1",
-				"/dev/mmcblk2",
-				"/dev/sdb", # Linux - Disk
-				"/dev/sdc",
-				"/dev/sdd",
-				"/dev/disk1", #MacOSX 
-				"/dev/disk2",
-				"/dev/disk3",
-				]
-		sector_size = 512
-		#for drive in possible_drives:
-		#disk = os.open(r'\\.\C:', os.O_BINARY)
-		disk = os.open(r"\\.\PhysicalDrive1",os.O_BINARY)
-		disk.seek(14000*sector_size)
-		xbmc.log('EMAD11 ' + str(disk.read(7)) + ' 11EMAD',level=xbmc.LOGNOTICE)
-		"""
-		#from getmac import get_mac_address
-		#for i in range(0,1):
-		#var = dummyClientID(32)
-		#	var = get_mac_address()
-		#	xbmc.log('EMAD11 ' + str(var) + ' 11EMAD',level=xbmc.LOGNOTICE)
-
-		#from hashlib import md5 as hashlib_md5
-		#md5full = hashlib_md5('/proc/cpuinfo').hexdigest()
-		#xbmc.log('EMAD11 ' + str(md5full) + ' 11EMAD',level=xbmc.LOGNOTICE)
 
 		#import requests
 		#var = dummyClientID(32)

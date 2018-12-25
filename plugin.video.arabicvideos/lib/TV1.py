@@ -11,19 +11,24 @@ def MAIN(mode,url):
 
 def ITEMS():
 	client = dummyClientID(32)
-	payload = { 'id' : id , 'userID' : client , 'functionID' : 'list' }
+	payload = { 'id' : '' , 'user' : client , 'function' : 'list' }
 	data = urllib.urlencode(payload)
 	html = openURL(website0a,data,'','','TV1-ITEMS-1st')
-	html = html.replace('Al ','Al')
-	html = html.replace('\r','')
+	#html = html.replace('\r','')
 	#xbmcgui.Dialog().ok(html,html)
 	items = re.findall('(.*?):(.*?):(.*?)\n',html,re.DOTALL)
 	if items:
 		items = set(items)
-		itemsSorted = sorted(items, reverse=False, key=lambda key: key[1].lower())
-		for link,title,img in itemsSorted:
-			addLink(title,link,101,img,'','yes')
-	else:
+		itemsSorted = sorted(items, reverse=False, key=lambda key: key[0].lower())
+		itemsSorted = sorted(itemsSorted, reverse=False, key=lambda key: key[1].lower())
+		for id,title,img in itemsSorted:
+			quality = id[0:2]
+			id = id[2:99]
+			title = title + ' ' + quality
+			title = title.replace('Al ','Al')
+			title = title.replace('El ','El')
+			addLink(title,quality+id,101,img,'','yes')
+	elif html=='Not Allowed':
 		addLink('للأسف لا توجد قنوات تلفزونية لك','',9999)
 		addLink('هذه الخدمة مخصصة للاقرباء والاصدقاء فقط','',9999)
 		addLink('=========================','',9999)
@@ -33,16 +38,22 @@ def ITEMS():
 	return
 
 def PLAY(id):
+	quality = id[0:2]
+	id = id[2:99]
+	#xbmcgui.Dialog().ok(quality,id)
 	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
-	payload = { 'id' : id , 'userID' : dummyClientID(32) , 'functionID' : 'play' }
+	payload = { 'id' : id , 'user' : dummyClientID(32) , 'function' : 'play' }
 	from requests import request as requests_request
 	response = requests_request('POST', website0a, data=payload, headers=headers)
 	html = response.text
 	#xbmcgui.Dialog().ok(html,html)
-	items = re.findall('link3":"(.*?)"',html,re.DOTALL)
+	if quality=='HD': link='3'
+	elif quality=='SD': link='2'
+	else: link = '1'
+	items = re.findall('"link'+link+'":"(.*?)"',html,re.DOTALL)
 	url = items[0]
 	url = url.replace('\/','/')
-	url = url.replace('#','')
+	#url = url.replace('#','')
 	#xbmcgui.Dialog().ok(url,id)
 	PLAY_VIDEO(url,script_name,'yes')
 	return

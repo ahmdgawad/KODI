@@ -101,7 +101,7 @@ def RESOLVABLE(url):
 		if resolvable:
 			result2 = url.split('//')[1].split('/')[0]
 	if result1!='': result = ' سيرفر معروف ' + result1
-	elif result2!='': result = ' سيرفر خارجي ' + result2
+	elif result2!='': result = 'سيرفر خارجي ' + result2
 	else: result = ''
 	return result
 
@@ -159,6 +159,7 @@ def SERVERS(linkLIST,script_name=''):
 	message = '\\n'
 	linkLIST = set(linkLIST)
 	for link in linkLIST:
+		if link=='': continue
 		link = link.rstrip('/')
 		server = RESOLVABLE(link)
 		if server=='':

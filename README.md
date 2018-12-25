@@ -34,19 +34,32 @@ Download and install these two files using Kodi Addons installer:
 <br />
 <br />
 <a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/repository.emad-1.1.0.zip">1. &nbsp; repository.emad-1.1.0.zip</a><br />
-<a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/plugin.video.arabicvideos-3.6.3.zip">2. &nbsp; arabicvideos-3.6.3.zip</a><br />
+<a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/plugin.video.arabicvideos-3.7.0.zip">2. &nbsp; arabicvideos-3.7.0.zip</a><br />
 <br />
 <br />
 الروابط ادناه توضح طريقة تنزيل وتنصيب هذه الاضافة باستخدام كودي
 <br />
-The following links teach how to download and install this addon using Kodi
+The following links shows how to download and install this addon using Kodi
+<br />
+<br />
+<br />
+The install consist of two steps ... first step is installing KODI and second step is installing this addon
+<br />
+تنصيب البرنامج يتم بخطوتين ... الخطوة الاولى هي تنصيب برنامج كودي والخطوة الثانية هي تنصيب هذه الاضافة
+<br />
 <br />
 <br />
 <a href="http://www.kodiarabic.net/2015/09/kodi_22.html">1. &nbsp; صفحة باللغة العربية تبين بالصور كيفية تنصيب برنامج كودي على الاندرويد في حال عدم وجوده سابقا - شكرا لموقع كودي العربي</a><br /><br />
+<br />
 <a href="http://www.kodiarabic.net/2018/10/arabic-video-kodi.html">2. &nbsp; صفحة باللغة العربية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا لموقع كودي العربي</a><br /><br />
+<br />
+<br />
+<br />
 <a href="http://www.youtube.com/watch?v=0fDi_7l_1Yw">3. &nbsp; مقطع يوتيوب باللغة العربية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a><br /><br />
-<a href="http://www.husham.com/new-2018-arabic-videos-kodi-addon">4. &nbsp; صفحة باللغة الانكليزية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا للاخ هشام</a><br /><br />
 <a href="http://www.youtube.com/watch?v=_w58WScaObk">5. &nbsp; مقطع يوتيوب باللغة الانكليزية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a><br />
+<br />
+<br />
+<a href="http://www.husham.com/new-2018-arabic-videos-kodi-addon">4. &nbsp; صفحة باللغة الانكليزية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا للاخ هشام</a><br /><br />
 <br />
 <p>&nbsp;</p>
 <p>&nbsp;</p>

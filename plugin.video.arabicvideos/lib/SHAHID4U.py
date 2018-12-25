@@ -29,27 +29,28 @@ def MENU():
 	return
 
 def ITEMS(url):
-	dirLIST = ['/category/series','/category/ramadan','?s=',quote('/category/برامج-تلفزيونية').lower()]
+	#xbmcgui.Dialog().ok('not found','')
+	dirLIST = ['/category/series','/category/ramadan','/?s=',quote('/category/برامج-تلفزيونية').lower()]
 	if any(value in url for value in dirLIST):
 		directory = True
-	else:
-		directory = False
+	else: directory = False
 	html = openURL(url,'',headers,'','SHAHID4U-ITEMS-1st')
 	html_blocks = re.findall('class="blocksFilms"(.*?)<div class="header ">',html,re.DOTALL)
 	if not html_blocks:
 		html_blocks = re.findall('class="cats da_Sa"(.*?)<div class="header ">',html,re.DOTALL)
-	if not html_blocks:
-		PLAY(url)
-		return
+		if not html_blocks:
+			PLAY(url)
+			return
 	block = html_blocks[0]
 	items = re.findall('src="(.*?)".*?movief"><a href="(.*?)">(.*?)<',block,re.DOTALL)
 	allTitles = []
-	itemLIST = ['الحلقة','فيلم','اغنية','كليب','اعلان']
+	itemLIST = ['الحلقة','فيلم','اغنية','كليب','اعلان','هداف','مباراة']
 	#xbmcgui.Dialog().ok(quote('/category/برامج-تلفزيونية'),'')
 	for img,link,title in items:
 		link = unquote(link)
+		#title = unquote(title)
 		#title = title.replace('\n','')
-		#title = title.strip(' ')
+		title = title.strip(' ')
 		if directory is True:
 			episode = re.findall(' الحلقة [0-9]*',title,re.DOTALL)
 			if episode:
@@ -57,6 +58,7 @@ def ITEMS(url):
 				title = title.replace(' والاخيرة','')
 		if any(value in title for value in itemLIST):
 			directory = False
+		else: directory = True
 		title = unescapeHTML(title)
 		if title not in allTitles:
 			allTitles.append(title)
@@ -76,6 +78,7 @@ def ITEMS(url):
 	return
 
 def PLAY(url):
+	#xbmcgui.Dialog().ok(url,url)
 	linkLIST = []
 	urlLIST = []
 	html = openURL(url,'',headers,'','SHAHID4U-PLAY-1st')
@@ -105,6 +108,7 @@ def PLAY(url):
 		links = re.findall('src="(.*?)"',html,re.DOTALL)
 		linkLIST.append(links[0])
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
+	#xbmcgui.Dialog().ok(url,str(linkLIST))
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	return
 
