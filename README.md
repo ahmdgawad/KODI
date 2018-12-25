@@ -43,9 +43,9 @@ The following links shows how to download and install this addon using Kodi
 <br />
 <br />
 <br />
-The install consist of two steps ... first step is installing KODI and second step is installing this addon
-<br />
 تنصيب البرنامج يتم بخطوتين ... الخطوة الاولى هي تنصيب برنامج كودي والخطوة الثانية هي تنصيب هذه الاضافة
+<br />
+The install consist of two steps ... first step is installing KODI and second step is installing this addon
 <br />
 <br />
 <br />
