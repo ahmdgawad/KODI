@@ -1,7 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 from LIBRARY import *
 
-website0a = 'http://www.almaareftv.com'
+website0a = 'http://www.almaareftv.com/old'
 script_name = 'ALMAAREF'
 
 def MAIN(mode,url,category):

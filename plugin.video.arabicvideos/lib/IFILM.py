@@ -99,6 +99,7 @@ def TITLES(url,page):
 		items = re.findall('href="(.*?)".*?src=(.*?)>.*?h3>(.*?)<',block,re.DOTALL)
 		for link,img,title in items:
 			title = escapeUNICODE(title)
+			title = unescapeHTML(title)
 			link = website0 + link
 			img = website0 + quote(img)
 			addDir(title,link,23,img,order+'01')

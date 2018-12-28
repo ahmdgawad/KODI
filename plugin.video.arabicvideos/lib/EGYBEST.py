@@ -155,6 +155,7 @@ def PLAY(url):
 		items = re.findall('"url":"(.*?)"',html,re.DOTALL)
 		url = items[0]
 	url = url.replace('\/','/')
+	#xbmc.log(url, level=xbmc.LOGNOTICE)
 	#xbmcgui.Dialog().ok(url,url[-45:])
 	PLAY_VIDEO(url,script_name,'yes')
 	return

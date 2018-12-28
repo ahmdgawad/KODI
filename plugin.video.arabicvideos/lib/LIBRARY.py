@@ -138,12 +138,20 @@ def KEYBOARD(label='Search'):
 	return new_search
 
 def PLAY_VIDEO(url,website,showWatched='yes'):
+	if 'https' in url:
+		html = openURL('https://www.google.com','','','','LIBRARY-1st')
+		if 'html' not in html:
+			xbmcgui.Dialog().ok('الاتصال مشفر','مشكلة ... هذا الفيديو يحتاج الى اتصال مشفر (ربط مشفر) ولكن للأسف الاتصال المشفر لا يعمل على جهازك')
+			from PROBLEMS import MAIN as PROBLEMS_MAIN
+			PROBLEMS_MAIN(1002)
+			return
 	play_item = xbmcgui.ListItem(path=url)
 	if showWatched=='yes':
 		#title = xbmc.getInfoLabel('ListItem.Title')
 		#label = xbmc.getInfoLabel('ListItem.Label')
 		#xbmcgui.Dialog().ok(url,label)
 		#play_item.setInfo( "video", { "Title": label } )
+		#xbmc.log(url, level=xbmc.LOGNOTICE)
 		xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
 	else:
 		label = xbmc.getInfoLabel('ListItem.Label')

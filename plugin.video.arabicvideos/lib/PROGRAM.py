@@ -71,14 +71,12 @@ def MAIN(mode,text=''):
 		return
 
 	elif mode==4:
-		url = 'https://www.google.com'
-		html = openURL(url,'','','','PROGRAM-1st')
+		html = openURL('https://www.google.com','','','','PROGRAM-1st')
 		#xbmcgui.Dialog().ok('Checking SSL',html)
 		if 'html' in html:
-			xbmcgui.Dialog().ok('الاتصال المشفر','الاتصال المشفر (الربط المشفر) يعمل على جهازك بنجاح')
+			xbmcgui.Dialog().ok('الاتصال المشفر','جيد جدا ... الاتصال المشفر (الربط المشفر) يعمل على جهازك ... وجهازك قادر على استخدام المواقع المشفرة')
 		else:
-			xbmcgui.Dialog().ok('الاتصال المشفر','مشكلة ... للأسف الاتصال المشفر (الربط المشفر) لا يعمل على جهازك')
-			xbmcgui.Dialog().ok('تنبيه مهم','يرجى العلم بان بعض مواقع البرنامج لن تعمل معك بصورة صحيحة بدون اصلاح مشكلة الربط المشفر')
+			xbmcgui.Dialog().ok('الاتصال المشفر','مشكلة ... الاتصال المشفر (الربط المشفر) لا يعمل على جهازك ... وجهازك غير قادر على استخدام المواقع المشفرة')
 			from PROBLEMS import MAIN as PROBLEMS_MAIN
 			PROBLEMS_MAIN(1002)
 		return

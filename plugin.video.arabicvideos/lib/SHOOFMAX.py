@@ -122,36 +122,31 @@ def PLAY(url):
 	#xbmcgui.Dialog().ok(origin_link, backup_origin_link )
 	origin_link = re.findall('var origin_link = "(.*?)"',block,re.DOTALL)[0]
 	backup_origin_link = re.findall('var backup_origin_link = "(.*?)"',block,re.DOTALL)[0]
-	links = re.findall('origin_link\+"(.*?)"',block,re.DOTALL)
-	video1 = origin_link + links[0]
-	video2 = backup_origin_link + links[1]
-	multiple1 = origin_link + links[2]
-	multiple2 = backup_origin_link + links[3]
-	count = 0
 	items_url = []
 	items_name = []
-	items_url.append(video1)
-	items_name.append('Main server: mp4')
-	items_url.append(video2)
-	items_name.append('Backup server: mp4')
-	html = openURL(multiple1,'','','','SHOOFMAX-PLAY-2nd')
-	base = multiple1.replace('variant.m3u8','')
-	items = re.findall('RESOLUTION=(.*?),.*?\n(.*?)u8',html,re.DOTALL)
-        for quality,link in items:
-		url = base + link + 'u8'
-		count += 1
-		items_url.append(url)
-		items_name.append('Main server: m3u8 '+quality)
-	count += 1
-	html = openURL(multiple2,'','','','SHOOFMAX-PLAY-3rd')
-	base = multiple2.replace('variant.m3u8','')
-	items = re.findall('RESOLUTION=(.*?),.*?\n(.*?)u8',html,re.DOTALL)
-        for quality,link in items:
-		url = base + link + 'u8'
-		count += 1
-		items_url.append(url)
-		items_name.append('Backup server: m3u8 '+quality)
-	count += 1
+	multiples = []
+	links = re.findall('\torigin_link\+"(.*?)"',block,re.DOTALL)
+	for link in links:
+		items_url.append(origin_link+link)
+		items_name.append('mp4: main server')
+	links = re.findall('\tbackup_origin_link\+"(.*?)"',block,re.DOTALL)
+	for link in links:
+		items_url.append(backup_origin_link+link)
+		items_name.append('mp4: backup server')
+	links = re.findall('hls: origin_link\+"(.*?)"',block,re.DOTALL)
+	if links: multiples.append(origin_link+links[0])
+	links = re.findall('hls: backup_origin_link\+"(.*?)"',block,re.DOTALL)
+	if links: multiples.append(backup_origin_link+links[0])
+	for multiple in multiples:
+		if origin_link in multiple: server = 'main'
+		else: server = 'backup'
+		html = openURL(multiple,'','','','SHOOFMAX-PLAY-2nd')
+		base = multiple.replace('variant.m3u8','')
+		items = re.findall('RESOLUTION=(.*?),.*?\n(.*?)m3u8',html,re.DOTALL)
+		for quality,link in items:
+			url = base + link + 'm3u8'
+			items_url.append(url)
+			items_name.append('m3u8: '+server+' server '+quality)
 	selection = xbmcgui.Dialog().select('Select Video Quality:', items_name)
 	if selection == -1 : return
 	url = items_url[selection]
