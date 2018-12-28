@@ -16,12 +16,16 @@ def ITEMS():
 	html = openURL(website0a,data,'','','TV1-ITEMS-1st')
 	#html = html.replace('\r','')
 	#xbmcgui.Dialog().ok(html,html)
-	items = re.findall('(.*?):(.*?):(.*?)\n',html,re.DOTALL)
+	#file = open('s:/emad.html', 'w')
+	#file.write(html)
+	#file.close()
+	items = re.findall('(.*?):(.*?):(.*?)\r\n',html,re.DOTALL)
 	if items:
 		items = set(items)
 		itemsSorted = sorted(items, reverse=False, key=lambda key: key[0].lower())
 		itemsSorted = sorted(itemsSorted, reverse=False, key=lambda key: key[1].lower())
 		for id,title,img in itemsSorted:
+			#xbmcgui.Dialog().ok(id,id)
 			quality = id[0:2]
 			id = id[2:99]
 			title = title + ' ' + quality

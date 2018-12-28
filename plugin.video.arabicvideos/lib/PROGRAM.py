@@ -27,6 +27,7 @@ def MAIN(mode,text=''):
 			for i in range(0,len(keyboard),1):
 				new2 += hex(ord(keyboard[i])).replace('0x','')+' '
 			xbmcgui.Dialog().ok(new1,new2)
+		return
 
 	elif mode==2:
 		xbmcgui.Dialog().ok('المبرمج لا يعلم الغيب','اذا كانت لديك مشكلة فاذن أقرأ قسم المشاكل والحلول واذا لم تجد الحل هناك فاذن اكتب رسالة عن المكان والوقت والحال الذي تحدث فيه المشكلة واكتب جميع التفاصيل لان المبرمج لا يعلم الغيب')
@@ -60,12 +61,27 @@ def MAIN(mode,text=''):
 		#	response = server.sendmail(FROMemailAddress,TOemailAddress, header + '\n' + message)
 		#	server.quit()
 		#	xbmcgui.Dialog().ok('Response',str(response))
+		return
 
 	elif mode==3:
 		text = ' نفي: البرنامج لا يوجد له اي سيرفر يستضيف اي محتويات. البرنامج يستخدم روابط وتضمين لمحتويات مرفوعة على سيرفرات خارجية. البرنامج غير مسؤول عن اي محتويات تم تحميلها على سيرفرات ومواقع خارجية "مواقع طرف 3". جميع الاسماء والماركات والصور والمنشورات هي خاصة باصحابها. البرنامج لا ينتهك حقوق الطبع والنشر وقانون الألفية للملكية الرقمية DMCA اذا كان لديك شكوى خاصة بالروابط والتضامين الخارجية فالرجاء التواصل مع ادارة هذه السيرفرات والمواقع الخارجية'
 		xbmcgui.Dialog().textviewer('حقوق الطبع والنشر وقانون الألفية للملكية الرقمية',text)
 		text = 'Disclaimer: The program does not host any content on any server. The program just use linking to or embedding content that was uploaded to popular Online Video hosting sites. All trademarks, Videos, trade names, service marks, copyrighted work, logos referenced herein belong to their respective owners/companies. The program is not responsible for what other people upload to 3rd party sites. We urge all copyright owners, to recognize that the links contained within this site are located somewhere else on the web or video embedded are from other various site. If you have any legal issues please contact appropriate media file owners/hosters.'
 		xbmcgui.Dialog().textviewer('Digital Millennium Copyright Act (DMCA)',text)
+		return
+
+	elif mode==4:
+		url = 'https://www.google.com'
+		html = openURL(url,'','','','PROGRAM-1st')
+		#xbmcgui.Dialog().ok('Checking SSL',html)
+		if 'html' in html:
+			xbmcgui.Dialog().ok('الاتصال المشفر','الاتصال المشفر (الربط المشفر) يعمل على جهازك بنجاح')
+		else:
+			xbmcgui.Dialog().ok('الاتصال المشفر','مشكلة ... للأسف الاتصال المشفر (الربط المشفر) لا يعمل على جهازك')
+			xbmcgui.Dialog().ok('تنبيه مهم','يرجى العلم بان بعض مواقع البرنامج لن تعمل معك بصورة صحيحة بدون اصلاح مشكلة الربط المشفر')
+			from PROBLEMS import MAIN as PROBLEMS_MAIN
+			PROBLEMS_MAIN(1002)
+		return
 
 	elif mode==9:
 
