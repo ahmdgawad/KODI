@@ -5,11 +5,14 @@
 These addons modified to suit my personal needs
 <br />
 <br />
-<h2>1. &nbsp; Arabic Videos For Kodi Plugin<br />
+<h2>1. &nbsp; Arabic Videos For Kodi Plugin
+<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(plugin.video.arabicvideos)</h2>
+<br />
 برنامج جديد (اضافة جديدة) الى كودي تسمح لكودي بان يتصفح جميع المواقع المكتوبة ادناه
 <br />
 New video plugin for KODI that provide Arabic video contents from the following websites:
+<br />
 <br />
 <br />
 <a href="http://www.shoofmax.com">1. &nbsp; http://www.shoofmax.com</a><br />
@@ -33,21 +36,26 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <br />
 الخطوة الاولى: تنزيل وتنصيب برنامج كودي في حال عدم وجوده سابقا
 <br />
-<a href="http://www.kodiarabic.net/2015/09/kodi_22.html">1. &nbsp; صفحة باللغة العربية تبين بالصور كيفية تنصيب برنامج كودي على الاندرويد في حال عدم وجوده سابقا - شكرا لموقع كودي العربي</a><br />
+<a href="http://www.kodiarabic.net/2015/09/kodi_22.html">1. &nbsp; صفحة باللغة العربية تبين بالصور كيفية تنصيب برنامج كودي على الاندرويد في حال عدم وجوده سابقا - شكرا لموقع كودي العربي</a>
+<br />
 <br />
 <br />
 الخطوة الثانية: تنزيل وتنصيب هذا البرنامج (الاضافة) على كودي
 <br />
-<a href="http://www.kodiarabic.net/2018/10/arabic-video-kodi.html">2. &nbsp; صفحة باللغة العربية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا لموقع كودي العربي</a><br />
+<a href="http://www.kodiarabic.net/2018/10/arabic-video-kodi.html">2. &nbsp; صفحة باللغة العربية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا لموقع كودي العربي</a>
 <br />
 <br />
 <br />
 <br />
 خطوات اضافية وغير ضرورية
 <br />
-<a href="http://www.husham.com/new-2018-arabic-videos-kodi-addon">3. &nbsp; صفحة باللغة الانكليزية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا للاخ هشام</a><br />
-<a href="http://www.youtube.com/watch?v=0fDi_7l_1Yw">4. &nbsp; مقطع يوتيوب باللغة العربية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a><br />
-<a href="http://www.youtube.com/watch?v=_w58WScaObk">5. &nbsp; مقطع يوتيوب باللغة الانكليزية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a><br />
+<a href="http://www.husham.com/new-2018-arabic-videos-kodi-addon">3. &nbsp; صفحة باللغة الانكليزية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا للاخ هشام</a>
+<br />
+<a href="http://www.youtube.com/watch?v=0fDi_7l_1Yw">4. &nbsp; مقطع يوتيوب باللغة العربية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a>
+<br />
+<a href="http://www.youtube.com/watch?v=_w58WScaObk">5. &nbsp; مقطع يوتيوب باللغة الانكليزية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a>
+<br />
+<br />
 <br />
 <br />
 <br />
@@ -59,14 +67,19 @@ My own mod of the Metropolis skin focused on list view
 جلد خاص بكودي يوفر سهولة لاستخدام الريموت كونترول
 <br />
 <br />
+<br />
+<br />
 <h2>4. &nbsp; skin.phenomenalEMAD</h2>
 My own mod of the Phenomenal skin focused on list view
 <br />
-جلد خاص بكودي يوفر سهولة لاستخدام الريموت كونترول<br />
+جلد خاص بكودي يوفر سهولة لاستخدام الريموت كونترول
+<br />
+<br />
 <br />
 <br />
 <h2>5. &nbsp; resource.images.moviegenreicons.metropolisEMAD</h2>
 Movie genres icons extracted from Metropolis skin to decrease the size of the skin
+<br />
 <br />
 <br />
 <br />
