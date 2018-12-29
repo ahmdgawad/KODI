@@ -28,27 +28,11 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>2. &nbsp; التنصيب والتنزيل &nbsp;&nbsp;&nbsp;&nbsp; Download & Install</h2>
-للتنصيب يجب تنزيل الملفين ادناه وتنصيبها باستخدام برنامج كودي
-<br />
-Download and install these two files using Kodi Addons installer:
-<br />
-<br />
-<a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/repository.emad-1.1.0.zip">1. &nbsp; repository.emad-1.1.0.zip</a><br />
-<a href="http://raw.githubusercontent.com/emadmahdi/KODI/master/INSTALL/plugin.video.arabicvideos-3.7.2.zip">2. &nbsp; arabicvideos-3.7.2.zip</a><br />
-<br />
-<br />
-الروابط ادناه توضح طريقة تنزيل وتنصيب هذه الاضافة باستخدام كودي
-<br />
-The following links shows how to download and install this addon using Kodi
-<br />
-<br />
-<br />
 <br />
 <br />
 تنصيب البرنامج يتم بخطوتين ... الخطوة الاولى هي تنصيب برنامج كودي والخطوة الثانية هي تنصيب هذه الاضافة
 <br />
 The install consist of two steps ... first step is installing KODI and second step is installing this addon
-<br />
 <br />
 <br />
 الخطوة الاولى
