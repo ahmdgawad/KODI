@@ -1,8 +1,10 @@
 ﻿<b>
 <img src="./plugin.video.arabicvideos/icon.png" title="Arabic Videos">
 <br />
+<br />
 <h1>My KODI Addons</h1>
 These addons modified to suit my personal needs
+<br />
 <br />
 <br />
 <h2>1. &nbsp; Arabic Videos For Kodi Plugin
