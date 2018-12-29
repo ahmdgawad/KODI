@@ -29,7 +29,6 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <p>&nbsp;</p>
 <h2>2. &nbsp; التنصيب والتنزيل &nbsp;&nbsp;&nbsp;&nbsp; Download & Install</h2>
 <br />
-<br />
 الخطوة الاولى: تنزيل وتنصيب برنامج كودي في حال عدم وجوده سابقا
 <br />
 <a href="http://www.kodiarabic.net/2015/09/kodi_22.html">1. &nbsp; صفحة باللغة العربية تبين بالصور كيفية تنصيب برنامج كودي على الاندرويد في حال عدم وجوده سابقا - شكرا لموقع كودي العربي</a><br />
