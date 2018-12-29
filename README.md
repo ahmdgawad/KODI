@@ -60,6 +60,8 @@ The install consist of two steps ... first step is installing KODI and second st
 <br />
 <br />
 <br />
+خطوات اضافية وغير ضرورية
+<br />
 <a href="http://www.husham.com/new-2018-arabic-videos-kodi-addon">3. &nbsp; صفحة باللغة الانكليزية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا للاخ هشام</a><br />
 <a href="http://www.youtube.com/watch?v=0fDi_7l_1Yw">4. &nbsp; مقطع يوتيوب باللغة العربية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a><br />
 <a href="http://www.youtube.com/watch?v=_w58WScaObk">5. &nbsp; مقطع يوتيوب باللغة الانكليزية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a><br />
