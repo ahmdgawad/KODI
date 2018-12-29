@@ -1,10 +1,10 @@
 ﻿<b>
 <img src="./plugin.video.arabicvideos/icon.png" title="Arabic Videos">
-<p>&nbsp;</p>
+<br />
 <h1>My KODI Addons</h1>
 These addons modified to suit my personal needs
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<br />
+<br />
 <h2>1. &nbsp; Arabic Videos For Kodi Plugin<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(plugin.video.arabicvideos)</h2>
 برنامج جديد (اضافة جديدة) الى كودي تسمح لكودي بان يتصفح جميع المواقع المكتوبة ادناه
@@ -52,28 +52,27 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <br />
 <br />
 <br />
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<br />
 <h2>3. &nbsp; skin.metropolisEMAD</h2>
 My own mod of the Metropolis skin focused on list view
 <br />
 جلد خاص بكودي يوفر سهولة لاستخدام الريموت كونترول
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<br />
+<br />
 <h2>4. &nbsp; skin.phenomenalEMAD</h2>
 My own mod of the Phenomenal skin focused on list view
 <br />
 جلد خاص بكودي يوفر سهولة لاستخدام الريموت كونترول<br />
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<br />
+<br />
 <h2>5. &nbsp; resource.images.moviegenreicons.metropolisEMAD</h2>
 Movie genres icons extracted from Metropolis skin to decrease the size of the skin
 <br />
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<br />
+<br />
 <h2>6. &nbsp; resource.images.musicgenreicons.metropolisEMAD</h2>
 Music genres icons extracted from Metropolis skin to decrease the size of the skin
 <br />
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<br />
+<br />
 </b>
