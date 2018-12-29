@@ -49,7 +49,11 @@ The install consist of two steps ... first step is installing KODI and second st
 <br />
 <br />
 <br />
+الخطوة الاولى
+<br />
 <a href="http://www.kodiarabic.net/2015/09/kodi_22.html">1. &nbsp; صفحة باللغة العربية تبين بالصور كيفية تنصيب برنامج كودي على الاندرويد في حال عدم وجوده سابقا - شكرا لموقع كودي العربي</a><br />
+الخطوة الثانية
+<br />
 <a href="http://www.kodiarabic.net/2018/10/arabic-video-kodi.html">2. &nbsp; صفحة باللغة العربية توضح طريقة تنزيل وتنصيب هذه الاضافة على كودي بالصور والشرح - شكرا لموقع كودي العربي</a><br />
 <br />
 <br />
