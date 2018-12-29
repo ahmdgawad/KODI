@@ -6,8 +6,8 @@ These addons modified to suit my personal needs
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <h2>1. &nbsp; Arabic Videos For Kodi Plugin<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(plugin.video.arabicvideos )</h2>
-اضافة جديدة الى كودي تسمح باستخدام المواقع المكتوبة ادناه:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(plugin.video.arabicvideos)</h2>
+برنامج جديد (اضافة جديدة) الى كودي تسمح لكودي بان يتصفح جميع المواقع المكتوبة ادناه
 <br />
 New video plugin for KODI that provide Arabic video contents from the following websites:
 <br />
@@ -32,6 +32,7 @@ New video plugin for KODI that provide Arabic video contents from the following 
 الخطوة الاولى: تنزيل وتنصيب برنامج كودي في حال عدم وجوده سابقا
 <br />
 <a href="http://www.kodiarabic.net/2015/09/kodi_22.html">1. &nbsp; صفحة باللغة العربية تبين بالصور كيفية تنصيب برنامج كودي على الاندرويد في حال عدم وجوده سابقا - شكرا لموقع كودي العربي</a><br />
+<br />
 <br />
 الخطوة الثانية: تنزيل وتنصيب هذا البرنامج (الاضافة) على كودي
 <br />
