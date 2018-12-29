@@ -29,10 +29,11 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <p>&nbsp;</p>
 <h2>2. &nbsp; التنصيب والتنزيل &nbsp;&nbsp;&nbsp;&nbsp; Download & Install</h2>
 <br />
-<br />
 تنصيب البرنامج يتم بخطوتين ... الخطوة الاولى هي تنصيب برنامج كودي والخطوة الثانية هي تنصيب هذه الاضافة
 <br />
 The install consist of two steps ... first step is installing KODI and second step is installing this addon
+<br />
+<br />
 <br />
 الخطوة الاولى
 <br />
