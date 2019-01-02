@@ -114,44 +114,44 @@ def PLAY(url):
 	html = openURL(url,'','','','SHOOFMAX-PLAY-1st')
 	html_blocks = re.findall('intro_end(.*?)initialize',html,re.DOTALL)
 	block = html_blocks[0]
-	#file = open('/data/emad.html', 'w')
-	#file.write(url)
-	#file.write('\n\n\n')
-	#file.write(block)
-	#file.close()
-	#xbmcgui.Dialog().ok(origin_link, backup_origin_link )
-	origin_link = re.findall('var origin_link = "(.*?)"',block,re.DOTALL)[0]
-	backup_origin_link = re.findall('var backup_origin_link = "(.*?)"',block,re.DOTALL)[0]
 	items_url = []
 	items_name = []
 	multiples = []
-	links = re.findall('\torigin_link\+"(.*?)"',block,re.DOTALL)
-	for link in links:
-		items_url.append(origin_link+link)
-		items_name.append('mp4: main server')
-	links = re.findall('\tbackup_origin_link\+"(.*?)"',block,re.DOTALL)
-	for link in links:
-		items_url.append(backup_origin_link+link)
-		items_name.append('mp4: backup server')
-	links = re.findall('hls: origin_link\+"(.*?)"',block,re.DOTALL)
-	if links: multiples.append(origin_link+links[0])
-	links = re.findall('hls: backup_origin_link\+"(.*?)"',block,re.DOTALL)
-	if links: multiples.append(backup_origin_link+links[0])
-	for multiple in multiples:
-		if origin_link in multiple: server = 'main'
-		else: server = 'backup'
-		html = openURL(multiple,'','','','SHOOFMAX-PLAY-2nd')
-		base = multiple.replace('variant.m3u8','')
+	origin_link = re.findall('var origin_link = "(.*?)"',block,re.DOTALL)[0]
+	backup_origin_link = re.findall('var backup_origin_link = "(.*?)"',block,re.DOTALL)[0]
+	links = re.findall('mp4:.*?_link.*?\t(.*?)_link\+"(.*?)"',block,re.DOTALL)
+	links += re.findall('mp4:.*?\t(.*?)_link\+"(.*?)"',block,re.DOTALL)
+	for server,link in links:
+		filename = link.split('/')[-1]
+		filename = filename.replace('fallback','')
+		filename = filename.replace('.mp4','')
+		filename = filename.replace('-','')
+		if 'backup' in server:
+			server = 'backup'
+			url = backup_origin_link + link
+		else:
+			server = 'main'
+			url = origin_link + link
+		items_url.append(url)
+		items_name.append('mp4: '+server+' server '+filename)
+	links = re.findall('hls: (.*?)_link\+"(.*?)"',block,re.DOTALL)
+	for server,link in links:
+		if 'backup' in server:
+			server = 'backup'
+			url = backup_origin_link + link
+		else:
+			server = 'main'
+			url = origin_link + link
+		html = openURL(url,'','','','SHOOFMAX-PLAY-2nd')
 		items = re.findall('RESOLUTION=(.*?),.*?\n(.*?)m3u8',html,re.DOTALL)
 		for quality,link in items:
-			url = base + link + 'm3u8'
-			items_url.append(url)
+			url2 = url.replace('variant.m3u8','') + link + 'm3u8'
+			items_url.append(url2)
 			items_name.append('m3u8: '+server+' server '+quality)
 	selection = xbmcgui.Dialog().select('Select Video Quality:', items_name)
 	if selection == -1 : return
 	url = items_url[selection]
 	#url = mixARABIC(url)
-	#xbmcgui.Dialog().ok(url,'' )
 	PLAY_VIDEO(url,script_name)
 	return
 

@@ -7,7 +7,9 @@ website0b = 'https://vod.alarab.com/view-1/افلام-عربية'
 website0c = 'http://tv.alarab.com'
 website0d = 'http://tv1.alarab.com'
 website0e = 'http://vod.alarab.com/index.php'
+
 script_name = 'ALARAB'
+headers = { 'User-Agent' : '' }
 
 def MAIN(mode,url):
 	if mode==10: MENU()
@@ -15,14 +17,15 @@ def MAIN(mode,url):
 	elif mode==12: PLAY(url)
 	elif mode==13: SEARCH()
 	elif mode==14: LATEST()
+	#elif mode==15: ITEMS('https://vod.alarab.com/ramadan2016/مصرية')
 	#elif mode==15: RAMADAN('?year=2018')
 	return
 
 def MENU():
 	addDir('بحث في الموقع','',13)
 	addDir('مسلسلات جديدة','',14)
-	#addDir('مسلسلات رمضان','',15)
-	html = openURL(website0b,'','','','ALARAB-MENU-1st')
+	addDir('مسلسلات رمضان','',15)
+	html = openURL(website0b,'',headers,'','ALARAB-MENU-1st')
 	html_blocks=re.findall('footer_sec(.*?)social-network',html,re.DOTALL)
 	block=html_blocks[0]
 	#xbmcgui.Dialog().ok(str(len(html)), str(len(block)) )
@@ -33,7 +36,8 @@ def MENU():
 	return
 
 def LATEST():
-	html = openURL(website0b,'','','','ALARAB-LATEST-1st')
+	html = openURL(website0b,'',headers,'','ALARAB-LATEST-1st')
+	#xbmcgui.Dialog().ok('',html)
 	html_blocks=re.findall('right_content.*?heading-top(.*?)heading-top',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
@@ -44,8 +48,8 @@ def LATEST():
 	return
 
 def ITEMS(url):
-	#xbmcgui.Dialog().ok(url,'')
-	html = openURL(url,'','','','ALARAB-ITEMS-1st')
+	html = openURL(url,'',headers,'','ALARAB-ITEMS-1st')
+	#xbmcgui.Dialog().ok('',html)
 	html_blocks = re.findall('heading-list(.*?)right_content',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('video-box.*?href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
@@ -65,8 +69,9 @@ def ITEMS(url):
 def PLAY(url):
 	id = re.findall('com/v(.*?)-',url,re.DOTALL)[0]
 	url2 = 'https://alarabplayers.alarab.com/?vid='+id
-	html = openURL(url,'','','','ALARAB-PLAY-1st')
-	html += openURL(url2,'','','','ALARAB-PLAY-2nd')
+	html = openURL(url,'',headers,'','ALARAB-PLAY-1st')
+	html += openURL(url2,'',headers,'','ALARAB-PLAY-2nd')
+	#xbmcgui.Dialog().ok('',html)
 	#xbmcgui.Dialog().ok(url,'')
 	html_blocks = re.findall('playerInstance.setup(.*?)primary',html,re.DOTALL)
 	block = html_blocks[0]
@@ -87,7 +92,7 @@ def PLAY(url):
 		items_url.append(url)
 		items_name.append('From youtube')
 	url = website0a + '/download.php?file='+id
-	html = openURL(url,'','','','ALARAB-PLAY-3rd')
+	html = openURL(url,'',headers,'','ALARAB-PLAY-3rd')
 	items = re.findall('</h2>.*?href="(.*?)mp4"',html,re.DOTALL)
 	if items:
 		url = items[0] + 'mp4'
@@ -126,7 +131,7 @@ def SEARCH():
 def RAMADAN(url):
 	year = url.split('?year=')[1]
 	#xbmcgui.Dialog().ok(url,year)
-	html = openURL(website0b,'','','','ALARAB-RAMADAN-1st')
+	html = openURL(website0b,'',headers,'','ALARAB-RAMADAN-1st')
 	html_blocks=re.findall('</a> </div></div>(.*?)ramadanseriesTOP',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
@@ -142,3 +147,4 @@ def RAMADAN_YEARS_MENU():
 		addDir(str(year),url,16)
 	xbmcplugin.endOfDirectory(addon_handle)
 """
+
