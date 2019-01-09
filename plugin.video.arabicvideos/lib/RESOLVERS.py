@@ -340,8 +340,10 @@ def INTOUPLOAD(url):
 	return [ items[0].rstrip('/') ]
 
 def ESTREAM(url):
+	#url = url.replace('embed-','')
 	html = openURL(url,'','','','RESOLVERS-ESTREAM-1st')
 	items = re.findall('video preload.*?src=.*?src="(.*?)"',html,re.DOTALL)
+	#xbmcgui.Dialog().ok(items[0],items[0])
 	return [ items[0].rstrip('/') ]
 
 def VEVIO(url):

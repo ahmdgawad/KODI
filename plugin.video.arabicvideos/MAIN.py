@@ -2,7 +2,8 @@
 from lib.LIBRARY import *
 
 def MAIN():
-	#addLink('Testing','',9)
+	#addLink('Testing - watched enabled','',9,'','','yes')
+	#addLink('Testing - watched disabled','',9,'','','no')
 	addDir('ـMessage to developer    رسالة الى المبرمج'+'   .18','',2)
 	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'   .17','',3)
 	addDir('ـProblems & Solutions    مشاكل وحلول'+'   .16','',1000)

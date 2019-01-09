@@ -26,12 +26,13 @@ def ITEMS():
 		itemsSorted = sorted(itemsSorted, reverse=False, key=lambda key: key[1].lower())
 		for id,title,img in itemsSorted:
 			#xbmcgui.Dialog().ok(id,id)
-			quality = id[0:2]
+			source = id[0:2]
 			id = id[2:99]
-			title = title + ' ' + quality
+			#if source=='NT': source = 'NileTC'
+			title = title + ' ' + source
 			title = title.replace('Al ','Al')
 			title = title.replace('El ','El')
-			addLink(title,quality+id,101,img,'','yes')
+			addLink(title,source+id,101,img,'','no')
 	elif html=='Not Allowed':
 		addLink('للأسف لا توجد قنوات تلفزونية لك','',9999)
 		addLink('هذه الخدمة مخصصة للاقرباء والاصدقاء فقط','',9999)
@@ -42,24 +43,42 @@ def ITEMS():
 	return
 
 def PLAY(id):
-	quality = id[0:2]
+	source = id[0:2]
 	id = id[2:99]
-	#xbmcgui.Dialog().ok(quality,id)
-	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
-	payload = { 'id' : id , 'user' : dummyClientID(32) , 'function' : 'play' }
 	from requests import request as requests_request
-	response = requests_request('POST', website0a, data=payload, headers=headers)
-	html = response.text
-	#xbmcgui.Dialog().ok(html,html)
-	if quality=='HD': link='3'
-	elif quality=='SD': link='2'
-	else: link = '1'
-	items = re.findall('"link'+link+'":"(.*?)"',html,re.DOTALL)
-	url = items[0]
-	url = url.replace('\/','/')
-	#url = url.replace('#','')
-	#xbmcgui.Dialog().ok(url,id)
-	PLAY_VIDEO(url,script_name,'yes')
+	if source=='HD' or source=='SD':
+		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
+		payload = { 'id' : id , 'user' : dummyClientID(32) , 'function' : 'play1' }
+		response = requests_request('POST', website0a, data=payload, headers=headers)
+		html = response.text
+		#xbmcgui.Dialog().ok(html,html)
+		if source=='HD': link='3'
+		else: link='2'
+		items = re.findall('"link'+link+'":"(.*?)"',html,re.DOTALL)
+		url = items[0]
+		url = url.replace('\/','/')
+		#url = url.replace('#','')
+	elif source=='NT':
+		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
+		payload = { 'id' : id , 'user' : dummyClientID(32) , 'function' : 'play2' }
+		response = requests_request('POST', website0a, data=payload, headers=headers, allow_redirects=False)
+		url = response.headers['Location']
+		url = url.replace('%20',' ')
+		url = url.replace('%3D','=')
+		if 'Learn' in id:
+			url = url.replace('NTNNile','')
+			url = url.replace('learning1','Learning')
+	elif source=='PL':
+		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
+		payload = { 'id' : id , 'user' : dummyClientID(32) , 'function' : 'play3' }
+		response = requests_request('POST', website0a, data=payload, headers=headers)
+		response = requests_request('POST', response.headers['Location'], headers={'Referer':response.headers['Referer']})
+		html = response.text
+		#xbmcgui.Dialog().ok('',html)
+		items = re.findall('source src="(.*?)"',html,re.DOTALL)
+		url = items[0]
+	#xbmcgui.Dialog().ok(url,'')
+	PLAY_VIDEO(url,script_name,'no')
 	return
 
 

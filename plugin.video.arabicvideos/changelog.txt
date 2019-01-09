@@ -118,3 +118,7 @@ Changed "Analytics" Number
 v3.7.0	2018-12-25
 Added HD & SD Tv channels
 
+
+v3.8.0	2019-01-08
+Added NT & PL Tv channels
+

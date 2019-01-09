@@ -103,7 +103,18 @@ def MAIN(mode,text=''):
 		urllist = [
 			''
 			]
+
+		#play_item = xbmcgui.ListItem(path=url, thumbnailImage='')
+		#play_item.setInfo(type="Video", infoLabels={"Title":''})
+		# Pass the item to the Kodi player.
+		#xbmcplugin.setResolvedUrl(addon_handle, True, listitem=play_item)
+		# directly play the item.
+		#xbmc.Player().play(url, play_item) 
+
 		#import RESOLVERS
 		#url = RESOLVERS.PLAY(urllist,script_name,'no')
+
+
+
 		#PLAY_VIDEO(url,script_name,'yes')
 	return
