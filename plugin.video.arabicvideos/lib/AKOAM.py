@@ -101,8 +101,8 @@ def EPISODES(url):
 		if ' - ' in filename: filename = filename.split(' - ')[0]
 		else: filename = 'dummy.zip'
 		if '.' in filename: filetype = filename.split('.')[-1]
-		if any(value in filetype for value in notvideosLIST):
-			if 'رابط التشغيل' not in title: title = title + ':'
+		#if any(value in filetype for value in notvideosLIST):
+		#	if 'رابط التشغيل' not in title: title = title + ':'
 		title = title.replace('\n','').strip(' ')
 		titleLIST.append(title)
 		episodeLIST.append(count)
@@ -154,6 +154,7 @@ def PLAY(link):
 	linkLIST = set(linkLIST)
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
+	#xbmcgui.Dialog().ok(url,'4444')
 	return
 
 def SEARCH():

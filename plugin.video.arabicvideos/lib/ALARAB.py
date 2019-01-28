@@ -24,7 +24,7 @@ def MAIN(mode,url):
 def MENU():
 	addDir('بحث في الموقع','',13)
 	addDir('مسلسلات جديدة','',14)
-	addDir('مسلسلات رمضان','',15)
+	#addDir('مسلسلات رمضان','',15)
 	html = openURL(website0b,'',headers,'','ALARAB-MENU-1st')
 	html_blocks=re.findall('footer_sec(.*?)social-network',html,re.DOTALL)
 	block=html_blocks[0]
@@ -90,7 +90,7 @@ def PLAY(url):
 		url = 'plugin://plugin.video.youtube/play/?video_id='+youtubeID
 		count += 1
 		items_url.append(url)
-		items_name.append('From youtube')
+		items_name.append('ملف اليوتيوب')
 	url = website0a + '/download.php?file='+id
 	html = openURL(url,'',headers,'','ALARAB-PLAY-3rd')
 	items = re.findall('</h2>.*?href="(.*?)mp4"',html,re.DOTALL)
@@ -98,7 +98,7 @@ def PLAY(url):
 		url = items[0] + 'mp4'
 		count += 1
 		items_url.append(url)
-		items_name.append('From download')
+		items_name.append('ملف التنزيل')
 	if count == 0:
 		xbmcgui.Dialog().ok('No video file found','لا يوجد ملف فيديو')
 		return
@@ -112,7 +112,7 @@ def PLAY(url):
 			if items_url[i] not in new_items_url:
 				new_items_url.append(items_url[i])
 				new_items_name.append(items_name[i])
-		selection = xbmcgui.Dialog().select('Select Video Link:', new_items_name)
+		selection = xbmcgui.Dialog().select('اختر الملف المناسب:', new_items_name)
 		if selection == -1 : return
 		url = new_items_url[selection]
 	PLAY_VIDEO(url,script_name)

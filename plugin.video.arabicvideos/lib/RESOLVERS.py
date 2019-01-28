@@ -15,7 +15,7 @@ def CHECK(url):
 	elif 'cloudy.ec'	in url: result = 'known'
 	elif 'dailymotion'	in url: result = 'known'
 	elif 'downace'		in url: result = 'known'
-	elif 'estream'		in url: result = 'known'
+	#elif 'estream'		in url: result = 'known'
 	elif 'filerio'		in url: result = 'known'
 	elif 'firedrive'	in url: result = 'known'
 	elif 'flashx'		in url: result = 'known'
@@ -59,12 +59,12 @@ def RESOLVABLE(url):
 	result2 = ''
 	if   any(value in url2 for value in doNOTresolveMElist): return ''
 	elif 'go.akoam.net'	in url2 and '?' not in url2: result1 = 'akoam'
-	elif 'go.akoam.net'	in url2 and '?estream' in url2: result1 = 'estream'
+	#elif 'go.akoam.net'	in url2 and '?estream' in url2: result1 = 'estream'
 	elif 'go.akoam.net'	in url2 and '?' in url2: result2 = url2.split('?')[1]
 	elif 'arabloads'	in url2: result1 = 'arabloads'
 	elif 'archive'		in url2: result1 = 'archive'
 	elif 'catch.is'	 	in url2: result1 = 'catch'
-	elif 'estream'	 	in url2: result1 = 'estream'
+	#elif 'estream'	 	in url2: result1 = 'estream'
 	elif 'filerio'		in url2: result1 = 'filerio'
 	elif 'go2ooo'		in url2: result1 = 'go2ooo'
 	elif 'go2to'		in url2: result1 = 'go2to'
@@ -113,7 +113,7 @@ def RESOLVE(url):
 	elif 'arabloads'	in url2: videoURL = ARABLOADS(url)
 	elif 'archive'		in url2: videoURL = ARCHIVE(url)
 	elif 'catch.is'	 	in url2: videoURL = CATCHIS(url)
-	elif 'estream'	 	in url2: videoURL = ESTREAM(url)
+	#elif 'estream'	 	in url2: videoURL = ESTREAM(url)
 	elif 'filerio'		in url2: videoURL = FILERIO(url)
 	elif 'go2ooo'		in url2: videoURL = GO2OOO(url)
 	elif 'go2to'		in url2: videoURL = GO2TO(url)
@@ -149,6 +149,7 @@ def RESOLVE(url):
 		resolvable = urlresolver_HostedMediaFile(url).valid_url()
 		if resolvable:
 			videoURL = URLRESOLVER(url)
+			xbmcgui.Dialog().ok(str(videoURL),'')
 	return videoURL
 
 def SERVERS(linkLIST,script_name=''):
@@ -187,7 +188,7 @@ def PLAY(linkLIST,script_name,play='yes'):
 	if selection == -1 : return ''
 	url = urlLIST[selection]
 	videoURL = RESOLVE(url)
-	if videoURL==[]:
+	if videoURL==[] or videoURL==['Error']:
 		from PROBLEMS import MAIN as PROBLEMS_MAIN
 		PROBLEMS_MAIN(1006)
 		return ''
@@ -197,9 +198,11 @@ def PLAY(linkLIST,script_name,play='yes'):
 		return videoURL
 
 def	URLRESOLVER(url):
-	link = 'Error'
 	try: link = urlresolver_HostedMediaFile(url).resolve()
-	except: xbmcgui.Dialog().notification('خطأ خارجي','مشكلة في الرابط الاصلي')
+	except: link = False
+	if link==False:
+		xbmcgui.Dialog().notification('خطأ خارجي','مشكلة في الرابط الاصلي')
+		return ['Error']
 	return [ link.rstrip('/') ]
 
 def AKOAMNET(link):
