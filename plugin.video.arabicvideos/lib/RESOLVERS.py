@@ -149,7 +149,7 @@ def RESOLVE(url):
 		resolvable = urlresolver_HostedMediaFile(url).valid_url()
 		if resolvable:
 			videoURL = URLRESOLVER(url)
-			xbmcgui.Dialog().ok(str(videoURL),'')
+			#xbmcgui.Dialog().ok(str(videoURL),'')
 	return videoURL
 
 def SERVERS(linkLIST,script_name=''):
