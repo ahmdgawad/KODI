@@ -189,8 +189,8 @@ def PLAY(linkLIST,script_name,play='yes'):
 	url = urlLIST[selection]
 	videoURL = RESOLVE(url)
 	if videoURL==[] or videoURL==['Error']:
-		from PROBLEMS import MAIN as PROBLEMS_MAIN
-		PROBLEMS_MAIN(1006)
+		#from PROBLEMS import MAIN as PROBLEMS_MAIN
+		#PROBLEMS_MAIN(1006)
 		return ''
 	else:
 		videoURL = videoURL[0]

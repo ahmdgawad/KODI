@@ -2,7 +2,10 @@
 from LIBRARY import *
 
 website0a = 'http://www.almaareftv.com/old'
+website0b = 'http://www.almaareftv.com'
 script_name = 'ALMAAREF'
+headers = { 'User-Agent' : '' }
+
 
 def MAIN(mode,url,category):
 	if mode==40: MENU()
@@ -137,7 +140,7 @@ def SEARCH():
 	search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','%20')
-	url = website0a + '/?s=' + new_search
+	url = website0b + '/?s=' + new_search
 	TITLES(url,3)
 	return
 
@@ -153,9 +156,9 @@ def PROGRAMS():
 	return
 
 def LIVE():
-	html = openURL(website0a+'/البث-3','','','','ALMAAREF-PROGRAMS-1st')
+	html = openURL('http://live.almaaref.tv','',headers,'','ALMAAREF-PROGRAMS-1st')
 	items = re.findall('sourceURL":"(.*?)"',html,re.DOTALL)
+	#xbmcgui.Dialog().ok('',str(html))
 	url = unquote(items[0])
-	#xbmcgui.Dialog().ok(url, url)
 	PLAY_VIDEO(url,script_name,'no')
 	return
