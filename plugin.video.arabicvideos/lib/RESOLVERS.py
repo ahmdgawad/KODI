@@ -164,8 +164,11 @@ def SERVERS(linkLIST,script_name=''):
 		link = link.rstrip('/')
 		server = RESOLVABLE(link)
 		if server=='':
-			if 'akoam' in link and '?' in link: serverNAME = 'سيرفر مجهول ' + link.split('?')[1]
-			else: serverNAME = 'سيرفر مجهول ' + link.split('//')[1].split('/')[0]
+			#xbmcgui.Dialog().ok(link,'')
+			if 'akoam' in link and '?' in link:
+				serverNAME = 'سيرفر مجهول ' + link.split('?')[1]
+			else:
+				serverNAME = 'سيرفر مجهول ' + link.split('//')[1].split('/')[0]
 			#if CHECK(link)=='unknown': unknownLIST.append(link)
 		else:
 			serverNAME = server
@@ -186,16 +189,20 @@ def PLAY(linkLIST,script_name,play='yes'):
 	serversLIST,urlLIST = SERVERS(linkLIST,script_name)
 	selection = xbmcgui.Dialog().select('اختر السيرفر المناسب:', serversLIST)
 	if selection == -1 : return ''
-	url = urlLIST[selection]
-	videoURL = RESOLVE(url)
-	if videoURL==[] or videoURL==['Error']:
-		#from PROBLEMS import MAIN as PROBLEMS_MAIN
-		#PROBLEMS_MAIN(1006)
-		return ''
+	if 'مجهول' in serversLIST[selection]:
+		from PROBLEMS import MAIN as PROBLEMS_MAIN
+		PROBLEMS_MAIN(1006)
+		videoURL = ''
 	else:
-		videoURL = videoURL[0]
-		if play=='yes': PLAY_VIDEO(videoURL,script_name,'yes')
-		return videoURL
+		url = urlLIST[selection]
+		videoURL = RESOLVE(url)
+		if videoURL==[]:
+			videoURL = ''
+		else:
+			videoURL = videoURL[0]
+			if play=='yes': PLAY_VIDEO(videoURL,script_name,'yes')
+	return videoURL
+
 
 def	URLRESOLVER(url):
 	try: link = urlresolver_HostedMediaFile(url).resolve()
@@ -433,7 +440,9 @@ def VIDBOB(url):
 	#url = url.replace('http:','https:')
 	html = openURL(url,'',headers,'','RESOLVERS-VIDBOB-1st')
 	items = re.findall('file:"(.*?)"',html,re.DOTALL)
-	return [ items[0].rstrip('/') ]
+	#xbmcgui.Dialog().ok(items[0].rstrip('/'),'')
+	url = items[0].replace('https:','http:')
+	return [ url.rstrip('/') ]
 
 def UPTOSTREAM(url):
 	headers = { 'User-Agent' : '' }

@@ -73,18 +73,26 @@ def PLAY(url):
 	items = re.findall('ajax-file-id.*?value="(.*?)"',block,re.DOTALL)
 	id = items[0]
 	#xbmcgui.Dialog().ok('',id)
+	items = re.findall('data-server-src="(.*?)"',block,re.DOTALL)
+	for link in items:
+		link = unquote(link)
+		linkLIST.append(link)
+	"""
 	items = re.findall('data-server="(.*?)"',block,re.DOTALL)
 	for link in items:
 		url = website0a + '/ajax.php?id='+id+'&ajax=true&server='+link
 		#link = openURL(url,'',headers,'','4HELAL-PLAY-2nd')
 		#linkLIST.append(link)
 		urlLIST.append(url)
+		html = openURL(url,'',headers,'','4HELAL-PLAY-2nd')
+		xbmcgui.Dialog().ok(url,html)
 	count = len(urlLIST)
 	import concurrent.futures
 	with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
 		responcesDICT = dict( (executor.submit(openURL, urlLIST[i], '', headers,'','4HELAL-PLAY-2nd'), i) for i in range(0,count) )
 	for response in concurrent.futures.as_completed(responcesDICT):
 		linkLIST.append( response.result() )
+	"""
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	return
