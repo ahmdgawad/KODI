@@ -259,6 +259,7 @@ def AKOAMNET(link):
 def RAPIDVIDEO(url):
 	headers = { 'User-Agent' : '' }
 	html = openURL(url,'',headers,'','RESOLVERS-RAPIDVIDEO-1st')
+	#xbmcgui.Dialog().ok(url,html)
 	items = re.findall('poster=.*?src="(.*?)"',html,re.DOTALL)
 	return [ items[0].rstrip('/') ]
 

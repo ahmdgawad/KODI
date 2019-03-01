@@ -85,7 +85,7 @@ def PLAY(url):
 		#linkLIST.append(link)
 		urlLIST.append(url)
 		html = openURL(url,'',headers,'','4HELAL-PLAY-2nd')
-		xbmcgui.Dialog().ok(url,html)
+		#xbmcgui.Dialog().ok(url,html)
 	count = len(urlLIST)
 	import concurrent.futures
 	with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:

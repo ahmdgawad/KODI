@@ -18,6 +18,7 @@ def MAIN_MENU():
 	addDir('اضغط هنا لاضافة اسم دخول وكلمة السر','',125)
 	addDir('بحث في الموقع','',124)
 	html = openURL(website0a,'',headers,'','EGYBEST-MAIN_MENU-1st')
+	#xbmcgui.Dialog().ok(website0a, html)
 	html_blocks=re.findall('id="menu"(.*?)mainLoad',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('a><a href="(.*?)".*?></i>(.*?)<',block,re.DOTALL)
@@ -130,14 +131,15 @@ def PLAY(url):
 			datacallLIST.append (datacall)
 	watchitem = re.findall('x-mpegURL" src="/api/\?call=(.*?)"',html,re.DOTALL)
 	url = website0a + '/api?call=' + watchitem[0]
-	EGUserDef = GET_USER_TOKEN()
-	if EGUserDef=='':
+	EGUDI, EGUSID, EGUSS = GET_PLAY_TOKENS()
+	if EGUDI=='':
 		GET_USERNAME_PASSWORD()
 		return
-	headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUserDef='+EGUserDef }
+	headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
 	from requests import request as requests_request
 	response = requests_request('GET', url, headers=headers, allow_redirects=False)
 	html = response.text
+	#xbmcgui.Dialog().ok(url,html)
 	items = re.findall('#EXT-X-STREAM.*?RESOLUTION=(.*?),.*?\n(.*?)\n',html,re.DOTALL)
 	if len(items)>0:
 		for qualtiy,url in reversed(items):
@@ -149,9 +151,10 @@ def PLAY(url):
 	if 'http' not in url:
 		datacall = datacallLIST[selection]
 		url = website0a + '/api?call=' + datacall
-		headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUserDef='+EGUserDef }
+		headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
 		response = requests_request('GET', url, headers=headers, allow_redirects=False)
 		html = response.text
+		#xbmcgui.Dialog().ok(url,html)
 		items = re.findall('"url":"(.*?)"',html,re.DOTALL)
 		url = items[0]
 	url = url.replace('\/','/')
@@ -171,63 +174,86 @@ def SEARCH():
 def GET_USERNAME_PASSWORD():
 	text = 'هذا الموقع يحتاج اسم دخول وكلمة السر لكي تستطيع تشغيل ملفات الفيديو. للحصول عليهم قم بفتح حساب مجاني من الموقع الاصلي'
 	xbmcgui.Dialog().ok('الموقع الاصلي  http://egy.best',text)
-	xbmc.executebuiltin('Addon.OpenSettings(%s)' %addon_id)
+	import xbmcaddon
+	settings = xbmcaddon.Addon(id=addon_id)
+	oldusername = settings.getSetting('egybest.user')
+	oldpassword = settings.getSetting('egybest.pass')
+	xbmc.executebuiltin('Addon.OpenSettings(%s)' %addon_id, True)
+	newusername = settings.getSetting('egybest.user')
+	newpassword = settings.getSetting('egybest.pass')
+	if oldusername!=newusername or oldpassword!=newpassword:
+		settings.setSetting('egybest.EGUDI','')
+		settings.setSetting('egybest.EGUSID','')
+		settings.setSetting('egybest.EGUSS','')
 	return
 
-def GET_USER_TOKEN():
+def GET_PLAY_TOKENS():
+
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
+
 	username = settings.getSetting('egybest.user')
 	password = settings.getSetting('egybest.pass')
-	if username=='' or password=='': return ''
+	if username=='' or password=='':
+		settings.setSetting('egybest.EGUDI','')
+		settings.setSetting('egybest.EGUSID','')
+		settings.setSetting('egybest.EGUSS','')
+		return ['','','']
+
+	EGUDI = settings.getSetting('egybest.EGUDI')
+	EGUSID = settings.getSetting('egybest.EGUSID')
+	EGUSS = settings.getSetting('egybest.EGUSS')
+
 	import requests
 
-	#url = 'https://ssl.egexa.com/logout/'
-	#headers = { 'Cookie': 'PHPSESSID='+PHPSESSID }
-	#querystring = { 'domain':'egy.best' }
-	#response = requests.get(url, params=querystring, allow_redirects=False)
-	#response = requests.get(url, allow_redirects=False)
+	if EGUDI!='':
+		headers = { 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
+		response = requests.request('GET', website0a, headers=headers, allow_redirects=False)
+		register = re.findall('ssl.egexa.com\/register',response.text,re.DOTALL)
+		if register:
+			settings.setSetting('egybest.EGUDI','')
+			settings.setSetting('egybest.EGUSID','')
+			settings.setSetting('egybest.EGUSS','')
+		else:
+			#xbmcgui.Dialog().ok('no new login needed, you were already logged in','')
+			return [ EGUDI, EGUSID, EGUSS ]
 
-	import xbmcaddon
-	settings = xbmcaddon.Addon(id=addon_id)
-	PSESSION_ID = settings.getSetting('egybest.PSESSION_ID')
-	LOGIN_SID = settings.getSetting('egybest.LOGIN_SID')
+	import random
+	import string
+	char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
+	randomString = ''.join(random.sample(char_set*15, 15))
 
-	if PSESSION_ID!='':
-		url = 'https://login.egy.best/setlocalcookie.php'
-		querystring = { "domain":"egy.best","LOGIN_SID":LOGIN_SID,"url":"https://egy.best/?logout" }
-		headers = { 'Cookie': 'PSESSION_ID='+PSESSION_ID }
-		response = requests.get(url, headers=headers, params=querystring, allow_redirects=False)
-		cookies = response.cookies.get_dict()
-		try:
-			EGUserDef = cookies['EGUserDef']
-			#xbmcgui.Dialog().ok('You were already logged in','')
-			return EGUserDef
-		except: pass
-
-	url = 'https://ssl.egexa.com/login/'
-	querystring = { 'domain':'egy.best' }
-	response = requests.get(url, params=querystring, allow_redirects=False)
-	html = response.text
-	LOGIN_SID = re.findall('LOGIN_SID" value="(.*?)"',html,re.DOTALL)[0]
+	url = "https://ssl.egexa.com/login/"
+	payload = "------WebKitFormBoundary"+randomString+"\r\nContent-Disposition: form-data; name=\"ajax\"\r\n\r\n1\r\n------WebKitFormBoundary"+randomString+"\r\nContent-Disposition: form-data; name=\"do\"\r\n\r\nlogin\r\n------WebKitFormBoundary"+randomString+"\r\nContent-Disposition: form-data; name=\"email\"\r\n\r\n"+username+"\r\n------WebKitFormBoundary"+randomString+"\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\n"+password+"\r\n------WebKitFormBoundary"+randomString+"\r\nContent-Disposition: form-data; name=\"valForm\"\r\n\r\n\r\n------WebKitFormBoundary"+randomString+"--"
+	headers = {
+	'Content-Type': "multipart/form-data; boundary=----WebKitFormBoundary"+randomString,
+	#'Cookie': "PSSID="+PSSID+"; JS_TIMEZONE_OFFSET=18000",
+	'Referer': 'https://ssl.egexa.com/login/?domain=egy.best&url=ref'
+	}
+	response = requests.request('POST', url, data=payload, headers=headers, allow_redirects=False)
 	cookies = response.cookies.get_dict()
-	PSESSION_ID = cookies['PSESSION_ID']
+	if len(cookies)<3:
+		xbmcgui.Dialog().ok('مشكلة في تسجيل الدخول للموقع','حاول اصلاح اسم الدخول وكلمة السر لكي تتمكن من تشغيل الفيديو بصورة صحيحة')
+		return ['','','']
 
-	url = 'https://ssl.egexa.com/login/'
-	headers = { 'Content-Type': 'application/x-www-form-urlencoded' , 'Cookie': 'PSESSION_ID='+PSESSION_ID }
-	payload = 'LOGIN_SID='+LOGIN_SID+'&do=login&login=login&password='+password+'&username='+username
-	response = requests.post(url, data=payload, headers=headers, allow_redirects=False)
+	EGUDI = cookies['EGUDI']
+	EGUSID = cookies['EGUSID']
+	EGUSS = cookies['EGUSS']
+	xbmc.sleep(1000)
+	url = "https://ssl.egexa.com/finish/"
+	headers = { 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
+	response = requests.request('GET', url, headers=headers, allow_redirects=True)
 	cookies = response.cookies.get_dict()
-	try:
-		EGUserDef = cookies['EGUserDef']
-		#xbmcgui.Dialog().ok('success, you just logged in now','')
-		LOGIN_SID = settings.setSetting('egybest.LOGIN_SID',LOGIN_SID)
-		PSESSION_ID = settings.setSetting('egybest.PSESSION_ID',PSESSION_ID)
-		return EGUserDef
-	except: pass
+	#xbmcgui.Dialog().ok(str(response.text),str(cookies))
+	EGUDI = cookies['EGUDI']
+	EGUSID = cookies['EGUSID']
+	EGUSS = cookies['EGUSS']
+	settings.setSetting('egybest.EGUDI',EGUDI)
+	settings.setSetting('egybest.EGUSID',EGUSID)
+	settings.setSetting('egybest.EGUSS',EGUSS)
+	#xbmcgui.Dialog().ok('success, you just logged in now','')
+	return [ EGUDI, EGUSID, EGUSS ]
 
-	xbmcgui.Dialog().ok('خطأ في اسم الدخول او كلمة السر','يجب عليك اصلاح اسم الدخول وكلمة السر لكي تتمكن من تشغيل الفيديو بصورة صحيحة')
-	return ''
 
 
 
