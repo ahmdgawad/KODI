@@ -71,7 +71,7 @@ My own mod of the Metropolis skin focused on list view for Kodi v18 and after
 <br />
 <br />
 <br />
-<h2>3. &nbsp; skin.metropolisEMAD17</h2>
+<h2>4. &nbsp; skin.metropolisEMAD17</h2>
 My own mod of the Metropolis skin focused on list view for Kodi v17 and before
 <br />
 جلد خاص بكودي يوفر سهولة استخدام الريموت كونترول وهذا خاص بالكودي الاصدار 17 وما قبله
@@ -79,7 +79,7 @@ My own mod of the Metropolis skin focused on list view for Kodi v17 and before
 <br />
 <br />
 <br />
-<h2>4. &nbsp; skin.phenomenalEMAD17</h2>
+<h2>5. &nbsp; skin.phenomenalEMAD17</h2>
 My own mod of the Phenomenal skin focused on list view for Kodi v17 and before
 <br />
 جلد خاص بكودي يوفر سهولة استخدام الريموت كونترول وهذا خاص بالكودي الاصدار 17 وما قبله
@@ -87,13 +87,13 @@ My own mod of the Phenomenal skin focused on list view for Kodi v17 and before
 <br />
 <br />
 <br />
-<h2>5. &nbsp; resource.images.moviegenreicons.metropolisEMAD</h2>
+<h2>6. &nbsp; resource.images.moviegenreicons.metropolisEMAD</h2>
 Movie genres icons extracted from Metropolis skin to decrease the size of the skin
 <br />
 <br />
 <br />
 <br />
-<h2>6. &nbsp; resource.images.musicgenreicons.metropolisEMAD</h2>
+<h2>7. &nbsp; resource.images.musicgenreicons.metropolisEMAD</h2>
 Music genres icons extracted from Metropolis skin to decrease the size of the skin
 <br />
 <br />
