@@ -51,7 +51,7 @@
 
 
 
-<addon id="skin.metropolisEMAD" version="1.0.3" name="MetropolisEMAD" provider-name="EMAD">
+<addon id="skin.metropolisEMAD17" version="2.0.0" name="MetropolisEMAD17" provider-name="EMAD MAHDI">
 	<requires>
 		<import addon="xbmc.gui" version="5.12.0"/>
 		<import addon="script.skinshortcuts" version="1.0.6"/>
@@ -142,7 +142,7 @@
 
 
 
-<addon id="skin.phenomenalEMAD" name="PhenomenalEMAD" version="1.0.0" provider-name="EMAD">
+<addon id="skin.phenomenalEMAD17" name="PhenomenalEMAD17" version="1.0.0" provider-name="EMAD MAHDI">
 	<requires>
 		<import addon="xbmc.gui" version="5.12.0"/>
 		<import addon="script.skin.helper.service" version="1.0.0"/>

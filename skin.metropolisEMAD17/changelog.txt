@@ -1,0 +1,4 @@
+v1.0.0
+  Initial Release
+
+v2.0.0  Renamed for kodi 17 and before

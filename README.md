@@ -63,18 +63,18 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <br />
 <br />
 <br />
-<h2>3. &nbsp; skin.metropolisEMAD</h2>
+<h2>3. &nbsp; skin.metropolisEMAD17</h2>
 My own mod of the Metropolis skin focused on list view
 <br />
-جلد خاص بكودي يوفر سهولة لاستخدام الريموت كونترول
+جلد خاص بكودي يوفر سهولة استخدام الريموت كونترول وهذا خاص بالكودي الاصدار 17 وما قبله
 <br />
 <br />
 <br />
 <br />
-<h2>4. &nbsp; skin.phenomenalEMAD</h2>
+<h2>4. &nbsp; skin.phenomenalEMAD17</h2>
 My own mod of the Phenomenal skin focused on list view
 <br />
-جلد خاص بكودي يوفر سهولة لاستخدام الريموت كونترول
+جلد خاص بكودي يوفر سهولة استخدام الريموت كونترول وهذا خاص بالكودي الاصدار 17 وما قبله
 <br />
 <br />
 <br />
