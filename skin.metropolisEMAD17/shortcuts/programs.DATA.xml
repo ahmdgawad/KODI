@@ -15,6 +15,13 @@
 		<thumb>special://home/addons/script.keymap/icon.png</thumb>
 	</shortcut>
 	<shortcut>
+		<label>Git Browser</label>
+		<label2>32021</label2>
+		<icon>DefaultShortcut.png</icon>
+		<action>ActivateWindow(Programs,"plugin://plugin.git.browser",return)</action>
+		<thumb>special://home/addons/plugin.git.browser/icon.png</thumb>
+	</shortcut>
+	<shortcut>
 		<label>10001</label>
 		<label2>32021</label2>
 		<icon>DefaultAddon.png</icon>
