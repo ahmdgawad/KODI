@@ -1586,7 +1586,7 @@
 				<animation effect="slide" end="0,25" condition="[!VideoPlayer.Content(MusicVideos) + IsEmpty(VideoPlayer.Tagline) + !IntegerGreaterThan(Player.ChapterCount,1)] | [VideoPlayer.Content(MusicVideos) + IsEmpty(VideoPlayer.Artist) + IsEmpty(VideoPlayer.Album)]">Conditional</animation>
 			</control>
 			<!-- Chapter Info, Movie Tagline, or Music Video Artist/Album -->
-			<control type="fadelabel">
+			<AAAcontrol type="fadelabel">
 				<posx>300</posx>
 				<posy>587</posy>
 				<width>700</width>
@@ -1600,7 +1600,7 @@
 				<pauseatend>3800</pauseatend>
 				<scrollspeed>40</scrollspeed>
 				<label>$VAR[VideoPlayerTitle2]</label>
-			</control>
+			</AAAcontrol>
 			<control type="group">
 				<visible>!SubString(Player.FolderPath,http,Left)</visible>
 				<!-- TV Show Poster / Logo / Clearart -->
@@ -1754,7 +1754,7 @@
 				<textcolor>TextNF</textcolor>
 			</control>
 			<!-- Chapter -->
-			<control type="label">
+			<AAAcontrol type="label">
 				<posx>130</posx>
 				<posy>5</posy>
 				<width>700</width>
@@ -1765,7 +1765,7 @@
 				<aligny>center</aligny>
 				<label>$INFO[Player.Chapter,$LOCALIZE[21396]: ]$INFO[Player.ChapterCount, / ]</label>
 				<visible>IntegerGreaterThan(Player.ChapterCount,1) + !VideoPlayer.Content(LiveTV)</visible>
-			</control>
+			</AAAcontrol>
 			<!-- Finish Time -->
 			<control type="label">
 				<posx>1022</posx>

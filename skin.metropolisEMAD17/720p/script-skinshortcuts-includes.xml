@@ -835,7 +835,7 @@
 			<property name="id">$NUMBER[1]</property>
 			<property name="mainmenuid">4</property>
 			<label>Backup</label>
-			<label2>$ADDON[script.skinshortcuts 32021]</label2>
+			<label2>Programs</label2>
 			<icon>DefaultAddon.png</icon>
 			<thumb>special://home/addons/script.xbmcbackup/icon.png</thumb>
 			<property name="labelID">script.xbmcbackup</property>
@@ -851,7 +851,7 @@
 			<property name="id">$NUMBER[2]</property>
 			<property name="mainmenuid">4</property>
 			<label>Keymap Editor</label>
-			<label2>$ADDON[script.skinshortcuts 32021]</label2>
+			<label2>Programs</label2>
 			<icon>DefaultAddon.png</icon>
 			<thumb>special://home/addons/script.keymap/icon.png</thumb>
 			<property name="labelID">script.keymap</property>
@@ -867,7 +867,7 @@
 			<property name="id">$NUMBER[3]</property>
 			<property name="mainmenuid">4</property>
 			<label>$LOCALIZE[10001]</label>
-			<label2>$ADDON[script.skinshortcuts 32021]</label2>
+			<label2>Programs</label2>
 			<icon>DefaultAddon.png</icon>
 			<thumb />
 			<property name="labelID">programs</property>
@@ -875,6 +875,22 @@
 			<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 			<property name="path">ActivateWindow(Programs,Addons,return)</property>
 			<property name="list">Addons</property>
+			<visible>[String.IsEqual(System.ProfileName,Master user)] + String.IsEqual(Container(9000).ListItem.Property(submenuVisibility),programs)</visible>
+			<property name="group">programs</property>
+			<property name="isSubmenu">True</property>
+		</item>
+		<item id="4">
+			<property name="id">$NUMBER[4]</property>
+			<property name="mainmenuid">4</property>
+			<label>Git Browser</label>
+			<label2>Custom item</label2>
+			<icon>DefaultShortcut.png</icon>
+			<thumb />
+			<property name="labelID">plugin.git.browser</property>
+			<property name="defaultID" />
+			<onclick>ActivateWindow(Programs,"plugin://plugin.git.browser",return)</onclick>
+			<property name="path">ActivateWindow(Programs,"plugin://plugin.git.browser",return)</property>
+			<property name="list">plugin://plugin.git.browser</property>
 			<visible>[String.IsEqual(System.ProfileName,Master user)] + String.IsEqual(Container(9000).ListItem.Property(submenuVisibility),programs)</visible>
 			<property name="group">programs</property>
 			<property name="isSubmenu">True</property>
@@ -2990,7 +3006,7 @@
 			<property name="id">$NUMBER[1]</property>
 			<property name="mainmenuid">4</property>
 			<label>Backup</label>
-			<label2>$ADDON[script.skinshortcuts 32021]</label2>
+			<label2>Programs</label2>
 			<icon>DefaultAddon.png</icon>
 			<thumb>special://home/addons/script.xbmcbackup/icon.png</thumb>
 			<property name="labelID">script.xbmcbackup</property>
@@ -3006,7 +3022,7 @@
 			<property name="id">$NUMBER[2]</property>
 			<property name="mainmenuid">4</property>
 			<label>Keymap Editor</label>
-			<label2>$ADDON[script.skinshortcuts 32021]</label2>
+			<label2>Programs</label2>
 			<icon>DefaultAddon.png</icon>
 			<thumb>special://home/addons/script.keymap/icon.png</thumb>
 			<property name="labelID">script.keymap</property>
@@ -3022,7 +3038,7 @@
 			<property name="id">$NUMBER[3]</property>
 			<property name="mainmenuid">4</property>
 			<label>$LOCALIZE[10001]</label>
-			<label2>$ADDON[script.skinshortcuts 32021]</label2>
+			<label2>Programs</label2>
 			<icon>DefaultAddon.png</icon>
 			<thumb />
 			<property name="labelID">programs</property>
@@ -3030,6 +3046,22 @@
 			<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 			<property name="path">ActivateWindow(Programs,Addons,return)</property>
 			<property name="list">Addons</property>
+			<visible>String.IsEqual(System.ProfileName,Master user)</visible>
+			<property name="group">programs</property>
+			<property name="isSubmenu">True</property>
+		</item>
+		<item id="4">
+			<property name="id">$NUMBER[4]</property>
+			<property name="mainmenuid">4</property>
+			<label>Git Browser</label>
+			<label2>Custom item</label2>
+			<icon>DefaultShortcut.png</icon>
+			<thumb />
+			<property name="labelID">plugin.git.browser</property>
+			<property name="defaultID" />
+			<onclick>ActivateWindow(Programs,"plugin://plugin.git.browser",return)</onclick>
+			<property name="path">ActivateWindow(Programs,"plugin://plugin.git.browser",return)</property>
+			<property name="list">plugin://plugin.git.browser</property>
 			<visible>String.IsEqual(System.ProfileName,Master user)</visible>
 			<property name="group">programs</property>
 			<property name="isSubmenu">True</property>
@@ -3040,7 +3072,7 @@
 			<property name="id">$NUMBER[1]</property>
 			<property name="mainmenuid">4</property>
 			<label>Backup</label>
-			<label2>$ADDON[script.skinshortcuts 32021]</label2>
+			<label2>Programs</label2>
 			<icon>DefaultAddon.png</icon>
 			<thumb>special://home/addons/script.xbmcbackup/icon.png</thumb>
 			<property name="labelID">script.xbmcbackup</property>
@@ -3056,7 +3088,7 @@
 			<property name="id">$NUMBER[2]</property>
 			<property name="mainmenuid">4</property>
 			<label>Keymap Editor</label>
-			<label2>$ADDON[script.skinshortcuts 32021]</label2>
+			<label2>Programs</label2>
 			<icon>DefaultAddon.png</icon>
 			<thumb>special://home/addons/script.keymap/icon.png</thumb>
 			<property name="labelID">script.keymap</property>
@@ -3072,7 +3104,7 @@
 			<property name="id">$NUMBER[3]</property>
 			<property name="mainmenuid">4</property>
 			<label>$LOCALIZE[10001]</label>
-			<label2>$ADDON[script.skinshortcuts 32021]</label2>
+			<label2>Programs</label2>
 			<icon>DefaultAddon.png</icon>
 			<thumb />
 			<property name="labelID">programs</property>
@@ -3080,6 +3112,22 @@
 			<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 			<property name="path">ActivateWindow(Programs,Addons,return)</property>
 			<property name="list">Addons</property>
+			<visible>[String.IsEqual(System.ProfileName,Master user)] + String.IsEqual(Window(10000).Property(submenuVisibility),programs)</visible>
+			<property name="group">programs</property>
+			<property name="isSubmenu">True</property>
+		</item>
+		<item id="4">
+			<property name="id">$NUMBER[4]</property>
+			<property name="mainmenuid">4</property>
+			<label>Git Browser</label>
+			<label2>Custom item</label2>
+			<icon>DefaultShortcut.png</icon>
+			<thumb />
+			<property name="labelID">plugin.git.browser</property>
+			<property name="defaultID" />
+			<onclick>ActivateWindow(Programs,"plugin://plugin.git.browser",return)</onclick>
+			<property name="path">ActivateWindow(Programs,"plugin://plugin.git.browser",return)</property>
+			<property name="list">plugin://plugin.git.browser</property>
 			<visible>[String.IsEqual(System.ProfileName,Master user)] + String.IsEqual(Window(10000).Property(submenuVisibility),programs)</visible>
 			<property name="group">programs</property>
 			<property name="isSubmenu">True</property>
