@@ -12,7 +12,7 @@
 				<posx>360</posx>
 				<posy>140</posy>
 				<height>350</height>
-				<width>850</width>
+				<width>900</width>
 				<onup>55</onup>
 				<ondown>55</ondown>
 				<include condition="!Skin.HasSetting(ViewLockdown)">OnLeft7000</include>
@@ -31,7 +31,7 @@
 					<control type="image">
 						<posx>35</posx>
 						<posy>33</posy>
-						<width>815</width>
+						<width>840</width>
 						<height>2</height>
 						<aligny>center</aligny>
 						<texture>VideoInfoLine.png</texture>
@@ -85,7 +85,7 @@
 						<height>24</height>
 						<texture>$INFO[ListItem.Overlay]</texture>
 						<colordiffuse>WatchedOverlay</colordiffuse>
-						<visible>stringcompare(ListItem.Overlay,OverlayWatched.png) + Window.IsActive(videos) + [[[Container.Content(movies) | Container.Content(sets)] + !Skin.HasSetting(HideMovieWatchedOverlays)] | [![Container.Content(movies) | Container.Content(sets)] + !Skin.HasSetting(HideTVWatchedOverlays)]]</visible>
+						<AAAvisible>stringcompare(ListItem.Overlay,OverlayWatched.png) + Window.IsActive(videos) + [[[Container.Content(movies) | Container.Content(sets)] + !Skin.HasSetting(HideMovieWatchedOverlays)] | [![Container.Content(movies) | Container.Content(sets)] + !Skin.HasSetting(HideTVWatchedOverlays)]]</AAAvisible>
 					</control>
 					<!-- Watched Overlay for In-Progress Items in Video Library -->
 					<control type="image">
@@ -104,7 +104,7 @@
 						<aligny>center</aligny>
 						<width>105</width>
 						<height>35</height>
-						<label>$INFO[ListItem.Duration] min</label>
+						<label>$INFO[ListItem.Duration]</label>
 						<textcolor>WatchedOverlay</textcolor>
 						<AAAvisible>Window.IsActive(videos) + ![Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes) | Container.Content(movies)] + !IsEmpty(ListItem.Duration)</AAAvisible>
 						<visible>Window.IsActive(videos) + !IsEmpty(ListItem.Duration)</visible>
@@ -151,7 +151,7 @@
 					<control type="label">
 						<posx>630</posx>
 						<posy>-2</posy>
-						<width>220</width>
+						<width>240</width>
 						<height>35</height>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -221,7 +221,7 @@
 						<visible>[Container.Content(seasons) + !IsEmpty(ListItem.Property(NumEpisodes))] + !IsEmpty(ListItem.Property(UnWatchedEpisodes))</visible>
 					</control>
 					<!-- Star Rating -->
-					<control type="group">
+					<AAAcontrol type="group">
 						<!-- XXX: temporarily commented out for videos until I figure out exactly how I'd like to implement this
 						<visible>!Window.IsActive(videos) | [Window.IsActive(videos) + [Container.Content(movies) | Container.Content(tvshows) | Container.Content(episodes)]]</visible>
 						<include>VisibleIfNotMovieSet</include>
@@ -248,14 +248,14 @@
 							<colordiffuse>FFFFFFFF</colordiffuse>
 							<visible>!IsEmpty(ListItem.Rating)</visible>
 						</control>
-					</control>
+					</AAAcontrol>
 				</itemlayout>
 				<focusedlayout width="0" height="35">
 					<!-- List Line Item Divider -->
 					<control type="image">
 						<posx>35</posx>
 						<posy>33</posy>
-						<width>815</width>
+						<width>840</width>
 						<height>2</height>
 						<aligny>center</aligny>
 						<texture>VideoInfoLine.png</texture>
@@ -347,7 +347,7 @@
 						<aligny>center</aligny>
 						<width>105</width>
 						<height>35</height>
-						<label>$INFO[ListItem.Duration] min</label>
+						<label>$INFO[ListItem.Duration]</label>
 						<textcolor>WatchedOverlay</textcolor>
 						<AAAvisible>Window.IsActive(videos) + ![Container.Content(tvshows) | Container.Content(seasons) | Container.Content(movies) | Container.Content(episodes)] + !IsEmpty(ListItem.Duration)</AAAvisible>
 						<visible>Window.IsActive(videos) + !IsEmpty(ListItem.Duration)</visible>
@@ -400,7 +400,7 @@
 					<control type="label">
 						<posx>630</posx>
 						<posy>-2</posy>
-						<width>220</width>
+						<width>240</width>
 						<height>35</height>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -470,7 +470,7 @@
 						<visible>[Container.Content(seasons) + !IsEmpty(ListItem.Property(NumEpisodes))] + !IsEmpty(ListItem.Property(UnWatchedEpisodes))</visible>
 					</control>
 					<!-- Star Rating -->
-					<control type="group">
+					<AAAcontrol type="group">
 						<!-- XXX: temporarily commented out for videos until I figure out exactly how I'd like to implement this
 						<visible>!Window.IsActive(videos) | [Window.IsActive(videos) + [Container.Content(movies) | Container.Content(tvshows) | Container.Content(episodes)]]</visible>
 						<include>VisibleIfNotMovieSet</include>
@@ -497,7 +497,7 @@
 							<colordiffuse>$VAR[RatingColor]</colordiffuse>
 							<visible>!IsEmpty(ListItem.Rating)</visible>
 						</control>
-					</control>
+					</AAAcontrol>
 				</focusedlayout>
 			</control>
 			<!-- Thumbnails -->
