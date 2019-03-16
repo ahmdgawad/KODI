@@ -171,7 +171,10 @@ def SEARCH():
 		title = title.replace('\n','')
 		title = title.strip(' ')
 		title = unescapeHTML(title)
-		addDir(title,link,73,img)
+		if any(value in title for value in noEpisodesLIST):
+			addLink(title,link,73,img)
+		else:
+			addDir(title,link,73,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
