@@ -109,7 +109,6 @@
 				<texturefocus></texturefocus>
 				<texturenofocus></texturenofocus>
 			</control>
-
 			<control type="group">
 				<left>30</left>
 				<top>140</top>
@@ -210,9 +209,9 @@
 
 				<!-- 2nd row -->
 				<control type="grouplist">
+					<orientation>horizontal</orientation>
 					<top>50</top>
 					<itemgap>0</itemgap>
-					<orientation>horizontal</orientation>
 					<control type="radiobutton" id="302">
 						<description>SHIFT button</description>
 						<width>200</width>

@@ -1,2 +1,4 @@
 v1.0.0  Initial Release
 v2.0.0  Renamed
+v2.1.0  updated to the latest metropolis skin
+ v3.4.25

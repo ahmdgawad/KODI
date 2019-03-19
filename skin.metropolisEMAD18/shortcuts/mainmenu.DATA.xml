@@ -41,7 +41,7 @@
 		<icon />
 	</shortcut>
 	<shortcut>
-		<label>$LOCALIZE[10006]</label>
+		<label>Videos</label>
 		<label2>Common Shortcut</label2>
 		<defaultID>videos</defaultID>
 		<thumb>special://skin/extras/icons/videos.png</thumb>
@@ -81,7 +81,7 @@
 		<icon>home_icons/livetv.png</icon>
 	</shortcut>
 	<shortcut>
-		<label>$LOCALIZE[10005]</label>
+		<label>Music</label>
 		<label2>Common Shortcut</label2>
 		<defaultID>music</defaultID>
 		<thumb>special://skin/extras/icons/music.png</thumb>

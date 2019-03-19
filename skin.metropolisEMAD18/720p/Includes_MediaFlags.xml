@@ -110,7 +110,7 @@
 					<control type="group">
 						<width>58</width>
 						<height>62</height>
-						<visible>!Skin.HasSetting(Show_VotesMediaFlagAlways) + [!String.IsEmpty(ListItem.Top250) + !String.Contains(ListItem.Top250,0,Left)]</visible>
+						<visible>!Skin.HasSetting(Show_VotesMediaFlagAlways) + [!String.IsEmpty(ListItem.Top250) + !String.StartsWith(ListItem.Top250,0)]</visible>
 						<control type="image">
 							<include>MediaFlagsVarsSquareHalfTop</include>
 							<texture>flags/IMDB-Logo.png</texture>
@@ -134,9 +134,9 @@
 					</control>
 					<!-- IMDb Votes Flag (if not in Top250) -->
 					<control type="group">
-						<width>88</width>
+						<width>58</width>
 						<height>62</height>
-						<visible>[Skin.HasSetting(Show_VotesMediaFlagAlways) | [String.IsEmpty(ListItem.Top250) | [!String.IsEmpty(ListItem.Top250) + String.Contains(ListItem.Top250,0,Left)]]] + !String.IsEmpty(ListItem.Votes) + !String.Contains(ListItem.Votes,0,Left)</visible>
+						<visible>[Skin.HasSetting(Show_VotesMediaFlagAlways) | [String.IsEmpty(ListItem.Top250) | [!String.IsEmpty(ListItem.Top250) + String.StartsWith(ListItem.Top250,0)]]] + !String.IsEmpty(ListItem.Votes) + !String.StartsWith(ListItem.Votes,0)</visible>
 						<control type="image">
 							<width>64</width>
 							<top>5</top>
@@ -155,8 +155,8 @@
 							<font>METF_DialogVerySmallBold</font>
 						</control>
 						<control type="image">
-							<posx>0</posx>
-							<width>106</width>
+							<posx>2</posx>
+							<width>66</width>
 							<height>54</height>
 							<texture>flags/flag_framesquare.png</texture>
 							<colordiffuse>MediaFlagBoxDiffuse</colordiffuse>

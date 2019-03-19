@@ -7,6 +7,7 @@
 	<include file="Includes_Home2.xml" />
 	<include file="Includes_Home3.xml" />
 	<include file="Includes_HomeDeck.xml" />
+	<include file="Includes_DialogSelect.xml" />
 	<include file="script-skinshortcuts-includes.xml"/>
 	<include file="Includes_MediaFlags.xml" />
 	<include file="Includes_MediaFlags2.xml" />
@@ -139,6 +140,7 @@
 		<aligny>center</aligny>
 		<include>Animation_HiddenByInfo</include>
 	</include>
+	
 	<include name="Global_Heading">
 		<control type="group">
 			<posx>30</posx>
@@ -146,20 +148,30 @@
 			<include>Animation_OpenCloseFade</include>
 			<include>Animation_FadedByMenu</include>
 			<include>Animation_HiddenByInfo</include>
-
 			<!-- Left side title -->
 			<control type="label">
 				<label>$VAR[GlobalHeadingLeft]</label>
 				<include>Global_HeadingSectionVars</include>
 			</control>
-
 			<!-- Center details -->
 			<control type="label">
 				<label>$LOCALIZE[31208] $INFO[Window.Property(Updated)]</label>
 				<include>Global_HeadingLevelVars</include>
 				<visible>Window.IsActive(AddonBrowser)</visible>
 			</control>
-
+			<!-- Center NextAired sub details -->
+			<control type="label">
+				<label>$VAR[GlobalSubHeadingCenter]</label>
+				<font>METF_PlotTextSmall</font>
+				<posy>20</posy>
+				<width>1220</width>
+				<align>center</align>
+				<aligny>center</aligny>
+				<height>30</height>
+				<textcolor>SettingsDetail</textcolor>
+				<include>Animation_HiddenByInfo</include>
+				<visible>[Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes)] + Skin.HasSetting(NextAired)</visible>
+			</control>
 			<!-- Right side details -->
 			<control type="label" id="52">
 				<description>Build Version</description>
@@ -174,6 +186,7 @@
 			</control>
 		</control>
 	</include>
+	
 	<!-- SortLetter popup when scrolling through lists quickly -->
 	<include name="Global_ScrollOffsetLabel">
 		<control type="group" id="9906">
@@ -1494,18 +1507,18 @@
 				<colordiffuse>OSDBackgroundColor</colordiffuse>
 			</control>
 			<!-- FileNameAndPath -->
-                        <control type="label">
+			<control type="label">
 				<posx>300</posx>
 				<posy>633</posy>
-                                <width>700</width>
-                                <height>35</height>
+				<width>700</width>
+				<height>35</height>
 				<scroll>true</scroll>
 				<scrollspeed>100</scrollspeed>
 				<wrapmultiline>false</wrapmultiline>
-                                <label>$INFO[Player.FileNameAndPath]</label>
-                                <font>font13</font>
-                                <textcolor>OSDPlayingDuration</textcolor>
-                        </control>
+				<label>$INFO[Player.FileNameAndPath]</label>
+				<font>font13</font>
+				<textcolor>OSDPlayingDuration</textcolor>
+			</control>
 			<AAAcontrol type="progress" id="23">
 				<description>ProgressbarCache</description>
 				<posx>295</posx>
@@ -1602,7 +1615,7 @@
 				<label>$VAR[VideoPlayerTitle2]</label>
 			</AAAcontrol>
 			<control type="group">
-				<visible>!String.Contains(Player.FolderPath,http,Left)</visible>
+				<visible>!String.StartsWith(Player.FolderPath,http)</visible>
 				<!-- TV Show Poster / Logo / Clearart -->
 				<control type="image">
 					<description>TV Show Thumbnail</description>
@@ -1612,7 +1625,7 @@
 					<height>318</height>
 					<texture background="true">$INFO[Player.Art(tvshow.poster)]</texture>
 					<aspectratio scalediffuse="false">scale</aspectratio>
-					<visible>VideoPlayer.Content(Episodes) + !String.Contains(VideoPlayer.Cover,default,Left) + !Skin.HasSetting(Enable_OSDClearArt)</visible>
+					<visible>VideoPlayer.Content(Episodes) + !String.StartsWith(VideoPlayer.Cover,default) + !Skin.HasSetting(Enable_OSDClearArt)</visible>
 				</control>
 				<control type="image">
 					<description>TV Show Thumbnail Frame</description>
@@ -1622,7 +1635,7 @@
 					<height>358</height>
 					<texture>frames/ClassicFrame_PosterMedium.png</texture>
 					<aspectratio>stretch</aspectratio>
-					<visible>VideoPlayer.Content(Episodes) + !String.Contains(VideoPlayer.Cover,default,Left) + !Skin.HasSetting(Enable_OSDClearArt)</visible>
+					<visible>VideoPlayer.Content(Episodes) + !String.StartsWith(VideoPlayer.Cover,default) + !Skin.HasSetting(Enable_OSDClearArt)</visible>
 				</control>
 				<control type="image">
 					<description>TV Show Clear Art/Logo</description>
@@ -1643,7 +1656,7 @@
 					<height>318</height>
 					<texture background="true">$INFO[VideoPlayer.Cover]</texture>
 					<aspectratio scalediffuse="false">scale</aspectratio>
-					<visible>VideoPlayer.Content(Movies) + !String.Contains(VideoPlayer.Cover,default,Left)</visible>
+					<visible>VideoPlayer.Content(Movies) + !String.StartsWith(VideoPlayer.Cover,default)</visible>
 				</control>
 				<control type="image">
 					<description>Movie Poster Frame</description>
@@ -1653,7 +1666,7 @@
 					<height>358</height>
 					<texture>frames/ClassicFrame_PosterMedium.png</texture>
 					<aspectratio>stretch</aspectratio>
-					<visible>VideoPlayer.Content(Movies) + !String.Contains(VideoPlayer.Cover,default,Left)</visible>
+					<visible>VideoPlayer.Content(Movies) + !String.StartsWith(VideoPlayer.Cover,default)</visible>
 				</control>
 				<!-- Music Video Thumbnail -->
 				<control type="image">
@@ -1666,7 +1679,7 @@
 					<bordertexture border="6">frames/thumb_border_round.png</bordertexture>
 					<bordersize>6</bordersize>
 					<texture diffuse="frames/EpisodeMatte.png">$INFO[VideoPlayer.Cover]</texture>
-					<visible>VideoPlayer.Content(MusicVideos) + !String.Contains(VideoPlayer.Cover,default,Left)</visible>
+					<visible>VideoPlayer.Content(MusicVideos) + !String.StartsWith(VideoPlayer.Cover,default)</visible>
 				</control>
 				<!-- LiveTV Channel Icon -->
 				<control type="image">
@@ -1681,7 +1694,7 @@
 				</control>
 			</control>
 			<control type="group">
-				<visible>String.Contains(Player.FolderPath,http,Left)</visible>
+				<visible>String.StartsWith(Player.FolderPath,http)</visible>
 				<!-- Default Thumbnail -->
 				<control type="image">
 					<description>Default Thumbnail</description>
@@ -1693,7 +1706,7 @@
 					<bordertexture border="6">frames/thumb_border_round.png</bordertexture>
 					<bordersize>6</bordersize>
 					<texture diffuse="frames/EpisodeMatte.png">$INFO[VideoPlayer.Cover]</texture>
-					<visible>!String.Contains(VideoPlayer.Cover,default,Left)</visible>
+					<visible>!String.StartsWith(VideoPlayer.Cover,default)</visible>
 				</control>
 			</control>
 		</control>
@@ -1821,7 +1834,7 @@
 	<include name="OSD_Player_Time">
 		<control type="label" id="0">
 			<include>OSD_Player_Labels_Left</include>
-			<label>$INFO[System.Time]</label>
+			<label>$INFO[System.Time(hh:mm)]</label>
 			<include>Animation_CommonFade</include>
 			<include>Animation_FadedByOSDSettings</include>
 			<include condition="String.IsEqual(Skin.String(OSDFade),Complete) + String.IsEqual(Skin.String(OSDFadeTime),5)">Animation_FadeOSD5</include>
@@ -1897,15 +1910,27 @@
 				<label>[UPPERCASE]$LOCALIZE[31168][/UPPERCASE]</label>
 				<visible>Player.Rewinding32x</visible>
 			</control>
+			<!--labels while at normal speed -->
 			<control type="label">
 				<include>OSD_Player_Labels</include>
 				<label>[UPPERCASE]$LOCALIZE[31244][/UPPERCASE]</label>
-				<visible>Player.Playing + ![Player.SeekBar | Player.DisplayAfterSeek]</visible>
+				<visible>Player.Playing + ![Player.SeekBar | Player.DisplayAfterSeek] + !Player.IsTempo</visible>
 			</control>
 			<control type="label">
 				<include>OSD_Player_Labels</include>
 				<label>[UPPERCASE]$INFO[Player.SeekOffset][/UPPERCASE]</label>
-				<visible>Player.DisplayAfterSeek + ![Player.Paused | Player.Forwarding | Player.Rewinding]</visible>
+				<visible>Player.DisplayAfterSeek + ![Player.Paused | Player.Forwarding | Player.Rewinding] + !Player.IsTempo</visible>
+			</control>
+			<!--labels while at not normal speed -->
+			<control type="label">
+				<include>OSD_Player_Labels</include>
+				<label>[UPPERCASE]$INFO[Player.PlaySpeed,+,X][/UPPERCASE] [UPPERCASE]$LOCALIZE[31244][/UPPERCASE]</label>
+				<visible>Player.Playing + ![Player.SeekBar | Player.DisplayAfterSeek] + Player.IsTempo</visible>
+			</control>
+			<control type="label">
+				<include>OSD_Player_Labels</include>
+				<label>[UPPERCASE]$INFO[Player.PlaySpeed,+,X][/UPPERCASE] [UPPERCASE]$INFO[Player.SeekOffset][/UPPERCASE]</label>
+				<visible>Player.DisplayAfterSeek + ![Player.Paused | Player.Forwarding | Player.Rewinding] + Player.IsTempo</visible>
 			</control>
 		</control>
 	</include>
@@ -1947,7 +1972,7 @@
 					<label>$INFO[VideoPlayer.Plot]</label>
 					<include condition="!Skin.HasSetting(AutoScrollFast)">AutoScrollShort</include>
 					<include condition="Skin.HasSetting(AutoScrollFast)">AutoScrollShortFast</include>
-					<visible>Skin.HasSetting(ShowVideoPlotFullscreen) + !String.IsEmpty(VideoPlayer.Plot)</visible>
+					<visible>Skin.HasSetting(ShowVideoPlotFullscreen) + !String.IsEmpty(VideoPlayer.Plot) + !Player.IsTempo</visible>
 				</control>
 				<control type="grouplist">
 					<orientation>vertical</orientation>

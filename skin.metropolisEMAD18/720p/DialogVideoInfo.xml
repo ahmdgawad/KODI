@@ -307,7 +307,6 @@
 				<content>
 					<item>
 						<label>$LOCALIZE[31471]</label>
-						<onclick>noop</onclick>
 						<visible>String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,season)</visible>
 					</item>
 					<item>
@@ -406,7 +405,7 @@
 				<height>194</height>
 				<texture>$INFO[Container(50).Listitem.Icon]</texture>
 				<aspectratio align="center" aligny="center">scale</aspectratio>
-				<visible>Control.IsVisible(50) + !String.Contains(Container(50).Listitem.Icon,default,Left)</visible>
+				<visible>Control.IsVisible(50) + !String.StartsWith(Container(50).Listitem.Icon,default)</visible>
 			</control>
 			<control type="image">
 				<description>Actor image</description>
@@ -416,7 +415,7 @@
 				<height>194</height>
 				<texture>$INFO[Container(50).Listitem.Icon]</texture>
 				<aspectratio align="center" aligny="center">scale</aspectratio>
-				<visible>Control.IsVisible(50) + String.Contains(Container(50).Listitem.Icon,default,Left)</visible>
+				<visible>Control.IsVisible(50) + String.StartsWith(Container(50).Listitem.Icon,default)</visible>
 			</control>
 			<control type="image">
 				<posx>628</posx>
@@ -478,17 +477,8 @@
 				<aligny>center</aligny>
 				<font>METF_MediaDetailsSmall</font>
 				<textcolor>MediaDetailsDuration</textcolor>
-				<label>$INFO[ListItem.Duration,, [LOWERCASE]$LOCALIZE[31299][/LOWERCASE]]</label>
-				<visible>!String.IsEmpty(ListItem.Duration) + !String.Contains(ListItem.Duration,min) + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,musicvideo)]</visible>
-			</control>
-			<control type="label">
-				<width min="25" max="220">auto</width>
-				<height>30</height>
-				<aligny>center</aligny>
-				<font>METF_MediaDetailsSmall</font>
-				<textcolor>MediaDetailsDuration</textcolor>
 				<label>$INFO[ListItem.Duration]</label>
-				<visible>!String.IsEmpty(ListItem.Duration) + String.Contains(ListItem.Duration,min) + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,musicvideo)]</visible>
+				<visible>!String.IsEmpty(ListItem.Duration) + [String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,musicvideo)]</visible>
 			</control>
 		</control>
 
@@ -554,6 +544,19 @@
 				<visible>System.HasAddon(script.videoextras)</visible>
 				<visible>String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,musicvideo)</visible>
 			</control>
+			<!-- Extended Info -->
+			<control type="button" id="22">
+				<description>Extras</description>
+				<include>VideoInfoButton</include>
+				<texturenofocus>buttons/button_extendedinfo.png</texturenofocus>
+				<texturefocus>buttons/button_extendedinfoFO.png</texturefocus>
+				<include>Animation_ButtonFocus</include>
+				<onclick condition="String.IsEqual(ListItem.DBTYPE,movie) | String.IsEqual(ListItem.DBTYPE,set)">RunScript(script.extendedinfo,info=extendedinfo,name=$INFO[ListItem.Title])</onclick>
+				<onclick condition="String.IsEqual(ListItem.DBTYPE,tvshow)">RunScript(script.extendedinfo,info=extendedtvinfo,name=$INFO[ListItem.Title])</onclick>
+				<label>$INFO[System.AddonTitle(script.extendedinfo)]</label>
+				<visible>System.HasAddon(script.extendedinfo)</visible>
+				<visible>String.IsEqual(ListItem.DBType,movie) | String.IsEqual(ListItem.DBType,tvshow) | String.IsEqual(ListItem.DBType,episode) | String.IsEqual(ListItem.DBType,musicvideo)</visible>
+			</control>
 			<!-- Refresh -->
 			<control type="button" id="6">
 				<include>VideoInfoButton</include>
@@ -597,6 +600,12 @@
 				<include>VideoInfoButtonLabel</include>
 				<label>$INFO[System.AddonTitle(script.videoextras)]</label>
 				<visible>ControlGroup(7003).HasFocus(21)</visible>
+			</control>
+			<control type="label">
+				<description>Extended Info</description>
+				<include>VideoInfoButtonLabel</include>
+				<label>$INFO[System.AddonTitle(script.extendedinfo)]</label>
+				<visible>ControlGroup(7003).HasFocus(22)</visible>
 			</control>
 			<control type="label">
 				<description>Trailer</description>

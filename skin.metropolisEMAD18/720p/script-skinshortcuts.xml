@@ -2,6 +2,7 @@
 <window>
 	<defaultcontrol always="true">10</defaultcontrol>
 	<controls>
+		<AAAinclude>Global_Background</AAAinclude>
 		<control type="group">
 			<include>Animation_OpenCloseFade</include>
 			<visible>String.IsEmpty(Window.Property(additionalDialog))</visible>
