@@ -72,7 +72,7 @@ def FILTERS_MENU(link):
 
 def TITLES(url,page):
 	#xbmcgui.Dialog().ok(str(url), str(page))
-	if '/explore/' in url: url2 = url + '&'
+	if '/explore/' in url or '?' in url: url2 = url + '&'
 	else: url2 = url + '?'
 	url2 = url2 + 'output_format=json&output_mode=movies_list&page='+str(page)
 	html = openURL(url2,'',headers,'','EGYBEST-TITLES-1st')
