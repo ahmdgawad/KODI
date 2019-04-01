@@ -6,6 +6,19 @@ addon_id = sys.argv[0].split('/')[2] 		# plugin.video.arabicvideos
 fanart = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'fanart.jpg'))
 icon = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
 
+def addDir(name,url='',mode='',iconimage=icon,page='',category=''):
+	if iconimage=='': iconimage=icon
+	u='plugin://'+addon_id+'/?mode='+str(mode)
+	if url != '' : u = u + '&url=' + quote(url)
+	if page != '' : u = u + '&page=' + str(page)
+	if category != '' : u = u + '&category=' + str(category)
+	liz=xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
+	liz.setInfo( type="Video", infoLabels={ "Title": name } )
+	liz.setProperty('fanart_image', fanart)
+	#liz.setProperty('IsPlayable', 'true')
+	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=True)
+	return
+
 def addLink(name,url,mode,iconimage=icon,duration='',isPlayable='yes'):
 	if iconimage=='': iconimage=icon
 	#xbmcgui.Dialog().ok(duration,'')
@@ -90,19 +103,6 @@ def escapeUNICODE(string):
 		string = string.decode('unicode_escape')
 		string = string.encode('utf8')
 	return string
-
-def addDir(name,url='',mode='',iconimage=icon,page='',category=''):
-	if iconimage=='': iconimage=icon
-	u='plugin://'+addon_id+'/?mode='+str(mode)
-	if url != '' : u = u + '&url=' + quote(url)
-	if page != '' : u = u + '&page=' + str(page)
-	if category != '' : u = u + '&category=' + str(category)
-	liz=xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
-	liz.setInfo( type="Video", infoLabels={ "Title": name } )
-	liz.setProperty('fanart_image', fanart)
-	#liz.setProperty('IsPlayable', 'true')
-	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=True)
-	return
 
 def mixARABIC(string):
 	import unicodedata

@@ -5,6 +5,7 @@ website0a = 'http://www.panet.co.il'
 website0b = 'http://m.panet.co.il'
 headers = { 'User-Agent' : '' }
 script_name = 'PANET'
+menu_name='[COLOR darkcyan]PNT [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==30: MENU()
@@ -18,14 +19,14 @@ def MAIN(mode,url):
 	return
 
 def MENU():
-	addDir('بحث عن افلام',website0a+'/search/result/title/movies',34)
-	addDir('بحث عن مسلسلات',website0a+'/search/result/title/series',34)
-	addDir('مسلسلات وبرامج',website0a+'/series',31)
-	addDir('المسلسلات الاكثر مشاهدة',website0a+'/series',37)
-	addDir('افلام حسب النوع',website0a+'/movies',35)
-	addDir('افلام حسب الممثل',website0a+'/movies',36)
-	addDir('احدث الافلام',website0a+'/movies',32)
-	addDir('مسرحيات',website0a+'/movies/genre/4/1',32)
+	addDir(menu_name+'بحث عن افلام',website0a+'/search/result/title/movies',34)
+	addDir(menu_name+'بحث عن مسلسلات',website0a+'/search/result/title/series',34)
+	addDir(menu_name+'مسلسلات وبرامج',website0a+'/series',31)
+	addDir(menu_name+'المسلسلات الاكثر مشاهدة',website0a+'/series',37)
+	addDir(menu_name+'افلام حسب النوع',website0a+'/movies',35)
+	addDir(menu_name+'افلام حسب الممثل',website0a+'/movies',36)
+	addDir(menu_name+'احدث الافلام',website0a+'/movies',32)
+	addDir(menu_name+'مسرحيات',website0a+'/movies/genre/4/1',32)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -42,7 +43,7 @@ def CATEGORIES(url,select=''):
 			for link,name in items:
 				url = website0a + link
 				name = name.strip(' ')
-				addDir(name,url,32)
+				addDir(menu_name+name,url,32)
 		if select=='4':
 			html_blocks=re.findall('video-details-panel(.*?)v></a></div>',html,re.DOTALL)
 			block= html_blocks[0]
@@ -50,7 +51,7 @@ def CATEGORIES(url,select=''):
 			for link,img,title in items:
 				url = website0a + link
 				title = title.strip(' ')
-				addDir(title,url,32,img)
+				addDir(menu_name+title,url,32,img)
 		#xbmcgui.Dialog().ok(url,'')
 	if type=='movies':
 		html = openURL(url,'',headers,'','PANET-CATEGORIES-2nd')
@@ -60,14 +61,14 @@ def CATEGORIES(url,select=''):
 			items=re.findall('option><option value="(.*?)">(.*?)<',block,re.DOTALL)
 			for value,name in items:
 				url = website0a + '/movies/genre/' + value
-				addDir(name,url,32)
+				addDir(menu_name+name,url,32)
 		elif select=='2':
 			html_blocks=re.findall('moviesActor(.*?)select',html,re.DOTALL)
 			block = html_blocks[0]
 			items=re.findall('option><option value="(.*?)">(.*?)<',block,re.DOTALL)
 			for value,name in items:
 				url = website0a + '/movies/actor/' + value
-				addDir(name,url,32)
+				addDir(menu_name+name,url,32)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -82,7 +83,7 @@ def ITEMS(url):
 		for link,img,name in items:
 			url = website0a + link 
 			name = name.strip(' ')
-			addDir(name,url,32,img)
+			addDir(menu_name+name,url,32,img)
 	if type=='movies':
 		html_blocks = re.findall('panet-mars-adv-panel.*?advBarMars(.+?)panet-pagination',html,re.DOTALL)
 		block = html_blocks[0]
@@ -90,7 +91,7 @@ def ITEMS(url):
 		for link,img,name in items:
 			name = name.strip(' ')
 			url = website0a + link
-			addLink(name,url,33,img)
+			addLink(menu_name+name,url,33,img)
 	if type=='episodes':
 		page = url.split('/')[-1]
 		#xbmcgui.Dialog().ok(url,'')
@@ -104,7 +105,7 @@ def ITEMS(url):
 				if count==10: break
 				name = title + ' - ' + episode
 				url = website0a + link
-				addLink(name,url,33,img)
+				addLink(menu_name+name,url,33,img)
 		html_blocks = re.findall('panet-mars-adv-panel.*?advBarMars(.+?)panet-pagination',html,re.DOTALL)
 		block = html_blocks[0]
 		items = re.findall('panet-thumbnail.*?href="(.*?)""><img src="(.*?)".*?panet-title"><h2>(.*?)</h2.*?panet-info"><h2>(.*?)</h2',block,re.DOTALL)
@@ -113,14 +114,14 @@ def ITEMS(url):
 			title = title.strip(' ')
 			name = title + ' - ' + episode
 			url = website0a + link
-			addLink(name,url,33,img)
+			addLink(menu_name+name,url,33,img)
 	html_blocks = re.findall('glyphicon-chevron-right(.+?)data-revive-zoneid="4"',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('<li><a href="(.*?)">(.*?)<',block,re.DOTALL)
 	for link,page in items:
 		url = website0a + link 
 		name = 'صفحة ' + page
-		addDir(name,url,32)
+		addDir(menu_name+name,url,32)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -151,8 +152,8 @@ def SEARCH(url):
 	for title,link in items:
 		url = website0a + link.replace('\/','/')
 		#xbmcgui.Dialog().ok(title, url.split('/')[-1]   )
-		if type=='movies': addLink(title,url,33)
-		else: addDir(title,url+'/1',32)
+		if type=='movies': addLink(menu_name+title,url,33)
+		else: addDir(menu_name+title,url+'/1',32)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

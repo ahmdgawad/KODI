@@ -3,6 +3,7 @@ from LIBRARY import *
 
 website0a = 'https://www.halacima.net'
 script_name='HALACIMA'
+menu_name='[COLOR darkcyan]HLC [/COLOR]'
 
 def MAIN(mode,url,page):
 	if mode==80: MENU()
@@ -15,10 +16,10 @@ def MAIN(mode,url,page):
 	return
 
 def MENU():
-	addDir('بحث في الموقع','',83)
-	addDir('جديد المسلسلات','',84,icon,0)
-	addDir('افلام ومسلسلات مميزة','',85,icon,0)
-	addDir('الاكثر مشاهدة','',86,icon,0)
+	addDir(menu_name+'بحث في الموقع','',83)
+	addDir(menu_name+'جديد المسلسلات','',84,icon,0)
+	addDir(menu_name+'افلام ومسلسلات مميزة','',85,icon,0)
+	addDir(menu_name+'الاكثر مشاهدة','',86,icon,0)
 	html = openURL(website0a,'','','','HALACIMA-MENU-1st')
 	html_blocks = re.findall('dropdown(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
@@ -28,7 +29,7 @@ def MENU():
 	for link,title in items:
 		title = title.strip(' ')
 		if not any(value in title for value in ignoreLIST):
-			addDir(title,link,81)
+			addDir(menu_name+title,link,81)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -58,19 +59,19 @@ def ITEMS(url,html='',type='',page=0):
 		if title not in allTitles:
 			allTitles.append(title)
 			if '/article/' in link:
-				addLink(title,link,82,img)
+				addLink(menu_name+title,link,82,img)
 			else:
-				addDir(title,link,81,img)
+				addDir(menu_name+title,link,81,img)
 	html_blocks = re.findall('pagination(.*?)</div>',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]
 		items = re.findall('<li><a href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 		for link,title in items:
 			title = title.replace('الصفحة ','')
-			addDir('صفحة '+title,link,81)
-	if type=='lastRecent': addDir('صفحة المزيد','',84,icon,page+1)
-	elif type=='pin': addDir('صفحة المزيد','',85,icon,page+1)
-	elif type=='views': addDir('صفحة المزيد','',86,icon,page+1)
+			addDir(menu_name+'صفحة '+title,link,81)
+	if type=='lastRecent': addDir(menu_name+'صفحة المزيد','',84,icon,page+1)
+	elif type=='pin': addDir(menu_name+'صفحة المزيد','',85,icon,page+1)
+	elif type=='views': addDir(menu_name+'صفحة المزيد','',86,icon,page+1)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

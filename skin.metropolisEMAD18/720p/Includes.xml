@@ -1507,7 +1507,7 @@
 				<colordiffuse>OSDBackgroundColor</colordiffuse>
 			</control>
 			<!-- FileNameAndPath -->
-			<control type="label">
+			<control type="label" id="1112">
 				<posx>300</posx>
 				<posy>633</posy>
 				<width>700</width>
@@ -1656,7 +1656,8 @@
 					<height>318</height>
 					<texture background="true">$INFO[VideoPlayer.Cover]</texture>
 					<aspectratio scalediffuse="false">scale</aspectratio>
-					<visible>VideoPlayer.Content(Movies) + !String.StartsWith(VideoPlayer.Cover,default)</visible>
+					<AAAvisible>VideoPlayer.Content(Movies) + !String.StartsWith(VideoPlayer.Cover,default)</AAAvisible>
+					<visible>!String.StartsWith(VideoPlayer.Cover,default)</visible>
 				</control>
 				<control type="image">
 					<description>Movie Poster Frame</description>
@@ -1666,7 +1667,8 @@
 					<height>358</height>
 					<texture>frames/ClassicFrame_PosterMedium.png</texture>
 					<aspectratio>stretch</aspectratio>
-					<visible>VideoPlayer.Content(Movies) + !String.StartsWith(VideoPlayer.Cover,default)</visible>
+					<AAAvisible>VideoPlayer.Content(Movies) + !String.StartsWith(VideoPlayer.Cover,default)</AAAvisible>
+					<visible>!String.StartsWith(VideoPlayer.Cover,default)</visible>
 				</control>
 				<!-- Music Video Thumbnail -->
 				<control type="image">

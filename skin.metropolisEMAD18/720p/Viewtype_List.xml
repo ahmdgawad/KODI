@@ -102,7 +102,7 @@
 						<posx>650</posx>
 						<posy>-1</posy>
 						<aligny>center</aligny>
-						<width>105</width>
+						<width>115</width>
 						<height>35</height>
 						<label>$INFO[ListItem.Duration]</label>
 						<textcolor>WatchedOverlay</textcolor>
@@ -363,7 +363,7 @@
 						<posx>650</posx>
 						<posy>-1</posy>
 						<aligny>center</aligny>
-						<width>105</width>
+						<width>115</width>
 						<height>35</height>
 						<label>$INFO[ListItem.Duration]</label>
 						<textcolor>WatchedOverlay</textcolor>

@@ -3,6 +3,7 @@ from LIBRARY import *
 
 website0a = 'http://alfatimi.tv'
 script_name = 'ALFATIMI'
+menu_name='[COLOR darkcyan]FTM [/COLOR]'
 
 def MAIN(mode,url,category):
 	if mode==60: MENU()
@@ -14,14 +15,14 @@ def MAIN(mode,url,category):
 	return
 
 def MENU():
-	addDir('بحث في الموقع','',64)
-	addDir('ما يتم مشاهدته الان',website0a,65,icon,'',1)
-	addDir('الاكثر مشاهدة',website0a,65,icon,'',2)
-	addDir('اضيفت مؤخرا',website0a,65,icon,'',3)
-	addDir('فيديو عشوائي',website0a,65,icon,'',4)
-	addDir('افلام ومسلسلات',website0a,61,icon,'',-1)
-	addDir('البرامج الدينية',website0a,61,icon,'',-2)
-	addDir('English Videos',website0a,61,icon,'',-3)
+	addDir(menu_name+'بحث في الموقع','',64)
+	addDir(menu_name+'ما يتم مشاهدته الان',website0a,65,icon,'',1)
+	addDir(menu_name+'الاكثر مشاهدة',website0a,65,icon,'',2)
+	addDir(menu_name+'اضيفت مؤخرا',website0a,65,icon,'',3)
+	addDir(menu_name+'فيديو عشوائي',website0a,65,icon,'',4)
+	addDir(menu_name+'افلام ومسلسلات',website0a,61,icon,'',-1)
+	addDir(menu_name+'البرامج الدينية',website0a,61,icon,'',-2)
+	addDir(menu_name+'English Videos',website0a,61,icon,'',-3)
 	#TITLES(website0a,'-2')
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
@@ -42,19 +43,19 @@ def TITLES(url,category):
 		titleCAT = '[[ ' + title + ' ]]'
 		if category=='-1':
 			if cat in moviesLIST:
-				addDir(titleCAT,website0a,61,icon,'',cat)
+				addDir(menu_name+titleCAT,website0a,61,icon,'',cat)
 		elif category=='-2':
 			if cat not in moviesLIST and cat not in englishLIST:
-				addDir(titleCAT,website0a,61,icon,'',cat)
+				addDir(menu_name+titleCAT,website0a,61,icon,'',cat)
 		elif category=='-3':
 			if cat in englishLIST:
-				addDir(titleCAT,website0a,61,icon,'',cat)
+				addDir(menu_name+titleCAT,website0a,61,icon,'',cat)
 		elif startADD==False:
 			if category==cat: startADD = True
 		elif count=='1':
 			if 'http' not in link: link = 'http:'+link
-			addLink(title,link,63)
-		else: addDir(titleCAT,website0a,61,icon,'',cat)
+			addLink(menu_name+title,link,63)
+		else: addDir(menu_name+titleCAT,website0a,61,icon,'',cat)
 	if category not in ['-1','-2','-3']:
 		EPISODES(website0a+'/videos.php?cat='+category)
 	xbmcplugin.endOfDirectory(addon_handle)
@@ -69,7 +70,7 @@ def EPISODES(url):
 	link = ''
 	for img,link,title in items:
 		if 'http' not in link: link = 'http:'+link
-		addLink(title,link,63,img)
+		addLink(menu_name+title,link,63,img)
 	html_blocks=re.findall('(.*?)div',block,re.DOTALL)
 	block=html_blocks[0]
 	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
@@ -82,8 +83,8 @@ def EPISODES(url):
 		page = vars[0][1]
 		#xbmcgui.Dialog().ok(category, page)
 		if page=='1':
-			addDir(title,website0a,61,icon,'',category)
-		else: addDir(title,link,62)
+			addDir(menu_name+title,website0a,61,icon,'',category)
+		else: addDir(menu_name+title,link,62)
 	if 'page' in url: xbmcplugin.endOfDirectory(addon_handle)
 	return link
 
@@ -108,7 +109,7 @@ def SEARCH():
 	block = html_blocks[0]
 	items = re.findall('cat=(.*?)&.*?>(.*?)<',block,re.DOTALL)
 	for category,title in items:
-		addDir(title,website0a,61,icon,'',category)
+		addDir(menu_name+title,website0a,61,icon,'',category)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -125,7 +126,7 @@ def MOSTS(category):
 	for link,title,img in items:
 		title = title.strip(' ')
 		if 'http' not in link: link = 'http:'+link
-		addLink(title,link,63,img)
+		addLink(menu_name+title,link,63,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

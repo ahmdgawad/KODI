@@ -4,6 +4,7 @@ from LIBRARY import *
 website0a = 'https://egy.best'
 headers = { 'User-Agent' : '' }
 script_name = 'EGYBEST'
+menu_name='[COLOR darkcyan]EGB [/COLOR]'
 
 def MAIN(mode,url,page):
 	if   mode==120: MAIN_MENU()
@@ -15,15 +16,15 @@ def MAIN(mode,url,page):
 	return
 
 def MAIN_MENU():
-	addDir('اضغط هنا لاضافة اسم دخول وكلمة السر','',125)
-	addDir('بحث في الموقع','',124)
+	addDir(menu_name+'اضغط هنا لاضافة اسم دخول وكلمة السر','',125)
+	addDir(menu_name+'بحث في الموقع','',124)
 	html = openURL(website0a,'',headers,'','EGYBEST-MAIN_MENU-1st')
 	#xbmcgui.Dialog().ok(website0a, html)
 	html_blocks=re.findall('id="menu"(.*?)mainLoad',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('a><a href="(.*?)".*?></i>(.*?)<',block,re.DOTALL)
 	for url,title in reversed(items):
-		addDir(title,website0a+url,121)
+		addDir(menu_name+title,website0a+url,121)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -31,9 +32,9 @@ def FILTERS_MENU(link):
 	filter = link.split('/')[-1]
 	#xbmcgui.Dialog().ok(str(link), str(filter))
 	if '/trending/' not in link:
-		addDir('اظهار قائمة الفيديو التي تم اختيارها',link,122,'',1)
-		addDir('[[   ' + filter.replace('-',' + ') + '   ]]',link,122,'',1)
-		addDir('===========================',link,9999)
+		addDir(menu_name+'اظهار قائمة الفيديو التي تم اختيارها',link,122,'',1)
+		addDir(menu_name+'[[   ' + filter.replace('-',' + ') + '   ]]',link,122,'',1)
+		addDir(menu_name+'===========================',link,9999)
 	html = openURL(link,'',headers,'','EGYBEST-FILTERS_MENU-1st')
 	html_blocks=re.findall('mainLoad(.*?)</div></div>',html,re.DOTALL)
 	if html_blocks:
@@ -44,7 +45,7 @@ def FILTERS_MENU(link):
 			elif '/tv/' in url and 'مسلسل' not in title: title = 'مسلسلات ' + title
 			if '/trending/' in url:
 				title = 'الاكثر مشاهدة ' + title
-				addDir(title,website0a+url,122,'',1)
+				addDir(menu_name+title,website0a+url,122,'',1)
 			else:
 				link = link.replace('popular','')
 				link = link.replace('top','')
@@ -55,7 +56,7 @@ def FILTERS_MENU(link):
 				url = url.replace('/-','/')
 				url = url.rstrip('-')
 				url = url.replace('--','-')
-				addDir(title,url,121)
+				addDir(menu_name+title,url,121)
 	html_blocks=re.findall('sub_nav(.*?)</div></div></div>',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]
@@ -65,7 +66,7 @@ def FILTERS_MENU(link):
 			if any(value in title for value in ignoreLIST): continue
 			if '/movies/' in url: title = 'افلام ' + title
 			elif '/tv/' in url: title = 'مسلسلات ' + title
-			addDir(title,website0a+url,121)
+			addDir(menu_name+title,website0a+url,121)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -90,9 +91,9 @@ def TITLES(url,page):
 		#xbmcgui.Dialog().notification(img,'')
 		url2 = website0a + link
 		if '/movie/' in url2 or '/episode/' in url2:
-			addLink(title,url2.rstrip('/'),123,img)
+			addLink(menu_name+title,url2.rstrip('/'),123,img)
 		else:
-			addDir(title,url2,122,img,1)
+			addDir(menu_name+title,url2,122,img,1)
 	pagingLIST = ['/movies/','/tv/','/explore/','/trending/']
 	if any(value in url for value in pagingLIST):
 		for n in range(0,1000,100):
@@ -101,11 +102,11 @@ def TITLES(url,page):
 					if int(page/10)*10==i:
 						for j in range(i,i+10,1):
 							if not page==j and j!=0:
-								addDir('صفحة '+str(j),url,122,icon,j)
-					elif i!=0: addDir('صفحة '+str(i),url,122,icon,i)
-					else: addDir('صفحة '+str(1),url,122,icon,1)
-			elif n!=0: addDir('صفحة '+str(n),url,122,icon,n)
-			else: addDir('صفحة '+str(1),url,122,icon,1)
+								addDir(menu_name+'صفحة '+str(j),url,122,icon,j)
+					elif i!=0: addDir(menu_name+'صفحة '+str(i),url,122,icon,i)
+					else: addDir(menu_name+'صفحة '+str(1),url,122,icon,1)
+			elif n!=0: addDir(menu_name+'صفحة '+str(n),url,122,icon,n)
+			else: addDir(menu_name+'صفحة '+str(1),url,122,icon,1)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -155,8 +156,22 @@ def PLAY(url):
 		response = requests_request('GET', url, headers=headers, allow_redirects=False)
 		html = response.text
 		#xbmcgui.Dialog().ok(url,html)
+		#xbmc.log(html, level=xbmc.LOGNOTICE)
 		items = re.findall('"url":"(.*?)"',html,re.DOTALL)
+		#datacall = items[0]
+
+		#url = website0a + '/api?call=' + datacall
+		#headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
+		#response = requests_request('GET', url, headers=headers, allow_redirects=False)
+		#html = response.text
+		#xbmc.log(escapeUNICODE(html), level=xbmc.LOGNOTICE)
+		#items = re.findall('"url":"(.*?)"',html,re.DOTALL)
 		url = items[0]
+
+		#xbmcgui.Dialog().ok(url,html)
+		#xbmc.log(html, level=xbmc.LOGNOTICE)
+		#items = re.findall('"url":"(.*?)"',html,re.DOTALL)
+		#url = items[0]
 	url = url.replace('\/','/')
 	#xbmc.log(url, level=xbmc.LOGNOTICE)
 	#xbmcgui.Dialog().ok(url,url[-45:])

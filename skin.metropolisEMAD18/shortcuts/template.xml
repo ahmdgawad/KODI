@@ -84,7 +84,7 @@
 				<include>Animation_HiddenByInfo</include>
 				<animation effect="fade" start="100" end="0" time="0">Hidden</animation>
 				<animation effect="fade" start="0" end="100" time="200" delay="100" >Visible</animation>
-				<posx>157</posx>
+				<posx>165</posx>
 				<posy>560</posy>
 				<width>250</width>
 				<height>140</height>

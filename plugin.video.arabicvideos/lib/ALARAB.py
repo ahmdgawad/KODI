@@ -10,6 +10,7 @@ website0e = 'http://vod.alarab.com/index.php'
 
 script_name = 'ALARAB'
 headers = { 'User-Agent' : '' }
+menu_name='[COLOR darkcyan]KLA [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==10: MENU()
@@ -22,16 +23,16 @@ def MAIN(mode,url):
 	return
 
 def MENU():
-	addDir('بحث في الموقع','',13)
-	addDir('مسلسلات جديدة','',14)
-	#addDir('مسلسلات رمضان','',15)
+	addDir(menu_name+'بحث في الموقع','',13)
+	addDir(menu_name+'مسلسلات جديدة','',14)
+	#addDir(menu_name+'مسلسلات رمضان','',15)
 	html = openURL(website0b,'',headers,'','ALARAB-MENU-1st')
 	html_blocks=re.findall('footer_sec(.*?)social-network',html,re.DOTALL)
 	block=html_blocks[0]
 	#xbmcgui.Dialog().ok(str(len(html)), str(len(block)) )
 	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	for url,name in items:
-		addDir(name,url,11)
+		addDir(menu_name+name,url,11)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -43,7 +44,7 @@ def LATEST():
 	items=re.findall('href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
 	for link,img,name in items:
 		url = website0a + link
-		addDir(name,url,11,img)
+		addDir(menu_name+name,url,11,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -56,13 +57,13 @@ def ITEMS(url):
 	for link,img,name in items:
 		url = website0a + link
 		if 'series' in link:
-			addDir(name,url,11,img)
+			addDir(menu_name+name,url,11,img)
 		else:
-			addLink(name,url,12,img)
+			addLink(menu_name+name,url,12,img)
 	items = re.findall('tsc_3d_button red.*?href="(.*?)" title="(.*?)"',block,re.DOTALL)
 	for link,page in items:
 		url = website0a + link
-		addDir(page,url,11)
+		addDir(menu_name+page,url,11)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -138,13 +139,13 @@ def RAMADAN(url):
 	for link,name in items:
 		name = name.strip(' ')
 		url = website0a + link.replace('2018',year)
-		addDir(name,url,11)
+		addDir(menu_name+name,url,11)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def RAMADAN_YEARS_MENU():
 	for year in range(2018,2000,-1):
 		url = '?year=' + str(year)
-		addDir(str(year),url,16)
+		addDir(menu_name+str(year),url,16)
 	xbmcplugin.endOfDirectory(addon_handle)
 """
 

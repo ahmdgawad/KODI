@@ -8,6 +8,7 @@ website0d = 'http://fa2.ifilmtv.com'
 website1  = 'http://93.190.24.122'
 
 script_name = 'IFILM'
+menu_name='[COLOR darkcyan]IFL [/COLOR]'
 
 def MAIN(mode,url,page):
 	if mode==20: LANGUAGE_MENU()
@@ -21,10 +22,10 @@ def MAIN(mode,url,page):
 	return
 
 def LANGUAGE_MENU():
-	addDir('عربي',website0a,21,icon,101)
-	addDir('English',website0b,21,icon,101)
-	addDir('فارسى',website0c,21,icon,101)
-	addDir('فارسى 2',website0d,21,icon,101)
+	addDir(menu_name+'عربي',website0a,21,icon,101)
+	addDir(menu_name+'English',website0b,21,icon,101)
+	addDir(menu_name+'فارسى',website0c,21,icon,101)
+	addDir(menu_name+'فارسى 2',website0d,21,icon,101)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -52,8 +53,8 @@ def MAIN_MENU(website0):
 		name2 = 'سريال ها مرتب سازى براساس'
 		name3 = 'سريال ها مرتب حروف الفبا'
 		name4 = 'پخش زنده از اي فيلم كانال'
-	addDir(name4,website0,27,'','','no')
-	addDir(name,website0,26)
+	addDir(menu_name+name4,website0,27,'','','no')
+	addDir(menu_name+name,website0,26)
 	html_blocks=re.findall('main-body.*?menu(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
@@ -61,13 +62,13 @@ def MAIN_MENU(website0):
 		if any(value in link for value in menu):
 			url = website0 + link
 			if 'Series' in link:
-				addDir(name1,url,22,icon,100)
-				addDir(name2,url,22,icon,101)
-				addDir(name3,url,22,icon,201)
+				addDir(menu_name+name1,url,22,icon,100)
+				addDir(menu_name+name2,url,22,icon,101)
+				addDir(menu_name+name3,url,22,icon,201)
 			elif 'Music' in link:
-				addDir(title,url,25,icon,101)
+				addDir(menu_name+title,url,25,icon,101)
 			elif 'Program':
-				addDir(title,url,22,icon,101)
+				addDir(menu_name+title,url,22,icon,101)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -77,11 +78,11 @@ def MUSIC_MENU(url):
 	html_blocks = re.findall('Music-tools-header(.*?)Music-body',html,re.DOTALL)
 	block = html_blocks[0]
 	title = re.findall('<p>(.*?)</p>',block,re.DOTALL)[0]
-	addDir(title,url,22,icon,101)
+	addDir(menu_name+title,url,22,icon,101)
 	items = re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
 	for link,title in items:
 		link = website0 + link
-		addDir(title,link,23,icon,101)
+		addDir(menu_name+title,link,23,icon,101)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -102,7 +103,7 @@ def TITLES(url,page):
 			title = unescapeHTML(title)
 			link = website0 + link
 			img = website0 + quote(img)
-			addDir(title,link,23,img,order+'01')
+			addDir(menu_name+title,link,23,img,order+'01')
 	count_items=0
 	if type=='Series': category='3'
 	if type=='Program': category='7'
@@ -117,7 +118,7 @@ def TITLES(url,page):
 			count_items += 1
 			link = website0 + '/' + type + '/Content/' + id
 			img = website0 + quote(img)
-			addDir(title,link,23,img,order+'01')
+			addDir(menu_name+title,link,23,img,order+'01')
 	if type=='Music':
 		html = openURL(website0+'/Music/Index?page='+page,'','','','IFILM-TITLES-3rd')
 		html_blocks = re.findall('pagination-demo(.*?)pagination-demo',html,re.DOTALL)
@@ -127,7 +128,7 @@ def TITLES(url,page):
 			count_items += 1
 			img = website0 + img
 			link = website0 + link
-			addDir(title,link,23,img,101)
+			addDir(menu_name+title,link,23,img,101)
 	if count_items>20:
 		title='صفحة '
 		if lang=='en': title = 'Page '
@@ -136,7 +137,7 @@ def TITLES(url,page):
 		for count_page in range(1,11) :
 			if not page==str(count_page):
 				counter = '0'+str(count_page)
-				addDir(title+str(count_page),url,22,icon,order+counter[-2:])
+				addDir(menu_name+title+str(count_page),url,22,icon,order+counter[-2:])
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -165,7 +166,7 @@ def EPISODES(url,page):
 				link1 = link + linklang + id + '/' + str(episode) + '.mp4' 
 				name1 = name + title + str(episode)
 				name1 = unescapeHTML(name1)
-				addLink(name1,link1,24,img1)
+				addLink(menu_name+name1,link1,24,img1)
 	if type=='Program':
 		url2 = website0+'/Home/PageingAttachmentItem?id='+str(id)+'&page='+page+'&size=30&orderby=1'
 		html = openURL(url2,'','','','IFILM-EPISODES-2nd')
@@ -180,7 +181,7 @@ def EPISODES(url,page):
 			link1 = website1 + quote(link)
 			name = escapeUNICODE(name)
 			name1 = name + title + str(episode)
-			addLink(name1,link1,24,img1)
+			addLink(menu_name+name1,link1,24,img1)
 	if type=='Music':
 		if 'Content' in url and 'category' not in url:
 			url2 = website0+'/Music/GetTracksBy?id='+str(id)+'&page='+page+'&size=30&type=0'
@@ -193,7 +194,7 @@ def EPISODES(url,page):
 				name1 = name + ' - ' + title
 				name1 = name1.strip(' ')
 				name1 = escapeUNICODE(name1)
-				addLink(name1,link1,24,img1)
+				addLink(menu_name+name1,link1,24,img1)
 		elif 'Clips' in url:
 			url2 = website0+'/Music/GetTracksBy?id=0&page='+page+'&size=30&type=15'
 			html = openURL(url2,'','','','IFILM-EPISODES-4th')
@@ -204,7 +205,7 @@ def EPISODES(url,page):
 				link1 = website1 + quote(link)
 				name1 = title.strip(' ')
 				name1 = escapeUNICODE(name1)
-				addLink(name1,link1,24,img1)
+				addLink(menu_name+name1,link1,24,img1)
 		elif 'category' in url:
 			if 'category=6' in url:
 				html = openURL(website0+'/Music/GetTracksBy?id=0&page='+page+'&size=30&type=6','','','','IFILM-EPISODES-5th')
@@ -218,7 +219,7 @@ def EPISODES(url,page):
 				name1 = name + ' - ' + title
 				name1 = name1.strip(' ')
 				name1 = escapeUNICODE(name1)
-				addLink(name1,link1,24,img1)
+				addLink(menu_name+name1,link1,24,img1)
 	if type=='Music' or type=='Program':
 		if count_items>25:
 			title='صفحة '
@@ -228,7 +229,7 @@ def EPISODES(url,page):
 			for count_page in range(1,11):
 				if not page==str(count_page):
 					counter = '0'+str(count_page)
-					addDir(title+str(count_page),url,23,icon,order+counter[-2:])
+					addDir(menu_name+title+str(count_page),url,23,icon,order+counter[-2:])
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -279,7 +280,7 @@ def SEARCH(website0):
 			title = name + title
 			link = website0 + '/' + type + '/Content/' + id
 			img = website0 + quote(img)
-			addDir(title,link,23,img,101)
+			addDir(menu_name+title,link,23,img,101)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

@@ -96,7 +96,7 @@
 		</item>
 		<item id="6">
 			<property name="id">$NUMBER[6]</property>
-			<label>$LOCALIZE[10006]</label>
+			<label>Videos</label>
 			<label2>Common Shortcut</label2>
 			<icon>home_icons/videos.png</icon>
 			<thumb>special://skin/extras/icons/videos.png</thumb>
@@ -203,7 +203,7 @@
 		</item>
 		<item id="11">
 			<property name="id">$NUMBER[11]</property>
-			<label>$LOCALIZE[10005]</label>
+			<label>Music</label>
 			<label2>Common Shortcut</label2>
 			<icon>home_icons/music.png</icon>
 			<thumb>special://skin/extras/icons/music.png</thumb>
@@ -780,7 +780,7 @@
 			<property name="mainmenuid">3</property>
 			<label>$LOCALIZE[13200]</label>
 			<label2>$ADDON[script.skinshortcuts 32034]</label2>
-			<icon>DefaultShortcut.png</icon>
+			<icon>UnknownUser.png</icon>
 			<thumb />
 			<property name="labelID">13200</property>
 			<property name="defaultID">13200</property>
@@ -843,6 +843,22 @@
 		<item id="11">
 			<property name="id">$NUMBER[11]</property>
 			<property name="mainmenuid">3</property>
+			<label>Game settings</label>
+			<label2>$ADDON[script.skinshortcuts 32034]</label2>
+			<icon>DefaultShortcut.png</icon>
+			<thumb />
+			<property name="labelID">gamesettings</property>
+			<property name="defaultID">gamesettings</property>
+			<onclick>ActivateWindow(GameSettings)</onclick>
+			<property name="path">ActivateWindow(GameSettings)</property>
+			<property name="list">GameSettings</property>
+			<visible>[String.IsEqual(System.ProfileName,Master user)] + String.IsEqual(Container(9000).ListItem.Property(submenuVisibility),settings)</visible>
+			<property name="group">settings</property>
+			<property name="isSubmenu">True</property>
+		</item>
+		<item id="12">
+			<property name="id">$NUMBER[12]</property>
+			<property name="mainmenuid">3</property>
 			<label>$LOCALIZE[20077]</label>
 			<label2>$ADDON[script.skinshortcuts 32034]</label2>
 			<icon>DefaultShortcut.png</icon>
@@ -856,8 +872,8 @@
 			<property name="group">settings</property>
 			<property name="isSubmenu">True</property>
 		</item>
-		<item id="12">
-			<property name="id">$NUMBER[12]</property>
+		<item id="13">
+			<property name="id">$NUMBER[13]</property>
 			<property name="mainmenuid">3</property>
 			<label>$LOCALIZE[24001]</label>
 			<label2>$ADDON[script.skinshortcuts 32034]</label2>
@@ -3085,7 +3101,7 @@
 			<property name="mainmenuid">3</property>
 			<label>$LOCALIZE[13200]</label>
 			<label2>$ADDON[script.skinshortcuts 32034]</label2>
-			<icon>DefaultShortcut.png</icon>
+			<icon>UnknownUser.png</icon>
 			<thumb />
 			<property name="labelID">13200</property>
 			<property name="defaultID">13200</property>
@@ -3148,6 +3164,22 @@
 		<item id="11">
 			<property name="id">$NUMBER[11]</property>
 			<property name="mainmenuid">3</property>
+			<label>Game settings</label>
+			<label2>$ADDON[script.skinshortcuts 32034]</label2>
+			<icon>DefaultShortcut.png</icon>
+			<thumb />
+			<property name="labelID">gamesettings</property>
+			<property name="defaultID">gamesettings</property>
+			<onclick>ActivateWindow(GameSettings)</onclick>
+			<property name="path">ActivateWindow(GameSettings)</property>
+			<property name="list">GameSettings</property>
+			<visible>String.IsEqual(System.ProfileName,Master user)</visible>
+			<property name="group">settings</property>
+			<property name="isSubmenu">True</property>
+		</item>
+		<item id="12">
+			<property name="id">$NUMBER[12]</property>
+			<property name="mainmenuid">3</property>
 			<label>$LOCALIZE[20077]</label>
 			<label2>$ADDON[script.skinshortcuts 32034]</label2>
 			<icon>DefaultShortcut.png</icon>
@@ -3161,8 +3193,8 @@
 			<property name="group">settings</property>
 			<property name="isSubmenu">True</property>
 		</item>
-		<item id="12">
-			<property name="id">$NUMBER[12]</property>
+		<item id="13">
+			<property name="id">$NUMBER[13]</property>
 			<property name="mainmenuid">3</property>
 			<label>$LOCALIZE[24001]</label>
 			<label2>$ADDON[script.skinshortcuts 32034]</label2>
@@ -3280,7 +3312,7 @@
 			<property name="mainmenuid">3</property>
 			<label>$LOCALIZE[13200]</label>
 			<label2>$ADDON[script.skinshortcuts 32034]</label2>
-			<icon>DefaultShortcut.png</icon>
+			<icon>UnknownUser.png</icon>
 			<thumb />
 			<property name="labelID">13200</property>
 			<property name="defaultID">13200</property>
@@ -3343,6 +3375,22 @@
 		<item id="11">
 			<property name="id">$NUMBER[11]</property>
 			<property name="mainmenuid">3</property>
+			<label>Game settings</label>
+			<label2>$ADDON[script.skinshortcuts 32034]</label2>
+			<icon>DefaultShortcut.png</icon>
+			<thumb />
+			<property name="labelID">gamesettings</property>
+			<property name="defaultID">gamesettings</property>
+			<onclick>ActivateWindow(GameSettings)</onclick>
+			<property name="path">ActivateWindow(GameSettings)</property>
+			<property name="list">GameSettings</property>
+			<visible>[String.IsEqual(System.ProfileName,Master user)] + String.IsEqual(Window(10000).Property(submenuVisibility),settings)</visible>
+			<property name="group">settings</property>
+			<property name="isSubmenu">True</property>
+		</item>
+		<item id="12">
+			<property name="id">$NUMBER[12]</property>
+			<property name="mainmenuid">3</property>
 			<label>$LOCALIZE[20077]</label>
 			<label2>$ADDON[script.skinshortcuts 32034]</label2>
 			<icon>DefaultShortcut.png</icon>
@@ -3356,8 +3404,8 @@
 			<property name="group">settings</property>
 			<property name="isSubmenu">True</property>
 		</item>
-		<item id="12">
-			<property name="id">$NUMBER[12]</property>
+		<item id="13">
+			<property name="id">$NUMBER[13]</property>
 			<property name="mainmenuid">3</property>
 			<label>$LOCALIZE[24001]</label>
 			<label2>$ADDON[script.skinshortcuts 32034]</label2>
@@ -6404,7 +6452,7 @@
 			<include>Animation_HiddenByInfo</include>
 			<animation effect="fade" end="0" start="100" time="0">Hidden</animation>
 			<animation delay="100" effect="fade" end="100" start="0" time="200">Visible</animation>
-			<posx>265</posx>
+			<posx>165</posx>
 			<posy>560</posy>
 			<width>250</width>
 			<height>140</height>
@@ -6426,7 +6474,7 @@
 			<include>Animation_HiddenByInfo</include>
 			<animation effect="fade" end="0" start="100" time="0">Hidden</animation>
 			<animation delay="100" effect="fade" end="100" start="0" time="200">Visible</animation>
-			<posx>265</posx>
+			<posx>165</posx>
 			<posy>560</posy>
 			<width>250</width>
 			<height>140</height>
@@ -6448,7 +6496,7 @@
 			<include>Animation_HiddenByInfo</include>
 			<animation effect="fade" end="0" start="100" time="0">Hidden</animation>
 			<animation delay="100" effect="fade" end="100" start="0" time="200">Visible</animation>
-			<posx>265</posx>
+			<posx>165</posx>
 			<posy>560</posy>
 			<width>250</width>
 			<height>140</height>
@@ -6490,7 +6538,7 @@
 			<include>Animation_HiddenByInfo</include>
 			<animation effect="fade" end="0" start="100" time="0">Hidden</animation>
 			<animation delay="100" effect="fade" end="100" start="0" time="200">Visible</animation>
-			<posx>265</posx>
+			<posx>165</posx>
 			<posy>560</posy>
 			<width>250</width>
 			<height>140</height>
@@ -6512,7 +6560,7 @@
 			<include>Animation_HiddenByInfo</include>
 			<animation effect="fade" end="0" start="100" time="0">Hidden</animation>
 			<animation delay="100" effect="fade" end="100" start="0" time="200">Visible</animation>
-			<posx>265</posx>
+			<posx>165</posx>
 			<posy>560</posy>
 			<width>250</width>
 			<height>140</height>

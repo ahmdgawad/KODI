@@ -5,6 +5,7 @@ website0a = 'http://www.almaareftv.com/old'
 website0b = 'http://www.almaareftv.com'
 script_name = 'ALMAAREF'
 headers = { 'User-Agent' : '' }
+menu_name='[COLOR darkcyan]MRF [/COLOR]'
 
 
 def MAIN(mode,url,category):
@@ -21,20 +22,20 @@ def MAIN(mode,url,category):
 	return
 
 def MENU():
-	addLink('البث الحي لقناة المعارف','',49,'','','no')
-	addDir('بحث في الموقع','',41)
-	addDir('البرامج الحالية','',48)
+	addLink(menu_name+'البث الحي لقناة المعارف','',49,'','','no')
+	addDir(menu_name+'بحث في الموقع','',41)
+	addDir(menu_name+'البرامج الحالية','',48)
 	html = openURL(website0a,'','','','ALMAAREF-MENU-1st')
 	items = re.findall('<h2><a href="(.*?)">(.*?)</a></h2>',html,re.DOTALL)
 	for link,name in items:
-		addDir(name,link,47)
+		addDir(menu_name+name,link,47)
 	name = re.findall('recent-default.*?<h2>(.*?)</h2>',html,re.DOTALL)
 	if name:
-		addDir(name[0],website0a,46)
+		addDir(menu_name+name[0],website0a,46)
 	name = ['ارشيف لجميع البرامج']
 	#name = re.findall('categories"><div class="widget-top"><h4>(.*?)</h4>',html,re.DOTALL)
 	if name:
-		addDir(name[0],website0a,44,icon,'','0')
+		addDir(menu_name+name[0],website0a,44,icon,'','0')
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -54,7 +55,7 @@ def TITLES(url,select):
 		for img,url,title in items:
 			if not any(value in title for value in notvideosLIST):
 				title = unescapeHTML(title)
-				addDir(title,url,42,img)
+				addDir(menu_name+title,url,42,img)
 	if select==3:
 		html_blocks3=re.findall('archive-box(.*?)script',html,re.DOTALL)
 		if html_blocks3:
@@ -63,7 +64,7 @@ def TITLES(url,select):
 			for url,title,img in items:
 				if not any(value in title for value in notvideosLIST):
 					title = unescapeHTML(title)
-					addDir(title,url,42,img)
+					addDir(menu_name+title,url,42,img)
 	if select>=2:
 		html_blocks4=re.findall('class="pagination"(.*?)<h',html,re.DOTALL)
 		if html_blocks4:
@@ -72,8 +73,8 @@ def TITLES(url,select):
 			for url,title in items:
 				title = unescapeHTML(title)
 				title = 'صفحة ' + title
-				if select==2: addDir(title,url,46)
-				else: addDir(title,url,47)
+				if select==2: addDir(menu_name+title,url,46)
+				else: addDir(menu_name+title,url,47)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -95,15 +96,15 @@ def EPISODES(url):
 			title = title.split(' ')[-1]
 			title = name + ' - ' + title
 			duration = re.findall('length_formatted":"(.*?)"',meta,re.DOTALL)
-			if duration: addLink(title,link,43,img2,duration[0])
-			else: addLink(title,link,43,img2)
+			if duration: addLink(menu_name+title,link,43,img2,duration[0])
+			else: addLink(menu_name+title,link,43,img2)
 	else:
 		items=re.findall('itemprop="name">(.*?)<.*?contentUrl" content="(.*?)".*?image.*?url":"(.*?)"',html,re.DOTALL)
 		for title,link,img in items:
 			img = img.replace('\/','/')
 			title = escapeUNICODE(title)
 			link = escapeUNICODE(link)
-			addLink(title,link,43,img)
+			addLink(menu_name+title,link,43,img)
 		#PLAY_FROM_DIRECTORY(url)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
@@ -129,8 +130,8 @@ def CATEGORIES(url,category):
 				title = title.replace(re.findall(' \(.*?\)',title)[0],'')
 			url = website0a + '/' + link
 			if cat == '-165': title = 'السيد صباح شبر (60)'
-			if '-' in cat: addDir(title,url,44,icon,'',cat)
-			else: addDir(title,url,42)
+			if '-' in cat: addDir(menu_name+title,url,44,icon,'',cat)
+			else: addDir(menu_name+title,url,42)
 			exist=True
 	if exist: xbmcplugin.endOfDirectory(addon_handle)
 	else: TITLES(url,3)
@@ -151,7 +152,7 @@ def PROGRAMS():
 	block = html_blocks[0]
 	items = re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
 	for link,title in items:
-		addDir(title,link,44)
+		addDir(menu_name+title,link,44)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

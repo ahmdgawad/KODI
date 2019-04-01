@@ -122,3 +122,7 @@ Added HD & SD Tv channels
 v3.8.0	2019-01-08
 Added NT & PL Tv channels
 
+
+v3.9.0	2019-03-31
+Added initials to all menus
+

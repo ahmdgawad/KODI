@@ -4,6 +4,7 @@ from LIBRARY import *
 website0a = 'https://akoam.net'
 headers = { 'User-Agent' : '' }
 script_name='AKOAM'
+menu_name='[COLOR darkcyan]AKM [/COLOR]'
 noEpisodesLIST = ['فيلم','كليب','العرض الاسبوعي','مسرحية','اغنية','اعلان','لقاء']
 
 def MAIN(mode,url):
@@ -17,8 +18,8 @@ def MAIN(mode,url):
 	return
 
 def MENU():
-	addDir('بحث في الموقع','',75)
-	addDir('المميزة',website0a,76)
+	addDir(menu_name+'بحث في الموقع','',75)
+	addDir(menu_name+'المميزة',website0a,76)
 	ignoreLIST = ['الكتب و الابحاث','الكورسات التعليمية','الألعاب','البرامج','الاجهزة اللوحية','الصور و الخلفيات']
 	html = openURL(website0a,'',headers,'','AKOAM-MENU-1st')
 	html_blocks = re.findall('big_parts_menu(.*?)main_partions',html,re.DOTALL)
@@ -29,7 +30,7 @@ def MENU():
 	items = re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
 	for link,title in items:
 		if title not in ignoreLIST:
-			addDir(title,link,71)
+			addDir(menu_name+title,link,71)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -41,8 +42,8 @@ def CATEGORIES(url):
 		items = re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 		for link,title in items:
 			title = title.strip(' ')
-			addDir(title,link,72)
-		addDir('جميع الفروع',url,72)
+			addDir(menu_name+title,link,72)
+		addDir(menu_name+'جميع الفروع',url,72)
 		xbmcplugin.endOfDirectory(addon_handle)
 	else: TITLES(url,1)
 	return
@@ -59,15 +60,15 @@ def TITLES(url,type):
 		title = title.strip(' ')
 		title = unescapeHTML(title)
 		if any(value in title for value in noEpisodesLIST):
-			addLink(title,link,73,img)
+			addLink(menu_name+title,link,73,img)
 		else: 
-			addDir(title,link,73,img)
+			addDir(menu_name+title,link,73,img)
 	html_blocks = re.findall('pagination(.*?)</div',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]
 		items = re.findall('li>\n<a href=\'(.*?)\'>(.*?)<',block,re.DOTALL)
 		for link,title in items:
-			addDir('صفحة '+title,link,72)
+			addDir(menu_name+'صفحة '+title,link,72)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -120,10 +121,10 @@ def EPISODES(url):
 				if ':' in titleLIST[i]: title = titleLIST[i].strip(':') + ' - ملف الفيديو غير موجود'
 				else: title = videoTitle + ' - ' + titleLIST[i]
 				link = url + '?ep='+str(size-i)
-				addLink(title,link,74,img)
+				addLink(menu_name+title,link,74,img)
 			xbmcplugin.endOfDirectory(addon_handle)
 	else:
-		addLink('الرابط ليس فيديو','',9999,img)
+		addLink(menu_name+'الرابط ليس فيديو','',9999,img)
 		#xbmcgui.Dialog().notification('خطأ خارجي','الرابط ليس فيديو')
 		xbmcplugin.endOfDirectory(addon_handle)
 	return
@@ -172,9 +173,9 @@ def SEARCH():
 		title = title.strip(' ')
 		title = unescapeHTML(title)
 		if any(value in title for value in noEpisodesLIST):
-			addLink(title,link,73,img)
+			addLink(menu_name+title,link,73,img)
 		else:
-			addDir(title,link,73,img)
+			addDir(menu_name+title,link,73,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

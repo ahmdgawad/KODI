@@ -4,6 +4,7 @@ from LIBRARY import *
 website0a = 'http://shahid4u.me'
 script_name='SHAHID4U'
 headers = { 'User-Agent' : '' }
+menu_name='[COLOR darkcyan]SFU [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==110: MENU()
@@ -13,8 +14,8 @@ def MAIN(mode,url):
 	return
 
 def MENU():
-	addDir('بحث في الموقع','',113)
-	addDir('المضاف حديثا',website0a,111)
+	addDir(menu_name+'بحث في الموقع','',113)
+	addDir(menu_name+'المضاف حديثا',website0a,111)
 	html = openURL(website0a,'',headers,'','SHAHID4U-MENU-1st')
 	html_blocks = re.findall('menu-master(.*?)header>',html,re.DOTALL)
 	#xbmcgui.Dialog().ok(html,html)
@@ -24,7 +25,7 @@ def MENU():
 	for link,title in items:
 		title = title.strip(' ')
 		if not any(value in title for value in ignoreLIST):
-			addDir(title,link,111)
+			addDir(menu_name+title,link,111)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -63,9 +64,9 @@ def ITEMS(url):
 		if title not in allTitles:
 			allTitles.append(title)
 			if directory is True:
-				addDir(title,link,111,img)
+				addDir(menu_name+title,link,111,img)
 			else:
-				addLink(title,link,112,img)
+				addLink(menu_name+title,link,112,img)
 	html_blocks = re.findall('class="pagination(.*?)</div>',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]
@@ -73,7 +74,7 @@ def ITEMS(url):
 		for link,title in items:
 			title = unescapeHTML(title)
 			title = title.replace('الصفحة ','')
-			addDir('صفحة '+title,link,111)
+			addDir(menu_name+'صفحة '+title,link,111)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

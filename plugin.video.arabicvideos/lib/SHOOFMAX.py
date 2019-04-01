@@ -4,6 +4,7 @@ from LIBRARY import *
 website0a = 'https://shoofmax.com'
 website0b = 'https://static.shoofmax.com'
 script_name = 'SHOOFMAX'
+menu_name='[COLOR darkcyan]SHM [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==50: MAIN_MENU()
@@ -13,39 +14,44 @@ def MAIN(mode,url):
 	elif mode==54: SEARCH()
 	elif mode==55: MOVIES_MENU()
 	elif mode==56: SERIES_MENU()
+	elif mode==57: FILTERS(url,1)
+	elif mode==58: FILTERS(url,2)
 	return
 
 def MAIN_MENU():
-	addDir('بحث في الموقع','',54)
-	addDir('المسلسلات','',56)
-	addDir('الافلام','',55)
+	addDir(menu_name+'بحث في الموقع','',54)
+	addDir(menu_name+'المسلسلات','',56)
+	addDir(menu_name+'الافلام','',55)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
 def MOVIES_MENU():
-	addDir('احدث الافلام',website0a+'/movie/1/latest',51)
-	addDir('افلام رائجة',website0a+'/movie/1/popular',51)
-	addDir('اخر اضافات الافلام',website0a+'/movie/1/newest',51)
-	addDir('افلام كلاسيكية',website0a+'/movie/1/classic',51)
-	addDir('اجدد الافلام',website0a+'/movie/1/yop',51)
-	addDir('الافلام الافضل تقييم',website0a+'/movie/1/review',51)
-	addDir('الافلام الاكثر مشاهدة',website0a+'/movie/1/views',51)
+	addDir(menu_name+'احدث الافلام',website0a+'/movie/1/latest',57)
+	addDir(menu_name+'افلام رائجة',website0a+'/movie/1/popular',57)
+	addDir(menu_name+'اخر اضافات الافلام',website0a+'/movie/1/newest',57)
+	addDir(menu_name+'افلام كلاسيكية',website0a+'/movie/1/classic',57)
+	addDir(menu_name+'اجدد الافلام',website0a+'/movie/1/yop',57)
+	addDir(menu_name+'الافلام الافضل تقييم',website0a+'/movie/1/review',57)
+	addDir(menu_name+'الافلام الاكثر مشاهدة',website0a+'/movie/1/views',57)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
 def SERIES_MENU():
-	addDir('احدث المسلسلات',website0a+'/series/1/latest',51)
-	addDir('مسلسلات رائجة',website0a+'/series/1/popular',51)
-	addDir('اخر اضافات المسلسلات',website0a+'/series/1/newest',51)
-	addDir('مسلسلات كلاسيكية',website0a+'/series/1/classic',51)
-	addDir('اجدد المسلسلات',website0a+'/series/1/yop',51)
-	addDir('المسلسلات الافضل تقييم',website0a+'/series/1/review',51)
-	addDir('المسلسلات الاكثر مشاهدة',website0a+'/series/1/views',51)
+	addDir(menu_name+'احدث المسلسلات',website0a+'/series/1/latest',57)
+	addDir(menu_name+'مسلسلات رائجة',website0a+'/series/1/popular',57)
+	addDir(menu_name+'اخر اضافات المسلسلات',website0a+'/series/1/newest',57)
+	addDir(menu_name+'مسلسلات كلاسيكية',website0a+'/series/1/classic',57)
+	addDir(menu_name+'اجدد المسلسلات',website0a+'/series/1/yop',57)
+	addDir(menu_name+'المسلسلات الافضل تقييم',website0a+'/series/1/review',57)
+	addDir(menu_name+'المسلسلات الاكثر مشاهدة',website0a+'/series/1/views',57)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
-	
-	
+
 def TITLES(url):
+	parts = url.split('?')
+	filter = '?' + urllib2.quote(parts[1],'=&:/')
+	#xbmcgui.Dialog().ok(filter,'')
+	url = parts[0]
 	info = url.split('/')
 	sort = info[ len(info)-1 ]
 	page = info[ len(info)-2 ]
@@ -53,7 +59,7 @@ def TITLES(url):
 	if sort in ['yop','review','views']:
 		if type=='movie': type1='فيلم'
 		elif type=='series': type1='مسلسل'
-		url = website0a + '/filter-programs/' + quote(type1) + '/' + page + '/' + sort
+		url = website0a + '/filter-programs/' + quote(type1) + '/' + page + '/' + sort + filter
 		html = openURL(url,'','','','SHOOFMAX-TITLES-1st')
 		items = re.findall('"ref":(.*?),.*?"title":"(.*?)".+?"numep":(.*?),"res":"(.*?)"',html,re.DOTALL)
 		count_items=0
@@ -61,8 +67,8 @@ def TITLES(url):
 			count_items += 1
 			img = website0b + '/img/program/' + img + '-2.jpg'
 			link = website0a + '/program/' + id
-			if type=='movie': addLink(title,link,53,img)
-			if type=='series': addDir(title,link+'?ep='+episodes_number+'='+title+'='+img,52,img)
+			if type=='movie': addLink(menu_name+title,link,53,img)
+			if type=='series': addDir(menu_name+'مسلسل '+title,link+'?ep='+episodes_number+'='+title+'='+img,52,img)
 	else:
 		if type=='movie': type1='movies'
 		elif type=='series': type1='series'
@@ -74,14 +80,14 @@ def TITLES(url):
 			count_items += 1
 			img = website0b + '/img/program/' + img + '-2.jpg'
 			link = website0a + '/program/' + id
-			if type=='movie': addLink(title,link,53,img)
-			if type=='series': addDir(title,link+'?ep='+episodes_number+'='+title+'='+img,52,img)
+			if type=='movie': addLink(menu_name+title,link,53,img)
+			if type=='series': addDir(menu_name+'مسلسل '+title,link+'?ep='+episodes_number+'='+title+'='+img,52,img)
 	title='صفحة '
 	if count_items==16:
 		for count_page in range(1,13) :
 			if not page==str(count_page):
-				url = website0a+'/filter-programs/'+type+'/'+str(count_page)+'/'+sort
-				addDir(title+str(count_page),url,51)
+				url = website0a+'/filter-programs/'+type+'/'+str(count_page)+'/'+sort + filter
+				addDir(menu_name+title+str(count_page),url,51)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -106,7 +112,7 @@ def EPISODES(url):
         for episode in range(int(episodes_number),0,-1):
 		link = url + '?ep=' + str(episode)
 		title = name1 + name + name2 + str(episode)
-		addLink(title,link,53,img)
+		addLink(menu_name+title,link,53,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -181,11 +187,30 @@ def SEARCH():
 			if '?ep=' in url:
 				url = url.replace('?ep=1','?ep=0')
 				url = url + '=' + quote(title.encode('utf8')) + '=' + img
-				addDir('[[ '+title+' ]]',url,52,img)
+				addDir(menu_name+'[[ '+title+' ]]',url,52,img)
 			else:
-				addLink(title,url,53,img)
+				addLink(menu_name+title,url,53,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
+def FILTERS(url,type):
+	#xbmcgui.Dialog().ok(url,url)
+	if 'series' in url: url2 = website0a + '/genre/مسلسل'
+	else: url2 = website0a + '/genre/فيلم'
+	url2 = quote(url2)
+	html = openURL(url2,'','','','SHOOFMAX-FILTERS-1st')
+	#xbmcgui.Dialog().ok(url,html)
+	if type==1: html_blocks = re.findall('country(.*?)div',html,re.DOTALL)
+	else: html_blocks = re.findall('subgenre(.*?)div',html,re.DOTALL)
+	block = html_blocks[0]
+	items = re.findall('option value="(.*?)">(.*?)</option',block,re.DOTALL)
+	if type==1:
+		for country,title in items:
+			addDir(menu_name+title,url+'?country='+country,58)
+	else:
+		for subgenre,title in items:
+			addDir(menu_name+title,url+'&subgenre='+subgenre,51)
+	xbmcplugin.endOfDirectory(addon_handle)
+	return
 
 

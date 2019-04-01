@@ -2,26 +2,31 @@
 from lib.LIBRARY import *
 
 def MAIN():
-	#addLink('Testing - watched enabled','',9,'','','yes')
-	#addLink('Testing - watched disabled','',9,'','','no')
+	#addLink(menu_name+'Testing - watched enabled','',9,'','','yes')
+	#addLink(menu_name+'Testing - watched disabled','',9,'','','no')
+
 	addDir('ـMessage to developer    رسالة الى المبرمج'+'   .17','',2)
 	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'   .16','',3)
 	addDir('ـProblems & Solutions    مشاكل وحلول'+'   .15','',1000)
 	addLink('فحص المواقع المشفرة'+'   .14','',4)
 	addDir('=========================','',9999)
-	addDir('قنوات تلفزونية'+'   .13','',100)
-	addDir('موقع المنبر الفاطمي'+'   .12','',60)
-	addDir('موقع قناة المعارف'+'   .11','',40)
-	addDir('موقع قناة الكوثر'+'   .10','',130)
-	addDir('موقع قناة اي فيلم'+'   .9','',20)
-	addDir('موقع بانيت'+'   .8','',30)
-	addDir('موقع شاهد فوريو'+'   .7','',110)
-	addDir('موقع شوف ماكس (مشفر)'+'   .6','',50)
-	addDir('موقع ايجي بيست (مشفر)'+'   .5','',120)
-	addDir('موقع هلال يوتيوب (مشفر)'+'   .4','',90)
-	addDir('موقع هلا سيما (مشفر)'+'   .3','',80)
-	addDir('موقع كل العرب (مشفر)'+'   .2','',10)
-	addDir('موقع اكوام (مشفر)'+'   .1','',70)
+
+	addDir('[COLOR darkcyan]HLU [/COLOR]'+'موقع هلال يوتيوب (مشفر)'+'   .13','',90)
+	addDir('[COLOR darkcyan]HLC [/COLOR]'+'موقع هلا سيما (مشفر)'+'   .12','',80)
+	addDir('[COLOR darkcyan]SFU [/COLOR]'+'موقع شاهد فوريو'+'   .11','',110)
+
+	addDir('[COLOR darkcyan]TV1 [/COLOR]'+'قنوات تلفزونية'+'   .10','',100)
+	addDir('[COLOR darkcyan]FTM [/COLOR]'+'موقع المنبر الفاطمي'+'   .9','',60)
+	addDir('[COLOR darkcyan]MRF [/COLOR]'+'موقع قناة المعارف'+'   .8','',40)
+	addDir('[COLOR darkcyan]KWT [/COLOR]'+'موقع قناة الكوثر'+'   .7','',130)
+	addDir('[COLOR darkcyan]IFL   [/COLOR]'+'موقع قناة اي فيلم'+'   .6','',20)
+
+	addDir('[COLOR darkcyan]PNT  [/COLOR]'+'موقع بانيت'+'   .5','',30)
+	addDir('[COLOR darkcyan]KLA  [/COLOR]'+'موقع كل العرب (مشفر)'+'   .4','',10)
+	addDir('[COLOR darkcyan]AKM [/COLOR]'+'موقع اكوام (مشفر)'+'   .3','',70)
+	addDir('[COLOR darkcyan]EGB [/COLOR]'+'موقع ايجي بيست (مشفر)'+'   .2','',120)
+	addDir('[COLOR darkcyan]SHM [/COLOR]'+'موقع شوف ماكس (مشفر)'+'   .1','',50)
+
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

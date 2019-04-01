@@ -4,6 +4,7 @@ from LIBRARY import *
 website0a = 'https://www.4helal.tv'
 script_name='4HELAL'
 headers = { 'User-Agent' : '' }
+menu_name='[COLOR darkcyan]HLU [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==90: MENU()
@@ -14,9 +15,9 @@ def MAIN(mode,url):
 	return
 
 def MENU():
-	addDir('بحث في الموقع','',93)
-	addDir('المضاف حديثا','',94)
-	addDir('جديد الموقع',website0a,91)
+	addDir(menu_name+'بحث في الموقع','',93)
+	addDir(menu_name+'المضاف حديثا','',94)
+	addDir(menu_name+'جديد الموقع',website0a,91)
 	html = openURL(website0a,'',headers,'','4HELAL-MENU-1st')
 	html_blocks = re.findall('mainmenu(.*?)nav',html,re.DOTALL)
 	block1 = html_blocks[0]
@@ -29,7 +30,7 @@ def MENU():
 	for link,title in items:
 		title = title.strip(' ')
 		if not any(value in title for value in ignoreLIST):
-			addDir(title,link,91)
+			addDir(menu_name+title,link,91)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -40,9 +41,9 @@ def ITEMS(url,html=''):
 	items = re.findall('background-image:url\((.*?)\).*?href="(.*?)".*?movie-title">(.*?)<',block,re.DOTALL)
 	for img,link,title in items:
 		if '/video/' in link:
-			addLink(title,link,92,img)
+			addLink(menu_name+title,link,92,img)
 		else:
-			addDir(title,link,91,img)
+			addDir(menu_name+title,link,91,img)
 	html_blocks = re.findall('pagination(.*?)</div>',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]
@@ -50,7 +51,7 @@ def ITEMS(url,html=''):
 		for link,title in items:
 			title = unescapeHTML(title)
 			title = title.replace('الصفحة ','')
-			addDir('صفحة '+title,link,91)
+			addDir(menu_name+'صفحة '+title,link,91)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -117,9 +118,9 @@ def LATEST():
 	items = re.findall('src="(.*?)".*?href="(.*?)" title="(.*?)"',block,re.DOTALL)
 	for img,link,title in items:
 		if '/video/' in link:
-			addLink(title,link,92,img)
+			addLink(menu_name+title,link,92,img)
 		else:
-			addDir(title,link,91,img)
+			addDir(menu_name+title,link,91,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

@@ -3,6 +3,7 @@ from LIBRARY import *
 
 script_name='TV1'
 website0a = 'http://emadmahdi.pythonanywhere.com/listplay'
+menu_name='[COLOR darkcyan]TV1 [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==100: ITEMS()
@@ -32,13 +33,13 @@ def ITEMS():
 			title = title + ' ' + source
 			title = title.replace('Al ','Al')
 			title = title.replace('El ','El')
-			addLink(title,source+id,101,img,'','no')
+			addLink(menu_name+title,source+id,101,img,'','no')
 	elif html=='Not Allowed':
-		addLink('للأسف لا توجد قنوات تلفزونية لك','',9999)
-		addLink('هذه الخدمة مخصصة للاقرباء والاصدقاء فقط','',9999)
-		addLink('=========================','',9999)
-		addLink('Unfortunately, no TV channels for you','',9999)
-		addLink('It is for relatives & friends only','',9999)
+		addLink(menu_name+'للأسف لا توجد قنوات تلفزونية لك','',9999)
+		addLink(menu_name+'هذه الخدمة مخصصة للاقرباء والاصدقاء فقط','',9999)
+		addLink(menu_name+'=========================','',9999)
+		addLink(menu_name+'Unfortunately, no TV channels for you','',9999)
+		addLink(menu_name+'It is for relatives & friends only','',9999)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
