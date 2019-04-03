@@ -152,6 +152,7 @@ def PLAY_VIDEO(url,website,showWatched='yes'):
 		#xbmcgui.Dialog().ok(url,label)
 		#play_item.setInfo( "video", { "Title": label } )
 		#xbmc.log(url, level=xbmc.LOGNOTICE)
+		#play_item.setPath(url)
 		xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
 	else:
 		label = xbmc.getInfoLabel('ListItem.Label')

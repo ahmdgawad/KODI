@@ -4,7 +4,7 @@ from LIBRARY import *
 website0a = 'https://www.4helal.tv'
 script_name='4HELAL'
 headers = { 'User-Agent' : '' }
-menu_name='[COLOR darkcyan]HLU [/COLOR]'
+menu_name='[COLOR FFC89008]HEL [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==90: MENU()

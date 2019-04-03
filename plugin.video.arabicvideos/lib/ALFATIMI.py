@@ -3,7 +3,7 @@ from LIBRARY import *
 
 website0a = 'http://alfatimi.tv'
 script_name = 'ALFATIMI'
-menu_name='[COLOR darkcyan]FTM [/COLOR]'
+menu_name='[COLOR FFC89008]FTM [/COLOR]'
 
 def MAIN(mode,url,category):
 	if mode==60: MENU()

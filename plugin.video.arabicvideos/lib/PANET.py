@@ -5,7 +5,7 @@ website0a = 'http://www.panet.co.il'
 website0b = 'http://m.panet.co.il'
 headers = { 'User-Agent' : '' }
 script_name = 'PANET'
-menu_name='[COLOR darkcyan]PNT [/COLOR]'
+menu_name='[COLOR FFC89008]PNT [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==30: MENU()

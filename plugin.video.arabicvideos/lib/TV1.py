@@ -3,7 +3,7 @@ from LIBRARY import *
 
 script_name='TV1'
 website0a = 'http://emadmahdi.pythonanywhere.com/listplay'
-menu_name='[COLOR darkcyan]TV1 [/COLOR]'
+menu_name='[COLOR FFC89008]TV1 [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==100: ITEMS()

@@ -4,7 +4,7 @@ from LIBRARY import *
 website0a = 'https://egy.best'
 headers = { 'User-Agent' : '' }
 script_name = 'EGYBEST'
-menu_name='[COLOR darkcyan]EGB [/COLOR]'
+menu_name='[COLOR FFC89008]EGB [/COLOR]'
 
 def MAIN(mode,url,page):
 	if   mode==120: MAIN_MENU()
@@ -76,10 +76,13 @@ def TITLES(url,page):
 	else: url2 = url + '?'
 	url2 = url2 + 'output_format=json&output_mode=movies_list&page='+str(page)
 	html = openURL(url2,'',headers,'','EGYBEST-TITLES-1st')
-	items = re.findall('n<a href=\\\\"(.*?)\\\\".*?src=\\\\"(.*?)\\\\".*?title\\\\">(.*?)<',html,re.DOTALL)
 	name = ''
 	if '/season/' in url:
-		name = xbmc.getInfoLabel( "ListItem.Label" ) + ' - '
+		name = re.findall('<h1>(.*?)<',html,re.DOTALL)
+		if name: name = escapeUNICODE(name[0]).strip(' ') + ' - '
+		else: name = xbmc.getInfoLabel( "ListItem.Label" ) + ' - '
+		#xbmcgui.Dialog().ok(name, name)
+	items = re.findall('n<a href=\\\\"(.*?)\\\\".*?src=\\\\"(.*?)\\\\".*?title\\\\">(.*?)<',html,re.DOTALL)
 	for link,img,title in items:
 		if '/series/' in url and '/season\/' not in link: continue
 		if '/season/' in url and '/episode\/' not in link: continue

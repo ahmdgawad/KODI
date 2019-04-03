@@ -10,7 +10,7 @@ website0e = 'http://vod.alarab.com/index.php'
 
 script_name = 'ALARAB'
 headers = { 'User-Agent' : '' }
-menu_name='[COLOR darkcyan]KLA [/COLOR]'
+menu_name='[COLOR FFC89008]KLA [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==10: MENU()
@@ -86,6 +86,7 @@ def PLAY(url):
 		count += 1
 		items_url.append(file+'mp4')
 		items_name.append(label)
+	#xbmcgui.Dialog().ok('',str(items_url))
 	items = re.findall('file:".*?youtu.*?=(.*?)"',block,re.DOTALL)
 	for youtubeID in items:
 		url = 'plugin://plugin.video.youtube/play/?video_id='+youtubeID
@@ -116,6 +117,7 @@ def PLAY(url):
 		selection = xbmcgui.Dialog().select('اختر الملف المناسب:', new_items_name)
 		if selection == -1 : return
 		url = new_items_url[selection]
+	#xbmcgui.Dialog().ok(url,'')
 	PLAY_VIDEO(url,script_name)
 	return
 

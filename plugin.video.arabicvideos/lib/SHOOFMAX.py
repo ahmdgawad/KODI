@@ -4,7 +4,7 @@ from LIBRARY import *
 website0a = 'https://shoofmax.com'
 website0b = 'https://static.shoofmax.com'
 script_name = 'SHOOFMAX'
-menu_name='[COLOR darkcyan]SHM [/COLOR]'
+menu_name='[COLOR FFC89008]SHF [/COLOR]'
 
 def MAIN(mode,url):
 	if mode==50: MAIN_MENU()
@@ -26,32 +26,37 @@ def MAIN_MENU():
 	return
 
 def MOVIES_MENU():
-	addDir(menu_name+'احدث الافلام',website0a+'/movie/1/latest',57)
-	addDir(menu_name+'افلام رائجة',website0a+'/movie/1/popular',57)
-	addDir(menu_name+'اخر اضافات الافلام',website0a+'/movie/1/newest',57)
-	addDir(menu_name+'افلام كلاسيكية',website0a+'/movie/1/classic',57)
-	addDir(menu_name+'اجدد الافلام',website0a+'/movie/1/yop',57)
-	addDir(menu_name+'الافلام الافضل تقييم',website0a+'/movie/1/review',57)
-	addDir(menu_name+'الافلام الاكثر مشاهدة',website0a+'/movie/1/views',57)
+	addDir(menu_name+'افلام رائجة',website0a+'/movie/1/popular',51)
+	addDir(menu_name+'احدث الافلام',website0a+'/movie/1/latest',51)
+	addDir(menu_name+'افلام كلاسيكية',website0a+'/movie/1/classic',51)
+	addDir(menu_name+'اخر اضافات الافلام',website0a+'/movie/1/newest',51)
+	addDir('=========================','',9999)
+	addDir(menu_name+'اختيار افلام مرتبة بسنة الانتاج',website0a+'/movie/1/yop',57)
+	addDir(menu_name+'اختيار افلام مرتبة بالافضل تقييم',website0a+'/movie/1/review',57)
+	addDir(menu_name+'اختيار افلام مرتبة بالاكثر مشاهدة',website0a+'/movie/1/views',57)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
 def SERIES_MENU():
-	addDir(menu_name+'احدث المسلسلات',website0a+'/series/1/latest',57)
-	addDir(menu_name+'مسلسلات رائجة',website0a+'/series/1/popular',57)
-	addDir(menu_name+'اخر اضافات المسلسلات',website0a+'/series/1/newest',57)
-	addDir(menu_name+'مسلسلات كلاسيكية',website0a+'/series/1/classic',57)
-	addDir(menu_name+'اجدد المسلسلات',website0a+'/series/1/yop',57)
-	addDir(menu_name+'المسلسلات الافضل تقييم',website0a+'/series/1/review',57)
-	addDir(menu_name+'المسلسلات الاكثر مشاهدة',website0a+'/series/1/views',57)
+	addDir(menu_name+'مسلسلات رائجة',website0a+'/series/1/popular',51)
+	addDir(menu_name+'احدث المسلسلات',website0a+'/series/1/latest',51)
+	addDir(menu_name+'مسلسلات كلاسيكية',website0a+'/series/1/classic',51)
+	addDir(menu_name+'اخر اضافات المسلسلات',website0a+'/series/1/newest',51)
+	addDir('=========================','',9999)
+	addDir(menu_name+'اختيار مسلسلات مرتبة بسنة الانتاج',website0a+'/series/1/yop',57)
+	addDir(menu_name+'اختيار مسلسلات مرتبة بالافضل تقييم',website0a+'/series/1/review',57)
+	addDir(menu_name+'اختيار مسلسلات مرتبة بالاكثر مشاهدة',website0a+'/series/1/views',57)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
 def TITLES(url):
-	parts = url.split('?')
-	filter = '?' + urllib2.quote(parts[1],'=&:/')
+	#xbmcgui.Dialog().ok(url,url)
+	if '?' in url:
+		parts = url.split('?')
+		filter = '?' + urllib2.quote(parts[1],'=&:/')
+		url = parts[0]
+	else: filter = ''
 	#xbmcgui.Dialog().ok(filter,'')
-	url = parts[0]
 	info = url.split('/')
 	sort = info[ len(info)-1 ]
 	page = info[ len(info)-2 ]
@@ -200,16 +205,19 @@ def FILTERS(url,type):
 	url2 = quote(url2)
 	html = openURL(url2,'','','','SHOOFMAX-FILTERS-1st')
 	#xbmcgui.Dialog().ok(url,html)
-	if type==1: html_blocks = re.findall('country(.*?)div',html,re.DOTALL)
-	else: html_blocks = re.findall('subgenre(.*?)div',html,re.DOTALL)
+	if type==1: html_blocks = re.findall('subgenre(.*?)div',html,re.DOTALL)
+	elif type==2: html_blocks = re.findall('country(.*?)div',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('option value="(.*?)">(.*?)</option',block,re.DOTALL)
 	if type==1:
-		for country,title in items:
-			addDir(menu_name+title,url+'?country='+country,58)
-	else:
-		for subgenre,title in items:
-			addDir(menu_name+title,url+'&subgenre='+subgenre,51)
+		for subgenre,title in reversed(items):
+			addDir(menu_name+title,url+'?subgenre='+subgenre,58)
+	elif type==2:
+		parts = url.split('?')
+		url = parts[0]
+		subgenre = parts[1]
+		for country,title in reversed(items):
+			addDir(menu_name+title,url+'?country='+country+'&'+subgenre,51)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

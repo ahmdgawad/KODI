@@ -3,7 +3,7 @@ from LIBRARY import *
 
 website0a = 'https://www.halacima.net'
 script_name='HALACIMA'
-menu_name='[COLOR darkcyan]HLC [/COLOR]'
+menu_name='[COLOR FFC89008]HLA [/COLOR]'
 
 def MAIN(mode,url,page):
 	if mode==80: MENU()

@@ -8,7 +8,7 @@ website0d = 'http://fa2.ifilmtv.com'
 website1  = 'http://93.190.24.122'
 
 script_name = 'IFILM'
-menu_name='[COLOR darkcyan]IFL [/COLOR]'
+menu_name='[COLOR FFC89008]IFL [/COLOR]'
 
 def MAIN(mode,url,page):
 	if mode==20: LANGUAGE_MENU()
