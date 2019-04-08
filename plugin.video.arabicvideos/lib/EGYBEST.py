@@ -24,16 +24,24 @@ def MAIN_MENU():
 	block = html_blocks[0]
 	items=re.findall('a><a href="(.*?)".*?></i>(.*?)<',block,re.DOTALL)
 	for url,title in reversed(items):
-		addDir(menu_name+title,website0a+url,121)
+		if '/my/' not in url:
+			addDir(menu_name+title,website0a+url,121)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
 def FILTERS_MENU(link):
 	filter = link.split('/')[-1]
+	if '/movies/' in link:
+		if filter=='': filter = 'new'
+		elif not any(value in filter for value in ['latest','top','popular']): filter = 'new-'+filter
+	elif '/tv/' in link:
+		if filter=='': filter = 'latest'
+		elif not any(value in filter for value in ['new','top','popular']): filter = 'latest-'+filter
+	filter = filter.replace('-',' + ')
 	#xbmcgui.Dialog().ok(str(link), str(filter))
 	if '/trending/' not in link:
 		addDir(menu_name+'اظهار قائمة الفيديو التي تم اختيارها',link,122,'',1)
-		addDir(menu_name+'[[   ' + filter.replace('-',' + ') + '   ]]',link,122,'',1)
+		addDir(menu_name+'[[   ' + filter + '   ]]',link,122,'',1)
 		addDir(menu_name+'===========================',link,9999)
 	html = openURL(link,'',headers,'','EGYBEST-FILTERS_MENU-1st')
 	html_blocks=re.findall('mainLoad(.*?)</div></div>',html,re.DOTALL)
@@ -136,9 +144,7 @@ def PLAY(url):
 	watchitem = re.findall('x-mpegURL" src="/api/\?call=(.*?)"',html,re.DOTALL)
 	url = website0a + '/api?call=' + watchitem[0]
 	EGUDI, EGUSID, EGUSS = GET_PLAY_TOKENS()
-	if EGUDI=='':
-		GET_USERNAME_PASSWORD()
-		return
+	if EGUDI=='': return
 	headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
 	from requests import request as requests_request
 	response = requests_request('GET', url, headers=headers, allow_redirects=False)
@@ -209,18 +215,18 @@ def GET_PLAY_TOKENS():
 
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
-
-	username = settings.getSetting('egybest.user')
-	password = settings.getSetting('egybest.pass')
+	EGUDI = settings.getSetting('egybest.EGUDI')
+	EGUSID = settings.getSetting('egybest.EGUSID')
+	EGUSS = settings.getSetting('egybest.EGUSS')
+	username = mixARABIC(settings.getSetting('egybest.user'))
+	password = mixARABIC(settings.getSetting('egybest.pass'))
+	#xbmcgui.Dialog().ok(username,password)
 	if username=='' or password=='':
 		settings.setSetting('egybest.EGUDI','')
 		settings.setSetting('egybest.EGUSID','')
 		settings.setSetting('egybest.EGUSS','')
+		GET_USERNAME_PASSWORD()
 		return ['','','']
-
-	EGUDI = settings.getSetting('egybest.EGUDI')
-	EGUSID = settings.getSetting('egybest.EGUSID')
-	EGUSS = settings.getSetting('egybest.EGUSS')
 
 	import requests
 
@@ -242,7 +248,17 @@ def GET_PLAY_TOKENS():
 	randomString = ''.join(random.sample(char_set*15, 15))
 
 	url = "https://ssl.egexa.com/login/"
-	payload = "------WebKitFormBoundary"+randomString+"\r\nContent-Disposition: form-data; name=\"ajax\"\r\n\r\n1\r\n------WebKitFormBoundary"+randomString+"\r\nContent-Disposition: form-data; name=\"do\"\r\n\r\nlogin\r\n------WebKitFormBoundary"+randomString+"\r\nContent-Disposition: form-data; name=\"email\"\r\n\r\n"+username+"\r\n------WebKitFormBoundary"+randomString+"\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\n"+password+"\r\n------WebKitFormBoundary"+randomString+"\r\nContent-Disposition: form-data; name=\"valForm\"\r\n\r\n\r\n------WebKitFormBoundary"+randomString+"--"
+	#recaptcha = '03AOLTBLQDtmeIcT8L59DpznG0p1WCkhhumhekamXOdA1k9K6cSu_EYatvjH-RpkHnQh4TKhJl8RVvs_ipxjc6jIeAYRdbge_GrQdvT4wHWm_Lv6L23ZEgFOlxhavVhwhq2OeDGK-bonSSSIU4qiHOtRfbwW8JfHN-Izxb-TxM6OWZL2juHygljmFCjFX5E_tfY2XJvMqGSjhFa5xYwatX-cmpX7X0My9Q7mkpu86A-JmXtcotcXoN6WAmVwUYomLPPYxpfapJnfWX3Bw833YKD_BDWwvTXjfW_PeNUdJH7FwL9tn5_ghDqVe_lQkhp6ooXmVtjMAn9_M4'
+	#recaptcha = ''
+	payload = ""
+	payload += "------WebKitFormBoundary"+randomString+"\nContent-Disposition: form-data; name=\"ajax\"\n\n1\n"
+	payload += "------WebKitFormBoundary"+randomString+"\nContent-Disposition: form-data; name=\"do\"\n\nlogin\n"
+	payload += "------WebKitFormBoundary"+randomString+"\nContent-Disposition: form-data; name=\"email\"\n\n"+username+"\n"
+	payload += "------WebKitFormBoundary"+randomString+"\nContent-Disposition: form-data; name=\"password\"\n\n"+password+"\n"
+	#payload += "------WebKitFormBoundary"+randomString+"\nContent-Disposition: form-data; name=\"g-recaptcha-response\"\n\n"+recaptcha+"\n"
+	payload += "------WebKitFormBoundary"+randomString+"\nContent-Disposition: form-data; name=\"valForm\"\n\n\n"
+	payload += "------WebKitFormBoundary"+randomString+"--"
+	#xbmc.log(payload, level=xbmc.LOGNOTICE)
 	headers = {
 	'Content-Type': "multipart/form-data; boundary=----WebKitFormBoundary"+randomString,
 	#'Cookie': "PSSID="+PSSID+"; JS_TIMEZONE_OFFSET=18000",
@@ -250,8 +266,15 @@ def GET_PLAY_TOKENS():
 	}
 	response = requests.request('POST', url, data=payload, headers=headers, allow_redirects=False)
 	cookies = response.cookies.get_dict()
+	#xbmc.log(response.text, level=xbmc.LOGNOTICE)
+
+	if '"action":"captcha"' in response.text:
+		xbmcgui.Dialog().ok('مشكلة جدا مزعجة تخص جهازك فقط','موقع ايجي بيست يرفض دخولك اليهم بإستخدام كودي ... حاول فصل الانترنيت واعادة ربطها لتحصل على عنوان IP جديد ... او اعد المحاولة بعد عدة ايام او عدة اسابيع')
+		return ['','','']
+
 	if len(cookies)<3:
 		xbmcgui.Dialog().ok('مشكلة في تسجيل الدخول للموقع','حاول اصلاح اسم الدخول وكلمة السر لكي تتمكن من تشغيل الفيديو بصورة صحيحة')
+		GET_USERNAME_PASSWORD()
 		return ['','','']
 
 	EGUDI = cookies['EGUDI']

@@ -8,10 +8,12 @@ def MAIN(mode,text=''):
 		keyboard=text
 		if keyboard=='': return
 		if mode==1:
-			window_id = xbmcgui.getCurrentWindowDialogId()
-			window = xbmcgui.Window(window_id)
-			keyboard = mixARABIC(keyboard)
-			window.getControl(311).setLabel(keyboard)
+			try:
+				window_id = xbmcgui.getCurrentWindowDialogId()
+				window = xbmcgui.Window(window_id)
+				keyboard = mixARABIC(keyboard)
+				window.getControl(311).setLabel(keyboard)
+			except: pass
 		elif mode==0:
 			ttype='X'
 			check=isinstance(keyboard, unicode)
