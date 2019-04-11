@@ -309,6 +309,7 @@ def UPBOM(url):
 	payload = { 'id' : id , 'op' : 'download2' }
 	data = urllib.urlencode(payload)
 	html = openURL(url,data,headers,'','RESOLVERS-UPBOM-1st')
+	#xbmc.log(html, level=xbmc.LOGNOTICE)
 	items = re.findall('direct_link.*?href="(.*?)"',html,re.DOTALL)
 	return [ items[0].rstrip('/') ]
 
