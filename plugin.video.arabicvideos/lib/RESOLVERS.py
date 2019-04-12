@@ -59,7 +59,6 @@ def RESOLVABLE(url):
 	result2 = ''
 	if   any(value in url2 for value in doNOTresolveMElist): return ''
 	elif 'go.akoam.net'	in url2 and '?' not in url2: result1 = 'akoam'
-	#elif 'go.akoam.net'	in url2 and '?estream' in url2: result1 = 'estream'
 	elif 'go.akoam.net'	in url2 and '?' in url2: result2 = url2.split('?')[1]
 	elif 'arabloads'	in url2: result1 = 'arabloads'
 	elif 'archive'		in url2: result1 = 'archive'
@@ -88,6 +87,7 @@ def RESOLVABLE(url):
 	elif 'vcstream' 	in url2: result1 = 'vcstream'
 	elif 'vev.io'	 	in url2: result1 = 'vev'
 	elif 'vidbob'		in url2: result1 = 'vidbob'
+	elif 'playr.4helal'	in url2: result1 = 'helal'
 	#elif 'vidbom'		in url2: result1 = 'vidbom'
 	elif 'vidhd' 		in url2: result1 = 'vidhd'
 	elif 'vidoza' 		in url2: result1 = 'vidoza'
@@ -100,8 +100,9 @@ def RESOLVABLE(url):
 		resolvable = urlresolver_HostedMediaFile(url).valid_url()
 		if resolvable:
 			result2 = url.split('//')[1].split('/')[0]
-	if result1!='': result = ' سيرفر معروف ' + result1
-	elif result2!='': result = 'سيرفر خارجي ' + result2
+	if result1 in ['akoam','helal']: result = ' سيرفر خاص ' + result1
+	elif result1!='': result = ' سيرفر عام معروف ' + result1
+	elif result2!='': result = 'سيرفر عام خارجي ' + result2
 	else: result = ''
 	return result
 
@@ -136,6 +137,7 @@ def RESOLVE(url):
 	elif 'uqload' 		in url2: videoURL = UQLOAD(url)
 	elif 'vcstream' 	in url2: videoURL = VCSTREAM(url)
 	elif 'vev.io'	 	in url2: videoURL = VEVIO(url)
+	elif 'playr.4helal'	in url2: videoURL = HELAL(url)
 	elif 'vidbob'		in url2: videoURL = VIDBOB(url)
 	#elif 'vidbom'		in url2: videoURL = VIDBOM(url)
 	elif 'vidhd' 		in url2: videoURL = VIDHD(url)
@@ -146,8 +148,10 @@ def RESOLVE(url):
 	elif 'youtu'	 	in url2: videoURL = YOUTUBE(url)
 	elif 'zippyshare'	in url2: videoURL = ZIPPYSHARE(url)
 	else:
+		#xbmcgui.Dialog().ok(str(url),str(url2))
 		resolvable = urlresolver_HostedMediaFile(url).valid_url()
 		if resolvable:
+			#xbmcgui.Dialog().ok(str(url),str(url2))
 			videoURL = URLRESOLVER(url)
 			#xbmcgui.Dialog().ok(str(videoURL),'')
 	return videoURL
@@ -166,9 +170,9 @@ def SERVERS(linkLIST,script_name=''):
 		if server=='':
 			#xbmcgui.Dialog().ok(link,'')
 			if 'akoam' in link and '?' in link:
-				serverNAME = 'سيرفر مجهول ' + link.split('?')[1]
+				serverNAME = 'سيرفر عام مجهول ' + link.split('?')[1]
 			else:
-				serverNAME = 'سيرفر مجهول ' + link.split('//')[1].split('/')[0]
+				serverNAME = 'سيرفر عام مجهول ' + link.split('//')[1].split('/')[0]
 			#if CHECK(link)=='unknown': unknownLIST.append(link)
 		else:
 			serverNAME = server
@@ -201,6 +205,7 @@ def PLAY(linkLIST,script_name,play='yes'):
 		else:
 			videoURL = videoURL[0]
 			if play=='yes': PLAY_VIDEO(videoURL,script_name,'yes')
+	#xbmcgui.Dialog().ok(str(videoURL),'')
 	return videoURL
 
 
@@ -241,10 +246,11 @@ def AKOAMNET(link):
 		url = items[0].replace('\/','/')
 		url = url.rstrip('/')
 		if 'http' not in url: url = 'http:' + url
-		#xbmcgui.Dialog().ok(str(url),str(items))
+		#xbmcgui.Dialog().ok(str(url),str(link))
 		if '?' in link:
 			url = RESOLVE(url)
-			url = url[0]
+			try: url = url[0]
+			except: url = ''
 		url1 = url
 		#hash_data = re.findall('hash_data":"(.*?)"',html,re.DOTALL|re.IGNORECASE)[0]
 		#response = requests_request('GET', url_akoam, headers='', data='', allow_redirects=False)
@@ -436,6 +442,15 @@ def VIDBOM_PROBLEM(url):
 	xbmc.sleep(1500)
 	items = re.findall('file:"(.*?)"',html,re.DOTALL)
 	return [ items[0].rstrip('/') ]
+
+def HELAL(url):
+	headers = { 'User-Agent' : '' }
+	#url = url.replace('http:','https:')
+	html = openURL(url,'',headers,'','RESOLVERS-VIDBOB-1st')
+	items = re.findall('file:"(.*?)"',html,re.DOTALL)
+	#xbmcgui.Dialog().ok(items[0].rstrip('/'),'')
+	url = items[0].replace('https:','http:')
+	return [ url.rstrip('/') ]
 
 def VIDBOB(url):
 	headers = { 'User-Agent' : '' }

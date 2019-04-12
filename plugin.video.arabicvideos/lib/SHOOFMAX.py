@@ -138,27 +138,27 @@ def PLAY(url):
 		filename = filename.replace('.mp4','')
 		filename = filename.replace('-','')
 		if 'backup' in server:
-			server = 'backup'
+			server = 'backup server'
 			url = backup_origin_link + link
 		else:
-			server = 'main'
+			server = 'main server'
 			url = origin_link + link
 		items_url.append(url)
-		items_name.append('mp4: '+server+' server '+filename)
+		items_name.append('mp4: '+server+' '+filename)
 	links = re.findall('hls: (.*?)_link\+"(.*?)"',block,re.DOTALL)
 	for server,link in links:
 		if 'backup' in server:
-			server = 'backup'
+			server = 'backup server'
 			url = backup_origin_link + link
 		else:
-			server = 'main'
+			server = 'main server'
 			url = origin_link + link
 		html = openURL(url,'','','','SHOOFMAX-PLAY-2nd')
 		items = re.findall('RESOLUTION=(.*?),.*?\n(.*?)m3u8',html,re.DOTALL)
 		for quality,link in items:
 			url2 = url.replace('variant.m3u8','') + link + 'm3u8'
 			items_url.append(url2)
-			items_name.append('m3u8: '+server+' server '+quality)
+			items_name.append('m3u8: '+server+' '+quality)
 	selection = xbmcgui.Dialog().select('Select Video Quality:', items_name)
 	if selection == -1 : return
 	url = items_url[selection]

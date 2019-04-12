@@ -141,7 +141,8 @@ def PLAY(link):
 	#xbmcgui.Dialog().ok(link,str(len(blocks)-int(episode)-1))
 	linkLIST = []
 	serversDICT = {'1423075862':'dailymotion','1477487601':'estream','1505328404':'streamango',
-		'1423080015':'flashx','1458117295':'openload','1423079306':'vimple','1430052371':'ok.ru'}
+		'1423080015':'flashx','1458117295':'openload','1423079306':'vimple','1430052371':'ok.ru',
+		'1477488213':'thevid'}
 	items = re.findall('download_btn\' target=\'_blank\' href=\'(.*?)\'',block,re.DOTALL)
 	for link in items:
 		linkLIST.append(link)
