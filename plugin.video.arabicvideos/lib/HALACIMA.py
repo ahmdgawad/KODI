@@ -3,6 +3,7 @@ from LIBRARY import *
 
 website0a = 'https://www.halacima.net'
 script_name='HALACIMA'
+headers = { 'User-Agent' : '' }
 menu_name='[COLOR FFC89008]HLA [/COLOR]'
 
 def MAIN(mode,url,page):
@@ -20,7 +21,8 @@ def MENU():
 	addDir(menu_name+'جديد المسلسلات','',84,icon,0)
 	addDir(menu_name+'افلام ومسلسلات مميزة','',85,icon,0)
 	addDir(menu_name+'الاكثر مشاهدة','',86,icon,0)
-	html = openURL(website0a,'','','','HALACIMA-MENU-1st')
+	html = openURL(website0a,'',headers,'','HALACIMA-MENU-1st')
+	#xbmc.log(html, level=xbmc.LOGNOTICE)
 	html_blocks = re.findall('dropdown(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('<a href="(.*?)".*?>(.*?)<',block,re.DOTALL)
@@ -34,15 +36,16 @@ def MENU():
 	return
 
 def ITEMS(url,html='',type='',page=0):
+	headers = { 'User-Agent' : '' }
 	if type=='':
 		if html=='':
-			html = openURL(url,'','','','HALACIMA-ITEMS-1st')
+			html = openURL(url,'',headers,'','HALACIMA-ITEMS-1st')
 		html_blocks = re.findall('art_list(.*?)col-md-12',html,re.DOTALL)
 		block = html_blocks[0]
 	else:
 		if page==0: url = website0a + '/ajax/getItem'
 		else: url = website0a + '/ajax/loadMore'
-		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
+		headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
 		payload = { 'Ajax' : '1' , 'item' : type , 'offset' : page*50 }
 		data = urllib.urlencode(payload)
 		block = openURL(url,data,headers,'','HALACIMA-ITEMS-2nd')
@@ -79,7 +82,8 @@ def PLAY(url):
 	urlLIST = []
 	dataLIST = []
 	linkLIST = []
-	html = openURL(url,'','','','HALACIMA-PLAY-1st')
+	headers = { 'User-Agent' : '' }
+	html = openURL(url,'',headers,'','HALACIMA-PLAY-1st')
 	html_blocks = re.findall('class="download(.*?)div',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('href="(.*?)"',block,re.DOTALL)
@@ -87,13 +91,13 @@ def PLAY(url):
 		if 'http' not in link: link = 'http:' + link
 		linkLIST.append(link)
 	url = url.replace('/article/','/online/')
-	html = openURL(url,'','','','HALACIMA-PLAY-2nd')
+	html = openURL(url,'',headers,'','HALACIMA-PLAY-2nd')
 	html_blocks = re.findall('artId.*?(.*?)col-sm-12',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall(' = \'(.*?)\'',block,re.DOTALL)
 	artID = items[0]
 	url = website0a + '/ajax/getVideoPlayer'
-	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
+	headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
 	items = re.findall('getVideoPlayer\(\'(.*?)\'',block,re.DOTALL)
 	for server in items:
 		payload = { 'Ajax' : '1' , 'art' : artID , 'server' : server }
@@ -120,10 +124,11 @@ def SEARCH():
 	if search == '': return
 	#search = search.replace(' ','+')
 	url = website0a + '/search.html'
-	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
+	headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
 	payload = { 'name' : search , 'search' : 'البحث' }
 	data = urllib.urlencode(payload)
 	html = openURL(url,data,headers,'','HALACIMA-SEARCH-1st')
+	#xbmc.log(html, level=xbmc.LOGNOTICE)
 	if 'art_list' in html: ITEMS('',html)
 	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
