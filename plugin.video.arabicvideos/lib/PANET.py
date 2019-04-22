@@ -144,7 +144,13 @@ def SEARCH(url,search=''):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','-')
-	type=url.split('/')[-1]
+	if url=='':
+		typeLIST = [ 'movies' , 'series']
+		nameLIST = [ 'بحث عن افلام' , 'بحث عن مسلسلات']
+		selection = xbmcgui.Dialog().select('اختر النوع المناسب:', nameLIST)
+		if selection == -1 : return ''
+		type = typeLIST[selection]
+	else: type=url.split('/')[-1]
 	data = 'query='+new_search+'&searchDomain='+type
 	html = openURL(website0a+'/search',data,headers,'','PANET-SEARCH-1st')
 	#xbmcgui.Dialog().ok(html, new_search)
