@@ -6,18 +6,18 @@ script_name='HALACIMA'
 headers = { 'User-Agent' : '' }
 menu_name='[COLOR FFC89008]HLA [/COLOR]'
 
-def MAIN(mode,url,page):
+def MAIN(mode,url,page,text):
 	if mode==80: MENU()
 	elif mode==81: ITEMS(url)
 	elif mode==82: PLAY(url)
-	elif mode==83: SEARCH()
 	elif mode==84: ITEMS('','','lastRecent',page)
 	elif mode==85: ITEMS('','','pin',page)
 	elif mode==86: ITEMS('','','views',page)
+	elif mode==89: SEARCH(text)
 	return
 
 def MENU():
-	addDir(menu_name+'بحث في الموقع','',83)
+	addDir(menu_name+'بحث في الموقع','',89)
 	addDir(menu_name+'جديد المسلسلات','',84,icon,0)
 	addDir(menu_name+'افلام ومسلسلات مميزة','',85,icon,0)
 	addDir(menu_name+'الاكثر مشاهدة','',86,icon,0)
@@ -119,8 +119,8 @@ def PLAY(url):
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	return
 
-def SEARCH():
-	search = KEYBOARD()
+def SEARCH(search=''):
+	if search=='': search = KEYBOARD()
 	if search == '': return
 	#search = search.replace(' ','+')
 	url = website0a + '/search.html'

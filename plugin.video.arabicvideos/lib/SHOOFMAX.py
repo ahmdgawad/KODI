@@ -6,20 +6,20 @@ website0b = 'https://static.shoofmax.com'
 script_name = 'SHOOFMAX'
 menu_name='[COLOR FFC89008]SHF [/COLOR]'
 
-def MAIN(mode,url):
+def MAIN(mode,url,text):
 	if mode==50: MAIN_MENU()
 	elif mode==51: TITLES(url)
 	elif mode==52: EPISODES(url)
 	elif mode==53: PLAY(url)
-	elif mode==54: SEARCH()
 	elif mode==55: MOVIES_MENU()
 	elif mode==56: SERIES_MENU()
 	elif mode==57: FILTERS(url,1)
 	elif mode==58: FILTERS(url,2)
+	elif mode==59: SEARCH(text)
 	return
 
 def MAIN_MENU():
-	addDir(menu_name+'بحث في الموقع','',54)
+	addDir(menu_name+'بحث في الموقع','',59)
 	addDir(menu_name+'المسلسلات','',56)
 	addDir(menu_name+'الافلام','',55)
 	xbmcplugin.endOfDirectory(addon_handle)
@@ -166,38 +166,6 @@ def PLAY(url):
 	PLAY_VIDEO(url,script_name)
 	return
 
-def SEARCH():
-	search = KEYBOARD()
-	if search == '': return
-	new_search = search.replace(' ','%20')
-	from requests import request as requests_request
-	response = requests_request('GET', website0a, data='', headers='')
-	html = response.text
-	cookies = response.cookies.get_dict()
-	cookie = cookies['session']
-	block = re.findall('name="_csrf" value="(.*?)">',html,re.DOTALL)
-	csrf = block[0]
-	payload = '_csrf=' + csrf + '&q=' + quote(new_search)
-	headers = { 'content-type':'application/x-www-form-urlencoded' , 'cookie':'session='+cookie }
-	url = website0a + "/search"
-	response = requests_request('POST', url, data=payload, headers=headers)
-	html = response.text
-	html_blocks = re.findall('general-body(.*?)search-bottom-padding',html,re.DOTALL)
-	block = html_blocks[0]
-	items = re.findall('href="(.*?)".*?background-image: url\((.*?)\).*?<span>(.*?)</span>',block,re.DOTALL)
-	for link,img,title in items:
-		title = title.replace('\n','')
-		url = website0a + link
-		if '/program/' in url:
-			if '?ep=' in url:
-				url = url.replace('?ep=1','?ep=0')
-				url = url + '=' + quote(title.encode('utf8')) + '=' + img
-				addDir(menu_name+'[[ '+title+' ]]',url,52,img)
-			else:
-				addLink(menu_name+title,url,53,img)
-	xbmcplugin.endOfDirectory(addon_handle)
-	return
-
 def FILTERS(url,type):
 	#xbmcgui.Dialog().ok(url,url)
 	if 'series' in url: url2 = website0a + '/genre/مسلسل'
@@ -219,6 +187,41 @@ def FILTERS(url,type):
 		for country,title in reversed(items):
 			addDir(menu_name+title,url+'?country='+country+'&'+subgenre,51)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
+
+def SEARCH(search=''):
+	if search=='': search = KEYBOARD()
+	if search == '': return
+	#xbmcgui.Dialog().ok(search,search)
+	new_search = search.replace(' ','%20')
+	from requests import request as requests_request
+	response = requests_request('GET', website0a, data='', headers='')
+	html = response.text
+	cookies = response.cookies.get_dict()
+	cookie = cookies['session']
+	block = re.findall('name="_csrf" value="(.*?)">',html,re.DOTALL)
+	csrf = block[0]
+	payload = '_csrf=' + csrf + '&q=' + quote(new_search)
+	headers = { 'content-type':'application/x-www-form-urlencoded' , 'cookie':'session='+cookie }
+	url = website0a + "/search"
+	response = requests_request('POST', url, data=payload, headers=headers)
+	html = response.text
+	html_blocks = re.findall('general-body(.*?)search-bottom-padding',html,re.DOTALL)
+	block = html_blocks[0]
+	items = re.findall('href="(.*?)".*?background-image: url\((.*?)\).*?<span>(.*?)</span>',block,re.DOTALL)
+	if items:
+		for link,img,title in items:
+			title = title.replace('\n','')
+			url = website0a + link
+			if '/program/' in url:
+				if '?ep=' in url:
+					url = url.replace('?ep=1','?ep=0')
+					url = url + '=' + quote(title.encode('utf8')) + '=' + img
+					addDir(menu_name+'[[ '+title+' ]]',url,52,img)
+				else:
+					addLink(menu_name+title,url,53,img)
+		xbmcplugin.endOfDirectory(addon_handle)
+	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

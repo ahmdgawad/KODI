@@ -7,20 +7,20 @@ headers = { 'User-Agent' : '' }
 script_name = 'PANET'
 menu_name='[COLOR FFC89008]PNT [/COLOR]'
 
-def MAIN(mode,url):
+def MAIN(mode,url,text):
 	if mode==30: MENU()
 	elif mode==31: CATEGORIES(url,'3')
 	elif mode==32: ITEMS(url)
 	elif mode==33: PLAY(url)
-	elif mode==34: SEARCH(url)
 	elif mode==35: CATEGORIES(url,'1')
 	elif mode==36: CATEGORIES(url,'2')
 	elif mode==37: CATEGORIES(url,'4')
+	elif mode==39: SEARCH(url,text)
 	return
 
 def MENU():
-	addDir(menu_name+'بحث عن افلام',website0a+'/search/result/title/movies',34)
-	addDir(menu_name+'بحث عن مسلسلات',website0a+'/search/result/title/series',34)
+	addDir(menu_name+'بحث عن افلام',website0a+'/search/result/title/movies',39)
+	addDir(menu_name+'بحث عن مسلسلات',website0a+'/search/result/title/series',39)
 	addDir(menu_name+'مسلسلات وبرامج',website0a+'/series',31)
 	addDir(menu_name+'المسلسلات الاكثر مشاهدة',website0a+'/series',37)
 	addDir(menu_name+'افلام حسب النوع',website0a+'/movies',35)
@@ -140,8 +140,8 @@ def PLAY(url):
 	PLAY_VIDEO(url,script_name)
 	return
 
-def SEARCH(url):
-	search = KEYBOARD()
+def SEARCH(url,search=''):
+	if search=='': search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','-')
 	type=url.split('/')[-1]
@@ -149,12 +149,14 @@ def SEARCH(url):
 	html = openURL(website0a+'/search',data,headers,'','PANET-SEARCH-1st')
 	#xbmcgui.Dialog().ok(html, new_search)
 	items=re.findall('title":"(.*?)".*?link":"(.*?)"',html,re.DOTALL)
-	for title,link in items:
-		url = website0a + link.replace('\/','/')
-		#xbmcgui.Dialog().ok(title, url.split('/')[-1]   )
-		if type=='movies': addLink(menu_name+title,url,33)
-		else: addDir(menu_name+title,url+'/1',32)
-	xbmcplugin.endOfDirectory(addon_handle)
+	if items:
+		for title,link in items:
+			url = website0a + link.replace('\/','/')
+			#xbmcgui.Dialog().ok(title, url.split('/')[-1]   )
+			if type=='movies': addLink(menu_name+title,url,33)
+			else: addDir(menu_name+title,url+'/1',32)
+		xbmcplugin.endOfDirectory(addon_handle)
+	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

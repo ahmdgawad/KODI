@@ -10,15 +10,15 @@ website1  = 'http://93.190.24.122'
 script_name = 'IFILM'
 menu_name='[COLOR FFC89008]IFL [/COLOR]'
 
-def MAIN(mode,url,page):
+def MAIN(mode,url,page,text):
 	if mode==20: LANGUAGE_MENU()
 	elif mode==21: MAIN_MENU(url)
 	elif mode==22: TITLES(url,page)
 	elif mode==23: EPISODES(url,page)
 	elif mode==24: PLAY(url)
 	elif mode==25: MUSIC_MENU(url)
-	elif mode==26: SEARCH(url)
 	elif mode==27: LIVE(url)
+	elif mode==29: SEARCH(url,text)
 	return
 
 def LANGUAGE_MENU():
@@ -54,7 +54,7 @@ def MAIN_MENU(website0):
 		name3 = 'سريال ها مرتب حروف الفبا'
 		name4 = 'پخش زنده از اي فيلم كانال'
 	addDir(menu_name+name4,website0,27,'','','no')
-	addDir(menu_name+name,website0,26)
+	addDir(menu_name+name,website0,29)
 	html_blocks=re.findall('main-body.*?menu(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
@@ -253,44 +253,48 @@ def LANG(url):
 	elif website0d in url: lang = 'fa2'
 	return lang
 
-def SEARCH(website0):
-	search = KEYBOARD()
-	if search == '': return
-	new_search = search.replace(' ','+')
-	lang = LANG(website0)
-	url = website0 + "/Home/Search?searchstring=" + new_search
-	html = openURL(url,'','','','IFILM-SEARCH_TITLES-1st')
-	items = re.findall('"ImageAddress_S":"(.*?)".*?"CategoryId":(.*?),"Id":(.*?),"Title":(.*?),',html,re.DOTALL)
-	for img,category,id,title in items:
-		if category=='3' or category=='7':
-			title = title.replace('\\','')
-			title = title.replace('"','')
-			if category=='3':
-				type = 'Series'
-				if lang=='ar': name = 'مسلسل : '
-				elif lang=='en': name = 'Series : '
-				elif lang=='fa': name = 'سريال ها : '
-				elif lang=='fa2': name = 'سريال ها : '
-			if category=='7':
-				type = 'Program'
-				if lang=='ar': name = 'برنامج : '
-				elif lang=='en': name = 'Program : '
-				elif lang=='fa': name = 'برنامه ها : '
-				elif lang=='fa2': name = 'برنامه ها : '
-			title = name + title
-			link = website0 + '/' + type + '/Content/' + id
-			img = website0 + quote(img)
-			addDir(menu_name+title,link,23,img,101)
-	xbmcplugin.endOfDirectory(addon_handle)
+def LIVE(url):
+	lang = LANG(url)
+	url2 = url + '/Home/Live'
+	html = openURL(url2,'','','','IFILM-SEARCH_TITLES-1st')
+	items = re.findall('source src="(.*?)"',html,re.DOTALL)
+	url3 = items[0]
+	PLAY_VIDEO(url3,script_name,'no')
 	return
 
-def LIVE(website0):
-	lang = LANG(website0)
-	url = website0 + '/Home/Live'
-	html = openURL(url,'','','','IFILM-SEARCH_TITLES-1st')
-	items = re.findall('source src="(.*?)"',html,re.DOTALL)
-	url = items[0]
-	PLAY_VIDEO(url,script_name,'no')
+def SEARCH(url,search=''):
+	if search=='': search = KEYBOARD()
+	if search == '': return
+	if url=='': url = website0a
+	new_search = search.replace(' ','+')
+	lang = LANG(url)
+	url2 = url + "/Home/Search?searchstring=" + new_search
+	#xbmcgui.Dialog().ok(lang,url2)
+	html = openURL(url2,'','','','IFILM-SEARCH_TITLES-1st')
+	items = re.findall('"ImageAddress_S":"(.*?)".*?"CategoryId":(.*?),"Id":(.*?),"Title":(.*?),',html,re.DOTALL)
+	if items:
+		for img,category,id,title in items:
+			if category=='3' or category=='7':
+				title = title.replace('\\','')
+				title = title.replace('"','')
+				if category=='3':
+					type = 'Series'
+					if lang=='ar': name = 'مسلسل : '
+					elif lang=='en': name = 'Series : '
+					elif lang=='fa': name = 'سريال ها : '
+					elif lang=='fa2': name = 'سريال ها : '
+				if category=='7':
+					type = 'Program'
+					if lang=='ar': name = 'برنامج : '
+					elif lang=='en': name = 'Program : '
+					elif lang=='fa': name = 'برنامه ها : '
+					elif lang=='fa2': name = 'برنامه ها : '
+				title = name + title
+				link = url + '/' + type + '/Content/' + id
+				img = url + quote(img)
+				addDir(menu_name+title,link,23,img,101)
+		xbmcplugin.endOfDirectory(addon_handle)
+	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

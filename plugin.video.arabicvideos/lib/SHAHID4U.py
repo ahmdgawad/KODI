@@ -6,15 +6,15 @@ script_name='SHAHID4U'
 headers = { 'User-Agent' : '' }
 menu_name='[COLOR FFC89008]SHA [/COLOR]'
 
-def MAIN(mode,url):
+def MAIN(mode,url,text):
 	if mode==110: MENU()
 	elif mode==111: ITEMS(url)
 	elif mode==112: PLAY(url)
-	elif mode==113: SEARCH()
+	elif mode==119: SEARCH(text)
 	return
 
 def MENU():
-	addDir(menu_name+'بحث في الموقع','',113)
+	addDir(menu_name+'بحث في الموقع','',119)
 	addDir(menu_name+'المضاف حديثا',website0a,111)
 	html = openURL(website0a,'',headers,'','SHAHID4U-MENU-1st')
 	html_blocks = re.findall('menu-master(.*?)header>',html,re.DOTALL)
@@ -113,8 +113,8 @@ def PLAY(url):
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	return
 
-def SEARCH():
-	search = KEYBOARD()
+def SEARCH(search=''):
+	if search=='': search = KEYBOARD()
 	if search == '': return
 	search = search.replace(' ','+')
 	url = website0a + '/?s=' + search

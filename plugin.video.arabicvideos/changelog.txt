@@ -126,3 +126,7 @@ Added NT & PL Tv channels
 v3.9.0	2019-03-31
 Added initials to all menus
 
+
+v4.0.0	2019-04-22
+Added Global Search
+

@@ -6,16 +6,16 @@ script_name='4HELAL'
 headers = { 'User-Agent' : '' }
 menu_name='[COLOR FFC89008]HEL [/COLOR]'
 
-def MAIN(mode,url):
+def MAIN(mode,url,text):
 	if mode==90: MENU()
 	elif mode==91: ITEMS(url)
 	elif mode==92: PLAY(url)
-	elif mode==93: SEARCH()
 	elif mode==94: LATEST()
+	elif mode==99: SEARCH(text)
 	return
 
 def MENU():
-	addDir(menu_name+'بحث في الموقع','',93)
+	addDir(menu_name+'بحث في الموقع','',99)
 	addDir(menu_name+'المضاف حديثا','',94)
 	addDir(menu_name+'جديد الموقع',website0a,91)
 	html = openURL(website0a,'',headers,'','4HELAL-MENU-1st')
@@ -98,19 +98,6 @@ def PLAY(url):
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	return
 
-def SEARCH():
-	search = KEYBOARD()
-	if search == '': return
-	#search = search.replace(' ','+')
-	url = website0a + '/search.php'
-	headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
-	payload = { 't' : search }
-	data = urllib.urlencode(payload)
-	html = openURL(url,data,headers,'','4HELAL-SEARCH-1st')
-	if 'movies-items' in html: ITEMS('',html)
-	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
-	return
-
 def LATEST():
 	html = openURL(website0a,'',headers,'','4HELAL-LATEST-1st')
 	html_blocks = re.findall('index-last-movie(.*?)index-slider-movie',html,re.DOTALL)
@@ -122,6 +109,19 @@ def LATEST():
 		else:
 			addDir(menu_name+title,link,91,img)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
+
+def SEARCH(search=''):
+	if search=='': search = KEYBOARD()
+	if search == '': return
+	#search = search.replace(' ','+')
+	url = website0a + '/search.php'
+	headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
+	payload = { 't' : search }
+	data = urllib.urlencode(payload)
+	html = openURL(url,data,headers,'','4HELAL-SEARCH-1st')
+	if 'movies-items' in html: ITEMS('',html)
+	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

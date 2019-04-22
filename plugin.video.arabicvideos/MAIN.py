@@ -5,10 +5,12 @@ def MAIN():
 	#addLink(menu_name+'Testing - watched enabled','',9,'','','yes')
 	#addLink(menu_name+'Testing - watched disabled','',9,'','','no')
 
-	addDir('ـMessage to developer    رسالة الى المبرمج'+'   .17','',2)
-	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'   .16','',3)
-	addDir('ـProblems & Solutions    مشاكل وحلول'+'   .15','',1000)
-	addLink('فحص المواقع المشفرة'+'   .14','',4)
+	addDir('ـMessage to developer    رسالة الى المبرمج'+'   .18','',2)
+	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'   .17','',3)
+	addDir('ـProblems & Solutions    مشاكل وحلول'+'   .16','',1000)
+	addLink('فحص المواقع المشفرة'+'   .15','',4)
+	addDir('=========================','',9999)
+	addDir('بحث في جميع مواقع البرنامج'+'   .14','',6)
 	addDir('=========================','',9999)
 
 	addDir('[COLOR FFC89008]مواقع سيرفرات عامة - كثيرة المشاكل[/COLOR]','',5)
@@ -66,25 +68,25 @@ try: page=int(params["page"])
 except: pass
 try: category=params["category"]
 except: pass
-try: text=params["text"]
+try: text=urllib2.unquote(params["text"])
 except: pass
 
 if mode=='': MAIN()
-elif mode>=10 and mode<=19: from lib.ALARAB import MAIN ; MAIN(mode,url)
-elif mode>=20 and mode<=29: from lib.IFILM import MAIN ; MAIN(mode,url,page)
-elif mode>=30 and mode<=39: from lib.PANET import MAIN ; MAIN(mode,url)
-elif mode>=40 and mode<=49: from lib.ALMAAREF import MAIN ; MAIN(mode,url,category)
-elif mode>=50 and mode<=59: from lib.SHOOFMAX import MAIN ; MAIN(mode,url)
-elif mode>=60 and mode<=69: from lib.ALFATIMI import MAIN ; MAIN(mode,url,category)
-elif mode>=70 and mode<=79: from lib.AKOAM import MAIN ; MAIN(mode,url)
-elif mode>=80 and mode<=89: from lib.HALACIMA import MAIN ; MAIN(mode,url,page)
-elif mode>=90 and mode<=99: from lib.HELAL import MAIN ; MAIN(mode,url)
-elif mode>=100 and mode<=109: from lib.TV1 import MAIN ; MAIN(mode,url)
-elif mode>=110 and mode<=119: from lib.SHAHID4U import MAIN ; MAIN(mode,url)
-elif mode>=120 and mode<=129: from lib.EGYBEST import MAIN ; MAIN(mode,url,page)
-elif mode>=130 and mode<=139: from lib.ALKAWTHAR import MAIN ; MAIN(mode,url,page)
-
 elif mode>=0 and mode<=9: from lib.PROGRAM import MAIN ; MAIN(mode,text)
+elif mode>=10 and mode<=19: from lib.ALARAB import MAIN ; MAIN(mode,url,text)
+elif mode>=20 and mode<=29: from lib.IFILM import MAIN ; MAIN(mode,url,page,text)
+elif mode>=30 and mode<=39: from lib.PANET import MAIN ; MAIN(mode,url,text)
+elif mode>=40 and mode<=49: from lib.ALMAAREF import MAIN ; MAIN(mode,url,category,text)
+elif mode>=50 and mode<=59: from lib.SHOOFMAX import MAIN ; MAIN(mode,url,text)
+elif mode>=60 and mode<=69: from lib.ALFATIMI import MAIN ; MAIN(mode,url,category,text)
+elif mode>=70 and mode<=79: from lib.AKOAM import MAIN ; MAIN(mode,url,text)
+elif mode>=80 and mode<=89: from lib.HALACIMA import MAIN ; MAIN(mode,url,page,text)
+elif mode>=90 and mode<=99: from lib.HELAL import MAIN ; MAIN(mode,url,text)
+elif mode>=100 and mode<=109: from lib.TV1 import MAIN ; MAIN(mode,url)
+elif mode>=110 and mode<=119: from lib.SHAHID4U import MAIN ; MAIN(mode,url,text)
+elif mode>=120 and mode<=129: from lib.EGYBEST import MAIN ; MAIN(mode,url,page,text)
+elif mode>=130 and mode<=139: from lib.ALKAWTHAR import MAIN ; MAIN(mode,url,page,text)
+
 elif mode>=1000 and mode<=1009: from lib.PROBLEMS import MAIN ; MAIN(mode)
 
 

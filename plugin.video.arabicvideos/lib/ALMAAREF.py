@@ -8,9 +8,9 @@ headers = { 'User-Agent' : '' }
 menu_name='[COLOR FFC89008]MRF [/COLOR]'
 
 
-def MAIN(mode,url,category):
+def MAIN(mode,url,category,text):
 	if mode==40: MENU()
-	elif mode==41: SEARCH()
+	elif mode==41: LIVE()
 	elif mode==42: EPISODES(url)
 	elif mode==43: PLAY(url)
 	elif mode==44: CATEGORIES(url,category)
@@ -18,12 +18,12 @@ def MAIN(mode,url,category):
 	elif mode==46: TITLES(url,2)
 	elif mode==47: TITLES(url,3)
 	elif mode==48: PROGRAMS()
-	elif mode==49: LIVE()
+	elif mode==49: SEARCH(text)
 	return
 
 def MENU():
-	addLink(menu_name+'البث الحي لقناة المعارف','',49,'','','no')
-	addDir(menu_name+'بحث في الموقع','',41)
+	addLink(menu_name+'البث الحي لقناة المعارف','',41,'','','no')
+	addDir(menu_name+'بحث في الموقع','',49)
 	addDir(menu_name+'البرامج الحالية','',48)
 	html = openURL(website0a,'','','','ALMAAREF-MENU-1st')
 	items = re.findall('<h2><a href="(.*?)">(.*?)</a></h2>',html,re.DOTALL)
@@ -137,14 +137,6 @@ def CATEGORIES(url,category):
 	else: TITLES(url,3)
 	return
 	
-def SEARCH():
-	search = KEYBOARD()
-	if search == '': return
-	new_search = search.replace(' ','%20')
-	url = website0b + '/?s=' + new_search
-	TITLES(url,3)
-	return
-
 def PROGRAMS():
 	#xbmcgui.Dialog().ok(type, url)
 	html = openURL(website0a,'','','','ALMAAREF-PROGRAMS-1st')
@@ -163,3 +155,12 @@ def LIVE():
 	url = unquote(items[0])
 	PLAY_VIDEO(url,script_name,'no')
 	return
+
+def SEARCH(search=''):
+	if search=='': search = KEYBOARD()
+	if search == '': return
+	new_search = search.replace(' ','%20')
+	url = website0b + '/?s=' + new_search
+	TITLES(url,3)
+	return
+

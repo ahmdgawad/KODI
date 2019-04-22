@@ -12,18 +12,18 @@ script_name = 'ALARAB'
 headers = { 'User-Agent' : '' }
 menu_name='[COLOR FFC89008]KLA [/COLOR]'
 
-def MAIN(mode,url):
+def MAIN(mode,url,text):
 	if mode==10: MENU()
 	elif mode==11: ITEMS(url)
 	elif mode==12: PLAY(url)
-	elif mode==13: SEARCH()
 	elif mode==14: LATEST()
 	#elif mode==15: ITEMS('https://vod.alarab.com/ramadan2016/مصرية')
 	#elif mode==15: RAMADAN('?year=2018')
+	elif mode==19: SEARCH(text)
 	return
 
 def MENU():
-	addDir(menu_name+'بحث في الموقع','',13)
+	addDir(menu_name+'بحث في الموقع','',19)
 	addDir(menu_name+'مسلسلات جديدة','',14)
 	#addDir(menu_name+'مسلسلات رمضان','',15)
 	html = openURL(website0b,'',headers,'','ALARAB-MENU-1st')
@@ -121,15 +121,6 @@ def PLAY(url):
 	PLAY_VIDEO(url,script_name)
 	return
 
-def SEARCH():
-	search = KEYBOARD()
-	if search == '': return
-	new_search = search.replace(' ','%20')
-	searchlink = website0a + "/q/" + new_search
-	#xbmcgui.Dialog().ok('',searchlink)
-	ITEMS(searchlink)
-	return
-
 """
 def RAMADAN(url):
 	year = url.split('?year=')[1]
@@ -150,4 +141,13 @@ def RAMADAN_YEARS_MENU():
 		addDir(menu_name+str(year),url,16)
 	xbmcplugin.endOfDirectory(addon_handle)
 """
+
+def SEARCH(search=''):
+	if search=='': search = KEYBOARD()
+	if search == '': return
+	new_search = search.replace(' ','%20')
+	searchlink = website0a + "/q/" + new_search
+	#xbmcgui.Dialog().ok('',searchlink)
+	ITEMS(searchlink)
+	return
 

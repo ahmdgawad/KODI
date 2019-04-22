@@ -6,18 +6,18 @@ headers = { 'User-Agent' : '' }
 script_name = 'EGYBEST'
 menu_name='[COLOR FFC89008]EGB [/COLOR]'
 
-def MAIN(mode,url,page):
+def MAIN(mode,url,page,text):
 	if   mode==120: MAIN_MENU()
 	elif mode==121: FILTERS_MENU(url)
 	elif mode==122: TITLES(url,page)
 	elif mode==123: PLAY(url)
-	elif mode==124: SEARCH()
 	elif mode==125: GET_USERNAME_PASSWORD()
+	elif mode==129: SEARCH(text)
 	return
 
 def MAIN_MENU():
 	addDir(menu_name+'اضغط هنا لاضافة اسم دخول وكلمة السر','',125)
-	addDir(menu_name+'بحث في الموقع','',124)
+	addDir(menu_name+'بحث في الموقع','',129)
 	html = openURL(website0a,'',headers,'','EGYBEST-MAIN_MENU-1st')
 	#xbmcgui.Dialog().ok(website0a, html)
 	html_blocks=re.findall('id="menu"(.*?)mainLoad',html,re.DOTALL)
@@ -85,6 +85,7 @@ def TITLES(url,page):
 	url2 = url2 + 'output_format=json&output_mode=movies_list&page='+str(page)
 	html = openURL(url2,'',headers,'','EGYBEST-TITLES-1st')
 	name = ''
+	found = False
 	if '/season/' in url:
 		name = re.findall('<h1>(.*?)<',html,re.DOTALL)
 		if name: name = escapeUNICODE(name[0]).strip(' ') + ' - '
@@ -103,21 +104,24 @@ def TITLES(url,page):
 		url2 = website0a + link
 		if '/movie/' in url2 or '/episode/' in url2:
 			addLink(menu_name+title,url2.rstrip('/'),123,img)
+			found = True
 		else:
 			addDir(menu_name+title,url2,122,img,1)
-	pagingLIST = ['/movies/','/tv/','/explore/','/trending/']
-	if any(value in url for value in pagingLIST):
-		for n in range(0,1000,100):
-			if int(page/100)*100==n:
-				for i in range(n,n+100,10):
-					if int(page/10)*10==i:
-						for j in range(i,i+10,1):
-							if not page==j and j!=0:
-								addDir(menu_name+'صفحة '+str(j),url,122,icon,j)
-					elif i!=0: addDir(menu_name+'صفحة '+str(i),url,122,icon,i)
-					else: addDir(menu_name+'صفحة '+str(1),url,122,icon,1)
-			elif n!=0: addDir(menu_name+'صفحة '+str(n),url,122,icon,n)
-			else: addDir(menu_name+'صفحة '+str(1),url,122,icon,1)
+			found = True
+	if found:
+		pagingLIST = ['/movies/','/tv/','/explore/','/trending/']
+		if any(value in url for value in pagingLIST):
+			for n in range(0,1000,100):
+				if int(page/100)*100==n:
+					for i in range(n,n+100,10):
+						if int(page/10)*10==i:
+							for j in range(i,i+10,1):
+								if not page==j and j!=0:
+									addDir(menu_name+'صفحة '+str(j),url,122,icon,j)
+						elif i!=0: addDir(menu_name+'صفحة '+str(i),url,122,icon,i)
+						else: addDir(menu_name+'صفحة '+str(1),url,122,icon,1)
+				elif n!=0: addDir(menu_name+'صفحة '+str(n),url,122,icon,n)
+				else: addDir(menu_name+'صفحة '+str(1),url,122,icon,1)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -187,14 +191,6 @@ def PLAY(url):
 	PLAY_VIDEO(url,script_name,'yes')
 	return
 
-def SEARCH():
-	search = KEYBOARD()
-	if search == '': return
-	new_search = search.replace(' ','+')
-	url = website0a + '/explore/?q=' + new_search
-	TITLES(url,1)
-	return
-
 def GET_USERNAME_PASSWORD():
 	text = 'هذا الموقع يحتاج اسم دخول وكلمة السر لكي تستطيع تشغيل ملفات الفيديو. للحصول عليهم قم بفتح حساب مجاني من الموقع الاصلي'
 	xbmcgui.Dialog().ok('الموقع الاصلي  http://egy.best',text)
@@ -212,7 +208,6 @@ def GET_USERNAME_PASSWORD():
 	return
 
 def GET_PLAY_TOKENS():
-
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
 	EGUDI = settings.getSetting('egybest.EGUDI')
@@ -294,6 +289,14 @@ def GET_PLAY_TOKENS():
 	settings.setSetting('egybest.EGUSS',EGUSS)
 	#xbmcgui.Dialog().ok('success, you just logged in now','')
 	return [ EGUDI, EGUSID, EGUSS ]
+
+def SEARCH(search=''):
+	if search=='': search = KEYBOARD()
+	if search == '': return
+	new_search = search.replace(' ','+')
+	url = website0a + '/explore/?q=' + new_search
+	TITLES(url,1)
+	return
 
 
 

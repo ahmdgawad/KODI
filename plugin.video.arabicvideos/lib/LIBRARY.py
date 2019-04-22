@@ -6,12 +6,13 @@ addon_id = sys.argv[0].split('/')[2] 		# plugin.video.arabicvideos
 fanart = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'fanart.jpg'))
 icon = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
 
-def addDir(name,url='',mode='',iconimage=icon,page='',category=''):
+def addDir(name,url='',mode='',iconimage=icon,page='',category='',text=''):
 	if iconimage=='': iconimage=icon
 	u='plugin://'+addon_id+'/?mode='+str(mode)
 	if url != '' : u = u + '&url=' + quote(url)
 	if page != '' : u = u + '&page=' + str(page)
 	if category != '' : u = u + '&category=' + str(category)
+	if text != '' : u = u + '&text=' + quote(text)
 	liz=xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 	liz.setInfo( type="Video", infoLabels={ "Title": name } )
 	liz.setProperty('fanart_image', fanart)

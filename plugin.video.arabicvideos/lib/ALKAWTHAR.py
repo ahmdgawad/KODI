@@ -5,19 +5,19 @@ website0a = 'http://www.alkawthartv.com'
 script_name = 'ALKAWTHAR'
 menu_name='[COLOR FFC89008]KWT [/COLOR]'
 
-def MAIN(mode,url,page):
+def MAIN(mode,url,page,text):
 	if mode==130: MENU()
 	#elif mode==131: TITLES(url)
 	elif mode==132: CATEGORIES(url)
 	elif mode==133: EPISODES(url,page)
 	elif mode==134: PLAY(url)
 	elif mode==135: LIVE()
-	elif mode==136: SEARCH(page)
+	elif mode==139: SEARCH(page,text)
 	return
 
 def MENU():
 	addLink(menu_name+'البث الحي لقناة الكوثر','',135,'','','no')
-	addDir(menu_name+'بحث في الموقع','',136,icon,1)
+	addDir(menu_name+'بحث في الموقع','',139,icon,1)
 	addDir(menu_name+'المسلسلات',website0a+'/category/543',132,icon,1)
 	addDir(menu_name+'الافلام',website0a+'/category/628',132,icon,1)
 	addDir(menu_name+'برامج الصغار والشباب',website0a+'/category/517',132,icon,1)
@@ -176,14 +176,17 @@ def LIVE():
 	PLAY_VIDEO(url,script_name,'no')
 	return
 
-def SEARCH(page):
-	search = KEYBOARD()
+def SEARCH(page,search=''):
+	if search=='': search = KEYBOARD()
 	if search == '': return
+	if page=='': page = 1
 	new_search = search.replace(' ','+')
 	url = 'https://www.google.ca/search?q=site:alkawthartv.com+'+new_search+'&start='+str((page-1)*10)
 	headers = { 'User-Agent' : '' }
 	html = openURL(url,'',headers,'','ALKAWTHAR-SEARCH-1st')
 	items = re.findall('rtl" href="/url\?q=(.*?)&.*?>(.*?)</a></h3>',html,re.DOTALL)
+	#xbmcgui.Dialog().ok(str(items), str(items))
+	found = False
 	for link,title in items:
 		title = title.replace('<b>','').replace('</b>','')
 		title = title.replace('\xab','').replace('\xbb','')
@@ -197,18 +200,24 @@ def SEARCH(page):
 			if len(vars)>5:
 				page1 = vars[5]
 				addDir(menu_name+title,url,133,'',page1)
+				found = True
 			else:
 				addDir(menu_name+title,url,132)
+				found = True
 		elif '/episode/' in link:
 			addDir(menu_name+title,link,133,'',1)
+			found = True
 		#else:
 		#	addDir(menu_name+title,url,132)
-	name = 'صفحة '
-	for i in range(1,8):
-		if i==page: continue
-		title = name + ' ' + str(i)
-		addDir(menu_name+title,'',136,icon,i)
-	xbmcplugin.endOfDirectory(addon_handle)
+		#	found = True
+	if found:
+		name = 'صفحة '
+		for i in range(1,8):
+			if i==page: continue
+			title = name + ' ' + str(i)
+			addDir(menu_name+title,'',136,icon,i)
+		xbmcplugin.endOfDirectory(addon_handle)
+	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

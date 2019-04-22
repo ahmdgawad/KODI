@@ -5,17 +5,17 @@ website0a = 'http://alfatimi.tv'
 script_name = 'ALFATIMI'
 menu_name='[COLOR FFC89008]FTM [/COLOR]'
 
-def MAIN(mode,url,category):
+def MAIN(mode,url,category,text):
 	if mode==60: MENU()
 	elif mode==61: TITLES(url,category)
 	elif mode==62: EPISODES(url)
 	elif mode==63: PLAY(url)
-	elif mode==64: SEARCH()
 	elif mode==65: MOSTS(category)
+	elif mode==69: SEARCH(text)
 	return
 
 def MENU():
-	addDir(menu_name+'بحث في الموقع','',64)
+	addDir(menu_name+'بحث في الموقع','',69)
 	addDir(menu_name+'ما يتم مشاهدته الان',website0a,65,icon,'',1)
 	addDir(menu_name+'الاكثر مشاهدة',website0a,65,icon,'',2)
 	addDir(menu_name+'اضيفت مؤخرا',website0a,65,icon,'',3)
@@ -99,20 +99,6 @@ def PLAY(url):
 	PLAY_VIDEO(url,script_name)
 	return
 
-def SEARCH():
-	search = KEYBOARD()
-	if search == '': return
-	new_search = search.replace(' ','+')
-	url = website0a + '/search_result.php?query=' + new_search
-	html = openURL(url,'','','','ALFATIMI-SEARCH-1st')
-	html_blocks = re.findall('search_subs(.*?)</ul>',html,re.DOTALL)
-	block = html_blocks[0]
-	items = re.findall('cat=(.*?)&.*?>(.*?)<',block,re.DOTALL)
-	for category,title in items:
-		addDir(menu_name+title,website0a,61,icon,'',category)
-	xbmcplugin.endOfDirectory(addon_handle)
-	return
-
 def MOSTS(category):
 	if   category=='1': payload = { 'mode' : 'recent_viewed_vids' }
 	elif category=='2': payload = { 'mode' : 'most_viewed_vids' }
@@ -128,6 +114,23 @@ def MOSTS(category):
 		if 'http' not in link: link = 'http:'+link
 		addLink(menu_name+title,link,63,img)
 	xbmcplugin.endOfDirectory(addon_handle)
+	return
+
+def SEARCH(search=''):
+	if search=='': search = KEYBOARD()
+	if search == '': return
+	#xbmcgui.Dialog().ok(search, website0a)
+	new_search = search.replace(' ','+')
+	url = website0a + '/search_result.php?query=' + new_search
+	html = openURL(url,'','','','ALFATIMI-SEARCH-1st')
+	html_blocks = re.findall('search_subs(.*?)</ul>',html,re.DOTALL)
+	try:
+		block = html_blocks[0]
+		items = re.findall('cat=(.*?)&.*?>(.*?)<',block,re.DOTALL)
+		for category,title in items:
+			addDir(menu_name+title,website0a,61,icon,'',category)
+		xbmcplugin.endOfDirectory(addon_handle)
+	except: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

@@ -7,18 +7,18 @@ script_name='AKOAM'
 menu_name='[COLOR FFC89008]AKM [/COLOR]'
 noEpisodesLIST = ['فيلم','كليب','العرض الاسبوعي','مسرحية','اغنية','اعلان','لقاء']
 
-def MAIN(mode,url):
+def MAIN(mode,url,text):
 	if mode==70: MENU()
 	elif mode==71: CATEGORIES(url)
 	elif mode==72: TITLES(url,1)
 	elif mode==73: EPISODES(url)
 	elif mode==74: PLAY(url)
-	elif mode==75: SEARCH()
 	elif mode==76: TITLES(url,2)
+	elif mode==79: SEARCH(text)
 	return
 
 def MENU():
-	addDir(menu_name+'بحث في الموقع','',75)
+	addDir(menu_name+'بحث في الموقع','',79)
 	addDir(menu_name+'المميزة',website0a,76)
 	ignoreLIST = ['الكتب و الابحاث','الكورسات التعليمية','الألعاب','البرامج','الاجهزة اللوحية','الصور و الخلفيات']
 	html = openURL(website0a,'',headers,'','AKOAM-MENU-1st')
@@ -159,8 +159,8 @@ def PLAY(link):
 	#xbmcgui.Dialog().ok(url,'4444')
 	return
 
-def SEARCH():
-	search = KEYBOARD()
+def SEARCH(search=''):
+	if search=='': search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','%20')
 	#xbmcgui.Dialog().ok(str(len(search)) , str(len(new_search)) )
@@ -169,15 +169,17 @@ def SEARCH():
 	html_blocks = re.findall('akoam_result(.*?)<script',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('href="(.*?)".*?background-image: url\((.*?)\).*?<h1>(.*?)</h1>',block,re.DOTALL)
-	for link,img,title in items:
-		title = title.replace('\n','')
-		title = title.strip(' ')
-		title = unescapeHTML(title)
-		if any(value in title for value in noEpisodesLIST):
-			addLink(menu_name+title,link,73,img)
-		else:
-			addDir(menu_name+title,link,73,img)
-	xbmcplugin.endOfDirectory(addon_handle)
+	if items:
+		for link,img,title in items:
+			title = title.replace('\n','')
+			title = title.strip(' ')
+			title = unescapeHTML(title)
+			if any(value in title for value in noEpisodesLIST):
+				addLink(menu_name+title,link,73,img)
+			else:
+				addDir(menu_name+title,link,73,img)
+		xbmcplugin.endOfDirectory(addon_handle)
+	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 
