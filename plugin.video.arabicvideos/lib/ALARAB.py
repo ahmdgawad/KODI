@@ -14,10 +14,10 @@ menu_name='[COLOR FFC89008]KLA [/COLOR]'
 
 def MAIN(mode,url,text):
 	if mode==10: MENU()
-	elif mode==11: ITEMS(url)
+	elif mode==11: TITLES(url)
 	elif mode==12: PLAY(url)
 	elif mode==14: LATEST()
-	#elif mode==15: ITEMS('https://vod.alarab.com/ramadan2016/مصرية')
+	#elif mode==15: TITLES('https://vod.alarab.com/ramadan2016/مصرية')
 	#elif mode==15: RAMADAN('?year=2018')
 	elif mode==19: SEARCH(text)
 	return
@@ -48,22 +48,26 @@ def LATEST():
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
-def ITEMS(url):
+def TITLES(url):
 	html = openURL(url,'',headers,'','ALARAB-ITEMS-1st')
 	#xbmcgui.Dialog().ok('',html)
 	html_blocks = re.findall('heading-list(.*?)right_content',html,re.DOTALL)
 	block = html_blocks[0]
+	found = False
 	items = re.findall('video-box.*?href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
 	for link,img,name in items:
 		url = website0a + link
 		if 'series' in link:
 			addDir(menu_name+name,url,11,img)
+			found = True
 		else:
 			addLink(menu_name+name,url,12,img)
-	items = re.findall('tsc_3d_button red.*?href="(.*?)" title="(.*?)"',block,re.DOTALL)
-	for link,page in items:
-		url = website0a + link
-		addDir(menu_name+page,url,11)
+			found = True
+	if found:
+		items = re.findall('tsc_3d_button red.*?href="(.*?)" title="(.*?)"',block,re.DOTALL)
+		for link,page in items:
+			url = website0a + link
+			addDir(menu_name+page,url,11)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -148,6 +152,6 @@ def SEARCH(search=''):
 	new_search = search.replace(' ','%20')
 	searchlink = website0a + "/q/" + new_search
 	#xbmcgui.Dialog().ok('',searchlink)
-	ITEMS(searchlink)
+	TITLES(searchlink)
 	return
 

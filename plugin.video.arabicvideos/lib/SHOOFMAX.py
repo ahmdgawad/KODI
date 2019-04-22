@@ -217,9 +217,9 @@ def SEARCH(search=''):
 				if '?ep=' in url:
 					url = url.replace('?ep=1','?ep=0')
 					url = url + '=' + quote(title.encode('utf8')) + '=' + img
-					addDir(menu_name+'[[ '+title+' ]]',url,52,img)
+					addDir(menu_name+'مسلسل '+title,url,52,img)
 				else:
-					addLink(menu_name+title,url,53,img)
+					addLink(menu_name+'فيلم '+title,url,53,img)
 		xbmcplugin.endOfDirectory(addon_handle)
 	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return

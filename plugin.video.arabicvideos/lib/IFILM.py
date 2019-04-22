@@ -267,7 +267,7 @@ def SEARCH(url,search=''):
 	if search == '': return
 	if url=='':
 		urlLIST = [ website0a , website0b , website0c , website0d ]
-		nameLIST = [ 'عربي' , 'ُEnglish' , 'فارسى' , 'فارسى 2' ]
+		nameLIST = [ 'عربي' , 'English' , 'فارسى' , 'فارسى 2' ]
 		selection = xbmcgui.Dialog().select('اختر اللغة المناسبة:', nameLIST)
 		if selection == -1 : return ''
 		url = urlLIST[selection]

@@ -7,11 +7,12 @@ These addons modified to suit my personal needs
 <br />
 <br />
 <br />
-<h2>1. &nbsp; Arabic Videos For Kodi Plugin
+<h2>1. برنامج الفيديو العربي <br />
+&nbsp; Plugin Arabic Videos For Kodi
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(plugin.video.arabicvideos)</h2>
 <br />
-برنامج جديد (اضافة جديدة) الى كودي تسمح لكودي بان يتصفح جميع المواقع المكتوبة ادناه
+برنامج الفيديو العربي (اضافة جديدة) الى كودي تسمح لكودي بان يتصفح جميع المواقع المكتوبة ادناه
 <br />
 New video plugin for KODI that provide Arabic video contents from the following websites:
 <br />
@@ -60,10 +61,19 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <br />
 <br />
 <br />
+<h2>3. &nbsp; مخزن عماد &nbsp; repository.emad<br />
+</h2>
+This is kodi repository that keeps emad addons updated automatically ... should be installed along with Arabic Video Addon
+<br />
+<br />
+هذا هو المخزن الخاص بكودي لجعل اضافات عماد يصلها التحديثات اوتوماتيكيا ... يجب تنصيبه عند تنصيب اضافة الفيديو العربي
 <br />
 <br />
 <br />
-<h2>3. &nbsp; skin.metropolisEMAD18</h2>
+<br />
+<br />
+<br />
+<h2>4. &nbsp; skin.metropolisEMAD18</h2>
 My personal mod of the Metropolis skin (focused on list view) for Kodi v18 and after
 <br />
 جلد خاص بكودي يوفر سهولة استخدام الريموت كونترول وهذا خاص بالكودي الاصدار 18 وما بعده
@@ -71,7 +81,7 @@ My personal mod of the Metropolis skin (focused on list view) for Kodi v18 and a
 <br />
 <br />
 <br />
-<h2>4. &nbsp; skin.metropolisEMAD17</h2>
+<h2>5. &nbsp; skin.metropolisEMAD17</h2>
 My personal mod of the Metropolis skin (focused on list view) for Kodi v17 and before
 <br />
 جلد خاص بكودي يوفر سهولة استخدام الريموت كونترول وهذا خاص بالكودي الاصدار 17 وما قبله
@@ -79,7 +89,7 @@ My personal mod of the Metropolis skin (focused on list view) for Kodi v17 and b
 <br />
 <br />
 <br />
-<h2>5. &nbsp; skin.phenomenalEMAD17</h2>
+<h2>6. &nbsp; skin.phenomenalEMAD17</h2>
 My personal mod of the Phenomenal skin (focused on list view) for Kodi v17 and before
 <br />
 جلد خاص بكودي يوفر سهولة استخدام الريموت كونترول وهذا خاص بالكودي الاصدار 17 وما قبله
@@ -87,13 +97,13 @@ My personal mod of the Phenomenal skin (focused on list view) for Kodi v17 and b
 <br />
 <br />
 <br />
-<h2>6. &nbsp; resource.images.moviegenreicons.metropolisEMAD</h2>
+<h2>7. &nbsp; resource.images.moviegenreicons.metropolisEMAD</h2>
 Movie genres icons extracted from Metropolis skin to decrease the size of the skin
 <br />
 <br />
 <br />
 <br />
-<h2>7. &nbsp; resource.images.musicgenreicons.metropolisEMAD</h2>
+<h2>8. &nbsp; resource.images.musicgenreicons.metropolisEMAD</h2>
 Music genres icons extracted from Metropolis skin to decrease the size of the skin
 <br />
 <br />

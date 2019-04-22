@@ -19,8 +19,9 @@ def MAIN(mode,url,text):
 	return
 
 def MENU():
-	addDir(menu_name+'بحث عن افلام',website0a+'/search/result/title/movies',39)
-	addDir(menu_name+'بحث عن مسلسلات',website0a+'/search/result/title/series',39)
+	addDir(menu_name+'بحث في الموقع',website0a,39)
+	#addDir(menu_name+'بحث عن افلام',website0a+'/search/result/title/movies',39)
+	#addDir(menu_name+'بحث عن مسلسلات',website0a+'/search/result/title/series',39)
 	addDir(menu_name+'مسلسلات وبرامج',website0a+'/series',31)
 	addDir(menu_name+'المسلسلات الاكثر مشاهدة',website0a+'/series',37)
 	addDir(menu_name+'افلام حسب النوع',website0a+'/movies',35)
@@ -144,23 +145,23 @@ def SEARCH(url,search=''):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','-')
-	if url=='':
-		typeLIST = [ 'movies' , 'series']
-		nameLIST = [ 'بحث عن افلام' , 'بحث عن مسلسلات']
-		selection = xbmcgui.Dialog().select('اختر النوع المناسب:', nameLIST)
-		if selection == -1 : return ''
-		type = typeLIST[selection]
-	else: type=url.split('/')[-1]
-	data = 'query='+new_search+'&searchDomain='+type
+	#if url=='':
+	#	typeLIST = [ 'movies' , 'series']
+	#	nameLIST = [ 'بحث عن افلام' , 'بحث عن مسلسلات']
+	#	selection = xbmcgui.Dialog().select('اختر النوع المناسب:', nameLIST)
+	#	if selection == -1 : return ''
+	#	type = typeLIST[selection]
+	#else: type=url.split('/')[-1]
+	#data = 'query='+new_search+'&searchDomain='+type
+	data = 'query='+new_search
 	html = openURL(website0a+'/search',data,headers,'','PANET-SEARCH-1st')
-	#xbmcgui.Dialog().ok(html, new_search)
 	items=re.findall('title":"(.*?)".*?link":"(.*?)"',html,re.DOTALL)
 	if items:
 		for title,link in items:
 			url = website0a + link.replace('\/','/')
 			#xbmcgui.Dialog().ok(title, url.split('/')[-1]   )
-			if type=='movies': addLink(menu_name+title,url,33)
-			else: addDir(menu_name+title,url+'/1',32)
+			if '/movies/' in url: addLink(menu_name+'فيلم '+title,url,33)
+			elif '/series/' in url: addDir(menu_name+'مسلسل '+title,url+'/1',32)
 		xbmcplugin.endOfDirectory(addon_handle)
 	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
