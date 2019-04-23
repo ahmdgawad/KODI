@@ -130,7 +130,3 @@ Added initials to all menus
 v4.0.0	2019-04-22
 Added Global Search
 
-
-v4.1.0	2019-04-22
-Changed main menu
-
