@@ -7,7 +7,18 @@ These addons modified to suit my personal needs
 <br />
 <br />
 <br />
-<h2>1. برنامج الفيديو العربي <br />
+<br />
+<h2>1. &nbsp; مخزن عماد &nbsp; repository.emad<br />
+</h2>
+This is kodi repository that keeps emad addons updated automatically ... should be installed along with Arabic Video Addon
+<br />
+<br />
+هذا هو المخزن الخاص بكودي لجعل اضافات عماد يصلها التحديثات اوتوماتيكيا ... يجب تنصيبه عند تنصيب اضافة الفيديو العربي
+<br />
+<br />
+<br />
+<br />
+<h2>2. برنامج الفيديو العربي <br />
 &nbsp; Plugin Arabic Videos For Kodi
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(plugin.video.arabicvideos)</h2>
@@ -35,7 +46,7 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <br />
 <br />
 <br />
-<h2>2. &nbsp; التنصيب والتنزيل &nbsp;&nbsp;&nbsp;&nbsp; Download & Install</h2>
+<h2>3. &nbsp; التنصيب والتنزيل &nbsp;&nbsp;&nbsp;&nbsp; Download & Install</h2>
 <br />
 الخطوة الاولى: تنزيل وتنصيب برنامج كودي في حال عدم وجوده سابقا
 <br />
@@ -58,15 +69,6 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <br />
 <a href="http://www.youtube.com/watch?v=_w58WScaObk">5. &nbsp; مقطع يوتيوب باللغة الانكليزية يوضح طريقة تنزيل وتنصيب واستخدام هذه الاضافة على كودي - شكرا للاخ هشام</a>
 <br />
-<br />
-<br />
-<br />
-<h2>3. &nbsp; مخزن عماد &nbsp; repository.emad<br />
-</h2>
-This is kodi repository that keeps emad addons updated automatically ... should be installed along with Arabic Video Addon
-<br />
-<br />
-هذا هو المخزن الخاص بكودي لجعل اضافات عماد يصلها التحديثات اوتوماتيكيا ... يجب تنصيبه عند تنصيب اضافة الفيديو العربي
 <br />
 <br />
 <br />
