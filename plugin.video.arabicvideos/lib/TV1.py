@@ -20,20 +20,19 @@ def ITEMS():
 	#file = open('s:/emad.html', 'w')
 	#file.write(html)
 	#file.close()
-	items = re.findall('(.*?):(.*?):(.*?)\r\n',html,re.DOTALL)
+	items = re.findall('(.*?):(.*?):(.*?):(.*?)\r\n',html,re.DOTALL)
 	if items:
 		items = set(items)
-		itemsSorted = sorted(items, reverse=False, key=lambda key: key[0].lower())
-		itemsSorted = sorted(itemsSorted, reverse=False, key=lambda key: key[1].lower())
-		for id,title,img in itemsSorted:
+		itemsSorted = sorted(items, reverse=False, key=lambda key: key[1].lower())
+		itemsSorted = sorted(itemsSorted, reverse=False, key=lambda key: key[2].lower())
+		for source,id,name,img in itemsSorted:
 			#xbmcgui.Dialog().ok(id,id)
-			source = id[0:2]
-			id = id[2:99]
-			#if source=='NT': source = 'NileTC'
-			title = title + ' ' + source
-			title = title.replace('Al ','Al')
-			title = title.replace('El ','El')
-			addLink(menu_name+title,source+id,101,img,'','no')
+			if source=='PL': continue
+			if source=='HD': continue
+			name = name + ' ' + source
+			name = name.replace('Al ','Al')
+			name = name.replace('El ','El')
+			addLink(menu_name+name,source+id,101,img,'','no')
 	elif html=='Not Allowed':
 		addLink(menu_name+'للأسف لا توجد قنوات تلفزونية لك','',9999)
 		addLink(menu_name+'هذه الخدمة مخصصة للاقرباء والاصدقاء فقط','',9999)
@@ -45,11 +44,13 @@ def ITEMS():
 
 def PLAY(id):
 	source = id[0:2]
-	id = id[2:99]
+	id2 = id[2:99]
+	url = ''
+	#xbmcgui.Dialog().ok(source,id2)
 	from requests import request as requests_request
 	if source=='HD' or source=='SD':
 		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
-		payload = { 'id' : id , 'user' : dummyClientID(32) , 'function' : 'play1' }
+		payload = { 'id' : id2 , 'user' : dummyClientID(32) , 'function' : 'play1' }
 		response = requests_request('POST', website0a, data=payload, headers=headers)
 		html = response.text
 		#xbmcgui.Dialog().ok(html,html)
@@ -61,23 +62,28 @@ def PLAY(id):
 		#url = url.replace('#','')
 	elif source=='NT':
 		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
-		payload = { 'id' : id , 'user' : dummyClientID(32) , 'function' : 'play2' }
+		payload = { 'id' : id2 , 'user' : dummyClientID(32) , 'function' : 'play2' }
 		response = requests_request('POST', website0a, data=payload, headers=headers, allow_redirects=False)
 		url = response.headers['Location']
 		url = url.replace('%20',' ')
 		url = url.replace('%3D','=')
-		if 'Learn' in id:
+		if 'Learn' in id2:
 			url = url.replace('NTNNile','')
 			url = url.replace('learning1','Learning')
 	elif source=='PL':
 		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
-		payload = { 'id' : id , 'user' : dummyClientID(32) , 'function' : 'play3' }
+		payload = { 'id' : id2 , 'user' : dummyClientID(32) , 'function' : 'play3' }
 		response = requests_request('POST', website0a, data=payload, headers=headers)
 		response = requests_request('POST', response.headers['Location'], headers={'Referer':response.headers['Referer']})
 		html = response.text
 		#xbmcgui.Dialog().ok('',html)
 		items = re.findall('source src="(.*?)"',html,re.DOTALL)
 		url = items[0]
+	elif source=='TA':
+		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
+		payload = { 'id' : id2 , 'user' : dummyClientID(32) , 'function' : 'play4' }
+		response = requests_request('POST', website0a, data=payload, headers=headers, allow_redirects=False)
+		url = response.headers['Location']
 	#xbmcgui.Dialog().ok(url,'')
 	PLAY_VIDEO(url,script_name,'no')
 	return

@@ -56,44 +56,55 @@ def ITEMS(url,html=''):
 	return
 
 def PLAY(url):
-	linkLIST = []
-	urlLIST = []
-	adultLIST = ['R - للكبار فقط','PG-18','PG-16','TV-MA']
-	html = openURL(url,'',headers,'','4HELAL-PLAY-1st')
-	if any(value in html for value in adultLIST):
-		xbmcgui.Dialog().notification('الفيديو للكبار فقط','البرنامج لا يعرض هكذا افلام')
-		return
-	html_blocks = re.findall('links-panel(.*?)div',html,re.DOTALL)
-	if html_blocks:
+	import xbmcaddon
+	settings = xbmcaddon.Addon(id=addon_id)
+	previous_url = settings.getSetting('previous.url')
+	if url==previous_url:
+		linkLIST = settings.getSetting('previous.linkLIST')
+		linkLIST = linkLIST[1:-1].replace('&apos;','').replace(' ','').replace("'",'')
+		linkLIST = linkLIST.split(',')
+		#xbmcgui.Dialog().ok(url,str(linkLIST))
+	else:
+		linkLIST = []
+		urlLIST = []
+		adultLIST = ['R - للكبار فقط','PG-18','PG-16','TV-MA']
+		html = openURL(url,'',headers,'','4HELAL-PLAY-1st')
+		if any(value in html for value in adultLIST):
+			xbmcgui.Dialog().notification('الفيديو للكبار فقط','البرنامج لا يعرض هكذا افلام')
+			return
+		html_blocks = re.findall('links-panel(.*?)div',html,re.DOTALL)
+		if html_blocks:
+			block = html_blocks[0]
+			items = re.findall('href="(.*?)"',block,re.DOTALL)
+			for link in items:
+				linkLIST.append(link)
+		html_blocks = re.findall('nav-tabs(.*?)video-panel-more',html,re.DOTALL)
 		block = html_blocks[0]
-		items = re.findall('href="(.*?)"',block,re.DOTALL)
+		items = re.findall('ajax-file-id.*?value="(.*?)"',block,re.DOTALL)
+		id = items[0]
+		#xbmcgui.Dialog().ok('',id)
+		items = re.findall('data-server-src="(.*?)"',block,re.DOTALL)
 		for link in items:
+			link = unquote(link)
 			linkLIST.append(link)
-	html_blocks = re.findall('nav-tabs(.*?)video-panel-more',html,re.DOTALL)
-	block = html_blocks[0]
-	items = re.findall('ajax-file-id.*?value="(.*?)"',block,re.DOTALL)
-	id = items[0]
-	#xbmcgui.Dialog().ok('',id)
-	items = re.findall('data-server-src="(.*?)"',block,re.DOTALL)
-	for link in items:
-		link = unquote(link)
-		linkLIST.append(link)
-	"""
-	items = re.findall('data-server="(.*?)"',block,re.DOTALL)
-	for link in items:
-		url = website0a + '/ajax.php?id='+id+'&ajax=true&server='+link
-		#link = openURL(url,'',headers,'','4HELAL-PLAY-2nd')
-		#linkLIST.append(link)
-		urlLIST.append(url)
-		html = openURL(url,'',headers,'','4HELAL-PLAY-2nd')
-		#xbmcgui.Dialog().ok(url,html)
-	count = len(urlLIST)
-	import concurrent.futures
-	with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-		responcesDICT = dict( (executor.submit(openURL, urlLIST[i], '', headers,'','4HELAL-PLAY-2nd'), i) for i in range(0,count) )
-	for response in concurrent.futures.as_completed(responcesDICT):
-		linkLIST.append( response.result() )
-	"""
+		"""
+		items = re.findall('data-server="(.*?)"',block,re.DOTALL)
+		for link in items:
+			url2 = website0a + '/ajax.php?id='+id+'&ajax=true&server='+link
+			#link = openURL(url2,'',headers,'','4HELAL-PLAY-2nd')
+			#linkLIST.append(link)
+			urlLIST.append(url2)
+			html = openURL(url2,'',headers,'','4HELAL-PLAY-2nd')
+			#xbmcgui.Dialog().ok(url2,html)
+		count = len(urlLIST)
+		import concurrent.futures
+		with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+			responcesDICT = dict( (executor.submit(openURL, urlLIST[i], '', headers,'','4HELAL-PLAY-2nd'), i) for i in range(0,count) )
+		for response in concurrent.futures.as_completed(responcesDICT):
+			linkLIST.append( response.result() )
+		"""
+		settings.setSetting('previous.url',url)
+		settings.setSetting('previous.linkLIST',str(linkLIST))
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	return

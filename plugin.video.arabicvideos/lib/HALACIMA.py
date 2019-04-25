@@ -79,42 +79,53 @@ def ITEMS(url,html='',type='',page=0):
 	return
 
 def PLAY(url):
-	urlLIST = []
-	dataLIST = []
-	linkLIST = []
-	headers = { 'User-Agent' : '' }
-	html = openURL(url,'',headers,'','HALACIMA-PLAY-1st')
-	html_blocks = re.findall('class="download(.*?)div',html,re.DOTALL)
-	block = html_blocks[0]
-	items = re.findall('href="(.*?)"',block,re.DOTALL)
-	for link in items:
-		if 'http' not in link: link = 'http:' + link
-		linkLIST.append(link)
-	url = url.replace('/article/','/online/')
-	html = openURL(url,'',headers,'','HALACIMA-PLAY-2nd')
-	html_blocks = re.findall('artId.*?(.*?)col-sm-12',html,re.DOTALL)
-	block = html_blocks[0]
-	items = re.findall(' = \'(.*?)\'',block,re.DOTALL)
-	artID = items[0]
-	url = website0a + '/ajax/getVideoPlayer'
-	headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
-	items = re.findall('getVideoPlayer\(\'(.*?)\'',block,re.DOTALL)
-	for server in items:
-		payload = { 'Ajax' : '1' , 'art' : artID , 'server' : server }
-		data = urllib.urlencode(payload)
-		#html = openURL(url,data,headers,'','HALACIMA-PLAY-3rd')
-		urlLIST.append(url)
-		dataLIST.append(data)
-	count = len(urlLIST)
-	import concurrent.futures
-	with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-		responcesDICT = dict( (executor.submit(openURL, urlLIST[i], dataLIST[i], headers,'','HALACIMA-PLAY-3rd'), i) for i in range(0,count) )
-	for response in concurrent.futures.as_completed(responcesDICT):
-		html = response.result()
-		html = html.replace('SRC=','src=')
-		links = re.findall('src=\'(.*?)\'',html,re.DOTALL)
-		#if 'http' not in link: link = 'http:' + link
-		linkLIST.append(links[0])
+	import xbmcaddon
+	settings = xbmcaddon.Addon(id=addon_id)
+	previous_url = settings.getSetting('previous.url')
+	if url==previous_url:
+		linkLIST = settings.getSetting('previous.linkLIST')
+		linkLIST = linkLIST[1:-1].replace('&apos;','').replace(' ','').replace("'",'')
+		linkLIST = linkLIST.split(',')
+		#xbmcgui.Dialog().ok(url,str(linkLIST))
+	else:
+		urlLIST = []
+		dataLIST = []
+		linkLIST = []
+		headers = { 'User-Agent' : '' }
+		html = openURL(url,'',headers,'','HALACIMA-PLAY-1st')
+		html_blocks = re.findall('class="download(.*?)div',html,re.DOTALL)
+		block = html_blocks[0]
+		items = re.findall('href="(.*?)"',block,re.DOTALL)
+		for link in items:
+			if 'http' not in link: link = 'http:' + link
+			linkLIST.append(link)
+		url2 = url.replace('/article/','/online/')
+		html = openURL(url2,'',headers,'','HALACIMA-PLAY-2nd')
+		html_blocks = re.findall('artId.*?(.*?)col-sm-12',html,re.DOTALL)
+		block = html_blocks[0]
+		items = re.findall(' = \'(.*?)\'',block,re.DOTALL)
+		artID = items[0]
+		url2 = website0a + '/ajax/getVideoPlayer'
+		headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
+		items = re.findall('getVideoPlayer\(\'(.*?)\'',block,re.DOTALL)
+		for server in items:
+			payload = { 'Ajax' : '1' , 'art' : artID , 'server' : server }
+			data = urllib.urlencode(payload)
+			#html = openURL(url2,data,headers,'','HALACIMA-PLAY-3rd')
+			urlLIST.append(url2)
+			dataLIST.append(data)
+		count = len(urlLIST)
+		import concurrent.futures
+		with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+			responcesDICT = dict( (executor.submit(openURL, urlLIST[i], dataLIST[i], headers,'','HALACIMA-PLAY-3rd'), i) for i in range(0,count) )
+		for response in concurrent.futures.as_completed(responcesDICT):
+			html = response.result()
+			html = html.replace('SRC=','src=')
+			links = re.findall('src=\'(.*?)\'',html,re.DOTALL)
+			#if 'http' not in link: link = 'http:' + link
+			linkLIST.append(links[0])
+		settings.setSetting('previous.url',url)
+		settings.setSetting('previous.linkLIST',str(linkLIST))
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	return

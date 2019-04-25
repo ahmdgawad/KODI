@@ -79,35 +79,46 @@ def ITEMS(url):
 	return
 
 def PLAY(url):
-	#xbmcgui.Dialog().ok(url,url)
-	linkLIST = []
-	urlLIST = []
-	html = openURL(url,'',headers,'','SHAHID4U-PLAY-1st')
-	html_blocks = re.findall('class="servers2(.*?)</div>',html,re.DOTALL)
-	block = html_blocks[0]
-	items = re.findall('href="(.*?)"',block,re.DOTALL)
-	for link in items:
-		linkLIST.append(link)
-	url = url + '?watch=1'
-	html = openURL(url,'',headers,'','SHAHID4U-PLAY-2nd')
-	#xbmcgui.Dialog().ok(html,html)
-	html_blocks = re.findall('li.server"(.*?)id="DataServers',html,re.DOTALL)
-	block = html_blocks[0]
-	items = re.findall('url: \'(.*?)\'.*?data: \'(.*?)\'',block,re.DOTALL)
-	url = items[0][0]+'?'+items[0][1]
-	items = re.findall('server\((.*?)\)',block,re.DOTALL)
-	for server in items:
-		#html = openURL(url+server,'',headers,'','SHAHID4U-PLAY-3rd')
-		urlLIST.append(url+server)
-	count = len(urlLIST)
-	import concurrent.futures
-	with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-		responcesDICT = dict( (executor.submit(openURL, urlLIST[i], '', headers,'','SHAHID4U-PLAY-3rd'), i) for i in range(0,count) )
-	for response in concurrent.futures.as_completed(responcesDICT):
-		html = response.result()
-		#html = html.replace('SRC=','src=')
-		links = re.findall('src="(.*?)"',html,re.DOTALL)
-		linkLIST.append(links[0])
+	import xbmcaddon
+	settings = xbmcaddon.Addon(id=addon_id)
+	previous_url = settings.getSetting('previous.url')
+	if url==previous_url:
+		linkLIST = settings.getSetting('previous.linkLIST')
+		linkLIST = linkLIST[1:-1].replace('&apos;','').replace(' ','').replace("'",'')
+		linkLIST = linkLIST.split(',')
+		#xbmcgui.Dialog().ok(url,str(linkLIST))
+	else:
+		#xbmcgui.Dialog().ok(url,url)
+		linkLIST = []
+		urlLIST = []
+		html = openURL(url,'',headers,'','SHAHID4U-PLAY-1st')
+		html_blocks = re.findall('class="servers2(.*?)</div>',html,re.DOTALL)
+		block = html_blocks[0]
+		items = re.findall('href="(.*?)"',block,re.DOTALL)
+		for link in items:
+			linkLIST.append(link)
+		url2 = url + '?watch=1'
+		html = openURL(url2,'',headers,'','SHAHID4U-PLAY-2nd')
+		#xbmcgui.Dialog().ok(html,html)
+		html_blocks = re.findall('li.server"(.*?)id="DataServers',html,re.DOTALL)
+		block = html_blocks[0]
+		items = re.findall('url: \'(.*?)\'.*?data: \'(.*?)\'',block,re.DOTALL)
+		url2 = items[0][0]+'?'+items[0][1]
+		items = re.findall('server\((.*?)\)',block,re.DOTALL)
+		for server in items:
+			#html = openURL(url2+server,'',headers,'','SHAHID4U-PLAY-3rd')
+			urlLIST.append(url2+server)
+		count = len(urlLIST)
+		import concurrent.futures
+		with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+			responcesDICT = dict( (executor.submit(openURL, urlLIST[i], '', headers,'','SHAHID4U-PLAY-3rd'), i) for i in range(0,count) )
+		for response in concurrent.futures.as_completed(responcesDICT):
+			html = response.result()
+			#html = html.replace('SRC=','src=')
+			links = re.findall('src="(.*?)"',html,re.DOTALL)
+			linkLIST.append(links[0])
+		settings.setSetting('previous.url',url)
+		settings.setSetting('previous.linkLIST',str(linkLIST))
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	#xbmcgui.Dialog().ok(url,str(linkLIST))
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')

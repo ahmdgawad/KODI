@@ -582,11 +582,13 @@ def WINTVLIVE(url):
 	return [ items[0].rstrip('/') ]
 
 def	FILERIO(url):
+	#xbmc.log(url, level=xbmc.LOGNOTICE)
 	id = url.split('/')[-1]
 	headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
 	payload = { 'id':id , 'op':'download2' }
 	data = urllib.urlencode(payload)
 	html = openURL(url,data,headers,'','RESOLVERS-FILERIO-2nd')
+	#xbmc.log(html, level=xbmc.LOGNOTICE)
 	items = re.findall('direct_link.*?href="(.*?)"',html,re.DOTALL)
 	return [ items[0].rstrip('/') ]
 

@@ -128,31 +128,42 @@ def EPISODES(url):
 		xbmcplugin.endOfDirectory(addon_handle)
 	return
 
-def PLAY(link):
-	url,episode = link.split('?ep=')
-	html = openURL(url,'',headers,'','AKOAM-PLAY-1st')
-	html_blocks = re.findall('ad-300-250.*?ad-300-250(.*?)ako-feedback',html,re.DOTALL)
-	html_block = html_blocks[0].replace('\'direct_link_box','"direct_link_box epsoide_box')
-	html_block = html_block + 'direct_link_box'
-	blocks = re.findall('epsoide_box(.*?)direct_link_box',html_block,re.DOTALL)
-	episode = len(blocks)-int(episode)
-	block = blocks[episode]
-	#xbmcgui.Dialog().ok(link,str(len(blocks)-int(episode)-1))
-	linkLIST = []
-	serversDICT = {'1423075862':'dailymotion','1477487601':'estream','1505328404':'streamango',
-		'1423080015':'flashx','1458117295':'openload','1423079306':'vimple','1430052371':'ok.ru',
-		'1477488213':'thevid'}
-	items = re.findall('download_btn\' target=\'_blank\' href=\'(.*?)\'',block,re.DOTALL)
-	for link in items:
-		linkLIST.append(link)
-	items = re.findall('background-image: url\((.*?)\).*?href=\'(.*?)\'',block,re.DOTALL)
-	for serverIMG,link in items:
-		serverIMG = serverIMG.split('/')[-1]
-		serverIMG = serverIMG.split('.')[0]
-		#xbmcgui.Dialog().ok(str(link),'' )
-		try: linkLIST.append(link+'?'+serversDICT[serverIMG])
-		except: linkLIST.append(link+'?'+serverIMG)
-	linkLIST = set(linkLIST)
+def PLAY(url):
+	import xbmcaddon
+	settings = xbmcaddon.Addon(id=addon_id)
+	previous_url = settings.getSetting('previous.url')
+	if url==previous_url:
+		linkLIST = settings.getSetting('previous.linkLIST')
+		linkLIST = linkLIST[1:-1].replace('&apos;','').replace(' ','').replace("'",'')
+		linkLIST = linkLIST.split(',')
+		#xbmcgui.Dialog().ok(url,str(linkLIST))
+	else:
+		url2,episode = url.split('?ep=')
+		html = openURL(url2,'',headers,'','AKOAM-PLAY-1st')
+		html_blocks = re.findall('ad-300-250.*?ad-300-250(.*?)ako-feedback',html,re.DOTALL)
+		html_block = html_blocks[0].replace('\'direct_link_box','"direct_link_box epsoide_box')
+		html_block = html_block + 'direct_link_box'
+		blocks = re.findall('epsoide_box(.*?)direct_link_box',html_block,re.DOTALL)
+		episode = len(blocks)-int(episode)
+		block = blocks[episode]
+		#xbmcgui.Dialog().ok(url,str(len(blocks)-int(episode)-1))
+		linkLIST = []
+		serversDICT = {'1423075862':'dailymotion','1477487601':'estream','1505328404':'streamango',
+			'1423080015':'flashx','1458117295':'openload','1423079306':'vimple','1430052371':'ok.ru',
+			'1477488213':'thevid'}
+		items = re.findall('download_btn\' target=\'_blank\' href=\'(.*?)\'',block,re.DOTALL)
+		for link in items:
+			linkLIST.append(link)
+		items = re.findall('background-image: url\((.*?)\).*?href=\'(.*?)\'',block,re.DOTALL)
+		for serverIMG,link in items:
+			serverIMG = serverIMG.split('/')[-1]
+			serverIMG = serverIMG.split('.')[0]
+			#xbmcgui.Dialog().ok(str(link),'' )
+			try: linkLIST.append(link+'?'+serversDICT[serverIMG])
+			except: linkLIST.append(link+'?'+serverIMG)
+		linkLIST = set(linkLIST)
+		settings.setSetting('previous.url',url)
+		settings.setSetting('previous.linkLIST',str(linkLIST))
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	#xbmcgui.Dialog().ok(url,'4444')
