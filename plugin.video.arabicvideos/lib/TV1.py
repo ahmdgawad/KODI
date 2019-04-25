@@ -28,7 +28,7 @@ def ITEMS():
 		for source,id,name,img in itemsSorted:
 			#xbmcgui.Dialog().ok(id,id)
 			if source=='PL': continue
-			if source=='HD': continue
+			if source=='SD': continue
 			name = name + ' ' + source
 			name = name.replace('Al ','Al')
 			name = name.replace('El ','El')
@@ -48,13 +48,13 @@ def PLAY(id):
 	url = ''
 	#xbmcgui.Dialog().ok(source,id2)
 	from requests import request as requests_request
-	if source=='HD' or source=='SD':
+	if source=='GA' or source=='SD':
 		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
 		payload = { 'id' : id2 , 'user' : dummyClientID(32) , 'function' : 'play1' }
 		response = requests_request('POST', website0a, data=payload, headers=headers)
 		html = response.text
 		#xbmcgui.Dialog().ok(html,html)
-		if source=='HD': link='3'
+		if source=='GA': link='3'
 		else: link='2'
 		items = re.findall('"link'+link+'":"(.*?)"',html,re.DOTALL)
 		url = items[0]

@@ -17,10 +17,10 @@ def MAIN():
 	addDir('7.  [COLOR FFC89008]KWT  [/COLOR]'+'موقع قناة الكوثر','',130)
 	addDir('8.  [COLOR FFC89008]MRF  [/COLOR]'+'موقع قناة المعارف','',40)
 	addDir('9.  [COLOR FFC89008]FTM  [/COLOR]'+'موقع المنبر الفاطمي','',60)
+	addDir('10. [COLOR FFC89008]TV1  [/COLOR]'+'قنوات تلفزونية','',100)
 	addDir('=========================','',9999)
 
 	addDir('[COLOR FFC89008]مواقع سيرفرات خاصة وعامة - كثيرة المشاكل[/COLOR]','',5)
-	addDir('10.  [COLOR FFC89008]TV1  [/COLOR]'+'قنوات تلفزونية','',100)
 	addDir('11.  [COLOR FFC89008]AKM  [/COLOR]'+'موقع اكوام (مشفر)','',70)
 	addDir('12.  [COLOR FFC89008]HEL   [/COLOR]'+'موقع هلال يوتيوب (مشفر)','',90)
 	addDir('=========================','',9999)
