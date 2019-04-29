@@ -13,16 +13,25 @@ def MAIN(mode,url,text):
 	elif mode==72: TITLES(url,1)
 	elif mode==73: EPISODES(url)
 	elif mode==74: PLAY(url)
-	elif mode==76: TITLES(url,2)
+	elif mode==75: TITLES(url,2)
+	elif mode==76: TITLES(url,3)
+	elif mode==77: TITLES(url,4)
 	elif mode==79: SEARCH(text)
 	return
 
 def MENU():
 	addDir(menu_name+'بحث في الموقع','',79)
-	addDir(menu_name+'المميزة',website0a,76)
+	addDir(menu_name+'المميزة',website0a,75)
+	addDir(menu_name+'المزيد',website0a,76)
+	addDir(menu_name+'الاخبار',website0a,77)
 	ignoreLIST = ['الكتب و الابحاث','الكورسات التعليمية','الألعاب','البرامج','الاجهزة اللوحية','الصور و الخلفيات']
 	html = openURL(website0a,'',headers,'','AKOAM-MENU-1st')
 	html_blocks = re.findall('big_parts_menu(.*?)main_partions',html,re.DOTALL)
+	#if not html_blocks:
+	#	xbmc.sleep(2000)
+	#	html = openURL(website0a,'',headers,'','AKOAM-MENU-2nd')
+	#	html_blocks = re.findall('big_parts_menu(.*?)main_partions',html,re.DOTALL)
+	#xbmc.log(html, level=xbmc.LOGNOTICE)
 	#import logging
 	#logging.warning(' EMAD333 '+html+' EMAD444 ')
 	block = html_blocks[0]
@@ -53,8 +62,15 @@ def TITLES(url,type):
 		html_blocks = re.findall('navigation(.*?)<script',html,re.DOTALL)
 	elif type==2:
 		html_blocks = re.findall('section_title featured_title(.*?)subjects-crousel',html,re.DOTALL)
+	elif type==3:
+		html_blocks = re.findall('section_title more_title(.*?)section_title news_title',html,re.DOTALL)
+	elif type==4:
+		html_blocks = re.findall('section_title news_title(.*?)news_more_choices',html,re.DOTALL)
 	block = html_blocks[0]
-	items = re.findall('subject_box.*?href="(.*?)".*?src="(.*?)".*?<h3>(.*?)<',block,re.DOTALL)
+	if type==4:
+		items = re.findall('news_box.*?href="(.*?)".*?src="(.*?)".*?<h3>(.*?)<',block,re.DOTALL)
+	else:
+		items = re.findall('subject_box.*?href="(.*?)".*?src="(.*?)".*?<h3>(.*?)<',block,re.DOTALL)
 	for link,img,title in items:
 		title = title.strip(' ')
 		title = unescapeHTML(title)

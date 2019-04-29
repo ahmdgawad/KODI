@@ -55,7 +55,7 @@ def ITEMS(url,html='',type='',page=0):
 		title = title.replace('\n','')
 		title = title.strip(' ')
 		if 'الحلقة' in title and '/article/' not in link:
-			episode = re.findall(' الحلقة [0-9]*',title,re.DOTALL)
+			episode = re.findall(' الحلقة [0-9]+',title,re.DOTALL)
 			if episode:
 				title = title.replace(episode[0],'')
 		title = unescapeHTML(title)

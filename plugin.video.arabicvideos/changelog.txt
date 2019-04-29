@@ -116,11 +116,11 @@ Changed "Analytics" Number
 
 
 v3.7.0	2018-12-25
-Added HD & SD Tv channels
+Added HD & SD Tv sources
 
 
 v3.8.0	2019-01-08
-Added NT & PL Tv channels
+Added NT & PL Tv sources
 
 
 v3.9.0	2019-03-31
@@ -137,4 +137,12 @@ Changed main menu
 
 v4.2.0	2019-04-25
 Added last request cache for Akoam, Helal, HalaCima, and Shahid4u
-Added new "TA" tv cahnnels
+Added new "TA" tv source
+
+
+v4.3.0	2019-04-28
+Rewrote "Shahid4U" to browse their new website
+Added new menu item for special tv cahnnels
+Added new "YU" tv source
+
+
