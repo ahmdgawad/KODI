@@ -91,8 +91,9 @@ def EPISODES(url):
 	items = re.findall('href="(.*?)".*?<h3>(.*?)<',block,re.DOTALL)
 	itemsNEW = []
 	for link,title in items:
-		sequence = re.findall('[0-9]+',link.split('/')[-1],re.DOTALL)
+		sequence = re.findall('الحلقة-([0-9]+)',link.split('/')[-1],re.DOTALL)
 		if sequence: itemsNEW.append([link,int(sequence[0])])
+		#xbmcgui.Dialog().ok(link.split('/')[-1],sequence[0])
 	#name = xbmc.getInfoLabel('ListItem.Label')
 	if itemsNEW:
 		items = sorted(itemsNEW, reverse=True, key=lambda key: key[1])

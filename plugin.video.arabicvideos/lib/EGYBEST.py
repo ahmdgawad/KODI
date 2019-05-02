@@ -130,8 +130,8 @@ def PLAY(url):
 	headers = { 'User-Agent' : '' }
 	html = openURL(url,'',headers,'','EGYBEST-PLAY-1st')
 	rating = re.findall('<td>التصنيف</td>.*?">(.*?)<',html,re.DOTALL)
-	if rating[0] in ['R','TVMA','TV-MA'       ,'PG-18','PG-16']:
-		xbmcgui.Dialog().notification('الفيديو للكبار فقط','البرنامج لا يعرض هكذا افلام')
+	if rating[0] in ['R','TVMA','TV-MA','PG-18','PG-16']:
+		xbmcgui.Dialog().notification('قم بتشغيل فيديو غيره','هذا الفيديو للكبار فقط ولا يعمل هنا')
 		return
 	html_blocks = re.findall('tbody(.*?)tbody',html,re.DOTALL)
 	if not html_blocks:

@@ -146,3 +146,7 @@ Added new menu item for special tv cahnnels
 Added new "YU" tv source
 
 
+v4.4.0	2019-05-01
+Added new website "Youtube"
+Added new "WS" tv source
+

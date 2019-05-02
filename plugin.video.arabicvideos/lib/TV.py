@@ -32,6 +32,8 @@ def ITEMS(type):
 			name = name + ' ' + source
 			name = name.replace('Al ','Al')
 			name = name.replace('El ','El')
+			name = name.replace('AL ','Al')
+			name = name.replace('EL ','El')
 			addLink(menu_name+name,source+id,104,img,'','no')
 	elif html=='Not Allowed':
 		addLink(menu_name+'للأسف لا توجد قنوات تلفزونية لك','',9999)
@@ -77,19 +79,9 @@ def PLAY(id):
 		#xbmcgui.Dialog().ok('',html)
 		items = re.findall('source src="(.*?)"',html,re.DOTALL)
 		url = items[0]
-	elif source=='TA':
+	elif source in ['TA','FM','YU','WS']:
 		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
-		payload = { 'id' : id2 , 'user' : dummyClientID(32) , 'function' : 'playTA' }
-		response = requests_request('POST', website0a, data=payload, headers=headers, allow_redirects=False)
-		url = response.headers['Location']
-	elif source=='FM':
-		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
-		payload = { 'id' : id2 , 'user' : dummyClientID(32) , 'function' : 'playFM' }
-		response = requests_request('POST', website0a, data=payload, headers=headers, allow_redirects=False)
-		url = response.headers['Location']
-	elif source=='YU':
-		headers = { 'Content-Type' : 'application/x-www-form-urlencoded' }
-		payload = { 'id' : id2 , 'user' : dummyClientID(32) , 'function' : 'playYU' }
+		payload = { 'id' : id2 , 'user' : dummyClientID(32) , 'function' : 'play'+source }
 		response = requests_request('POST', website0a, data=payload, headers=headers, allow_redirects=False)
 		url = response.headers['Location']
 	#xbmcgui.Dialog().ok(url,'')

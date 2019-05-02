@@ -108,12 +108,14 @@ def GLOBAL_SEARCH():
 	addDir('6.  [COLOR FFC89008]KWT  [/COLOR]'+search+' - موقع قناة الكوثر','',139,'','','',search)
 	addDir('7.  [COLOR FFC89008]MRF  [/COLOR]'+search+' - موقع قناة المعارف','',49,'','','',search)
 	addDir('8.  [COLOR FFC89008]FTM  [/COLOR]'+search+' - موقع المنبر الفاطمي','',69,'','','',search)
-	addDir('=========================','',9999)
+	addDir('[COLOR FFC89008]=========================[/COLOR]','',9999)
 	addDir('9.   [COLOR FFC89008]AKM  [/COLOR]'+search+' - موقع اكوام','',79,'','','',search)
 	addDir('10.  [COLOR FFC89008]HEL  [/COLOR]'+search+' - موقع هلال يوتيوب','',99,'','','',search)
-	addDir('=========================','',9999)
+	addDir('[COLOR FFC89008]=========================[/COLOR]','',9999)
 	addDir('11.  [COLOR FFC89008]SHA  [/COLOR]'+search+' - موقع شاهد فوريو','',119,'','','',search)
 	addDir('12.  [COLOR FFC89008]HLA  [/COLOR]'+search+' - موقع هلا سيما','',89,'','','',search)
+	addDir('[COLOR FFC89008]=========================[/COLOR]','',9999)
+	addDir('13.  [COLOR FFC89008]YUT  [/COLOR]'+search+' - موقع يوتيوب','',149,'','','',search)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

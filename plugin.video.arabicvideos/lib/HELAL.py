@@ -70,7 +70,7 @@ def PLAY(url):
 		adultLIST = ['R - للكبار فقط','PG-18','PG-16','TV-MA']
 		html = openURL(url,'',headers,'','4HELAL-PLAY-1st')
 		if any(value in html for value in adultLIST):
-			xbmcgui.Dialog().notification('الفيديو للكبار فقط','البرنامج لا يعرض هكذا افلام')
+			xbmcgui.Dialog().notification('قم بتشغيل فيديو غيره','هذا الفيديو للكبار فقط ولا يعمل هنا')
 			return
 		html_blocks = re.findall('links-panel(.*?)div',html,re.DOTALL)
 		if html_blocks:

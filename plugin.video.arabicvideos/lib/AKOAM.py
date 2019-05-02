@@ -177,10 +177,11 @@ def PLAY(url):
 			#xbmcgui.Dialog().ok(str(link),'' )
 			try: linkLIST.append(link+'?'+serversDICT[serverIMG])
 			except: linkLIST.append(link+'?'+serverIMG)
-		linkLIST = set(linkLIST)
 		settings.setSetting('previous.url',url)
 		settings.setSetting('previous.linkLIST',str(linkLIST))
+		#xbmcgui.Dialog().ok(url,str(linkLIST))
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
+	#linkLIST = set(linkLIST)
 	RESOLVERS_PLAY(linkLIST,script_name,'yes')
 	#xbmcgui.Dialog().ok(url,'4444')
 	return

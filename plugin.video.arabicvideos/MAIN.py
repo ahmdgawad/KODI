@@ -3,7 +3,7 @@ from lib.LIBRARY import *
 
 def MAIN():
 	#addLink(menu_name+'Testing - watched enabled','',9,'','','yes')
-	#addLink(menu_name+'Testing - watched disabled','',9,'','','no')
+	#addLink('Testing - watched disabled','',9,'','','no')
 
 	addDir('بحث في جميع مواقع البرنامج'+'  .1','',6)
 	addDir('=========================','',9999)
@@ -12,29 +12,32 @@ def MAIN():
 	addDir('2.  [COLOR FFC89008]SHF  [/COLOR]'+'موقع شوف ماكس (مشفر)','',50)
 	addDir('3.  [COLOR FFC89008]EGB  [/COLOR]'+'موقع ايجي بيست (مشفر)','',120)
 	addDir('4.  [COLOR FFC89008]KLA   [/COLOR]'+'موقع كل العرب (مشفر)','',10)
-	addDir('5.  [COLOR FFC89008]PNT  [/COLOR]'+'موقع بانيت','',30)
-	addDir('6.  [COLOR FFC89008]IFL    [/COLOR]'+'موقع قناة اي فيلم','',20)
+	addDir('5.  [COLOR FFC89008]PNT   [/COLOR]'+'موقع بانيت','',30)
+	addDir('6.  [COLOR FFC89008]IFL     [/COLOR]'+'موقع قناة اي فيلم','',20)
 	addDir('7.  [COLOR FFC89008]KWT  [/COLOR]'+'موقع قناة الكوثر','',130)
 	addDir('8.  [COLOR FFC89008]MRF  [/COLOR]'+'موقع قناة المعارف','',40)
 	addDir('9.  [COLOR FFC89008]FTM  [/COLOR]'+'موقع المنبر الفاطمي','',60)
-	addDir('10. [COLOR FFC89008]TV1  [/COLOR]'+'قنوات تلفزونية','',100)
-	addDir('11. [COLOR FFC89008]TV2  [/COLOR]'+'قنوات تلفزونية خاصة','',101)
 	addDir('=========================','',9999)
 
 	addDir('[COLOR FFC89008]مواقع سيرفرات خاصة وعامة - كثيرة المشاكل[/COLOR]','',5)
-	addDir('12.  [COLOR FFC89008]AKM  [/COLOR]'+'موقع اكوام (مشفر)','',70)
-	addDir('13.  [COLOR FFC89008]HEL   [/COLOR]'+'موقع هلال يوتيوب (مشفر)','',90)
+	addDir('10.  [COLOR FFC89008]AKM  [/COLOR]'+'موقع اكوام (مشفر)','',70)
+	addDir('11.  [COLOR FFC89008]HEL   [/COLOR]'+'موقع هلال يوتيوب (مشفر)','',90)
 	addDir('=========================','',9999)
 
 	addDir('[COLOR FFC89008]مواقع سيرفرات عامة - كثيرة المشاكل[/COLOR]','',5)
-	addDir('14.  [COLOR FFC89008]SHA   [/COLOR]'+'موقع شاهد فوريو (مشفر)','',110)
-	addDir('15.  [COLOR FFC89008]HLA   [/COLOR]'+'موقع هلا سيما (مشفر)','',80)
-	addDir('=========================','',9999)
+	addDir('12.  [COLOR FFC89008]SHA   [/COLOR]'+'موقع شاهد فوريو (مشفر)','',110)
+	addDir('13.  [COLOR FFC89008]HLA   [/COLOR]'+'موقع هلا سيما (مشفر)','',80)
+	addDir('[COLOR FFC89008]=========================[/COLOR]','',9999)
 
-	addDir('ـProblems & Solutions    مشاكل وحلول'+'  .16','',1000)
-	addDir('ـMessage to developer    رسالة الى المبرمج'+'  .17','',2)
-	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'  .18','',3)
-	addLink('فحص المواقع المشفرة'+'  .19','',4)
+	addDir('14.  [COLOR FFC89008]YUT   [/COLOR]'+'موقع يوتيوب (مشفر)','',140)
+	addDir('15.  [COLOR FFC89008]TV1   [/COLOR]'+'قنوات تلفزونية','',100)
+	addDir('16.  [COLOR FFC89008]TV2   [/COLOR]'+'قنوات تلفزونية خاصة','',101)
+	addDir('[COLOR FFC89008]=========================[/COLOR]','',9999)
+
+	addDir('ـProblems & Solutions    مشاكل وحلول'+'  .17','',1000)
+	addDir('ـMessage to developer    رسالة الى المبرمج'+'  .18','',2)
+	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'  .19','',3)
+	addLink('فحص المواقع المشفرة'+'  .20','',4)
 
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
@@ -88,6 +91,7 @@ elif mode>=100 and mode<=109: from lib.TV import MAIN ; MAIN(mode,url)
 elif mode>=110 and mode<=119: from lib.SHAHID4U import MAIN ; MAIN(mode,url,text)
 elif mode>=120 and mode<=129: from lib.EGYBEST import MAIN ; MAIN(mode,url,page,text)
 elif mode>=130 and mode<=139: from lib.ALKAWTHAR import MAIN ; MAIN(mode,url,page,text)
+elif mode>=140 and mode<=149: from lib.YOUTUBE import MAIN ; MAIN(mode,text)
 
 elif mode>=1000 and mode<=1009: from lib.PROBLEMS import MAIN ; MAIN(mode)
 
