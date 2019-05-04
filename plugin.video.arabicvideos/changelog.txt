@@ -147,6 +147,10 @@ Added new "YU" tv source
 
 
 v4.4.0	2019-05-01
-Added new website "Youtube"
+Added new website "Youtube" using youtube plugin
 Added new "WS" tv source
+
+
+v4.5.0	2019-05-04
+Created full "Youtube" website browser
 

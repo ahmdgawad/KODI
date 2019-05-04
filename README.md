@@ -41,7 +41,8 @@ New video plugin for KODI that provide Arabic video contents from the following 
 <a href="http://www.shahid4u.me">10. &nbsp; http://www.shahid4u.me</a><br />
 <a href="http://www.egy.best">11. &nbsp; http://www.egy.best</a><br />
 <a href="http://www.alkawthartv.com">12. &nbsp; http://www.alkawthartv.com</a><br />
-<a href="http://www.google.com">13. &nbsp; Tv Channels</a><br />
+<a href="http://www.youtube.com">13. &nbsp; http://www.youtube.com</a><br />
+<a href="http://www.google.com">14. &nbsp; Tv Channels</a><br />
 <br />
 <br />
 <br />
