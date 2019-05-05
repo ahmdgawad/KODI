@@ -100,10 +100,10 @@ def SERVERS_TYPE():
 def GLOBAL_SEARCH():
 	search = KEYBOARD()
 	if search == '': return
-	addDir('1.  [COLOR FFC89008]SHF  [/COLOR]'+search+' - موقع شوف ماكس','',59,'','','',search)
-	addDir('2.  [COLOR FFC89008]EGB  [/COLOR]'+search+' - موقع ايجي بيست','',129,'','','',search)
-	addDir('3.  [COLOR FFC89008]KLA  [/COLOR]'+search+' - موقع كل العرب','',19,'','','',search)
-	addDir('4.  [COLOR FFC89008]YUT  [/COLOR]'+search+' - موقع يوتيوب','',149,'','','',search)
+	addDir('1.  [COLOR FFC89008]YUT  [/COLOR]'+search+' - موقع يوتيوب','',149,'','','',search)
+	addDir('2.  [COLOR FFC89008]SHF  [/COLOR]'+search+' - موقع شوف ماكس','',59,'','','',search)
+	addDir('3.  [COLOR FFC89008]EGB  [/COLOR]'+search+' - موقع ايجي بيست','',129,'','','',search)
+	addDir('4.  [COLOR FFC89008]KLA  [/COLOR]'+search+' - موقع كل العرب','',19,'','','',search)
 	addDir('5.  [COLOR FFC89008]PNT  [/COLOR]'+search+' - موقع بانيت','',39,'','','',search)
 	addDir('6.  [COLOR FFC89008]IFL    [/COLOR]'+search+' - موقع قناة اي فيلم','',29,'','','',search)
 	addDir('7.  [COLOR FFC89008]KWT  [/COLOR]'+search+' - موقع قناة الكوثر','',139,'','','',search)

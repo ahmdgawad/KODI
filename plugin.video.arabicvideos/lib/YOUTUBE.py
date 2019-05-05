@@ -127,7 +127,7 @@ def CHANNEL_ITEMS(url):
 		block = html_blocks[0]
 		items = re.findall('yt-lockup-thumbnail.*?href="(.*?)".*?src="(.*?)"(.*?)sessionlink.*?title="(.*?)"',block,re.DOTALL)
 		for link,img,count,title in items:
-			if 'count-label' in count: count = ' '+re.findall('<b>(.*?)</b>',count,re.DOTALL)[0]
+			if 'video-count-label' in count: count = ' '+re.findall('<b>(.*?)</b>',count,re.DOTALL)[0]
 			else: count=''
 			title = title.replace('\n','')
 			link = website0a+link
@@ -154,7 +154,7 @@ def TITLES(url):
 		items = re.findall('src="(.*?)"(.*?)href="(.*?)".*?title="(.*?)".*?yt-lockup-meta(.*?)</li>.*?</div></div></div>(.*?)</li>',block,re.DOTALL)
 	for img,count,link,title,count2,paid in items:
 		if 'Watch later' in title: continue
-		if 'count-label"><b>' in count: count = ' '+re.findall('<b>(.*?)</b>',count,re.DOTALL)[0]
+		if 'video-count-label"><b>' in count: count = ' '+re.findall('<b>(.*?)</b>',count,re.DOTALL)[0]
 		else: count=''
 		if 'video' in count2 and '<li>' in count2: count2 = ' '+re.findall('<li>(.*?) video',count2,re.DOTALL)[0]
 		else: count2=''
@@ -221,7 +221,7 @@ def CLEAN_AJAX(text):
 	text = text.replace('\\"','"')
 	text = text.replace('\\/','/')
 	text = text.replace('\\n','\n')
-	text = text.encode('utf8')
+	#text = text.encode('utf8')
 	#text = text.decode('unicode_escape')
 	#file = open('s:\emad.txt', 'w')
 	#file.write(text)
