@@ -11,7 +11,8 @@ def MAIN(mode,url,text):
 	elif mode==142: PLAYLIST_ITEMS(url)
 	elif mode==143: PLAY(url)
 	elif mode==144: SETTINGS()
-	elif mode==145: CHANNEL_ITEMS(url)
+	elif mode==145: CHANNEL_MENU(url)
+	elif mode==146: CHANNEL_ITEMS(url)
 	elif mode==149: SEARCH(text)
 	"""
 	import xbmcaddon
@@ -37,7 +38,13 @@ def MAIN(mode,url,text):
 
 def MENU():
 	addDir(menu_name+'بحث في الموقع','',149)
-	addDir(menu_name+'اعدادات برنامج يوتيوب','',144)
+	addDir(menu_name+'مسلسلات عربية','https://www.youtube.com/results?search_query=مسلسل&sp=EgIQAw%253D%253D',141)
+	addDir(menu_name+'افلام عربية','https://www.youtube.com/results?search_query=فيلم',141)
+	addDir(menu_name+'مسرحيات عربية','https://www.youtube.com/results?search_query=مسرحية',141)
+	addDir(menu_name+'مسلسلات اجنبية','https://www.youtube.com/results?search_query=series&sp=EgIQAw%253D%253D',141)
+	addDir(menu_name+'افلام اجنبية','https://www.youtube.com/results?search_query=movie',141)
+	addDir(menu_name+'مسلسلات كارتون','https://www.youtube.com/results?search_query=كارتون&sp=EgIQAw%253D%253D',141)
+	addDir(menu_name+'اعدادات اضافة يوتيوب','',144)
 	xbmcplugin.endOfDirectory(addon_handle)
 	#yes = xbmcgui.Dialog().yesno('هل تريد الاستمرار ؟','هذا الاختيار سوف يخرجك من البرنامج','لأنه سوف يقوم بتشغيل برنامج يوتيوب')
 	#if yes:
@@ -57,6 +64,35 @@ def PLAY(url):
 	return
 
 def PLAYLIST_ITEMS(url):
+	if 'browse_ajax' in url:
+		html = openURL(url,'','','','YOUTUBE-PLAYLIST_ITEMS-1st')
+		html = CLEAN_AJAX(html)
+		html_blocks = [html]
+	else:
+		id = url.split('list=')[1]
+		url2 = website0a+'/playlist?list='+id
+		html = openURL(url2,'','','','YOUTUBE-PLAYLIST_ITEMS-1st')
+		html_blocks = re.findall('class="pl-video-table(.*?)footer-container',html,re.DOTALL)
+	#xbmcgui.Dialog().ok(url,url)
+	if html_blocks:
+		block = html_blocks[0]
+		items = re.findall('data-title="(.*?)".*?href="(.*?)".*?data-thumb="(.*?)"',block,re.DOTALL)
+		for title,link,img in items:
+			title = title.replace('\n','')
+			title = unescapeHTML(title)
+			link = website0a+link
+			addLink(menu_name+title,link,143,img)
+		html_blocks = re.findall('items-load-more-button(.*?)load-more-loading',html,re.DOTALL)
+		if html_blocks:
+			block = html_blocks[0]
+			items = re.findall('href="(.*?)"',block,re.DOTALL)
+			for link in items:
+				addDir(menu_name+'صفحة اخرى',website0a+link,142)
+		xbmcplugin.endOfDirectory(addon_handle)
+	else: PLAYLIST_ITEMS_PLAYER(url)
+	return
+
+def PLAYLIST_ITEMS_PLAYER(url):
 	#xbmcgui.Dialog().ok(url,'')
 	html = openURL(url,'','','','YOUTUBE-PLAYLIST_ITEMS-1st')
 	html_blocks = re.findall('playlist-videos-container(.*?)watch7-container',html,re.DOTALL)
@@ -66,6 +102,7 @@ def PLAYLIST_ITEMS(url):
 	#xbmcgui.Dialog().ok(str(len(items1)),str(len(items2)))
 	i = 0
 	for title,link in items1:
+		title = title.replace('\n','')
 		title = unescapeHTML(title)
 		img = items2[i]
 		link = website0a+link
@@ -74,50 +111,64 @@ def PLAYLIST_ITEMS(url):
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
+def CHANNEL_MENU(url):
+	addDir(menu_name+'Playlists',url+'/playlists',146)
+	addDir(menu_name+'Videos',url+'/videos',146)
+	xbmcplugin.endOfDirectory(addon_handle)
+
 def CHANNEL_ITEMS(url):
-	url2 = url+'/playlists'
-	html = openURL(url2,'','','','YOUTUBE-CHANNEL_ITEMS-2nd')
-	#xbmcgui.Dialog().ok(url,html)
-	html_blocks = re.findall('branded-page-v2-subnav-container(.*?)id="footer-container',html,re.DOTALL)
+	html = openURL(url,'','','','YOUTUBE-CHANNEL_ITEMS-2nd')
+	if 'browse_ajax' in url:
+		html = CLEAN_AJAX(html)
+		html_blocks = [html]
+	else:
+		html_blocks = re.findall('branded-page-v2-subnav-container(.*?)footer-container',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]
-		items = re.findall('yt-lockup-thumbnail.*?href="(.*?)".*?src="(.*?)".*?sessionlink.*?title="(.*?)"',block,re.DOTALL)
-		for link,img,title in items:
-			link = website0a+link
-			title = 'LIST:  '+unescapeHTML(title)
-			addDir(menu_name+title,link,142,img)
-	url2 = url+'/videos'
-	html = openURL(url2,'','','','YOUTUBE-CHANNEL_ITEMS-1st')
-	html_blocks = re.findall('grid-lockups-container(.*?)footer-container',html,re.DOTALL)
-	if html_blocks:
-		block = html_blocks[0]
-		items = re.findall('href="(.*?)".*?src="(.*?)".*?sessionlink.*?title="(.*?)"',block,re.DOTALL)
-		for link,img,title in items:
+		items = re.findall('yt-lockup-thumbnail.*?href="(.*?)".*?src="(.*?)"(.*?)sessionlink.*?title="(.*?)"',block,re.DOTALL)
+		for link,img,count,title in items:
+			if 'count-label' in count: count = ' '+re.findall('<b>(.*?)</b>',count,re.DOTALL)[0]
+			else: count=''
+			title = title.replace('\n','')
 			link = website0a+link
 			title = unescapeHTML(title)
-			addLink(menu_name+title,link,143,img)
-	xbmcplugin.endOfDirectory(addon_handle)
+			if 'list=' in link:
+				addDir(menu_name+'LIST'+count+':  '+title,link,142,img)
+			else:
+				addLink(menu_name+title,link,143,img)
+		html_blocks = re.findall('items-load-more-button(.*?)load-more-loading',html,re.DOTALL)
+		if html_blocks:
+			block = html_blocks[0]
+			items = re.findall('href="(.*?)"',block,re.DOTALL)
+			for link in items:
+				addDir(menu_name+'صفحة اخرى',website0a+link,146)
+		xbmcplugin.endOfDirectory(addon_handle)
 	return
 
 def TITLES(url):
 	html = openURL(url,'','','','YOUTUBE-TITLES-1st')
 	html_blocks = re.findall('class="item-section(.*?)footer-container',html,re.DOTALL)
 	block = html_blocks[0]
-	items = re.findall('[thumb|src]="http(.*?)".*?href="(.*?)".*?title="(.*?)".*?</div></div></div>(.*?)</li>',block,re.DOTALL)
+	items = re.findall('[thumb|src]="http(.*?)"(.*?)href="(.*?)".*?title="(.*?)".*?yt-lockup-meta(.*?)</li>.*?</div></div></div>(.*?)</li>',block,re.DOTALL)
 	if not items:
-		items = re.findall('src="(.*?)".*?href="(.*?)".*?title="(.*?)".*?</div></div></div>(.*?)</li>',block,re.DOTALL)
-	for img,link,title,paid in items:
+		items = re.findall('src="(.*?)"(.*?)href="(.*?)".*?title="(.*?)".*?yt-lockup-meta(.*?)</li>.*?</div></div></div>(.*?)</li>',block,re.DOTALL)
+	for img,count,link,title,count2,paid in items:
+		if 'Watch later' in title: continue
+		if 'count-label"><b>' in count: count = ' '+re.findall('<b>(.*?)</b>',count,re.DOTALL)[0]
+		else: count=''
+		if 'video' in count2 and '<li>' in count2: count2 = ' '+re.findall('<li>(.*?) video',count2,re.DOTALL)[0]
+		else: count2=''
+		if '\n' in paid: title = '$$:  '+title
 		#xbmcgui.Dialog().ok(paid,'')
 		if '/channel/' in link: img = 'https:'+img
 		elif '/user/' in link: img = 'https:'+img
-		else:
-			img = 'http'+img
-			if paid!='</div>': title = '$$:  '+title
+		else: img = 'http'+img
 		link = website0a+link
+		title = title.replace('\n','')
 		title = unescapeHTML(title)
-		if 'list=' in link: addDir(menu_name+'LIST:  '+title,link,142,img)
-		elif '/channel/' in link: addDir(menu_name+'CHNL:  '+title,link,145,img)
-		elif '/user/' in link: addDir(menu_name+'USER:  '+title,link,145,img)
+		if 'list=' in link: addDir(menu_name+'LIST'+count+':  '+title,link,142,img)
+		elif '/channel/' in link: addDir(menu_name+'CHNL'+count2+':  '+title,link,145,img)
+		elif '/user/' in link: addDir(menu_name+'USER'+count2+':  '+title,link,145,img)
 		else: addLink(menu_name+title,link,143,img)
 	html_blocks = re.findall('search-pager(.*?)footer-container',html,re.DOTALL)
 	if html_blocks:
@@ -138,27 +189,42 @@ def SEARCH(search=''):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	search = search.replace(' ','%20')
-	#url = 'plugin://plugin.video.youtube/kodion/search/query/?q='+search
+	url2 = website0a + '/results?search_query='+search
+	#url2 = 'plugin://plugin.video.youtube/kodion/search/query/?q='+search
 	#xbmc.executebuiltin('Dialog.Close(busydialog)')
-	#xbmc.executebuiltin('ActivateWindow(videos,'+url+',return)')
-	url = website0a + '/results?search_query='+search
-	html = openURL(url,'','','','YOUTUBE-SEARCH-1st')
+	#xbmc.executebuiltin('ActivateWindow(videos,'+url2+',return)')
+	html = openURL(url2,'','','','YOUTUBE-SEARCH-1st')
 	html_blocks = re.findall('filter-dropdown(.*?)class="item-section',html,re.DOTALL)
-	#xbmcgui.Dialog().ok(url,html)
 	block = html_blocks[0]
 	items = re.findall('href="(.*?)".*?title="(.*?)"',block,re.DOTALL)
 	fileterLIST = ['بدون فلتر وبدون ترتيب']
-	linkLIST = [url]
+	linkLIST = [url2]
 	for link,title in items:
+		if 'Remove' in title: continue
 		title = title.replace('Search for','Search for:  ')
 		title = title.replace('Sort by','Sort by:  ')
+		if 'Playlist' in title: title = 'جيد للمسلسلات '+title
 		fileterLIST.append(unescapeHTML(title))
 		linkLIST.append(website0a+link)
 	fileterLIST.append(unescapeHTML('Sort by:   relevance'))
-	linkLIST.append(url)
+	linkLIST.append(url2)
 	selection = xbmcgui.Dialog().select('اختر الفلتر او الترتيب المناسب:', fileterLIST)
 	if selection == -1: return
-	url = linkLIST[selection]
-	TITLES(url)
+	url3 = linkLIST[selection]
+	TITLES(url3)
 	return
+
+def CLEAN_AJAX(text):
+	text = text.replace('\\u003c','<')
+	text = text.replace('\\u003e','>')
+	text = text.replace('\\u0026','&')
+	text = text.replace('\\"','"')
+	text = text.replace('\\/','/')
+	text = text.replace('\\n','\n')
+	text = text.encode('utf8')
+	#text = text.decode('unicode_escape')
+	#file = open('s:\emad.txt', 'w')
+	#file.write(text)
+	#file.close()
+	return text
 
