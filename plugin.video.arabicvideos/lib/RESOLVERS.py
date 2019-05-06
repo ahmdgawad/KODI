@@ -5,6 +5,43 @@ from urlresolver import HostedMediaFile as urlresolver_HostedMediaFile
 script_name='RESOLVERS'
 doNOTresolveMElist = [ 'mystream','vimple','vidbom' ]
 
+def MAIN(mode,url,text):
+	if mode==160: PLAY_LINK(url,text)
+	return
+
+def PLAY(linkLIST,script_name):
+	serversLIST,urlLIST = SERVERS(linkLIST,script_name)
+	#xbmcgui.Dialog().ok('',str(urlLIST))
+	#selection = xbmcgui.Dialog().select('اختر السيرفر المناسب:', serversLIST)
+	#if selection == -1 : return ''
+	if script_name=='HALACIMA': menu_name='[COLOR FFC89008]HLA [/COLOR]'
+	elif script_name=='4HELAL': menu_name='[COLOR FFC89008]HEL [/COLOR]'
+	elif script_name=='AKOAM': menu_name='[COLOR FFC89008]AKM [/COLOR]'
+	elif script_name=='SHAHID4U': menu_name='[COLOR FFC89008]SHA [/COLOR]'
+	size = len(urlLIST)
+	for i in range(0,size):
+		title = serversLIST[i]
+		link = urlLIST[i]
+		addLink(menu_name+title,link,160,'','','',script_name)
+	xbmcplugin.endOfDirectory(addon_handle)
+	return
+
+def PLAY_LINK(url,script_name):
+	title = xbmc.getInfoLabel( "ListItem.Label" )
+	if 'مجهول' in title:
+		from PROBLEMS import MAIN as PROBLEMS_MAIN
+		PROBLEMS_MAIN(156)
+		videoURL = ''
+	else:
+		videoURL = RESOLVE(url)
+		if videoURL==[]:
+			videoURL = ''
+		else:
+			videoURL = videoURL[0]
+			PLAY_VIDEO(videoURL,script_name,'yes')
+	#xbmcgui.Dialog().ok(str(videoURL),'')
+	return videoURL
+
 def CHECK(url):
 	result = 'unknown'
 	if   '1fichier'		in url: result = 'known'
@@ -188,26 +225,6 @@ def SERVERS(linkLIST,script_name=''):
 		subject = 'Unknown Resolvers = ' + str(lines)
 		result = SEND_EMAIL(subject,message,'no','','FROM-RESOLVERS-'+script_name)
 	return serversLIST,urlLIST
-
-def PLAY(linkLIST,script_name,play='yes'):
-	serversLIST,urlLIST = SERVERS(linkLIST,script_name)
-	selection = xbmcgui.Dialog().select('اختر السيرفر المناسب:', serversLIST)
-	if selection == -1 : return ''
-	if 'مجهول' in serversLIST[selection]:
-		from PROBLEMS import MAIN as PROBLEMS_MAIN
-		PROBLEMS_MAIN(1006)
-		videoURL = ''
-	else:
-		url = urlLIST[selection]
-		videoURL = RESOLVE(url)
-		if videoURL==[]:
-			videoURL = ''
-		else:
-			videoURL = videoURL[0]
-			if play=='yes': PLAY_VIDEO(videoURL,script_name,'yes')
-	#xbmcgui.Dialog().ok(str(videoURL),'')
-	return videoURL
-
 
 def	URLRESOLVER(url):
 	try: link = urlresolver_HostedMediaFile(url).resolve()

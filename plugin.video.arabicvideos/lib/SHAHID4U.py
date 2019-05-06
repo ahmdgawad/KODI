@@ -71,7 +71,7 @@ def ITEMS(url):
 			elif directory is True:
 				addDir(menu_name+title,link,111,img)
 			else:
-				addLink(menu_name+title,link,112,img)
+				addDir(menu_name+title,link,112,img)
 	html_blocks = re.findall('class="pagination(.*?)</div>',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]
@@ -103,7 +103,7 @@ def EPISODES(url):
 		#link = unquote(link)
 		title = link.split('/')[-1].replace('-',' ')
 		#title = name+' - '+title.strip(' ')
-		addLink(title,link,112)
+		addDir(title,link,112)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -169,7 +169,7 @@ def PLAY(url):
 		settings.setSetting('previous.linkLIST',str(linkLIST))
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	#xbmcgui.Dialog().ok(url,str(linkLIST))
-	RESOLVERS_PLAY(linkLIST,script_name,'yes')
+	RESOLVERS_PLAY(linkLIST,script_name)
 	return
 
 def SEARCH(search=''):

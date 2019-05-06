@@ -89,7 +89,7 @@ def HTTPS_TEST():
 	else:
 		xbmcgui.Dialog().ok('الاتصال المشفر','مشكلة ... الاتصال المشفر (الربط المشفر) لا يعمل على جهازك ... وجهازك غير قادر على استخدام المواقع المشفرة')
 		from PROBLEMS import MAIN as PROBLEMS_MAIN
-		PROBLEMS_MAIN(1002)
+		PROBLEMS_MAIN(152)
 	return
 
 def SERVERS_TYPE():

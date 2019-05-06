@@ -75,7 +75,7 @@ def TITLES(url,type):
 		title = title.strip(' ')
 		title = unescapeHTML(title)
 		if any(value in title for value in noEpisodesLIST):
-			addLink(menu_name+title,link,73,img)
+			addDir(menu_name+title,link,73,img)
 		else: 
 			addDir(menu_name+title,link,73,img)
 	html_blocks = re.findall('pagination(.*?)</div',html,re.DOTALL)
@@ -90,6 +90,8 @@ def TITLES(url,type):
 def EPISODES(url):
 	notvideosLIST = ['zip','rar','txt','pdf','htm','tar','iso','html']
 	html = openURL(url,'',headers,'','AKOAM-EPISODES-1st')
+	#xbmc.log(html, level=xbmc.LOGNOTICE)
+	#xbmcgui.Dialog().ok(url,html)
 	image = re.findall('class="main_img".*?src="(.*?)"',html,re.DOTALL)
 	img = image[0]
 	html_blocks = re.findall('ad-300-250.*?ad-300-250(.*?)ako-feedback',html,re.DOTALL)
@@ -136,10 +138,10 @@ def EPISODES(url):
 				if ':' in titleLIST[i]: title = titleLIST[i].strip(':') + ' - ملف الفيديو غير موجود'
 				else: title = videoTitle + ' - ' + titleLIST[i]
 				link = url + '?ep='+str(size-i)
-				addLink(menu_name+title,link,74,img)
+				addDir(menu_name+title,link,74,img)
 			xbmcplugin.endOfDirectory(addon_handle)
 	else:
-		addLink(menu_name+'الرابط ليس فيديو','',9999,img)
+		addDir(menu_name+'الرابط ليس فيديو','',9999,img)
 		#xbmcgui.Dialog().notification('خطأ خارجي','الرابط ليس فيديو')
 		xbmcplugin.endOfDirectory(addon_handle)
 	return
@@ -179,11 +181,10 @@ def PLAY(url):
 			except: linkLIST.append(link+'?'+serverIMG)
 		settings.setSetting('previous.url',url)
 		settings.setSetting('previous.linkLIST',str(linkLIST))
-		#xbmcgui.Dialog().ok(url,str(linkLIST))
+	#xbmcgui.Dialog().ok(url,str(linkLIST))
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
 	#linkLIST = set(linkLIST)
-	RESOLVERS_PLAY(linkLIST,script_name,'yes')
-	#xbmcgui.Dialog().ok(url,'4444')
+	RESOLVERS_PLAY(linkLIST,script_name)
 	return
 
 def SEARCH(search=''):
@@ -202,7 +203,7 @@ def SEARCH(search=''):
 			title = title.strip(' ')
 			title = unescapeHTML(title)
 			if any(value in title for value in noEpisodesLIST):
-				addLink(menu_name+title,link,73,img)
+				addDir(menu_name+title,link,73,img)
 			else:
 				addDir(menu_name+title,link,73,img)
 		xbmcplugin.endOfDirectory(addon_handle)

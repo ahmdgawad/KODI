@@ -41,7 +41,7 @@ def ITEMS(url,html=''):
 	items = re.findall('background-image:url\((.*?)\).*?href="(.*?)".*?movie-title">(.*?)<',block,re.DOTALL)
 	for img,link,title in items:
 		if '/video/' in link:
-			addLink(menu_name+title,link,92,img)
+			addDir(menu_name+title,link,92,img)
 		else:
 			addDir(menu_name+title,link,91,img)
 	html_blocks = re.findall('pagination(.*?)</div>',html,re.DOTALL)
@@ -106,7 +106,7 @@ def PLAY(url):
 		settings.setSetting('previous.url',url)
 		settings.setSetting('previous.linkLIST',str(linkLIST))
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
-	RESOLVERS_PLAY(linkLIST,script_name,'yes')
+	RESOLVERS_PLAY(linkLIST,script_name)
 	return
 
 def LATEST():
@@ -116,7 +116,7 @@ def LATEST():
 	items = re.findall('src="(.*?)".*?href="(.*?)" title="(.*?)"',block,re.DOTALL)
 	for img,link,title in items:
 		if '/video/' in link:
-			addLink(menu_name+title,link,92,img)
+			addDir(menu_name+title,link,92,img)
 		else:
 			addDir(menu_name+title,link,91,img)
 	xbmcplugin.endOfDirectory(addon_handle)

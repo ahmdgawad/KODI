@@ -62,7 +62,7 @@ def ITEMS(url,html='',type='',page=0):
 		if title not in allTitles:
 			allTitles.append(title)
 			if '/article/' in link:
-				addLink(menu_name+title,link,82,img)
+				addDir(menu_name+title,link,82,img)
 			else:
 				addDir(menu_name+title,link,81,img)
 	html_blocks = re.findall('pagination(.*?)</div>',html,re.DOTALL)
@@ -127,7 +127,7 @@ def PLAY(url):
 		settings.setSetting('previous.url',url)
 		settings.setSetting('previous.linkLIST',str(linkLIST))
 	from RESOLVERS import PLAY as RESOLVERS_PLAY
-	RESOLVERS_PLAY(linkLIST,script_name,'yes')
+	RESOLVERS_PLAY(linkLIST,script_name)
 	return
 
 def SEARCH(search=''):

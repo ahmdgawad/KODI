@@ -71,7 +71,7 @@ def PLAYLIST_ITEMS(url):
 	else:
 		id = url.split('list=')[1]
 		url2 = website0a+'/playlist?list='+id
-		html = openURL(url2,'','','','YOUTUBE-PLAYLIST_ITEMS-1st')
+		html = openURL(url2,'','','','YOUTUBE-PLAYLIST_ITEMS-2nd')
 		html_blocks = re.findall('class="pl-video-table(.*?)footer-container',html,re.DOTALL)
 	#xbmcgui.Dialog().ok(url,url)
 	if html_blocks:
@@ -94,7 +94,7 @@ def PLAYLIST_ITEMS(url):
 
 def PLAYLIST_ITEMS_PLAYER(url):
 	#xbmcgui.Dialog().ok(url,'')
-	html = openURL(url,'','','','YOUTUBE-PLAYLIST_ITEMS-1st')
+	html = openURL(url,'','','','YOUTUBE-PLAYLIST_ITEMS_PLAYER-1st')
 	html_blocks = re.findall('playlist-videos-container(.*?)watch7-container',html,re.DOTALL)
 	block = html_blocks[0]
 	items1 = re.findall('data-video-title="(.*?)".*?href="(.*?)"',block,re.DOTALL)
@@ -119,7 +119,7 @@ def CHANNEL_MENU(url):
 
 def CHANNEL_ITEMS(url):
 	#xbmcgui.Dialog().ok(url,'')
-	html = openURL(url,'','','','YOUTUBE-CHANNEL_ITEMS-2nd')
+	html = openURL(url,'','','','YOUTUBE-CHANNEL_ITEMS-1st')
 	if 'browse_ajax' in url:
 		html = CLEAN_AJAX(html)
 		html_blocks = [html]
@@ -227,6 +227,7 @@ def CLEAN_AJAX(text):
 	text = text.replace('\\n','\n')
 	#text = text.encode('utf8')
 	#text = text.decode('unicode_escape')
+	#text = escapeUNICODE(text)
 	#file = open('s:\emad.txt', 'w')
 	#file.write(text)
 	#file.close()

@@ -9,7 +9,7 @@ def MAIN():
 	addDir('=========================','',9999)
 
 	addDir('[COLOR FFC89008]مواقع سيرفرات خاصة - قليلة المشاكل[/COLOR]','',5)
-	addDir('2.  [COLOR FFC89008]YUT   [/COLOR]'+'موقع يوتيوب (مشفر)','',140)
+	addDir('2.  [COLOR FFC89008]YUT  [/COLOR]'+'موقع يوتيوب (مشفر)','',140)
 	addDir('3.  [COLOR FFC89008]SHF  [/COLOR]'+'موقع شوف ماكس (مشفر)','',50)
 	addDir('4.  [COLOR FFC89008]EGB  [/COLOR]'+'موقع ايجي بيست (مشفر)','',120)
 	addDir('5.  [COLOR FFC89008]KLA   [/COLOR]'+'موقع كل العرب (مشفر)','',10)
@@ -34,7 +34,7 @@ def MAIN():
 	addDir('16.  [COLOR FFC89008]TV2   [/COLOR]'+'قنوات تلفزونية خاصة','',101)
 	addDir('[COLOR FFC89008]=========================[/COLOR]','',9999)
 
-	addDir('ـProblems & Solutions    مشاكل وحلول'+'  .17','',1000)
+	addDir('ـProblems & Solutions    مشاكل وحلول'+'  .17','',150)
 	addDir('ـMessage to developer    رسالة الى المبرمج'+'  .18','',2)
 	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'  .19','',3)
 	addLink('فحص المواقع المشفرة'+'  .20','',4)
@@ -92,8 +92,8 @@ elif mode>=110 and mode<=119: from lib.SHAHID4U import MAIN ; MAIN(mode,url,text
 elif mode>=120 and mode<=129: from lib.EGYBEST import MAIN ; MAIN(mode,url,page,text)
 elif mode>=130 and mode<=139: from lib.ALKAWTHAR import MAIN ; MAIN(mode,url,page,text)
 elif mode>=140 and mode<=149: from lib.YOUTUBE import MAIN ; MAIN(mode,url,text)
-
-elif mode>=1000 and mode<=1009: from lib.PROBLEMS import MAIN ; MAIN(mode)
+elif mode>=150 and mode<=159: from lib.PROBLEMS import MAIN ; MAIN(mode)
+elif mode>=160 and mode<=169: from lib.RESOLVERS import MAIN ; MAIN(mode,url,text)
 
 
 

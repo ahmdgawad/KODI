@@ -87,7 +87,8 @@ def TITLES(url):
 
 def EPISODES(url):
 	html = openURL(url,'',headers,'','SHAHID4U-ITEMS-1st')
-	html_blocks = re.findall('banner-right(.*?)celebs',html,re.DOTALL)
+	html_blocks = re.findall('banner-right(.*?)general_footer',html,re.DOTALL)
+	#xbmcgui.Dialog().ok(url,html)
 	block = html_blocks[0]
 	items = re.findall('src="(.*?)".*?href="(.*?)".*?arial">(.*?)<',block,re.DOTALL)
 	items = sorted(items, reverse=True, key=lambda key: key[1])

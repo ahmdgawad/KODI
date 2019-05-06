@@ -20,7 +20,7 @@ def addDir(name,url='',mode='',iconimage=icon,page='',category='',text=''):
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=True)
 	return
 
-def addLink(name,url,mode,iconimage=icon,duration='',isPlayable='yes'):
+def addLink(name,url,mode,iconimage=icon,duration='',isPlayable='yes',text=''):
 	if iconimage=='': iconimage=icon
 	#xbmcgui.Dialog().ok(duration,'')
 	u='plugin://'+addon_id+'/?mode='+str(mode)+'&url='+quote(url)
@@ -32,7 +32,7 @@ def addLink(name,url,mode,iconimage=icon,duration='',isPlayable='yes'):
 		if len(duration)<=5 : duration = '00:' + duration
 		duration = sum(x * int(t) for x, t in zip([3600,60,1], duration.split(":"))) 	
 		liz.setInfo('Video', {'duration': duration})
-	if isPlayable=='yes': liz.setProperty('IsPlayable', 'true')
+	if isPlayable=='yes' or isPlayable=='': liz.setProperty('IsPlayable', 'true')
 	xbmcplugin.setContent(addon_handle, 'videos')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=False)
 	return
@@ -144,7 +144,7 @@ def PLAY_VIDEO(url,website,showWatched='yes'):
 		if 'html' not in html:
 			xbmcgui.Dialog().ok('الاتصال مشفر','مشكلة ... هذا الفيديو يحتاج الى اتصال مشفر (ربط مشفر) ولكن للأسف الاتصال المشفر لا يعمل على جهازك')
 			from PROBLEMS import MAIN as PROBLEMS_MAIN
-			PROBLEMS_MAIN(1002)
+			PROBLEMS_MAIN(152)
 			return
 	play_item = xbmcgui.ListItem(path=url)
 	if showWatched=='yes':
