@@ -112,11 +112,13 @@ def PLAYLIST_ITEMS_PLAYER(url):
 	return
 
 def CHANNEL_MENU(url):
-	addDir(menu_name+'Playlists',url+'/playlists',146)
 	addDir(menu_name+'Videos',url+'/videos',146)
+	addDir(menu_name+'Playlists',url+'/playlists',146)
+	addDir(menu_name+'Channels',url+'/channels',146)
 	xbmcplugin.endOfDirectory(addon_handle)
 
 def CHANNEL_ITEMS(url):
+	#xbmcgui.Dialog().ok(url,'')
 	html = openURL(url,'','','','YOUTUBE-CHANNEL_ITEMS-2nd')
 	if 'browse_ajax' in url:
 		html = CLEAN_AJAX(html)
@@ -134,6 +136,8 @@ def CHANNEL_ITEMS(url):
 			title = unescapeHTML(title)
 			if 'list=' in link:
 				addDir(menu_name+'LIST'+count+':  '+title,link,142,img)
+			elif '/channel/' in link:
+				addDir(menu_name+'CHNL:  '+title,link,145,img)
 			else:
 				addLink(menu_name+title,link,143,img)
 		html_blocks = re.findall('items-load-more-button(.*?)load-more-loading',html,re.DOTALL)
