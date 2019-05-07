@@ -18,15 +18,15 @@ def MAIN(mode,url,text):
 	elif mode==12: PLAY(url)
 	elif mode==13: EPISODES(url)
 	elif mode==14: LATEST()
-	#elif mode==15: TITLES('https://vod.alarab.com/ramadan2016/مصرية')
-	#elif mode==15: RAMADAN('?year=2018')
+	elif mode==15: RAMADAN_MENU()
+	elif mode==16: RAMADAN()
 	elif mode==19: SEARCH(text)
 	return
 
 def MENU():
 	addDir(menu_name+'بحث في الموقع','',19)
 	addDir(menu_name+'مسلسلات جديدة','',14)
-	#addDir(menu_name+'مسلسلات رمضان','',15)
+	addDir(menu_name+'مسلسلات رمضان','',15)
 	html = openURL(website0b,'',headers,'','ALARAB-MENU-1st')
 	html_blocks=re.findall('footer_sec(.*?)social-network',html,re.DOTALL)
 	block=html_blocks[0]
@@ -34,6 +34,14 @@ def MENU():
 	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	for url,title in items:
 		addDir(menu_name+title,url,11)
+	xbmcplugin.endOfDirectory(addon_handle)
+	return
+
+def RAMADAN_MENU():
+	addDir(menu_name+'مسلسلات رمضان 2019','',16)
+	addDir(menu_name+'مسلسلات رمضان 2018',website0a+'/ramadan2018/مصرية',11)
+	addDir(menu_name+'مسلسلات رمضان 2017',website0a+'/ramadan2017/مصرية',11)
+	addDir(menu_name+'مسلسلات رمضان 2016',website0a+'/ramadan2016/مصرية',11)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -156,26 +164,18 @@ def PLAY(url):
 	PLAY_VIDEO(url,script_name)
 	return
 
-"""
-def RAMADAN(url):
-	year = url.split('?year=')[1]
-	#xbmcgui.Dialog().ok(url,year)
+def RAMADAN():
 	html = openURL(website0b,'',headers,'','ALARAB-RAMADAN-1st')
-	html_blocks=re.findall('</a> </div></div>(.*?)ramadanseriesTOP',html,re.DOTALL)
+	html_blocks=re.findall('button_count(.*?)ramadanseriesTOP',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
-	for link,name in items:
-		name = name.strip(' ')
-		url = website0a + link.replace('2018',year)
-		addDir(menu_name+name,url,11)
+	year = re.findall('/ramadan([0-9]+)/',str(items),re.DOTALL)
+	year = year[0]
+	for link,title in items:
+		url = website0a + link
+		title = title.strip(' ') + ' ' + year
+		addDir(menu_name+title,url,11)
 	xbmcplugin.endOfDirectory(addon_handle)
-
-def RAMADAN_YEARS_MENU():
-	for year in range(2018,2000,-1):
-		url = '?year=' + str(year)
-		addDir(menu_name+str(year),url,16)
-	xbmcplugin.endOfDirectory(addon_handle)
-"""
 
 def SEARCH(search=''):
 	if search=='': search = KEYBOARD()
@@ -185,4 +185,3 @@ def SEARCH(search=''):
 	#xbmcgui.Dialog().ok('',searchlink)
 	TITLES(searchlink)
 	return
-

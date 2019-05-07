@@ -20,9 +20,11 @@ def MENU():
 	addDir(menu_name+'جديد الموقع',website0a,91)
 	html = openURL(website0a,'',headers,'','4HELAL-MENU-1st')
 	html_blocks = re.findall('mainmenu(.*?)nav',html,re.DOTALL)
+	#upper menu
 	block1 = html_blocks[0]
 	html_blocks = re.findall('class="f-cats(.*?)div',html,re.DOTALL)
-	block2 = html_blocks[0].replace('</a></li>',' اخرى</a></li>')
+	#bottom menu
+	block2 = html_blocks[0].replace('</a></li>',' أخرى</a></li>')
 	block = block1 + block2
 	items = re.findall('<li><a href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	#xbmcgui.Dialog().ok(block,str(items))

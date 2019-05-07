@@ -48,7 +48,7 @@ def PLAY(id):
 	source = id[0:2]
 	id2 = id[2:99]
 	url = ''
-	xbmcgui.Dialog().notification('Trying Channel...','')
+	xbmcgui.Dialog().notification('','Trying Channel ...')
 	#xbmcgui.Dialog().ok(source,id2)
 	from requests import request as requests_request
 	if source=='GA':
