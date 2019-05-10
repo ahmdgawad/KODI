@@ -107,43 +107,45 @@ def EPISODES(url):
 			allTitles.append(title)
 			link = website0a+unquote(link)
 			title = title.strip(' ')
-			addLink('مسلسل '+title,link,12,img)
+			addLink(menu_name+'مسلسل '+title,link,12,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
 def PLAY(url):
+	items_url = []
+	items_name = []
 	#xbmcgui.Dialog().ok(url,'')
 	id = re.findall('com/v(.*?)-',url,re.DOTALL)[0]
 	url2 = 'https://alarabplayers.alarab.com/?vid='+id
 	html = openURL(url,'',headers,'','ALARAB-PLAY-1st')
 	html += openURL(url2,'',headers,'','ALARAB-PLAY-2nd')
 	html_blocks = re.findall('playerInstance.setup(.*?)primary',html,re.DOTALL)
-	block = html_blocks[0]
-	try: block += html_blocks[1]
-	except: pass
-	count = 0
-	items_url = []
-	items_name = []
-	items = re.findall('file: "(.*?)mp4".*?label: "(.*?)"',block,re.DOTALL)
-	for file,label in reversed(items):
-		count += 1
-		items_url.append(file+'mp4')
-		items_name.append(label)
+	if html_blocks:
+		block = html_blocks[0]
+		try: block += html_blocks[1]
+		except: pass
+		items = re.findall('file: "(.*?mp4)".*?label: "(.*?)"',block,re.DOTALL)
+		for file,label in reversed(items):
+			items_url.append(file)
+			items_name.append(label)
+		items = re.findall('file:".*?youtu.*?=(.*?)"',block,re.DOTALL)
+		for youtubeID in items:
+			url = 'plugin://plugin.video.youtube/play/?video_id='+youtubeID
+			items_url.append(url)
+			items_name.append('ملف اليوتيوب')
+	#items = re.findall('resp-container.*?src="(.*?)".*?</div>',html,re.DOTALL)
+	#if items:
+	#	url = items[0]
+	#	items_url.append(url)
+	#	items_name.append('ملف التشغيل')
 	#xbmcgui.Dialog().ok('',str(items_url))
-	items = re.findall('file:".*?youtu.*?=(.*?)"',block,re.DOTALL)
-	for youtubeID in items:
-		url = 'plugin://plugin.video.youtube/play/?video_id='+youtubeID
-		count += 1
-		items_url.append(url)
-		items_name.append('ملف اليوتيوب')
 	url = website0a + '/download.php?file='+id
 	html = openURL(url,'',headers,'','ALARAB-PLAY-3rd')
-	items = re.findall('</h2>.*?href="(.*?)mp4"',html,re.DOTALL)
+	items = re.findall('</h2>.*?href="(.*?mp4)"',html,re.DOTALL)
 	if items:
-		url = items[0] + 'mp4'
-		count += 1
-		items_url.append(url)
-		items_name.append('ملف التنزيل')
+		items_url.append(items[0])
+		items_name.append('ملف التحميل')
+	count = len(items_url)
 	if count == 0:
 		xbmcgui.Dialog().ok('No video file found','لا يوجد ملف فيديو')
 		return

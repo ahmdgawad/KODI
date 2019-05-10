@@ -10,9 +10,9 @@ def MAIN(mode,url,page,text):
 	if mode==80: MENU()
 	elif mode==81: ITEMS(url)
 	elif mode==82: PLAY(url)
-	elif mode==84: ITEMS('','','lastRecent',page)
-	elif mode==85: ITEMS('','','pin',page)
-	elif mode==86: ITEMS('','','views',page)
+	elif mode==84: ITEMS('/category/','','lastRecent',page)
+	elif mode==85: ITEMS('/category/','','pin',page)
+	elif mode==86: ITEMS('/category/','','views',page)
 	elif mode==89: SEARCH(text)
 	return
 
@@ -43,26 +43,41 @@ def ITEMS(url,html='',type='',page=0):
 		html_blocks = re.findall('art_list(.*?)col-md-12',html,re.DOTALL)
 		block = html_blocks[0]
 	else:
-		if page==0: url = website0a + '/ajax/getItem'
-		else: url = website0a + '/ajax/loadMore'
+		if page==0: url2 = website0a + '/ajax/getItem'
+		else: url2 = website0a + '/ajax/loadMore'
 		headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
 		payload = { 'Ajax' : '1' , 'item' : type , 'offset' : page*50 }
 		data = urllib.urlencode(payload)
-		block = openURL(url,data,headers,'','HALACIMA-ITEMS-2nd')
+		block = openURL(url2,data,headers,'','HALACIMA-ITEMS-2nd')
 	items = re.findall('href="(.*?)".*?data-src="(.*?)".*?class="desc">(.*?)<',block,re.DOTALL)
 	allTitles = []
 	for link,img,title in items:
 		title = title.replace('\n','')
-		title = title.strip(' ')
-		if 'الحلقة' in title and '/article/' not in link:
-			episode = re.findall(' الحلقة [0-9]+',title,re.DOTALL)
+		if 'الحلقة' in title and '/category/' in url and 'برامج-وتلفزة' not in url:
+			episode = re.findall('(.*?) الحلقة [0-9]+',title,re.DOTALL)
 			if episode:
-				title = title.replace(episode[0],'')
+				title = episode[0]
+			episode = re.findall('(.*?)/article/(.*?)-الحلقة.*?.html',link,re.DOTALL)
+			if episode:
+				link = episode[0][0]+'/series/'+episode[0][1]+'.html'
+				link = link.replace('مشاهدة-','')
+				link = link.replace('Game-of-Thrones-الموسم-الثامن','Game-of-Thrones-الموسم-8')
+				link = link.replace('مسلسل-الهيبة-الجزء-الثالث','الهيبة-الموسم-3')
+				link = link.replace('كلبش-الجزء-الثالث','كلبش-الجزء-3')
+				#title = link.replace(episode[0][0],'')
+				title = 'Mod: '+title
+		if 'فيلم' in title and '/series/' in link and '/category/' in url:
+			title = link
+			title = title.replace('-',' ')
+			title = title.replace('.html','')
+			title = title.replace(website0a+'/series/','')
+		title = title.strip(' -')
+		title = title.strip(' ')
 		title = unescapeHTML(title)
 		if title not in allTitles:
 			allTitles.append(title)
 			if '/article/' in link:
-				addDir(menu_name+title,link,82,img)
+				addLink(menu_name+title,link,82,img)
 			else:
 				addDir(menu_name+title,link,81,img)
 	html_blocks = re.findall('pagination(.*?)</div>',html,re.DOTALL)
@@ -140,7 +155,7 @@ def SEARCH(search=''):
 	data = urllib.urlencode(payload)
 	html = openURL(url,data,headers,'','HALACIMA-SEARCH-1st')
 	#xbmc.log(html, level=xbmc.LOGNOTICE)
-	if 'art_list' in html: ITEMS('',html)
+	if 'art_list' in html: ITEMS('/category/',html)
 	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 

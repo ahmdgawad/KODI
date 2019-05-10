@@ -26,10 +26,10 @@ def MAIN_MENU():
 	return
 
 def MOVIES_MENU():
+	addDir(menu_name+'احدث الافلام',website0a+'/movie/1/newest',51)
 	addDir(menu_name+'افلام رائجة',website0a+'/movie/1/popular',51)
-	addDir(menu_name+'احدث الافلام',website0a+'/movie/1/latest',51)
+	addDir(menu_name+'اخر اضافات الافلام',website0a+'/movie/1/latest',51)
 	addDir(menu_name+'افلام كلاسيكية',website0a+'/movie/1/classic',51)
-	addDir(menu_name+'اخر اضافات الافلام',website0a+'/movie/1/newest',51)
 	addDir('=========================','',9999)
 	addDir(menu_name+'اختيار افلام مرتبة بسنة الانتاج',website0a+'/movie/1/yop',57)
 	addDir(menu_name+'اختيار افلام مرتبة بالافضل تقييم',website0a+'/movie/1/review',57)
@@ -38,10 +38,10 @@ def MOVIES_MENU():
 	return
 
 def SERIES_MENU():
+	addDir(menu_name+'احدث المسلسلات',website0a+'/series/1/newest',51)
 	addDir(menu_name+'مسلسلات رائجة',website0a+'/series/1/popular',51)
-	addDir(menu_name+'احدث المسلسلات',website0a+'/series/1/latest',51)
+	addDir(menu_name+'اخر اضافات المسلسلات',website0a+'/series/1/latest',51)
 	addDir(menu_name+'مسلسلات كلاسيكية',website0a+'/series/1/classic',51)
-	addDir(menu_name+'اخر اضافات المسلسلات',website0a+'/series/1/newest',51)
 	addDir('=========================','',9999)
 	addDir(menu_name+'اختيار مسلسلات مرتبة بسنة الانتاج',website0a+'/series/1/yop',57)
 	addDir(menu_name+'اختيار مسلسلات مرتبة بالافضل تقييم',website0a+'/series/1/review',57)
@@ -53,27 +53,28 @@ def TITLES(url):
 	#xbmcgui.Dialog().ok(url,url)
 	if '?' in url:
 		parts = url.split('?')
-		filter = '?' + urllib2.quote(parts[1],'=&:/')
+		filter = '?' + urllib2.quote(parts[1],'=&:/%')
 		url = parts[0]
 	else: filter = ''
 	#xbmcgui.Dialog().ok(filter,'')
-	info = url.split('/')
-	sort = info[ len(info)-1 ]
-	page = info[ len(info)-2 ]
-	type = info[ len(info)-3 ]
+	parts = url.split('/')
+	sort = parts[ len(parts)-1 ]
+	page = parts[ len(parts)-2 ]
+	type = parts[ len(parts)-3 ]
 	if sort in ['yop','review','views']:
 		if type=='movie': type1='فيلم'
 		elif type=='series': type1='مسلسل'
 		url = website0a + '/filter-programs/' + quote(type1) + '/' + page + '/' + sort + filter
+		#xbmcgui.Dialog().ok(url,page)
 		html = openURL(url,'','','','SHOOFMAX-TITLES-1st')
 		items = re.findall('"ref":(.*?),.*?"title":"(.*?)".+?"numep":(.*?),"res":"(.*?)"',html,re.DOTALL)
 		count_items=0
-		for id,title,episodes_number,img in items:
+		for id,title,episodes_count,img in items:
 			count_items += 1
 			img = website0b + '/img/program/' + img + '-2.jpg'
 			link = website0a + '/program/' + id
 			if type=='movie': addLink(menu_name+title,link,53,img)
-			if type=='series': addDir(menu_name+'مسلسل '+title,link+'?ep='+episodes_number+'='+title+'='+img,52,img)
+			if type=='series': addDir(menu_name+'مسلسل '+title,link+'?ep='+episodes_count+'='+title+'='+img,52,img)
 	else:
 		if type=='movie': type1='movies'
 		elif type=='series': type1='series'
@@ -81,12 +82,12 @@ def TITLES(url):
 		html = openURL(url,'','','','SHOOFMAX-TITLES-2nd')
 		items = re.findall('"ref":(.*?),"ep":(.*?),"base":"(.*?)","title":"(.*?)"',html,re.DOTALL)
 		count_items=0
-		for id,episodes_number,img,title in items:
+		for id,episodes_count,img,title in items:
 			count_items += 1
 			img = website0b + '/img/program/' + img + '-2.jpg'
 			link = website0a + '/program/' + id
 			if type=='movie': addLink(menu_name+title,link,53,img)
-			if type=='series': addDir(menu_name+'مسلسل '+title,link+'?ep='+episodes_number+'='+title+'='+img,52,img)
+			if type=='series': addDir(menu_name+'مسلسل '+title,link+'?ep='+episodes_count+'='+title+'='+img,52,img)
 	title='صفحة '
 	if count_items==16:
 		for count_page in range(1,13) :
@@ -97,24 +98,24 @@ def TITLES(url):
 	return
 
 def EPISODES(url):
-	info = url.split('=')
-	episodes_number = info[1]
-	name = unquote(info[2])
-	img = info[3]
-	info = url.split('?')
-	url = info[0]
-	if episodes_number=='0':
+	parts = url.split('=')
+	episodes_count = parts[1]
+	name = unquote(parts[2])
+	img = parts[3]
+	parts = url.split('?')
+	url = parts[0]
+	if episodes_count=='0':
 		html = openURL(url,'','','','SHOOFMAX-SEARCH-1st')
 		html_blocks = re.findall('<select(.*?)</select>',html,re.DOTALL)
 		block = html_blocks[0]
 		items = re.findall('option value="(.*?)"',block,re.DOTALL)
-		episodes_number = items[-1]
-		#xbmcgui.Dialog().ok(episodes_number,'')
+		episodes_count = items[-1]
+		#xbmcgui.Dialog().ok(episodes_count,'')
 	#name = xbmc.getInfoLabel( "ListItem.Title" )
 	#img = xbmc.getInfoLabel( "ListItem.Thumb" )
 	name1 = 'مسلسل '
 	name2 = ' - الحلقة '
-        for episode in range(int(episodes_number),0,-1):
+        for episode in range(int(episodes_count),0,-1):
 		link = url + '?ep=' + str(episode)
 		title = name1 + name + name2 + str(episode)
 		addLink(menu_name+title,link,53,img)
@@ -124,6 +125,12 @@ def EPISODES(url):
 def PLAY(url):
 	html = openURL(url,'','','','SHOOFMAX-PLAY-1st')
 	html_blocks = re.findall('intro_end(.*?)initialize',html,re.DOTALL)
+	if not html_blocks:
+		later = re.findall('(متوفر على شوف ماكس بعد).*?moment\("(.*?)"',html,re.DOTALL)
+		if later:
+			time = later[0][1].replace('T','    ')
+			xbmcgui.Dialog().ok('متوفر على شوف ماكس بعد هذا الوقت',time)
+		return
 	block = html_blocks[0]
 	items_url = []
 	items_name = []
@@ -154,9 +161,9 @@ def PLAY(url):
 			server = 'main server'
 			url = origin_link + link
 		html = openURL(url,'','','','SHOOFMAX-PLAY-2nd')
-		items = re.findall('RESOLUTION=(.*?),.*?\n(.*?)m3u8',html,re.DOTALL)
+		items = re.findall('RESOLUTION=(.*?),.*?\n(.*?m3u8)',html,re.DOTALL)
 		for quality,link in items:
-			url2 = url.replace('variant.m3u8','') + link + 'm3u8'
+			url2 = url.replace('variant.m3u8','') + link
 			items_url.append(url2)
 			items_name.append('m3u8: '+server+' '+quality)
 	selection = xbmcgui.Dialog().select('Select Video Quality:', items_name)

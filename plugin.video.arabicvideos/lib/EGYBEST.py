@@ -149,7 +149,7 @@ def PLAY(url):
 	url = website0a + '/api?call=' + watchitem[0]
 	EGUDI, EGUSID, EGUSS = GET_PLAY_TOKENS()
 	if EGUDI=='': return
-	headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
+	headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':website0a, 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
 	from requests import request as requests_request
 	response = requests_request('GET', url, headers=headers, allow_redirects=False)
 	html = response.text
@@ -165,7 +165,7 @@ def PLAY(url):
 	if 'http' not in url:
 		datacall = datacallLIST[selection]
 		url = website0a + '/api?call=' + datacall
-		headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
+		headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':website0a, 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
 		response = requests_request('GET', url, headers=headers, allow_redirects=False)
 		html = response.text
 		#xbmcgui.Dialog().ok(url,html)
@@ -174,7 +174,7 @@ def PLAY(url):
 		#datacall = items[0]
 
 		#url = website0a + '/api?call=' + datacall
-		#headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':'https://egy.best', 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
+		#headers = { 'User-Agent':'Googlebot/2.1 (+http)', 'Referer':website0a, 'Cookie':'EGUDI='+EGUDI+'; EGUSID='+EGUSID+'; EGUSS='+EGUSS }
 		#response = requests_request('GET', url, headers=headers, allow_redirects=False)
 		#html = response.text
 		#xbmc.log(escapeUNICODE(html), level=xbmc.LOGNOTICE)
@@ -193,7 +193,7 @@ def PLAY(url):
 
 def GET_USERNAME_PASSWORD():
 	text = 'هذا الموقع يحتاج اسم دخول وكلمة السر لكي تستطيع تشغيل ملفات الفيديو. للحصول عليهم قم بفتح حساب مجاني من الموقع الاصلي'
-	xbmcgui.Dialog().ok('الموقع الاصلي  http://egy.best',text)
+	xbmcgui.Dialog().ok('الموقع الاصلي  '+website0a,text)
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
 	oldusername = settings.getSetting('egybest.user')
@@ -257,7 +257,7 @@ def GET_PLAY_TOKENS():
 	headers = {
 	'Content-Type': "multipart/form-data; boundary=----WebKitFormBoundary"+randomString,
 	#'Cookie': "PSSID="+PSSID+"; JS_TIMEZONE_OFFSET=18000",
-	'Referer': 'https://ssl.egexa.com/login/?domain=egy.best&url=ref'
+	'Referer': 'https://ssl.egexa.com/login/?domain='+website0a.split('//')[1]+'&url=ref'
 	}
 	response = requests.request('POST', url, data=payload, headers=headers, allow_redirects=False)
 	cookies = response.cookies.get_dict()

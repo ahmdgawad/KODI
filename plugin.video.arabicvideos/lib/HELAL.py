@@ -43,7 +43,7 @@ def ITEMS(url,html=''):
 	items = re.findall('background-image:url\((.*?)\).*?href="(.*?)".*?movie-title">(.*?)<',block,re.DOTALL)
 	for img,link,title in items:
 		if '/video/' in link:
-			addDir(menu_name+title,link,92,img)
+			addLink(menu_name+title,link,92,img)
 		else:
 			addDir(menu_name+title,link,91,img)
 	html_blocks = re.findall('pagination(.*?)</div>',html,re.DOTALL)
@@ -118,7 +118,7 @@ def LATEST():
 	items = re.findall('src="(.*?)".*?href="(.*?)" title="(.*?)"',block,re.DOTALL)
 	for img,link,title in items:
 		if '/video/' in link:
-			addDir(menu_name+title,link,92,img)
+			addLink(menu_name+title,link,92,img)
 		else:
 			addDir(menu_name+title,link,91,img)
 	xbmcplugin.endOfDirectory(addon_handle)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
-website0a = 'https://rmdan.tv'
+website0a = 'https://ramdan.tv/'
 headers = { 'User-Agent' : '' }
 script_name='AKOAM'
 menu_name='[COLOR FFC89008]AKM [/COLOR]'
@@ -75,7 +75,7 @@ def TITLES(url,type):
 		title = title.strip(' ')
 		title = unescapeHTML(title)
 		if any(value in title for value in noEpisodesLIST):
-			addDir(menu_name+title,link,73,img)
+			addLink(menu_name+title,link,73,img)
 		else: 
 			addDir(menu_name+title,link,73,img)
 	html_blocks = re.findall('pagination(.*?)</div',html,re.DOTALL)
@@ -99,7 +99,7 @@ def EPISODES(url):
 		xbmcgui.Dialog().notification('خطأ خارجي','لا يوجد ملف فيديو')
 		return
 	block = html_blocks[0]
-	videoTitle = re.findall('class="sub_title".*?<h1>(.*?)</h1>',html,re.DOTALL)
+	videoTitle = re.findall('class="sub_title".*?<h1 >(.*?)</h1>',html,re.DOTALL)
 	videoTitle = videoTitle[0].replace('\n','').strip(' ')
 	if 'sub_epsiode_title' in block:
 		items = re.findall('sub_epsiode_title">(.*?)</h2>.*?sub_file_title.*?>(.*?)<',block,re.DOTALL)
@@ -135,13 +135,14 @@ def EPISODES(url):
 			PLAY(url+'?ep='+str(episodeLIST[selection]+1))
 		else:
 			for i in range(0,len(titleLIST)):
-				if ':' in titleLIST[i]: title = titleLIST[i].strip(':') + ' - ملف الفيديو غير موجود'
-				else: title = videoTitle + ' - ' + titleLIST[i]
+				#if ':' in titleLIST[i]: title = titleLIST[i].strip(':') + ' - ملف الفيديو غير موجود'
+				#else: title = videoTitle + ' - ' + titleLIST[i]
+				title = videoTitle + ' - ' + titleLIST[i]
 				link = url + '?ep='+str(size-i)
-				addDir(menu_name+title,link,74,img)
+				addLink(menu_name+title,link,74,img)
 			xbmcplugin.endOfDirectory(addon_handle)
 	else:
-		addDir(menu_name+'الرابط ليس فيديو','',9999,img)
+		addLink(menu_name+'الرابط ليس فيديو','',9999,img)
 		#xbmcgui.Dialog().notification('خطأ خارجي','الرابط ليس فيديو')
 		xbmcplugin.endOfDirectory(addon_handle)
 	return
@@ -177,8 +178,8 @@ def PLAY(url):
 			serverIMG = serverIMG.split('/')[-1]
 			serverIMG = serverIMG.split('.')[0]
 			#xbmcgui.Dialog().ok(str(link),'' )
-			try: linkLIST.append(link+'?'+serversDICT[serverIMG])
-			except: linkLIST.append(link+'?'+serverIMG)
+			try: linkLIST.append(link+'/?name='+serversDICT[serverIMG])
+			except: linkLIST.append(link+'/?name='+serverIMG)
 		settings.setSetting('previous.url',url)
 		settings.setSetting('previous.linkLIST',str(linkLIST))
 	#xbmcgui.Dialog().ok(url,str(linkLIST))
@@ -203,7 +204,7 @@ def SEARCH(search=''):
 			title = title.strip(' ')
 			title = unescapeHTML(title)
 			if any(value in title for value in noEpisodesLIST):
-				addDir(menu_name+title,link,73,img)
+				addLink(menu_name+title,link,73,img)
 			else:
 				addDir(menu_name+title,link,73,img)
 		xbmcplugin.endOfDirectory(addon_handle)

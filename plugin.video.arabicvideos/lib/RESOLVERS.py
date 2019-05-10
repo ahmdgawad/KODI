@@ -11,20 +11,34 @@ def MAIN(mode,url,text):
 
 def PLAY(linkLIST,script_name):
 	serversLIST,urlLIST = SERVERS(linkLIST,script_name)
-	#xbmcgui.Dialog().ok('',str(urlLIST))
-	#selection = xbmcgui.Dialog().select('اختر السيرفر المناسب:', serversLIST)
-	#if selection == -1 : return ''
-	if script_name=='HALACIMA': menu_name='[COLOR FFC89008]HLA [/COLOR]'
-	elif script_name=='4HELAL': menu_name='[COLOR FFC89008]HEL [/COLOR]'
-	elif script_name=='AKOAM': menu_name='[COLOR FFC89008]AKM [/COLOR]'
-	elif script_name=='SHAHID4U': menu_name='[COLOR FFC89008]SHA [/COLOR]'
-	size = len(urlLIST)
-	for i in range(0,size):
-		title = serversLIST[i]
-		link = urlLIST[i]
-		addLink(menu_name+title,link,160,'','','',script_name)
-	xbmcplugin.endOfDirectory(addon_handle)
-	return
+	count = len(urlLIST)
+	if count == 0:
+		xbmcgui.Dialog().ok('No video file found','لا يوجد ملف فيديو')
+		return ''
+	elif count == 1:
+		selection = 0
+	elif count > 1:
+		selection = xbmcgui.Dialog().select('اختر السيرفر المناسب:', serversLIST)
+		if selection == -1 : return ''
+	title = serversLIST[selection]
+	videoURL = ''
+	if 'مجهول' in title:
+		from PROBLEMS import MAIN as PROBLEMS_MAIN
+		PROBLEMS_MAIN(156)
+	else:
+		url = urlLIST[selection]
+		videoURL = PLAY_LINK(url,script_name)
+	#if script_name=='HALACIMA': menu_name='[COLOR FFC89008]HLA [/COLOR]'
+	#elif script_name=='4HELAL': menu_name='[COLOR FFC89008]HEL [/COLOR]'
+	#elif script_name=='AKOAM': menu_name='[COLOR FFC89008]AKM [/COLOR]'
+	#elif script_name=='SHAHID4U': menu_name='[COLOR FFC89008]SHA [/COLOR]'
+	#size = len(urlLIST)
+	#for i in range(0,size):
+	#	title = serversLIST[i]
+	#	link = urlLIST[i]
+	#	addLink(menu_name+title,link,160,'','','',script_name)
+	#xbmcplugin.endOfDirectory(addon_handle)
+	return videoURL
 
 def PLAY_LINK(url,script_name):
 	title = xbmc.getInfoLabel( "ListItem.Label" )
@@ -96,7 +110,8 @@ def RESOLVABLE(url):
 	result2 = ''
 	if   any(value in url2 for value in doNOTresolveMElist): return ''
 	elif 'go.akoam.net'	in url2 and '?' not in url2: result1 = 'akoam'
-	elif 'go.akoam.net'	in url2 and '?' in url2: result2 = url2.split('?')[1]
+	elif 'go.akoam.net'	in url2 and '?' in url2: result2 = url2.split('name=')[1]
+	elif 'shahid4u.net'	in url2 and '?' in url2: result2 = url2.split('name=')[1]
 	elif 'arabloads'	in url2: result1 = 'arabloads'
 	elif 'archive'		in url2: result1 = 'archive'
 	elif 'catch.is'	 	in url2: result1 = 'catch'
@@ -148,6 +163,7 @@ def RESOLVE(url):
 	videoURL = []
 	if any(value in url2 for value in doNOTresolveMElist): return ''
 	elif 'go.akoam.net'	in url2: videoURL = AKOAMNET(url)
+	elif 'shahid4u.net'	in url2: videoURL = SHAHID4U(url)
 	elif 'arabloads'	in url2: videoURL = ARABLOADS(url)
 	elif 'archive'		in url2: videoURL = ARCHIVE(url)
 	elif 'catch.is'	 	in url2: videoURL = CATCHIS(url)
@@ -203,16 +219,15 @@ def SERVERS(linkLIST,script_name=''):
 	for link in linkLIST:
 		if link=='': continue
 		link = link.rstrip('/')
-		server = RESOLVABLE(link)
-		if server=='':
+		serverNAME = RESOLVABLE(link)
+		if serverNAME=='':
 			#xbmcgui.Dialog().ok(link,'')
 			if 'akoam' in link and '?' in link:
-				serverNAME = 'سيرفر عام مجهول ' + link.split('?')[1]
+				serverNAME = 'سيرفر عام مجهول ' + link.split('name=')[1].lower()
+			elif 'shahid4u' in link and '?' in link:
+				serverNAME = 'سيرفر عام مجهول ' + link.split('name=')[1].lower()
 			else:
-				serverNAME = 'سيرفر عام مجهول ' + link.split('//')[1].split('/')[0]
-			#if CHECK(link)=='unknown': unknownLIST.append(link)
-		else:
-			serverNAME = server
+				serverNAME = 'سيرفر عام مجهول ' + link.split('//')[1].split('/')[0].lower()
 		serversDICT.append( [link,serverNAME] )
 	sortedDICT = sorted(serversDICT, reverse=False, key=lambda key: key[1])
 	for i in range(0,len(sortedDICT)):
@@ -234,11 +249,26 @@ def	URLRESOLVER(url):
 		return ['Error']
 	return [ link.rstrip('/') ]
 
+def SHAHID4U(link):
+	parts = re.findall('postid=(.*?)&serverid=(.*?)&name=',link,re.DOTALL|re.IGNORECASE)
+	#xbmcgui.Dialog().ok(link,str(parts))
+	postid = parts[0][0]
+	serverid = parts[0][1]
+	url = 'https://on.shahid4u.net/ajaxCenter?_action=getserver&_post_id='+postid+'&serverid='+serverid
+	headers = { 'User-Agent':'' , 'X-Requested-With':'XMLHttpRequest' }
+	html = openURL(url,'',headers,'','RESOLVERS-RAPIDVIDEO-1st')
+	url2 = html
+	url2 = RESOLVE(url2)
+	try: url3 = url2[0]
+	except: url3 = ''
+	#xbmcgui.Dialog().ok(str(url3),str(html))
+	return [ url3.rstrip('/') ]
+
 def AKOAMNET(link):
 	from requests import request as requests_request
 	response = requests_request('GET', link, headers='', data='', allow_redirects=False)
 	url = response.headers['Location']
-	#xbmcgui.Dialog().ok(str(url),'')
+	#xbmcgui.Dialog().ok(str(link),url)
 	url = GOLINK(url)
 	try: url = url[0]
 	except:
@@ -250,7 +280,7 @@ def AKOAMNET(link):
 		url = CATCHIS(url)
 		url = url[0]
 	else:
-		url = url.replace('akoam.net','rmdan.tv')
+		url = url.replace('//akoam.net','//ramdan.tv')
 		url2 = url
 		#xbmcgui.Dialog().ok(str(url),'')
 		headers = { 'User-Agent':'' , 'X-Requested-With':'XMLHttpRequest' , 'Referer':url }
