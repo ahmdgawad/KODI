@@ -41,7 +41,8 @@ def ITEMS(url,html='',type='',page=0):
 		if html=='':
 			html = openURL(url,'',headers,'','HALACIMA-ITEMS-1st')
 		html_blocks = re.findall('art_list(.*?)col-md-12',html,re.DOTALL)
-		block = html_blocks[0]
+		if html_blocks: block = html_blocks[0]
+		else: block = ''
 	else:
 		if page==0: url2 = website0a + '/ajax/getItem'
 		else: url2 = website0a + '/ajax/loadMore'
@@ -65,7 +66,7 @@ def ITEMS(url,html='',type='',page=0):
 				link = link.replace('مسلسل-الهيبة-الجزء-الثالث','الهيبة-الموسم-3')
 				link = link.replace('كلبش-الجزء-الثالث','كلبش-الجزء-3')
 				#title = link.replace(episode[0][0],'')
-				title = 'Mod: '+title
+				title = '[COLOR FFC89008]Mod [/COLOR]'+title
 		if 'فيلم' in title and '/series/' in link and '/category/' in url:
 			title = link
 			title = title.replace('-',' ')
@@ -155,8 +156,9 @@ def SEARCH(search=''):
 	data = urllib.urlencode(payload)
 	html = openURL(url,data,headers,'','HALACIMA-SEARCH-1st')
 	#xbmc.log(html, level=xbmc.LOGNOTICE)
-	if 'art_list' in html: ITEMS('/category/',html)
-	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	ITEMS('/category/',html)
+	#if 'art_list' in html: ITEMS('/category/',html)
+	#else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

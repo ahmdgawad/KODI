@@ -154,3 +154,7 @@ Added new "WS" tv source
 v4.5.0	2019-05-04
 Created full "Youtube" website browser
 
+
+v4.6.0	2019-05-12
+Added addon version check
+Fixed akoam new website name

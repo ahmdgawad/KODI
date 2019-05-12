@@ -10,6 +10,7 @@ def MAIN(mode,text=''):
 	elif mode==4: HTTPS_TEST()
 	elif mode==5: SERVERS_TYPE()
 	elif mode==6: GLOBAL_SEARCH()
+	elif mode==7: VERSION()
 	elif mode==9: TESTINGS()
 	return
 
@@ -117,6 +118,26 @@ def GLOBAL_SEARCH():
 	addDir('13.  [COLOR FFC89008]HLA  [/COLOR]'+search+' - موقع هلا سيما','',89,'','','',search)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
+
+def VERSION():
+	url = 'https://raw.githubusercontent.com/emadmahdi/KODI/master/addons.xml'
+	html = openURL(url,'','','','PROGRAM-VERSION-1st')
+	latestVER = re.findall('plugin.video.arabicvideos" name="Arabic Videos" version="(.*?)"',html,re.DOTALL)[0]
+	currentVER = xbmc.getInfoLabel('System.AddonVersion(plugin.video.arabicvideos)')
+	message2 = 'الاصدار الاخير المتوفر الان هو :   ' + latestVER
+	message2 +=  '\n' + 'الاصدار الذي انت تستخدمه هو :   ' + currentVER
+	if latestVER >= currentVER:
+		message1 =  'الرجاء تحديث البرنامج لحل المشاكل'     
+		message3 =  '\n\n' + 'جرب اغلاق كودي وتشغيله مرة اخرى واعطيه بعض الوقت للتحديث الاوتوماتيكي' 
+	else:
+		message1 = 'لا توجد اي تحديثات حاليا'
+		message3 =  '\n\n' + 'الرجاء ابلاغ المبرمج عن اي مشكلة تواجهك'
+	message3 +=  '\n\n' + 'علما ان التحديث الاوتوماتيكي لا يعمل اذا لم يكن لديك في كودي مخزن عماد EMAD Repository'
+	message3 +=  '\n\n' + 'ملفات التنصيب مع التعليمات متوفرة على هذا الرابط'
+	message3 +=  '\n' + 'https://github.com/emadmahdi/KODI'
+
+	xbmcgui.Dialog().textviewer(message1,message2+message3)
+	return ''
 
 def TESTINGS():
 	#import xbmcaddon

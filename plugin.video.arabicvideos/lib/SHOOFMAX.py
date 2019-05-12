@@ -227,8 +227,8 @@ def SEARCH(search=''):
 					addDir(menu_name+'مسلسل '+title,url,52,img)
 				else:
 					addLink(menu_name+'فيلم '+title,url,53,img)
-		xbmcplugin.endOfDirectory(addon_handle)
-	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	xbmcplugin.endOfDirectory(addon_handle)
+	#else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

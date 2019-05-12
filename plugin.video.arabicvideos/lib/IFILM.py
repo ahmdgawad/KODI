@@ -298,8 +298,8 @@ def SEARCH(url,search=''):
 				link = url + '/' + type + '/Content/' + id
 				img = url + quote(img)
 				addDir(menu_name+title,link,23,img,101)
-		xbmcplugin.endOfDirectory(addon_handle)
-	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	xbmcplugin.endOfDirectory(addon_handle)
+	#else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

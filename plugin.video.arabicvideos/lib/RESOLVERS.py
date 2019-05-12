@@ -268,7 +268,6 @@ def AKOAMNET(link):
 	from requests import request as requests_request
 	response = requests_request('GET', link, headers='', data='', allow_redirects=False)
 	url = response.headers['Location']
-	#xbmcgui.Dialog().ok(str(link),url)
 	url = GOLINK(url)
 	try: url = url[0]
 	except:
@@ -280,13 +279,14 @@ def AKOAMNET(link):
 		url = CATCHIS(url)
 		url = url[0]
 	else:
-		url = url.replace('//akoam.net','//ramdan.tv')
+		response = requests_request('GET', 'https://akoam.net/', headers='', data='', allow_redirects=False)
+		relocateURL = response.headers['Location']
+		url = url.replace('https://akoam.net/',relocateURL)
+		#xbmcgui.Dialog().ok(str(url),str(relocateURL))
 		url2 = url
-		#xbmcgui.Dialog().ok(str(url),'')
 		headers = { 'User-Agent':'' , 'X-Requested-With':'XMLHttpRequest' , 'Referer':url }
 		response = requests_request('POST', url2, headers=headers, data='', allow_redirects=False)
 		html = response.text
-		#xbmcgui.Dialog().ok(url2,str(len(html)))
 		items = re.findall('direct_link":"(.*?)"',html,re.DOTALL|re.IGNORECASE)
 		if not items:
 			items = re.findall('<iframe.*?src="(.*?)"',html,re.DOTALL|re.IGNORECASE)
@@ -295,7 +295,6 @@ def AKOAMNET(link):
 		url = items[0].replace('\/','/')
 		url = url.rstrip('/')
 		if 'http' not in url: url = 'http:' + url
-		#xbmcgui.Dialog().ok(str(url),str(link))
 		if '?' in link:
 			url = RESOLVE(url)
 			try: url = url[0]

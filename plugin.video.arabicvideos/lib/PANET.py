@@ -162,8 +162,8 @@ def SEARCH(url,search=''):
 			#xbmcgui.Dialog().ok(title, url.split('/')[-1]   )
 			if '/movies/' in url: addLink(menu_name+'فيلم '+title,url,33)
 			elif '/series/' in url: addDir(menu_name+'مسلسل '+title,url+'/1',32)
-		xbmcplugin.endOfDirectory(addon_handle)
-	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	xbmcplugin.endOfDirectory(addon_handle)
+	#else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

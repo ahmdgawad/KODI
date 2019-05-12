@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
-website0a = 'https://ramdan.tv/'
+website0a = 'https://akoam.net'
 headers = { 'User-Agent' : '' }
 script_name='AKOAM'
 menu_name='[COLOR FFC89008]AKM [/COLOR]'
@@ -99,7 +99,7 @@ def EPISODES(url):
 		xbmcgui.Dialog().notification('خطأ خارجي','لا يوجد ملف فيديو')
 		return
 	block = html_blocks[0]
-	videoTitle = re.findall('class="sub_title".*?<h1 >(.*?)</h1>',html,re.DOTALL)
+	videoTitle = re.findall('class="sub_title".*?<h1.*?>(.*?)</h1>',html,re.DOTALL)
 	videoTitle = videoTitle[0].replace('\n','').strip(' ')
 	if 'sub_epsiode_title' in block:
 		items = re.findall('sub_epsiode_title">(.*?)</h2>.*?sub_file_title.*?>(.*?)<',block,re.DOTALL)
@@ -198,17 +198,17 @@ def SEARCH(search=''):
 	html_blocks = re.findall('akoam_result(.*?)<script',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('href="(.*?)".*?background-image: url\((.*?)\).*?<h1>(.*?)</h1>',block,re.DOTALL)
-	if items:
-		for link,img,title in items:
-			title = title.replace('\n','')
-			title = title.strip(' ')
-			title = unescapeHTML(title)
-			if any(value in title for value in noEpisodesLIST):
-				addLink(menu_name+title,link,73,img)
-			else:
-				addDir(menu_name+title,link,73,img)
-		xbmcplugin.endOfDirectory(addon_handle)
-	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	#if items:
+	for link,img,title in items:
+		title = title.replace('\n','')
+		title = title.strip(' ')
+		title = unescapeHTML(title)
+		if any(value in title for value in noEpisodesLIST):
+			addLink(menu_name+title,link,73,img)
+		else:
+			addDir(menu_name+title,link,73,img)
+	xbmcplugin.endOfDirectory(addon_handle)
+	#else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

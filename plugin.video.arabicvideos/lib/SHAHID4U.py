@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
-website0a = 'https://on.shahid4u.net'
+website0a = 'https://tv.shahid4u.net'
 script_name='SHAHID4U'
 headers = { 'User-Agent' : '' }
 menu_name='[COLOR FFC89008]SHA [/COLOR]'
@@ -11,15 +11,23 @@ def MAIN(mode,url,text):
 	elif mode==111: ITEMS(url)
 	elif mode==112: PLAY(url)
 	elif mode==113: EPISODES(url)
+	elif mode==114: FILTER_MENU(url)
+	elif mode==115: FILTER_SELECT(url)
 	elif mode==119: SEARCH(text)
 	return
 
 def MENU():
 	addDir(menu_name+'بحث في الموقع','',119)
-	#addDir(menu_name+'المضاف حديثا',website0a,111)
+	addDir(menu_name+'فلتر','',114,website0a)
 	html = openURL(website0a,'',headers,'','SHAHID4U-MENU-1st')
-	html_blocks = re.findall('navigation-menu(.*?)</div>',html,re.DOTALL)
+	html_blocks = re.findall('categories-tabs(.*?)advanced-search">',html,re.DOTALL)
+	block = html_blocks[0]
+	items = re.findall('data-get="(.*?)".*?<h3>(.*?)<',block,re.DOTALL)
+	url = website0a+'/getposts?type=one&data='
+	for link,title in items:
+		addDir(menu_name+title,url+link,111)
 	#xbmcgui.Dialog().ok(html,html)
+	html_blocks = re.findall('navigation-menu(.*?)</div>',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('href="http(.*?)">(.*?)<',block,re.DOTALL)
 	ignoreLIST = ['مسلسلات انمي','الرئيسية']
@@ -35,21 +43,24 @@ def MENU():
 def ITEMS(url):
 	#xbmcgui.Dialog().ok(url,url)
 	html = openURL(url,'',headers,'','SHAHID4U-ITEMS-1st')
-	html_blocks = re.findall('page-content(.*?)tags-cloud',html,re.DOTALL)
-	block = html_blocks[0]
+	if 'getposts' in url:
+		block = html
+	else:
+		html_blocks = re.findall('page-content(.*?)tags-cloud',html,re.DOTALL)
+		block = html_blocks[0]
 	items = re.findall('src="(.*?)".*?href="(.*?)".*?<h3>(.*?)<',block,re.DOTALL)
 	allTitles = []
 	itemLIST = ['فيلم','اغنية','كليب','اعلان','هداف','مباراة','عرض','مهرجان','البوم']
 	for img,link,title in items:
 		link = unquote(link)
-		title = title.strip(' ')
 		title = unescapeHTML(title)
+		title = title.strip(' ')
 		if 'مشاهدة' in title or '/film/' in link or any(value in title for value in itemLIST):
 			addLink(menu_name+title,link,112,img)
 		elif 'الحلقة' in title and '/episode/' in link:
 			episode = re.findall('(.*?) الحلقة [0-9]+',title,re.DOTALL)
 			if episode:
-				title = episode[0]
+				title = '[COLOR FFC89008]Mod [/COLOR]'+episode[0]
 				if title not in allTitles:
 					addDir(menu_name+title,link,113,img)
 					allTitles.append(title)
@@ -174,10 +185,48 @@ def SEARCH(search=''):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	search = search.replace(' ','+')
-	url = website0a + '/search?s=' + search
+	html = openURL(website0a,'',headers,'','SHAHID4U-MENU-1st')
+	html_blocks = re.findall('advanced-search">(.*?)</div>',html,re.DOTALL)
+	block = html_blocks[0]
+	items = re.findall('data-cat="(.*?)".*?checkmark-bold">(.*?)</span>',block,re.DOTALL)
+	#xbmcgui.Dialog().textviewer('',str(block))
+	categoryLIST = []
+	filterLIST = []
+	for category,title in items:
+		categoryLIST.append(category)
+		filterLIST.append(title)
+	selection = xbmcgui.Dialog().select('اختر الفلتر المناسب:', filterLIST)
+	if selection == -1 : return
+	category = categoryLIST[selection]
+	url = website0a + '/search?s='+search+'&category='+category
 	#xbmcgui.Dialog().ok(url,url)
 	ITEMS(url)
 	return
+"""
+def FILTER_MENU(url):
+	addDir(menu_name+'اظهار قائمة الفيديو التي تم اختيارها',link,122,'',1)
+	addDir(menu_name+'[[   ' + filter + '   ]]',link,122,'',1)
+	addDir(menu_name+'===========================',link,9999)
+	html = openURL(link,'',headers,'','EGYBEST-FILTERS_MENU-1st')
+	html_blocks=re.findall('advanced-search">(.*?)MediaGrid">',html,re.DOTALL)
+	if html_blocks:
+		block = html_blocks[0]
+		items=re.findall('small rounded">(.*?)<',block,re.DOTALL)
+		for title in items:
+			addLink(menu_name+'[[   ' + title + '   ]]',url,115,'','')
+
+def FILTER_SELECT(url):
+	html = openURL(url,'',headers,'','EGYBEST-FILTERS_MENU-1st')
+	html_blocks=re.findall('advanced-search">(.*?)MediaGrid">',html,re.DOTALL)
+	if html_blocks:
+		block = html_blocks[0]
+		items=re.findall('small rounded">(.*?)<',block,re.DOTALL)
+		for title in items:
+		addLink(menu_name+'[[   ' + title + '   ]]',link,122,'',1)
+"""
+
+
+
 
 
 

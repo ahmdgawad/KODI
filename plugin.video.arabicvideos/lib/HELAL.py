@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
-website0a = 'https://www.4helal.tv'
+website0a = 'https://4helal.tv'
 script_name='4HELAL'
 headers = { 'User-Agent' : '' }
 menu_name='[COLOR FFC89008]HEL [/COLOR]'
@@ -11,6 +11,7 @@ def MAIN(mode,url,text):
 	elif mode==91: ITEMS(url)
 	elif mode==92: PLAY(url)
 	elif mode==94: LATEST()
+	elif mode==95: EPISODES(url)
 	elif mode==99: SEARCH(text)
 	return
 
@@ -37,12 +38,22 @@ def MENU():
 	return
 
 def ITEMS(url,html=''):
-	if html=='': html = openURL(url,'',headers,'','4HELAL-ITEMS-1st')
+	if html=='':
+		html = openURL(url,'',headers,'','4HELAL-ITEMS-1st')
 	html_blocks = re.findall('movies-items(.*?)class="clear',html,re.DOTALL)
-	block = html_blocks[0]
+	if html_blocks: block = html_blocks[0]
+	else: block = ''
 	items = re.findall('background-image:url\((.*?)\).*?href="(.*?)".*?movie-title">(.*?)<',block,re.DOTALL)
+	allTitles = []
 	for img,link,title in items:
-		if '/video/' in link:
+		if 'الحلقة' in title and '/c/' not in url:
+			episode = re.findall('(.*?) الحلقة [0-9]+',title,re.DOTALL)
+			if episode:
+				title = '[COLOR FFC89008]Mod [/COLOR]'+episode[0]
+				if title not in allTitles:
+					addDir(menu_name+title,link,95,img)
+					allTitles.append(title)
+		elif '/video/' in link:
 			addLink(menu_name+title,link,92,img)
 		else:
 			addDir(menu_name+title,link,91,img)
@@ -54,6 +65,20 @@ def ITEMS(url,html=''):
 			title = unescapeHTML(title)
 			title = title.replace('الصفحة ','')
 			addDir(menu_name+'صفحة '+title,link,91)
+	xbmcplugin.endOfDirectory(addon_handle)
+	return
+
+def EPISODES(url):
+	html = openURL(url,'',headers,'','4HELAL-ITEMS-1st')
+	html_blocks = re.findall('episodes-panel(.*?)</div>',html,re.DOTALL)
+	block = html_blocks[0]
+	img = re.findall('image":.*?"(.*?)"',html,re.DOTALL)[0]
+	name = xbmc.getInfoLabel('ListItem.Label')
+	name = name.replace('Mod ','').replace('HEL ','')
+	items = re.findall('href="(.*?)".*?name">(.*?)<',block,re.DOTALL)
+	for link,title in items:
+		title = name+' - '+title
+		addLink(menu_name+title,link,92,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -133,8 +158,9 @@ def SEARCH(search=''):
 	payload = { 't' : search }
 	data = urllib.urlencode(payload)
 	html = openURL(url,data,headers,'','4HELAL-SEARCH-1st')
-	if 'movies-items' in html: ITEMS('',html)
-	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	ITEMS('',html)
+	#if 'movies-items' in html: ITEMS('',html)
+	#else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

@@ -216,8 +216,8 @@ def SEARCH(page,search=''):
 			if i==page: continue
 			title = name + ' ' + str(i)
 			addDir(menu_name+title,'',136,icon,i)
-		xbmcplugin.endOfDirectory(addon_handle)
-	else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	xbmcplugin.endOfDirectory(addon_handle)
+	#else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

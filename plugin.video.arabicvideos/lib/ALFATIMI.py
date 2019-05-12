@@ -129,8 +129,9 @@ def SEARCH(search=''):
 		items = re.findall('cat=(.*?)&.*?>(.*?)<',block,re.DOTALL)
 		for category,title in items:
 			addDir(menu_name+title,website0a,61,icon,'',category)
-		xbmcplugin.endOfDirectory(addon_handle)
-	except: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	except: pass
+	xbmcplugin.endOfDirectory(addon_handle)
+	#except: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
 
 

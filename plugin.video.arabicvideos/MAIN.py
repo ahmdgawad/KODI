@@ -38,7 +38,7 @@ def MAIN():
 	addDir('ـMessage to developer    رسالة الى المبرمج'+'  .18','',2)
 	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'  .19','',3)
 	addLink('فحص المواقع المشفرة'+'  .20','',4)
-
+	addLink('فحص الاصدار الاخير والتحديثات'+'  .21','',7)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

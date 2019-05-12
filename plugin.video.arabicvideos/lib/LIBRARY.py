@@ -47,10 +47,10 @@ def openURL(url,data='',headers='',showDialogs='',source=''):
 	code = '200'
 	reason = 'OK'
 	try:
-		connection = urllib2.urlopen(request)
-		html = connection.read()
-		code = str(connection.code)
-		connection.close
+		response = urllib2.urlopen(request,timeout=15)
+		html = response.read()
+		code = str(response.code)
+		response.close
 	except urllib2.HTTPError as error:
 		code = str(error.code)
 		reason = str(error.reason)

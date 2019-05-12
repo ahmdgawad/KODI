@@ -27,13 +27,14 @@ def MENU():
 	addDir(menu_name+'بحث في الموقع','',19)
 	addDir(menu_name+'مسلسلات جديدة','',14)
 	addDir(menu_name+'مسلسلات رمضان','',15)
-	html = openURL(website0b,'',headers,'','ALARAB-MENU-1st')
-	html_blocks=re.findall('footer_sec(.*?)social-network',html,re.DOTALL)
+	html = openURL(website0a,'',headers,'','ALARAB-MENU-1st')
+	html_blocks=re.findall('id="navbar"(.*?)</div>',html,re.DOTALL)
 	block=html_blocks[0]
 	#xbmcgui.Dialog().ok(str(len(html)), str(len(block)) )
 	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
-	for url,title in items:
-		addDir(menu_name+title,url,11)
+	for link,title in items:
+		link = website0a+link
+		addDir(menu_name+title,link,11)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -46,7 +47,7 @@ def RAMADAN_MENU():
 	return
 
 def LATEST():
-	html = openURL(website0b,'',headers,'','ALARAB-LATEST-1st')
+	html = openURL(website0a,'',headers,'','ALARAB-LATEST-1st')
 	#xbmcgui.Dialog().ok('',html)
 	html_blocks=re.findall('right_content.*?heading-top(.*?)heading-top',html,re.DOTALL)
 	block = html_blocks[0]
@@ -59,7 +60,7 @@ def LATEST():
 
 def TITLES(url):
 	html = openURL(url,'',headers,'','ALARAB-ITEMS-1st')
-	html_blocks = re.findall('heading-list(.*?)right_content',html,re.DOTALL)
+	html_blocks = re.findall('video-category(.*?)right_content',html,re.DOTALL)
 	block = html_blocks[0]
 	found = False
 	items = re.findall('video-box.*?href="(.*?)".*?src="(.*?)" alt="(.*?)"',block,re.DOTALL)
@@ -74,6 +75,7 @@ def TITLES(url):
 			if episode:
 				title2 = title2.replace(episode[0],'')
 				title2 = title2.replace(' والاخيرة','')
+				title2 = '[COLOR FFC89008]Mod [/COLOR]'+title2
 		if title2 not in allTitles:
 			allTitles.append(title2)
 			if '/q/' in url and 'الحلقة' in title:
@@ -95,7 +97,7 @@ def TITLES(url):
 
 def EPISODES(url):
 	html = openURL(url,'',headers,'','SHAHID4U-ITEMS-1st')
-	html_blocks = re.findall('banner-right(.*?)general_footer',html,re.DOTALL)
+	html_blocks = re.findall('banner-right(.*?)classic-channel',html,re.DOTALL)
 	#xbmcgui.Dialog().ok(url,html)
 	block = html_blocks[0]
 	items = re.findall('src="(.*?)".*?href="(.*?)".*?arial">(.*?)<',block,re.DOTALL)
@@ -167,8 +169,8 @@ def PLAY(url):
 	return
 
 def RAMADAN():
-	html = openURL(website0b,'',headers,'','ALARAB-RAMADAN-1st')
-	html_blocks=re.findall('button_count(.*?)ramadanseriesTOP',html,re.DOTALL)
+	html = openURL(website0a,'',headers,'','ALARAB-RAMADAN-1st')
+	html_blocks=re.findall('id="content_sec"(.*?)id="left_content"',html,re.DOTALL)
 	block = html_blocks[0]
 	items=re.findall('href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	year = re.findall('/ramadan([0-9]+)/',str(items),re.DOTALL)
@@ -183,7 +185,7 @@ def SEARCH(search=''):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','%20')
-	searchlink = website0a + "/q/" + new_search
-	#xbmcgui.Dialog().ok('',searchlink)
-	TITLES(searchlink)
+	url = website0a + "/q/" + new_search
+	#xbmcgui.Dialog().ok('',url)
+	TITLES(url)
 	return
