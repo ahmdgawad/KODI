@@ -126,7 +126,7 @@ def VERSION():
 	currentVER = xbmc.getInfoLabel('System.AddonVersion(plugin.video.arabicvideos)')
 	message2 = 'الاصدار الاخير المتوفر الان هو :   ' + latestVER
 	message2 +=  '\n' + 'الاصدار الذي انت تستخدمه هو :   ' + currentVER
-	if latestVER >= currentVER:
+	if latestVER > currentVER:
 		message1 =  'الرجاء تحديث البرنامج لحل المشاكل'     
 		message3 =  '\n\n' + 'جرب اغلاق كودي وتشغيله مرة اخرى واعطيه بعض الوقت للتحديث الاوتوماتيكي' 
 	else:
