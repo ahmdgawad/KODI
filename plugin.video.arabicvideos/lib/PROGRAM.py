@@ -124,22 +124,29 @@ def VERSION():
 	html = openURL(url,'','','','PROGRAM-VERSION-1st')
 	latestVER = re.findall('plugin.video.arabicvideos" name="Arabic Videos" version="(.*?)"',html,re.DOTALL)[0]
 	currentVER = xbmc.getInfoLabel('System.AddonVersion(plugin.video.arabicvideos)')
-	message2 = 'الاصدار الاخير المتوفر الان هو :   ' + latestVER
-	message2 +=  '\n' + 'الاصدار الذي انت تستخدمه هو :   ' + currentVER
+	latestVER2 = re.findall('repository.emad" name="EMAD Repository" version="(.*?)"',html,re.DOTALL)[0]
+	currentVER2 = xbmc.getInfoLabel('System.AddonVersion(repository.emad)')
 	if latestVER > currentVER:
-		message1 =  'الرجاء تحديث البرنامج لحل المشاكل'     
-		message3 =  '\n\n' + 'جرب اغلاق كودي وتشغيله مرة اخرى واعطيه بعض الوقت للتحديث الاوتوماتيكي' 
+		message1 =  'الرجاء تحديث البرنامج لحل المشاكل'
+		message3 =  '\n\n' + 'جرب اغلاق كودي وتشغيله وانتظر التحديث الاوتوماتيكي'
 	else:
-		message1 = 'لا توجد اي تحديثات حاليا'
+		message1 = 'لا توجد اي تحديثات للبرنامج حاليا'
 		message3 =  '\n\n' + 'الرجاء ابلاغ المبرمج عن اي مشكلة تواجهك'
+	if currentVER2=='': currentVER2='لا يوجد'
+	else: currentVER2 = ' ' + currentVER2
+	message2 = 'الاصدار الاخير للبرنامج المتوفر الان هو :   ' + latestVER
+	message2 +=  '\n' + 'الاصدار الذي انت تستخدمه للبرنامج هو :   ' + currentVER
+	message2 += '\n' + 'الاصدار الاخير لمخزن عماد المتوفر الان هو :   ' + latestVER2
+	message2 +=  '\n' + 'الاصدار الذي انت تستخدمه لمخزن عماد هو :  ' + currentVER2
 	message3 +=  '\n\n' + 'علما ان التحديث الاوتوماتيكي لا يعمل اذا لم يكن لديك في كودي مخزن عماد EMAD Repository'
 	message3 +=  '\n\n' + 'ملفات التنصيب مع التعليمات متوفرة على هذا الرابط'
 	message3 +=  '\n' + 'https://github.com/emadmahdi/KODI'
-
 	xbmcgui.Dialog().textviewer(message1,message2+message3)
 	return ''
 
 def TESTINGS():
+	#url = ''
+	#PLAY_VIDEO(url)
 	#import xbmcaddon
 	#settings = xbmcaddon.Addon(id=addon_id)
 	#settings.setSetting('test1','hello test1')

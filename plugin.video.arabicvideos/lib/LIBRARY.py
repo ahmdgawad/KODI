@@ -47,7 +47,7 @@ def openURL(url,data='',headers='',showDialogs='',source=''):
 	code = '200'
 	reason = 'OK'
 	try:
-		response = urllib2.urlopen(request,timeout=15)
+		response = urllib2.urlopen(request,timeout=60)
 		html = response.read()
 		code = str(response.code)
 		response.close
@@ -138,7 +138,7 @@ def KEYBOARD(label='Search'):
 	new_search = mixARABIC(search)
 	return new_search
 
-def PLAY_VIDEO(url,website,showWatched='yes'):
+def PLAY_VIDEO(url,website='',showWatched='yes'):
 	if 'https' in url:
 		html = openURL('https://www.google.com','','','','LIBRARY-1st')
 		if 'html' not in html:
@@ -154,6 +154,11 @@ def PLAY_VIDEO(url,website,showWatched='yes'):
 		#play_item.setInfo( "video", { "Title": label } )
 		#xbmc.log(url, level=xbmc.LOGNOTICE)
 		#play_item.setPath(url)
+		if '.mpd' in url:
+			play_item.setProperty('inputstreamaddon', 'inputstream.adaptive')
+			play_item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
+			#play_item.setMimeType('application/dash+xml')
+			#play_item.setContentLookup(True)
 		xbmcplugin.setResolvedUrl(addon_handle, True, play_item)
 	else:
 		label = xbmc.getInfoLabel('ListItem.Label')

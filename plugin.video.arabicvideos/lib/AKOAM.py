@@ -43,6 +43,7 @@ def MENU():
 	return
 
 def CATEGORIES(url):
+	#xbmcgui.Dialog().ok(url,'')
 	html = openURL(url,'',headers,'','AKOAM-CATEGORIES-1st')
 	html_blocks = re.findall('sect_parts(.*?)</div>',html,re.DOTALL)
 	if html_blocks:
