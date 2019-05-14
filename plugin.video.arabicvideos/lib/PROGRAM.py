@@ -9,9 +9,11 @@ def MAIN(mode,text=''):
 	elif mode==3: DMCA()
 	elif mode==4: HTTPS_TEST()
 	elif mode==5: SERVERS_TYPE()
-	elif mode==6: GLOBAL_SEARCH()
+	elif mode==6: GLOBAL_SEARCH(text)
 	elif mode==7: VERSION()
-	elif mode==9: TESTINGS()
+	elif mode==8: RANDOM()
+	elif mode==9: CLOSED()
+	elif mode==179: TESTINGS()
 	return
 
 def FIX_KEYBOARD(mode,text):
@@ -98,12 +100,13 @@ def SERVERS_TYPE():
 	xbmcgui.Dialog().textviewer('مواقع تستخدم سيرفرات عامة',text)
 	return
 
-def GLOBAL_SEARCH():
-	search = KEYBOARD()
+def GLOBAL_SEARCH(search=''):
+	if search=='': search = KEYBOARD()
 	if search == '': return
+	search = search.lower()
 	addDir('1.  [COLOR FFC89008]YUT  [/COLOR]'+search+' - موقع يوتيوب','',149,'','','',search)
 	addDir('2.  [COLOR FFC89008]SHF  [/COLOR]'+search+' - موقع شوف ماكس','',59,'','','',search)
-	addDir('3.  [COLOR FFC89008]EGB  [/COLOR]'+search+' - موقع ايجي بيست','',129,'','','',search)
+	addDir('3.  [COLOR FFC89008]EGB  [/COLOR]'+search+' - موقع ايجي بيست','',9,'','','',search)  #129
 	addDir('4.  [COLOR FFC89008]KLA  [/COLOR]'+search+' - موقع كل العرب','',19,'','','',search)
 	addDir('5.  [COLOR FFC89008]PNT  [/COLOR]'+search+' - موقع بانيت','',39,'','','',search)
 	addDir('6.  [COLOR FFC89008]IFL    [/COLOR]'+search+' - موقع قناة اي فيلم','',29,'','','',search)
@@ -143,6 +146,28 @@ def VERSION():
 	message3 +=  '\n' + 'https://github.com/emadmahdi/KODI'
 	xbmcgui.Dialog().textviewer(message1,message2+message3)
 	return ''
+
+def RANDOM():
+	headers = { 'User-Agent' : '' }
+	url = 'https://www.bestrandoms.com/random-arabic-words'
+	html = openURL(url,'',headers,'','PROGRAM-VERSION-1st')
+	block = re.findall('list-unstyled(.*?)clearfix',html,re.DOTALL)
+	items = re.findall('<span>(.*?)</span>.*?<span>(.*?)</span>',html,re.DOTALL)
+	arbLIST = []
+	engLIST = []
+	for arbWORD, engWORD in items:
+		arbLIST.append(arbWORD.lower())
+		engLIST.append(engWORD.lower())
+	list = arbLIST+engLIST
+	#xbmcgui.Dialog().ok('',str(html))
+	selection = xbmcgui.Dialog().select('اختر كلمة للبحث عنها:', list)
+	if selection == -1: return
+	GLOBAL_SEARCH(list[selection])
+	return
+
+def CLOSED():
+	xbmcgui.Dialog().ok('الموقع للأسف مغلق','')
+	return
 
 def TESTINGS():
 	#url = ''

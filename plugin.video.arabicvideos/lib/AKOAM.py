@@ -183,11 +183,16 @@ def PLAY(url):
 			except: linkLIST.append(link+'/?name='+serverIMG)
 		settings.setSetting('previous.url',url)
 		settings.setSetting('previous.linkLIST',str(linkLIST))
-	#xbmcgui.Dialog().ok(url,str(linkLIST))
-	from RESOLVERS import PLAY as RESOLVERS_PLAY
-	#linkLIST = set(linkLIST)
-	RESOLVERS_PLAY(linkLIST,script_name)
-	return
+	if len(linkLIST)==0:
+		message = re.findall('sub-no-file.*?\n(.*?)\n',block,re.DOTALL)
+		if message: xbmcgui.Dialog().ok('رسالة من الموقع الاصلي',message[0])
+		else: xbmcgui.Dialog().ok('No video file found','لا يوجد ملف فيديو')
+	else:
+		#xbmcgui.Dialog().ok(url,str(linkLIST))
+		from RESOLVERS import PLAY as RESOLVERS_PLAY
+		#linkLIST = set(linkLIST)
+		RESOLVERS_PLAY(linkLIST,script_name)
+	return ''
 
 def SEARCH(search=''):
 	if search=='': search = KEYBOARD()

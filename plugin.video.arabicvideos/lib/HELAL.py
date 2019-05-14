@@ -37,16 +37,26 @@ def MENU():
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
-def ITEMS(url,html=''):
-	if html=='':
+def ITEMS(url):
+	if '/search.php' in url:
+		parts = url.split('?')
+		url = parts[0]
+		search = parts[1]
+		search = search.replace('%20',' ')
+		headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
+		payload = { 't' : search }
+		data = urllib.urlencode(payload)
+		html = openURL(url,data,headers,'','4HELAL-SEARCH-1st')
+	else:
+		headers = { 'User-Agent' : '' }
 		html = openURL(url,'',headers,'','4HELAL-ITEMS-1st')
-	html_blocks = re.findall('movies-items(.*?)class="clear',html,re.DOTALL)
+	html_blocks = re.findall('movies-items(.*?)pagination',html,re.DOTALL)
 	if html_blocks: block = html_blocks[0]
 	else: block = ''
 	items = re.findall('background-image:url\((.*?)\).*?href="(.*?)".*?movie-title">(.*?)<',block,re.DOTALL)
 	allTitles = []
 	for img,link,title in items:
-		if 'الحلقة' in title and '/c/' not in url:
+		if 'الحلقة' in title and '/c/' not in url and '/cat/' not in url:
 			episode = re.findall('(.*?) الحلقة [0-9]+',title,re.DOTALL)
 			if episode:
 				title = '[COLOR FFC89008]Mod [/COLOR]'+episode[0]
@@ -73,8 +83,10 @@ def EPISODES(url):
 	html_blocks = re.findall('episodes-panel(.*?)</div>',html,re.DOTALL)
 	block = html_blocks[0]
 	img = re.findall('image":.*?"(.*?)"',html,re.DOTALL)[0]
-	name = xbmc.getInfoLabel('ListItem.Label')
-	name = name.replace('Mod ','').replace('HEL ','')
+	name = re.findall('itemprop="title">(.*?)<',html,re.DOTALL)
+	if name: name = name[1]
+	else: name = xbmc.getInfoLabel('ListItem.Label')
+	#name = name.replace('Mod ','').replace('HEL ','')
 	items = re.findall('href="(.*?)".*?name">(.*?)<',block,re.DOTALL)
 	for link,title in items:
 		title = name+' - '+title
@@ -152,15 +164,9 @@ def LATEST():
 def SEARCH(search=''):
 	if search=='': search = KEYBOARD()
 	if search == '': return
-	#search = search.replace(' ','+')
-	url = website0a + '/search.php'
-	headers = { 'User-Agent' : '' , 'Content-Type' : 'application/x-www-form-urlencoded' }
-	payload = { 't' : search }
-	data = urllib.urlencode(payload)
-	html = openURL(url,data,headers,'','4HELAL-SEARCH-1st')
-	ITEMS('',html)
-	#if 'movies-items' in html: ITEMS('',html)
-	#else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	search = search.replace(' ','%20')
+	url = website0a + '/search.php?'+search
+	ITEMS(url)
 	return
 
 

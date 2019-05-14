@@ -98,8 +98,8 @@ def EPISODES(url,page):
 		xbmcgui.Dialog().ok('فرع فارغ','لا يوجد حاليا ملفات فيديو في هذا الفرع')
 		return
 	totalpages = int(items[0])
-	items = re.findall('main-title.*?</a> >(.*?)<',html,re.DOTALL)
-	if items: name = items[0].replace('\n','').strip(' ')
+	name = re.findall('main-title.*?</a> >(.*?)<',html,re.DOTALL)
+	if name: name = name[0].replace('\n','').strip(' ')
 	else: name = xbmc.getInfoLabel('ListItem.Label')
 	#xbmcgui.Dialog().ok(name, str(''))
 	if '/category/' in url:

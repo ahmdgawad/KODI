@@ -89,7 +89,7 @@ def EPISODES(url):
 		html_blocks = re.findall('ti-list-numbered(.*?)</div>',html,re.DOTALL)
 	if not html_blocks or '/post/' in url:
 		title = re.findall('details col-12 col-m-9.*?<h1>(.*?)</h1>',html,re.DOTALL)
-		addLink(title[0],url,112)
+		addLink(menu_name+title[0],url,112)
 	if html_blocks:
 		block = html_blocks[0]
 		items = re.findall('href="(.*?)".*?<h3>(.*?)<',block,re.DOTALL)
@@ -105,7 +105,7 @@ def EPISODES(url):
 			items = sorted(items, reverse=True, key=lambda key: key[0])
 		for link,title in items:
 			title = link.split('/')[-1].replace('-',' ')
-			addLink(title,link,112)
+			addLink(menu_name+title,link,112)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

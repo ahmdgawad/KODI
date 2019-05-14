@@ -78,6 +78,9 @@ def TITLES(url):
 	for img,link,title,sequence in itemsNEW:
 		link = website0a + link
 		#xbmcgui.Dialog().ok(url,title)
+		title = title.replace('مشاهدة مسلسل','مسلسل')
+		title = title.replace('مباشرة كواليتي','')
+		title = title.replace('عالية على العرب','')
 		title = title.replace('مشاهدة مباشرة','')
 		title = title.replace('اون لاين','')
 		title = title.replace('اونلاين','')

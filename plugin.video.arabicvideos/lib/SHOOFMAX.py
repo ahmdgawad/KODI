@@ -129,7 +129,7 @@ def PLAY(url):
 		later = re.findall('(متوفر على شوف ماكس بعد).*?moment\("(.*?)"',html,re.DOTALL)
 		if later:
 			time = later[0][1].replace('T','    ')
-			xbmcgui.Dialog().ok('متوفر على شوف ماكس بعد هذا الوقت',time)
+			xbmcgui.Dialog().ok('رسالة من الموقع الاصلي','هذا الفيديو سيكون متوفر على شوف ماكس بعد هذا الوقت'+'\n'+time)
 		return
 	block = html_blocks[0]
 	items_url = []
@@ -171,7 +171,7 @@ def PLAY(url):
 	url = items_url[selection]
 	#url = mixARABIC(url)
 	PLAY_VIDEO(url,script_name)
-	return
+	return ''
 
 def FILTERS(url,type):
 	#xbmcgui.Dialog().ok(url,url)
@@ -206,8 +206,8 @@ def SEARCH(search=''):
 	html = response.text
 	cookies = response.cookies.get_dict()
 	cookie = cookies['session']
-	block = re.findall('name="_csrf" value="(.*?)">',html,re.DOTALL)
-	csrf = block[0]
+	csrf = re.findall('name="_csrf" value="(.*?)">',html,re.DOTALL)
+	csrf = csrf[0]
 	payload = '_csrf=' + csrf + '&q=' + quote(new_search)
 	headers = { 'content-type':'application/x-www-form-urlencoded' , 'cookie':'session='+cookie }
 	url = website0a + "/search"
@@ -222,11 +222,13 @@ def SEARCH(search=''):
 			url = website0a + link
 			if '/program/' in url:
 				if '?ep=' in url:
+					title = 'مسلسل '+title.encode('utf8')
 					url = url.replace('?ep=1','?ep=0')
-					url = url + '=' + quote(title.encode('utf8')) + '=' + img
-					addDir(menu_name+'مسلسل '+title,url,52,img)
+					url = url + '=' + quote(title) + '=' + img
+					addDir(menu_name+title,url,52,img)
 				else:
-					addLink(menu_name+'فيلم '+title,url,53,img)
+					title = 'فيلم '+title.encode('utf8')
+					addLink(menu_name+title,url,53,img)
 	xbmcplugin.endOfDirectory(addon_handle)
 	#else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
 	return
