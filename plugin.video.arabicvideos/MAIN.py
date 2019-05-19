@@ -23,23 +23,24 @@ def MAIN():
 	addDir('=========================','',9999)
 
 	addDir('[COLOR FFC89008]مواقع سيرفرات خاصة وعامة - كثيرة المشاكل[/COLOR]','',5)
-	addDir('13.  [COLOR FFC89008]AKM  [/COLOR]'+'موقع اكوام (مشفر)','',70)
-	addDir('14.  [COLOR FFC89008]HEL   [/COLOR]'+'موقع هلال يوتيوب (مشفر)','',90)
+	addDir('13.  [COLOR FFC89008]MVZ   [/COLOR]'+'موقع موفزلاند اونلاين','',180)
+	addDir('14.  [COLOR FFC89008]AKM  [/COLOR]'+'موقع اكوام (مشفر)','',70)
+	addDir('15.  [COLOR FFC89008]HEL   [/COLOR]'+'موقع هلال يوتيوب (مشفر)','',90)
 	addDir('=========================','',9999)
 
 	addDir('[COLOR FFC89008]مواقع سيرفرات عامة - كثيرة المشاكل[/COLOR]','',5)
-	addDir('15.  [COLOR FFC89008]SHA   [/COLOR]'+'موقع شاهد فوريو (مشفر)','',110)
-	addDir('16.  [COLOR FFC89008]HLA   [/COLOR]'+'موقع هلا سيما (مشفر)','',80)
+	addDir('16.  [COLOR FFC89008]SHA   [/COLOR]'+'موقع شاهد فوريو (مشفر)','',110)
+	addDir('17.  [COLOR FFC89008]HLA   [/COLOR]'+'موقع هلا سيما (مشفر)','',80)
 	addDir('[COLOR FFC89008]=========================[/COLOR]','',9999)
 
-	addDir('17.  [COLOR FFC89008]TV1   [/COLOR]'+'قنوات تلفزونية','',100)
-	addDir('18.  [COLOR FFC89008]TV2   [/COLOR]'+'قنوات تلفزونية خاصة','',101)
+	addDir('18.  [COLOR FFC89008]TV1   [/COLOR]'+'قنوات تلفزونية','',100)
+	addDir('19.  [COLOR FFC89008]TV2   [/COLOR]'+'قنوات تلفزونية خاصة','',101)
 	addDir('[COLOR FFC89008]=========================[/COLOR]','',9999)
 
-	addDir('ـProblems & Solutions    مشاكل وحلول'+'  .19','',150)
-	addDir('ـMessage to developer    رسالة الى المبرمج'+'  .20','',2)
-	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'  .21','',3)
-	addLink('فحص المواقع المشفرة'+'  .22','',4)
+	addDir('ـProblems & Solutions    مشاكل وحلول'+'  .20','',150)
+	addDir('ـMessage to developer    رسالة الى المبرمج'+'  .21','',2)
+	addDir('ـ DMCA     قانون الألفية للملكية الرقمية'+'  .22','',3)
+	addLink('فحص المواقع المشفرة'+'  .23','',4)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -96,6 +97,7 @@ elif mode>=140 and mode<=149: from lib.YOUTUBE import MAIN ; MAIN(mode,url,text)
 elif mode>=150 and mode<=159: from lib.PROBLEMS import MAIN ; MAIN(mode)
 elif mode>=160 and mode<=169: from lib.RESOLVERS import MAIN ; MAIN(mode,url,text)
 elif mode>=170 and mode<=179: from lib.PROGRAM import MAIN ; MAIN(mode,text)
+elif mode>=180 and mode<=189: from lib.MOVIZLAND import MAIN ; MAIN(mode,url,text)
 
 
 

@@ -162,3 +162,8 @@ Fixed akoam new website name
 
 v4.7.0	2019-05-14
 Added random videos
+
+
+v4.8.0	2019-05-19
+Added browsing of new website "MOVIZLAND"
+

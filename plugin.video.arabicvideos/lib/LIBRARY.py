@@ -133,7 +133,7 @@ def KEYBOARD(label='Search'):
 	if keyboard.isConfirmed(): search = keyboard.getText()
 	search = search.strip(' ')
 	if len(search.decode('utf8'))<2:
-		xbmcgui.Dialog().ok('Wrong entry. Try again','خطأ في الادخال. أعد المحاولة')
+		#xbmcgui.Dialog().ok('Wrong entry. Try again','خطأ في الادخال. أعد المحاولة')
 		return ''
 	new_search = mixARABIC(search)
 	return new_search

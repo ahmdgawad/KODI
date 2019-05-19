@@ -114,11 +114,12 @@ def GLOBAL_SEARCH(search=''):
 	addDir('8.  [COLOR FFC89008]MRF  [/COLOR]'+search+' - موقع قناة المعارف','',49,'','','',search)
 	addDir('9.  [COLOR FFC89008]FTM  [/COLOR]'+search+' - موقع المنبر الفاطمي','',69,'','','',search)
 	addDir('[COLOR FFC89008]=========================[/COLOR]','',9999)
-	addDir('10.  [COLOR FFC89008]AKM  [/COLOR]'+search+' - موقع اكوام','',79,'','','',search)
-	addDir('11.  [COLOR FFC89008]HEL  [/COLOR]'+search+' - موقع هلال يوتيوب','',99,'','','',search)
+	addDir('10.  [COLOR FFC89008]MVZ  [/COLOR]'+search+' - موقع موفزلاند اونلاين','',189,'','','',search)
+	addDir('11.  [COLOR FFC89008]AKM  [/COLOR]'+search+' - موقع اكوام','',79,'','','',search)
+	addDir('12.  [COLOR FFC89008]HEL  [/COLOR]'+search+' - موقع هلال يوتيوب','',99,'','','',search)
 	addDir('[COLOR FFC89008]=========================[/COLOR]','',9999)
-	addDir('12.  [COLOR FFC89008]SHA  [/COLOR]'+search+' - موقع شاهد فوريو','',119,'','','',search)
-	addDir('13.  [COLOR FFC89008]HLA  [/COLOR]'+search+' - موقع هلا سيما','',89,'','','',search)
+	addDir('13.  [COLOR FFC89008]SHA  [/COLOR]'+search+' - موقع شاهد فوريو','',119,'','','',search)
+	addDir('14.  [COLOR FFC89008]HLA  [/COLOR]'+search+' - موقع هلا سيما','',89,'','','',search)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -150,7 +151,10 @@ def VERSION():
 def RANDOM():
 	headers = { 'User-Agent' : '' }
 	url = 'https://www.bestrandoms.com/random-arabic-words'
-	html = openURL(url,'',headers,'','PROGRAM-VERSION-1st')
+	payload = { 'quantity' : '4' }
+	data = urllib.urlencode(payload)
+	#xbmcgui.Dialog().ok('',str(data))
+	html = openURL(url,data,headers,'','PROGRAM-RANDOM-1st')
 	block = re.findall('list-unstyled(.*?)clearfix',html,re.DOTALL)
 	items = re.findall('<span>(.*?)</span>.*?<span>(.*?)</span>',html,re.DOTALL)
 	arbLIST = []
@@ -158,15 +162,20 @@ def RANDOM():
 	for arbWORD, engWORD in items:
 		arbLIST.append(arbWORD.lower())
 		engLIST.append(engWORD.lower())
-	list = arbLIST+engLIST
+	list = ['كلمات عشوائية عربية','كلمات عشوائية انكليزية']
+	selection = xbmcgui.Dialog().select('اختر اللغة:', list)
+	if selection == -1: return
+	elif selection==0: list = arbLIST
+	else: list = engLIST
 	#xbmcgui.Dialog().ok('',str(html))
 	selection = xbmcgui.Dialog().select('اختر كلمة للبحث عنها:', list)
 	if selection == -1: return
-	GLOBAL_SEARCH(list[selection])
+	search = list[selection]
+	GLOBAL_SEARCH(search)
 	return
 
 def CLOSED():
-	xbmcgui.Dialog().ok('الموقع للأسف مغلق','')
+	xbmcgui.Dialog().ok('الموقع الاصلي للأسف مغلق','')
 	return
 
 def TESTINGS():

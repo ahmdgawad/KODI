@@ -18,7 +18,7 @@ def MAIN(mode,url,text):
 
 def MENU():
 	addDir(menu_name+'بحث في الموقع','',119)
-	addDir(menu_name+'فلتر','',114,website0a)
+	#addDir(menu_name+'فلتر','',114,website0a)
 	html = openURL(website0a,'',headers,'','SHAHID4U-MENU-1st')
 	html_blocks = re.findall('categories-tabs(.*?)advanced-search">',html,re.DOTALL)
 	block = html_blocks[0]

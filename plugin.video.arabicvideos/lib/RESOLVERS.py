@@ -21,13 +21,15 @@ def PLAY(linkLIST,script_name):
 		selection = xbmcgui.Dialog().select('اختر السيرفر المناسب:', serversLIST)
 		if selection == -1 : return ''
 	title = serversLIST[selection]
+	#xbmcgui.Dialog().ok(urlLIST[selection],serversLIST[selection])
 	videoURL = ''
 	if 'مجهول' in title:
 		from PROBLEMS import MAIN as PROBLEMS_MAIN
 		PROBLEMS_MAIN(156)
 	else:
 		url = urlLIST[selection]
-		videoURL = PLAY_LINK(url,script_name)
+		title = serversLIST[selection]		
+		videoURL = PLAY_LINK(url,title,script_name)
 	#if script_name=='HALACIMA': menu_name='[COLOR FFC89008]HLA [/COLOR]'
 	#elif script_name=='4HELAL': menu_name='[COLOR FFC89008]HEL [/COLOR]'
 	#elif script_name=='AKOAM': menu_name='[COLOR FFC89008]AKM [/COLOR]'
@@ -40,20 +42,23 @@ def PLAY(linkLIST,script_name):
 	#xbmcplugin.endOfDirectory(addon_handle)
 	return videoURL
 
-def PLAY_LINK(url,script_name):
-	title = xbmc.getInfoLabel( "ListItem.Label" )
+def PLAY_LINK(url,title,script_name):
+	#title = xbmc.getInfoLabel( "ListItem.Label" )
 	if 'مجهول' in title:
 		from PROBLEMS import MAIN as PROBLEMS_MAIN
 		PROBLEMS_MAIN(156)
 		videoURL = ''
 	else:
-		videoURL = RESOLVE(url)
+		if '.mp4' in url or '.m3u' in url or '.mpd' in url:
+			videoURL=[url]
+		else:
+			videoURL = RESOLVE(url)
+			#xbmcgui.Dialog().ok(url,str(videoURL))
 		if videoURL==[]:
 			videoURL = ''
 		else:
 			videoURL = videoURL[0]
 			PLAY_VIDEO(videoURL,script_name,'yes')
-	#xbmcgui.Dialog().ok(str(videoURL),'')
 	return videoURL
 
 def CHECK(url):
@@ -108,10 +113,12 @@ def RESOLVABLE(url):
 	url2 = url.lower()
 	result1 = ''
 	result2 = ''
+	result3 = ''
 	if   any(value in url2 for value in doNOTresolveMElist): return ''
 	elif 'go.akoam.net'	in url2 and '?' not in url2: result1 = 'akoam'
 	elif 'go.akoam.net'	in url2 and '?' in url2: result2 = url2.split('name=')[1]
 	elif 'shahid4u.net'	in url2 and '?' in url2: result2 = url2.split('name=')[1]
+	elif 'e5tsar'	in url2 and '?' in url2: result3 = url2.split('name=')[1]
 	elif 'arabloads'	in url2: result1 = 'arabloads'
 	elif 'archive'		in url2: result1 = 'archive'
 	elif 'catch.is'	 	in url2: result1 = 'catch'
@@ -155,6 +162,7 @@ def RESOLVABLE(url):
 	if result1 in ['akoam','helal']: result = ' سيرفر خاص ' + result1
 	elif result1!='': result = ' سيرفر عام معروف ' + result1
 	elif result2!='': result = 'سيرفر عام خارجي ' + result2
+	elif result3!='': result = 'سيرفر عام ' + result3
 	else: result = ''
 	return result
 
@@ -162,8 +170,10 @@ def RESOLVE(url):
 	url2 = url.lower()
 	videoURL = []
 	if any(value in url2 for value in doNOTresolveMElist): return ''
-	elif 'go.akoam.net'	in url2: videoURL = AKOAMNET(url)
+	elif 'go.akoam.net'	in url2: videoURL = AKOAM_NET(url)
 	elif 'shahid4u.net'	in url2: videoURL = SHAHID4U(url)
+	elif 'moshahda.online'	in url2: videoURL = MOSHAHDA_ONLINE_DOWNLOAD(url)
+	elif 'e5tsar'		in url2: videoURL = E5TSAR(url)
 	elif 'arabloads'	in url2: videoURL = ARABLOADS(url)
 	elif 'archive'		in url2: videoURL = ARCHIVE(url)
 	elif 'catch.is'	 	in url2: videoURL = CATCHIS(url)
@@ -220,15 +230,21 @@ def SERVERS(linkLIST,script_name=''):
 		if link=='': continue
 		link = link.rstrip('/')
 		serverNAME = RESOLVABLE(link)
+		#xbmcgui.Dialog().ok(link,serverNAME)
 		if serverNAME=='':
-			#xbmcgui.Dialog().ok(link,'')
-			if 'akoam' in link and '?' in link:
+			if 'moshahda.online' in link:
+				serverLISTnew,urlLISTnew = MOSHAHDA_ONLINE(link)
+				#xbmcgui.Dialog().ok(link,str(serverLISTnew))
+				for i in range(0,len(urlLISTnew)):
+					serversDICT.append( [urlLISTnew[i],serverLISTnew[i]] )
+			elif '?' in link and ('akoam' in link or 'shahid4u' in link or 'e5tsar' in link):
 				serverNAME = 'سيرفر عام مجهول ' + link.split('name=')[1].lower()
-			elif 'shahid4u' in link and '?' in link:
-				serverNAME = 'سيرفر عام مجهول ' + link.split('name=')[1].lower()
+				serversDICT.append( [link,serverNAME] )
 			else:
 				serverNAME = 'سيرفر عام مجهول ' + link.split('//')[1].split('/')[0].lower()
-		serversDICT.append( [link,serverNAME] )
+				serversDICT.append( [link,serverNAME] )
+		else:
+			serversDICT.append( [link,serverNAME] )		
 	sortedDICT = sorted(serversDICT, reverse=False, key=lambda key: key[1])
 	for i in range(0,len(sortedDICT)):
 		urlLIST.append(sortedDICT[i][0])
@@ -249,6 +265,70 @@ def	URLRESOLVER(url):
 		return ['Error']
 	return [ link.rstrip('/') ]
 
+def MOSHAHDA_ONLINE(link):
+	headers = { 'User-Agent' : '' }
+	parts = link.split('?')
+	url = parts[0]
+	name2 = parts[1].replace('name=','').lower()
+	# watch links
+	html = openURL(url,'',headers,'','RESOLVERS-MOSHAHDA_ONLINE-1st')
+	html_blocks = re.findall('Form method="POST" action=\'(.*?)\'(.*?)div',html,re.DOTALL)
+	if not html_blocks: return [],[]
+	link2 = html_blocks[0][0]
+	block = html_blocks[0][1]
+	items = re.findall('name="(.*?)".*?value="(.*?)"',block,re.DOTALL)
+	payload = {}
+	for name,value in items:
+		payload[name] = value
+	data = urllib.urlencode(payload)
+	html = openURL(link2,data,'','','RESOLVERS-MOSHAHDA_ONLINE-2nd')
+	html_blocks = re.findall('Download Video.*?get\(\'(.*?)\'.*?sources:(.*?)image:',html,re.DOTALL)
+	if not html_blocks: return [],[]
+	download = html_blocks[0][0]
+	block = html_blocks[0][1]
+	items = re.findall('file:"(.*?)"(,label:".*?"|)',block,re.DOTALL)
+	serverLIST = []
+	urlLIST = []
+	first = ''
+	for link,title in items:
+		if title!='':
+			title = title.replace(',label:"','')
+			title = title.strip('"')
+			if first=='': first = title
+			title = ' سيرفر خاص ' + '  mp4: ' + name2 + ' ' + title
+		serverLIST.append(title)
+		urlLIST.append(link)
+	serverLIST[0] = ' سيرفر خاص ' + 'm3u8: ' + name2 + ' ' + first
+	# download links
+	link = 'http://moshahda.online' + download
+	html = openURL(link,'',headers,'','RESOLVERS-MOSHAHDA_ONLINE-3rd')
+	items = re.findall("download_video\('(.*?)','(.*?)','(.*?)'.*?<td>(.*?)x",html,re.DOTALL)
+	for id,mode,hash,title in items:
+		title = ' سيرفر خاص ' + ' mp4: ' + name2 + ' download ' + title+'x'
+		link = 'http://moshahda.online/dl?op=download_orig&id='+id+'&mode='+mode+'&hash='+hash
+		serverLIST.append(title)
+		urlLIST.append(link)
+	return serverLIST,urlLIST
+
+def MOSHAHDA_ONLINE_DOWNLOAD(link):
+	headers = { 'User-Agent' : '' }
+	html = openURL(link,'',headers,'','RESOLVERS-MOSHAHDA_ONLINE_DOWNLOAD-1st')
+	url = re.findall('direct link.*?href="(.*?)"',html,re.DOTALL)
+	return [ url[0] ]
+
+def E5TSAR(url):
+	parts = url.split('?')
+	url2 = parts[0]
+	headers = { 'User-Agent' : '' }
+	html = openURL(url2,'',headers,'','RESOLVERS-RAPIDVIDEO-1st')
+	items = re.findall('Please wait.*?href=\'(.*?)\'',html,re.DOTALL)
+	url = items[0]
+	videoURL = RESOLVE(url)
+	if videoURL[0]: videoURL = videoURL[0]
+	else: videoURL = ''
+	#xbmcgui.Dialog().ok(items[0],html)
+	return [ videoURL ]
+
 def SHAHID4U(link):
 	parts = re.findall('postid=(.*?)&serverid=(.*?)&name=',link,re.DOTALL|re.IGNORECASE)
 	#xbmcgui.Dialog().ok(link,str(parts))
@@ -264,7 +344,7 @@ def SHAHID4U(link):
 	#xbmcgui.Dialog().ok(str(url3),str(html))
 	return [ url3.rstrip('/') ]
 
-def AKOAMNET(link):
+def AKOAM_NET(link):
 	from requests import request as requests_request
 	response = requests_request('GET', link, headers='', data='', allow_redirects=False)
 	url = response.headers['Location']

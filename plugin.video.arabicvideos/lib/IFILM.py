@@ -89,10 +89,11 @@ def MUSIC_MENU(url):
 def TITLES(url,page):
 	website0 = SITE(url)
 	lang = LANG(url)
-	info = url.split('/')
-	type = info[ len(info)-2 ]
+	parts = url.split('/')
+	type = parts[-1]
 	order = str(int(page)/100)
 	page = str(int(page)%100)
+	#xbmcgui.Dialog().ok(url, type)
 	if type=='Series' and page=='0':
 		html = openURL(url,'','','','IFILM-TITLES-1st')
 		html_blocks = re.findall('serial-body(.*?)class="row',html,re.DOTALL)
@@ -110,6 +111,7 @@ def TITLES(url,page):
 	if (type=='Series' or type=='Program') and page!='0':
 		url2 = website0+'/Home/PageingItem?category='+category+'&page='+page+'&size=30&orderby='+order
 		html = openURL(url2,'','','','IFILM-TITLES-2nd')
+		#xbmcgui.Dialog().ok(url2, html)
 		items = re.findall('"Id":(.*?),"Title":(.*?),.+?"ImageAddress_S":"(.*?)"',html,re.DOTALL)
 		for id,title,img in items:
 			title = escapeUNICODE(title)
@@ -144,9 +146,9 @@ def TITLES(url,page):
 def EPISODES(url,page):
 	website0 = SITE(url)
 	lang = LANG(url)
-	info = url.split('/')
-	id = info[ len(info)-1 ]
-	type = info[ 3 ]
+	parts = url.split('/')
+	id = parts[-1]
+	type = parts[3]
 	order = str(int(page)/100)
 	page = str(int(page)%100)
 	count_items=0
