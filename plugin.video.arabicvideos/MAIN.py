@@ -23,7 +23,7 @@ def MAIN():
 	addDir('=========================','',9999)
 
 	addDir('[COLOR FFC89008]مواقع سيرفرات خاصة وعامة - كثيرة المشاكل[/COLOR]','',5)
-	addDir('13.  [COLOR FFC89008]MVZ   [/COLOR]'+'موقع موفزلاند اونلاين','',180)
+	addDir('13.  [COLOR FFC89008]MVZ   [/COLOR]'+'موقع موفيزلاند اونلاين','',180)
 	addDir('14.  [COLOR FFC89008]AKM  [/COLOR]'+'موقع اكوام (مشفر)','',70)
 	addDir('15.  [COLOR FFC89008]HEL   [/COLOR]'+'موقع هلال يوتيوب (مشفر)','',90)
 	addDir('=========================','',9999)
@@ -64,7 +64,6 @@ def get_params():
 url=''
 mode=''
 page=''
-category=''
 text=''
 params=get_params()
 try: mode=int(params["mode"])
@@ -73,19 +72,17 @@ try: url=urllib2.unquote(params["url"])
 except: pass
 try: page=int(params["page"])
 except: pass
-try: category=params["category"]
-except: pass
 try: text=urllib2.unquote(params["text"])
 except: pass
 
-if mode=='': MAIN()
+if not mode: MAIN()
 elif mode>=0 and mode<=9: from lib.PROGRAM import MAIN ; MAIN(mode,text)
 elif mode>=10 and mode<=19: from lib.ALARAB import MAIN ; MAIN(mode,url,text)
 elif mode>=20 and mode<=29: from lib.IFILM import MAIN ; MAIN(mode,url,page,text)
 elif mode>=30 and mode<=39: from lib.PANET import MAIN ; MAIN(mode,url,text)
-elif mode>=40 and mode<=49: from lib.ALMAAREF import MAIN ; MAIN(mode,url,category,text)
+elif mode>=40 and mode<=49: from lib.ALMAAREF import MAIN ; MAIN(mode,url,text)
 elif mode>=50 and mode<=59: from lib.SHOOFMAX import MAIN ; MAIN(mode,url,text)
-elif mode>=60 and mode<=69: from lib.ALFATIMI import MAIN ; MAIN(mode,url,category,text)
+elif mode>=60 and mode<=69: from lib.ALFATIMI import MAIN ; MAIN(mode,url,text)
 elif mode>=70 and mode<=79: from lib.AKOAM import MAIN ; MAIN(mode,url,text)
 elif mode>=80 and mode<=89: from lib.HALACIMA import MAIN ; MAIN(mode,url,page,text)
 elif mode>=90 and mode<=99: from lib.HELAL import MAIN ; MAIN(mode,url,text)

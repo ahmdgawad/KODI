@@ -8,55 +8,49 @@ headers = { 'User-Agent' : '' }
 menu_name='[COLOR FFC89008]MRF [/COLOR]'
 
 
-def MAIN(mode,url,category,text):
+def MAIN(mode,url,text):
 	if mode==40: MENU()
 	elif mode==41: LIVE()
 	elif mode==42: EPISODES(url)
 	elif mode==43: PLAY(url)
-	elif mode==44: CATEGORIES(url,category)
-	elif mode==45: TITLES(url,1)
-	elif mode==46: TITLES(url,2)
-	elif mode==47: TITLES(url,3)
-	elif mode==48: PROGRAMS()
+	elif mode==44: CATEGORIES(url,text)
+	elif mode==45: TITLES(url,text)
+	elif mode==46: PROGRAMS()
+	elif mode==47: PLAY_NEWWEBSITE(url)
 	elif mode==49: SEARCH(text)
 	return
 
 def MENU():
-	addLink(menu_name+'البث الحي لقناة المعارف','',41,'','','no')
+	addLink(menu_name+'البث الحي لقناة المعارف','',41,'','','IsPlayable=False')
 	addDir(menu_name+'بحث في الموقع','',49)
-	addDir(menu_name+'البرامج الحالية','',48)
-	html = openURL(website0a,'','','','ALMAAREF-MENU-1st')
+	addDir(menu_name+'البرامج الحالية','',46)
+	html = openURL(website0a,'',headers,'','ALMAAREF-MENU-1st')
 	items = re.findall('<h2><a href="(.*?)">(.*?)</a></h2>',html,re.DOTALL)
 	for link,name in items:
-		addDir(menu_name+name,link,47)
+		addDir(menu_name+name,link,45,'','','3')
 	name = re.findall('recent-default.*?<h2>(.*?)</h2>',html,re.DOTALL)
 	if name:
-		addDir(menu_name+name[0],website0a,46)
+		addDir(menu_name+name[0],website0a,45,'','','2')
 	name = ['ارشيف لجميع البرامج']
 	#name = re.findall('categories"><div class="widget-top"><h4>(.*?)</h4>',html,re.DOTALL)
 	if name:
-		addDir(menu_name+name[0],website0a,44,icon,'','0')
+		addDir(menu_name+name[0],website0a,44,'','','0')
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
 def TITLES(url,select):
 	notvideosLIST = ['تطبيقات الاجهزة الذكية','جدول البرامج','اوقات برامجنا']
-	html = openURL(url,'','','','ALMAAREF-TITLES-1st')
-	if select==1:
-		html_blocks1=re.findall('main-content(.*?)class="clear"',html,re.DOTALL)
-		if html_blocks1:
-			block = html_blocks1[1]
-	elif select==2:
+	html = openURL(url,'',headers,'','ALMAAREF-TITLES-1st')
+	if select=='2':
 		html_blocks2=re.findall('recent-default(.*?)class="clear"',html,re.DOTALL)
 		if html_blocks2:
 			block = html_blocks2[0]
-	if select<=2 and block:
-		items=re.findall('src="(.*?)".*?href="(.*?)" rel="bookmark">(.*?)<',block,re.DOTALL)
-		for img,url,title in items:
-			if not any(value in title for value in notvideosLIST):
-				title = unescapeHTML(title)
-				addDir(menu_name+title,url,42,img)
-	if select==3:
+			items=re.findall('src="(.*?)".*?href="(.*?)" rel="bookmark">(.*?)<',block,re.DOTALL)
+			for img,url,title in items:
+				if not any(value in title for value in notvideosLIST):
+					title = unescapeHTML(title)
+					addDir(menu_name+title,url,42,img)
+	elif select=='3':
 		html_blocks3=re.findall('archive-box(.*?)script',html,re.DOTALL)
 		if html_blocks3:
 			block = html_blocks3[0]
@@ -65,47 +59,55 @@ def TITLES(url,select):
 				if not any(value in title for value in notvideosLIST):
 					title = unescapeHTML(title)
 					addDir(menu_name+title,url,42,img)
-	if select>=2:
-		html_blocks4=re.findall('class="pagination"(.*?)<h',html,re.DOTALL)
-		if html_blocks4:
-			block = html_blocks4[0]
-			items=re.findall('href="(.*?)".*?title="(.*?)"',block,re.DOTALL)
-			for url,title in items:
-				title = unescapeHTML(title)
-				title = 'صفحة ' + title
-				if select==2: addDir(menu_name+title,url,46)
-				else: addDir(menu_name+title,url,47)
+	html_blocks4=re.findall('class="pagination"(.*?)<h',html,re.DOTALL)
+	if html_blocks4:
+		block = html_blocks4[0]
+		items=re.findall('href="(.*?)".*?title="(.*?)"',block,re.DOTALL)
+		for url,title in items:
+			title = unescapeHTML(title)
+			title = 'صفحة ' + title
+			addDir(menu_name+title,url,45,'','',select)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
 def EPISODES(url):
-	html = openURL(url,'','','','ALMAAREF-EPISODES-1st')
+	html = openURL(url,'',headers,'','ALMAAREF-EPISODES-1st')
 	html_blocks=re.findall('entry-title"><span itemprop="name">(.*?)<',html,re.DOTALL)
-	name = html_blocks[0]
-	name = unescapeHTML(name)
-	html_blocks=re.findall('wp-playlist-script(.*?).entry',html,re.DOTALL)
 	if html_blocks:
-		block = html_blocks[0]
-		items=re.findall('src":"(.*?)".*?title":"(.*?)".*?meta":(.*?),.*?image":{"src":"(.*?)".*?thumb":{"src":"(.*?)"',block,re.DOTALL)
-		for link,title,meta,img1,img2 in items:
-			img1 = img1.replace('\/','/')
-			img2 = img2.replace('\/','/')
-			link = link.replace('\/','/')
-			title = escapeUNICODE(title)
-			link = escapeUNICODE(link)
-			title = title.split(' ')[-1]
-			title = name + ' - ' + title
-			duration = re.findall('length_formatted":"(.*?)"',meta,re.DOTALL)
-			if duration: addLink(menu_name+title,link,43,img2,duration[0])
-			else: addLink(menu_name+title,link,43,img2)
+		name = html_blocks[0]
+		name = unescapeHTML(name)
+		html_blocks=re.findall('wp-playlist-script(.*?).entry',html,re.DOTALL)
+		if html_blocks:
+			block = html_blocks[0]
+			items=re.findall('src":"(.*?)".*?title":"(.*?)".*?meta":(.*?),.*?image":{"src":"(.*?)".*?thumb":{"src":"(.*?)"',block,re.DOTALL)
+			for link,title,meta,img1,img2 in items:
+				img1 = img1.replace('\/','/')
+				img2 = img2.replace('\/','/')
+				link = link.replace('\/','/')
+				title = escapeUNICODE(title)
+				link = escapeUNICODE(link)
+				title = title.split(' ')[-1]
+				title = name + ' - ' + title
+				duration = re.findall('length_formatted":"(.*?)"',meta,re.DOTALL)
+				if duration: addLink(menu_name+title,link,43,img2,duration[0])
+				else: addLink(menu_name+title,link,43,img2)
+		else:
+			items=re.findall('itemprop="name">(.*?)<.*?contentUrl" content="(.*?)".*?image.*?url":"(.*?)"',html,re.DOTALL)
+			for title,link,img in items:
+				img = img.replace('\/','/')
+				title = escapeUNICODE(title)
+				link = escapeUNICODE(link)
+				addLink(menu_name+title,link,43,img)
+			#PLAY_FROM_DIRECTORY(url)
 	else:
-		items=re.findall('itemprop="name">(.*?)<.*?contentUrl" content="(.*?)".*?image.*?url":"(.*?)"',html,re.DOTALL)
-		for title,link,img in items:
-			img = img.replace('\/','/')
-			title = escapeUNICODE(title)
-			link = escapeUNICODE(link)
-			addLink(menu_name+title,link,43,img)
-		#PLAY_FROM_DIRECTORY(url)
+		html_blocks=re.findall('id="dropdown-menu-series"(.*?)</ul>',html,re.DOTALL)
+		if html_blocks:
+			block = html_blocks[0]
+			#xbmcgui.Dialog().ok(url, block)
+			items=re.findall('href="(.*?)" title="(.*?)"',block,re.DOTALL)
+			for link,title in items:
+				title = unescapeHTML(title)
+				addLink(menu_name+title,link,47)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -114,9 +116,15 @@ def PLAY(url):
 	PLAY_VIDEO(url,script_name)
 	return
 
+def PLAY_NEWWEBSITE(url):
+	html = openURL(url,'',headers,'','ALMAAREF-PLAY_NEWWEBSITE-1st')
+	link = re.findall('itemprop="contentURL" content="(.*?)"',html,re.DOTALL)
+	PLAY(link[0])
+	return
+
 def CATEGORIES(url,category):
 	#xbmcgui.Dialog().ok(type, url)
-	html = openURL(url,'','','','ALMAAREF-CATEGORIES-1st')
+	html = openURL(url,'',headers,'','ALMAAREF-CATEGORIES-1st')
 	html_blocks=re.findall('cat1.a\(0,(.*?)document.write',html,re.DOTALL)
 	block= html_blocks[0]
 	items=re.findall('cat1.a\((.*?),(.*?),\'(.*?)\',\'\',\'(.*?)\'',block,re.DOTALL)
@@ -130,16 +138,16 @@ def CATEGORIES(url,category):
 				title = title.replace(re.findall(' \(.*?\)',title)[0],'')
 			url = website0a + '/' + link
 			if cat == '-165': title = 'السيد صباح شبر (60)'
-			if '-' in cat: addDir(menu_name+title,url,44,icon,'',cat)
+			if '-' in cat: addDir(menu_name+title,url,44,'','',cat)
 			else: addDir(menu_name+title,url,42)
 			exist=True
 	if exist: xbmcplugin.endOfDirectory(addon_handle)
-	else: TITLES(url,3)
+	else: TITLES(url,'3')
 	return
 	
 def PROGRAMS():
 	#xbmcgui.Dialog().ok(type, url)
-	html = openURL(website0a,'','','','ALMAAREF-PROGRAMS-1st')
+	html = openURL(website0a,'',headers,'','ALMAAREF-PROGRAMS-1st')
 	html_blocks = re.findall('mega-menu-block(.*?)mega-menu',html,re.DOTALL)
 	block = html_blocks[0]
 	items = re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
@@ -151,16 +159,16 @@ def PROGRAMS():
 def LIVE():
 	html = openURL('http://live.almaaref.tv','',headers,'','ALMAAREF-PROGRAMS-1st')
 	items = re.findall('sourceURL":"(.*?)"',html,re.DOTALL)
-	#xbmcgui.Dialog().ok('',str(html))
 	url = unquote(items[0])
+	#xbmcgui.Dialog().ok(url,str(html))
 	PLAY_VIDEO(url,script_name,'no')
 	return
 
-def SEARCH(search=''):
+def SEARCH(search):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','%20')
 	url = website0b + '/?s=' + new_search
-	TITLES(url,3)
+	TITLES(url,'3')
 	return
 

@@ -6,12 +6,11 @@ addon_id = sys.argv[0].split('/')[2] 		# plugin.video.arabicvideos
 fanart = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id , 'fanart.jpg'))
 icon = xbmc.translatePath(os.path.join('special://home/addons/' + addon_id, 'icon.png'))
 
-def addDir(name,url='',mode='',iconimage=icon,page='',category='',text=''):
+def addDir(name,url='',mode='',iconimage=icon,page='',text=''):
 	if iconimage=='': iconimage=icon
 	u='plugin://'+addon_id+'/?mode='+str(mode)
 	if url != '' : u = u + '&url=' + quote(url)
 	if page != '' : u = u + '&page=' + str(page)
-	if category != '' : u = u + '&category=' + str(category)
 	if text != '' : u = u + '&text=' + quote(text)
 	liz=xbmcgui.ListItem(name, iconImage=iconimage, thumbnailImage=iconimage)
 	liz.setInfo( type="Video", infoLabels={ "Title": name } )
@@ -20,7 +19,7 @@ def addDir(name,url='',mode='',iconimage=icon,page='',category='',text=''):
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=True)
 	return
 
-def addLink(name,url,mode,iconimage=icon,duration='',isPlayable='yes',text=''):
+def addLink(name,url,mode,iconimage=icon,duration='',text=''):
 	if iconimage=='': iconimage=icon
 	#xbmcgui.Dialog().ok(duration,'')
 	u='plugin://'+addon_id+'/?mode='+str(mode)+'&url='+quote(url)
@@ -32,7 +31,7 @@ def addLink(name,url,mode,iconimage=icon,duration='',isPlayable='yes',text=''):
 		if len(duration)<=5 : duration = '00:' + duration
 		duration = sum(x * int(t) for x, t in zip([3600,60,1], duration.split(":"))) 	
 		liz.setInfo('Video', {'duration': duration})
-	if isPlayable=='yes' or isPlayable=='': liz.setProperty('IsPlayable', 'true')
+	if text=='': liz.setProperty('IsPlayable', 'true')
 	xbmcplugin.setContent(addon_handle, 'videos')
 	xbmcplugin.addDirectoryItem(handle=addon_handle,url=u,listitem=liz,isFolder=False)
 	return

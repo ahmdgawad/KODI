@@ -117,11 +117,11 @@ def TITLES(url,page):
 						if int(page/10)*10==i:
 							for j in range(i,i+10,1):
 								if not page==j and j!=0:
-									addDir(menu_name+'صفحة '+str(j),url,122,icon,j)
-						elif i!=0: addDir(menu_name+'صفحة '+str(i),url,122,icon,i)
-						else: addDir(menu_name+'صفحة '+str(1),url,122,icon,1)
-				elif n!=0: addDir(menu_name+'صفحة '+str(n),url,122,icon,n)
-				else: addDir(menu_name+'صفحة '+str(1),url,122,icon,1)
+									addDir(menu_name+'صفحة '+str(j),url,122,'',j)
+						elif i!=0: addDir(menu_name+'صفحة '+str(i),url,122,'',i)
+						else: addDir(menu_name+'صفحة '+str(1),url,122,'',1)
+				elif n!=0: addDir(menu_name+'صفحة '+str(n),url,122,'',n)
+				else: addDir(menu_name+'صفحة '+str(1),url,122,'',1)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -290,7 +290,7 @@ def GET_PLAY_TOKENS():
 	#xbmcgui.Dialog().ok('success, you just logged in now','')
 	return [ EGUDI, EGUSID, EGUSS ]
 
-def SEARCH(search=''):
+def SEARCH(search):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','+')

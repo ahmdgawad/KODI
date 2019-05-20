@@ -38,7 +38,7 @@ def PLAY(linkLIST,script_name):
 	#for i in range(0,size):
 	#	title = serversLIST[i]
 	#	link = urlLIST[i]
-	#	addLink(menu_name+title,link,160,'','','',script_name)
+	#	addLink(menu_name+title,link,160,'','',script_name)
 	#xbmcplugin.endOfDirectory(addon_handle)
 	return videoURL
 

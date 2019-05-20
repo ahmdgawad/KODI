@@ -23,9 +23,9 @@ def MENU():
 	#website0a = website0a.strip('/')
 	#xbmcgui.Dialog().ok(website0a,'')
 	addDir(menu_name+'بحث في الموقع','',79)
-	addDir(menu_name+'المميزة',website0a,72,'','','','featured_title')
-	addDir(menu_name+'المزيد',website0a,72,'','','','more_title')
-	#addDir(menu_name+'الاخبار',website0a,72,'','','','news_title')
+	addDir(menu_name+'المميزة',website0a,72,'','','featured')
+	addDir(menu_name+'المزيد',website0a,72,'','','more')
+	#addDir(menu_name+'الاخبار',website0a,72,'','','news')
 	ignoreLIST = ['الكتب و الابحاث','الكورسات التعليمية','الألعاب','البرامج','الاجهزة اللوحية','الصور و الخلفيات']
 	html = openURL(website0a,'',headers,'','AKOAM-MENU-1st')
 	html_blocks = re.findall('big_parts_menu(.*?)main_partions',html,re.DOTALL)
@@ -53,26 +53,31 @@ def CATEGORIES(url):
 			addDir(menu_name+title,link,72)
 		addDir(menu_name+'جميع الفروع',url,72)
 		xbmcplugin.endOfDirectory(addon_handle)
-	else: TITLES(url,'default')
+	else: TITLES(url,'')
 	return
 
 def TITLES(url,type):
-	if type=='': type = 'default'
 	html = openURL(url,'',headers,'','AKOAM-TITLES-1st')
-	if type=='default':
-		html_blocks = re.findall('navigation(.*?)<script',html,re.DOTALL)
-	elif type=='featured_title':
+	items = []
+	if type=='featured':
 		html_blocks = re.findall('section_title featured_title(.*?)subjects-crousel',html,re.DOTALL)
-	elif type=='more_title':
+		block = html_blocks[0]
+		items = re.findall('href="(.*?)"><div class="subject_box.*?src="(.*?)".*?<h3.*?>(.*?)</h3>',block,re.DOTALL)
+	elif type=='search':
+		html_blocks = re.findall('akoam_result(.*?)<script',html,re.DOTALL)
+		block = html_blocks[0]
+		items = re.findall('href="(.*?)".*?background-image: url\((.*?)\).*?<h1>(.*?)</h1>',block,re.DOTALL)
+	elif type=='more':
 		html_blocks = re.findall('section_title more_title(.*?)footer_bottom_services',html,re.DOTALL)
-	#elif type=='news_title':
+	#elif type=='news':
 	#	html_blocks = re.findall('section_title news_title(.*?)news_more_choices',html,re.DOTALL)
-	block = html_blocks[0]
-	items = re.findall('href="(.*?)"><div class="subject_box.*?src="(.*?)".*?<h3.*?>(.*?)</h3>',block,re.DOTALL)
-	if not items:
+	else:
+		html_blocks = re.findall('navigation(.*?)<script',html,re.DOTALL)
+	if not items and html_blocks:
+		block = html_blocks[0]
 		items = re.findall('div class="subject_box.*?href="(.*?)".*?src="(.*?)".*?<h3.*?>(.*?)</h3>',block,re.DOTALL)
 	for link,img,title in items:
-		title = title.strip(' ').replace('\t','')
+		title = title.strip(' ').replace('\t','').replace('\n','')
 		title = unescapeHTML(title)
 		if any(value in title for value in noEpisodesLIST):
 			addLink(menu_name+title,link,73,img)
@@ -81,7 +86,7 @@ def TITLES(url,type):
 	html_blocks = re.findall('pagination(.*?)</div',html,re.DOTALL)
 	if html_blocks:
 		block = html_blocks[0]
-		items = re.findall('li>\n<a href=\'(.*?)\'>(.*?)<',block,re.DOTALL)
+		items = re.findall('<li >.*?href=\'(.*?)\'>(.*?)<',block,re.DOTALL)
 		for link,title in items:
 			addDir(menu_name+'صفحة '+title,link,72)
 	xbmcplugin.endOfDirectory(addon_handle)
@@ -92,16 +97,18 @@ def EPISODES(url):
 	html = openURL(url,'',headers,'','AKOAM-EPISODES-1st')
 	#xbmc.log(html, level=xbmc.LOGNOTICE)
 	#xbmcgui.Dialog().ok(url,html)
-	image = re.findall('class="main_img".*?src="(.*?)"',html,re.DOTALL)
-	if image: img = image[0]
-	else: img = ''
-	html_blocks = re.findall('class="sub_title".*?<h1.*?>(.*?)</h1>.*?ad-300-250.*?ad-300-250(.*?)ako-feedback',html,re.DOTALL)
+	items = re.findall('<br />\n<a href="(.*?)".*?<span style="color:.*?">(.*?)</span>',html,re.DOTALL)
+	for link,title in items:
+		title = unescapeHTML(title)
+		addDir(menu_name+title,link,73)
+	html_blocks = re.findall('class="sub_title".*?<h1.*?>(.*?)</h1>.*?class="main_img".*?src="(.*?)".*?ad-300-250(.*?)ako-feedback',html,re.DOTALL)
 	if not html_blocks:
 		xbmcgui.Dialog().notification('خطأ خارجي','لا يوجد ملف فيديو')
 		return
-	block = html_blocks[0][1]
-	videoTitle = html_blocks[0][0]
-	videoTitle = videoTitle.replace('\n','').replace('\t','').strip(' ')
+	name = html_blocks[0][0]
+	img = html_blocks[0][1]
+	block = html_blocks[0][2]
+	name = name.replace('\n','').replace('\t','').strip(' ')
 	if 'sub_epsiode_title' in block:
 		items = re.findall('sub_epsiode_title">(.*?)</h2>.*?sub_file_title.*?>(.*?)<',block,re.DOTALL)
 	else:
@@ -127,7 +134,7 @@ def EPISODES(url):
 		episodeLIST.append(count)
 		count += 1
 	if len(titleLIST)>0:
-		if any(value in videoTitle for value in noEpisodesLIST):
+		if any(value in name for value in noEpisodesLIST):
 			if len(titleLIST)==1:
 				selection = 0
 			else:
@@ -137,8 +144,8 @@ def EPISODES(url):
 		else:
 			for i in range(0,len(titleLIST)):
 				#if ':' in titleLIST[i]: title = titleLIST[i].strip(':') + ' - ملف الفيديو غير موجود'
-				#else: title = videoTitle + ' - ' + titleLIST[i]
-				title = videoTitle + ' - ' + titleLIST[i]
+				#else: title = name + ' - ' + titleLIST[i]
+				title = name + ' - ' + titleLIST[i]
 				link = url + '?ep='+str(size-i)
 				addLink(menu_name+title,link,74,img)
 			xbmcplugin.endOfDirectory(addon_handle)
@@ -166,7 +173,6 @@ def PLAY(url):
 		blocks = re.findall('epsoide_box(.*?)direct_link_box',html_block,re.DOTALL)
 		episode = len(blocks)-int(episode)
 		block = blocks[episode]
-		#xbmcgui.Dialog().ok(url,str(len(blocks)-int(episode)-1))
 		linkLIST = []
 		serversDICT = {'1423075862':'dailymotion','1477487601':'estream','1505328404':'streamango',
 			'1423080015':'flashx','1458117295':'openload','1423079306':'vimple','1430052371':'ok.ru',
@@ -178,7 +184,6 @@ def PLAY(url):
 		for serverIMG,link in items:
 			serverIMG = serverIMG.split('/')[-1]
 			serverIMG = serverIMG.split('.')[0]
-			#xbmcgui.Dialog().ok(str(link),'' )
 			try: linkLIST.append(link+'/?name='+serversDICT[serverIMG])
 			except: linkLIST.append(link+'/?name='+serverIMG)
 		settings.setSetting('previous.url',url)
@@ -188,13 +193,11 @@ def PLAY(url):
 		if message: xbmcgui.Dialog().ok('رسالة من الموقع الاصلي',message[0])
 		else: xbmcgui.Dialog().ok('No video file found','لا يوجد ملف فيديو')
 	else:
-		#xbmcgui.Dialog().ok(url,str(linkLIST))
 		from RESOLVERS import PLAY as RESOLVERS_PLAY
-		#linkLIST = set(linkLIST)
 		RESOLVERS_PLAY(linkLIST,script_name)
 	return ''
 
-def SEARCH(search=''):
+def SEARCH(search):
 	#from requests import request as requests_request
 	#response = requests_request('GET', 'https://akoam.net', headers='', data='', allow_redirects=False)
 	#website0a = response.headers['Location']
@@ -204,23 +207,7 @@ def SEARCH(search=''):
 	new_search = search.replace(' ','%20')
 	#xbmcgui.Dialog().ok(str(len(search)) , str(len(new_search)) )
 	url = website0a + '/search/' + new_search
-	html = openURL(url,'',headers,'','AKOAM-SEARCH-1st')
-	html_blocks = re.findall('akoam_result(.*?)<script',html,re.DOTALL)
-	block = html_blocks[0]
-	items = re.findall('href="(.*?)".*?background-image: url\((.*?)\).*?<h1>(.*?)</h1>',block,re.DOTALL)
-	#if items:
-	for link,img,title in items:
-		title = title.replace('\n','')
-		title = title.strip(' ')
-		title = unescapeHTML(title)
-		if any(value in title for value in noEpisodesLIST):
-			addLink(menu_name+title,link,73,img)
-		else:
-			addDir(menu_name+title,link,73,img)
-	xbmcplugin.endOfDirectory(addon_handle)
-	#else: xbmcgui.Dialog().ok('no results','لا توجد نتائج للبحث')
+	TITLES(url,'search')
 	return
-
-
 
 

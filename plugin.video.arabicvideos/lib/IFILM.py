@@ -22,10 +22,10 @@ def MAIN(mode,url,page,text):
 	return
 
 def LANGUAGE_MENU():
-	addDir(menu_name+'عربي',website0a,21,icon,101)
-	addDir(menu_name+'English',website0b,21,icon,101)
-	addDir(menu_name+'فارسى',website0c,21,icon,101)
-	addDir(menu_name+'فارسى 2',website0d,21,icon,101)
+	addDir(menu_name+'عربي',website0a,21,'',101)
+	addDir(menu_name+'English',website0b,21,'',101)
+	addDir(menu_name+'فارسى',website0c,21,'',101)
+	addDir(menu_name+'فارسى 2',website0d,21,'',101)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -53,7 +53,7 @@ def MAIN_MENU(website0):
 		name2 = 'سريال ها مرتب سازى براساس'
 		name3 = 'سريال ها مرتب حروف الفبا'
 		name4 = 'پخش زنده از اي فيلم كانال'
-	addDir(menu_name+name4,website0,27,'','','no')
+	addDir(menu_name+name4,website0,27,'','','IsPlayable=False')
 	addDir(menu_name+name,website0,29)
 	html_blocks=re.findall('main-body.*?menu(.*?)nav',html,re.DOTALL)
 	block = html_blocks[0]
@@ -62,13 +62,13 @@ def MAIN_MENU(website0):
 		if any(value in link for value in menu):
 			url = website0 + link
 			if 'Series' in link:
-				addDir(menu_name+name1,url,22,icon,100)
-				addDir(menu_name+name2,url,22,icon,101)
-				addDir(menu_name+name3,url,22,icon,201)
+				addDir(menu_name+name1,url,22,'',100)
+				addDir(menu_name+name2,url,22,'',101)
+				addDir(menu_name+name3,url,22,'',201)
 			elif 'Music' in link:
-				addDir(menu_name+title,url,25,icon,101)
+				addDir(menu_name+title,url,25,'',101)
 			elif 'Program':
-				addDir(menu_name+title,url,22,icon,101)
+				addDir(menu_name+title,url,22,'',101)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -78,11 +78,11 @@ def MUSIC_MENU(url):
 	html_blocks = re.findall('Music-tools-header(.*?)Music-body',html,re.DOTALL)
 	block = html_blocks[0]
 	title = re.findall('<p>(.*?)</p>',block,re.DOTALL)[0]
-	addDir(menu_name+title,url,22,icon,101)
+	addDir(menu_name+title,url,22,'',101)
 	items = re.findall('href="(.*?)">(.*?)<',block,re.DOTALL)
 	for link,title in items:
 		link = website0 + link
-		addDir(menu_name+title,link,23,icon,101)
+		addDir(menu_name+title,link,23,'',101)
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -139,7 +139,7 @@ def TITLES(url,page):
 		for count_page in range(1,11) :
 			if not page==str(count_page):
 				counter = '0'+str(count_page)
-				addDir(menu_name+title+str(count_page),url,22,icon,order+counter[-2:])
+				addDir(menu_name+title+str(count_page),url,22,'',order+counter[-2:])
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
@@ -231,7 +231,7 @@ def EPISODES(url,page):
 			for count_page in range(1,11):
 				if not page==str(count_page):
 					counter = '0'+str(count_page)
-					addDir(menu_name+title+str(count_page),url,23,icon,order+counter[-2:])
+					addDir(menu_name+title+str(count_page),url,23,'',order+counter[-2:])
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 

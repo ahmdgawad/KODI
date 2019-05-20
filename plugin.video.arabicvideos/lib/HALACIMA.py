@@ -18,9 +18,9 @@ def MAIN(mode,url,page,text):
 
 def MENU():
 	addDir(menu_name+'بحث في الموقع','',89)
-	addDir(menu_name+'جديد المسلسلات','',84,icon,0)
-	addDir(menu_name+'افلام ومسلسلات مميزة','',85,icon,0)
-	addDir(menu_name+'الاكثر مشاهدة','',86,icon,0)
+	addDir(menu_name+'جديد المسلسلات','',84,'',0)
+	addDir(menu_name+'افلام ومسلسلات مميزة','',85,'',0)
+	addDir(menu_name+'الاكثر مشاهدة','',86,'',0)
 	html = openURL(website0a,'',headers,'','HALACIMA-MENU-1st')
 	#xbmc.log(html, level=xbmc.LOGNOTICE)
 	html_blocks = re.findall('dropdown(.*?)nav',html,re.DOTALL)
@@ -146,7 +146,7 @@ def PLAY(url):
 	RESOLVERS_PLAY(linkLIST,script_name)
 	return
 
-def SEARCH(search=''):
+def SEARCH(search):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	#search = search.replace(' ','+')

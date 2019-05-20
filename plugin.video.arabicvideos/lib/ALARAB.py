@@ -226,7 +226,7 @@ def RAMADAN():
 		addDir(menu_name+title,url,11)
 	xbmcplugin.endOfDirectory(addon_handle)
 
-def SEARCH(search=''):
+def SEARCH(search):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	new_search = search.replace(' ','%20')

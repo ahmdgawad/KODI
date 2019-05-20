@@ -189,7 +189,7 @@ def SETTINGS():
 	xbmc.executebuiltin('Addon.OpenSettings(plugin.video.youtube)', True)
 	return
 
-def SEARCH(search=''):
+def SEARCH(search):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	search = search.replace(' ','%20')

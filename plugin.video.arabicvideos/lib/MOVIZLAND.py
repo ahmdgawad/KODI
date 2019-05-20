@@ -17,11 +17,11 @@ def MAIN(mode,url,text):
 
 def MENU():
 	addDir(menu_name+'بحث في الموقع','',189)
-	addDir(menu_name+'بوكس اوفيس موفيز لاند',website0a,181,'','','','box-office')
-	addDir(menu_name+'أحدث الافلام',website0a,181,'','','','latest-movies')
-	addDir(menu_name+'تليفزيون موفيز لاند',website0a,181,'','','','tv')
-	addDir(menu_name+'الاكثر مشاهدة',website0a,181,'','','','top-view')
-	addDir(menu_name+'أقوى الافلام الحالية',website0a,181,'','','','top-movies')
+	addDir(menu_name+'بوكس اوفيس موفيز لاند',website0a,181,'','','box-office')
+	addDir(menu_name+'أحدث الافلام',website0a,181,'','','latest-movies')
+	addDir(menu_name+'تليفزيون موفيز لاند',website0a,181,'','','tv')
+	addDir(menu_name+'الاكثر مشاهدة',website0a,181,'','','top-view')
+	addDir(menu_name+'أقوى الافلام الحالية',website0a,181,'','','top-movies')
 	html = openURL(website0a,'',headers,'','MOVIZLAND-MENU-1st')
 	items = re.findall('<h2><a href="(.*?)".*?">(.*?)<',html,re.DOTALL)
 	for link,title in items:
@@ -30,14 +30,10 @@ def MENU():
 	xbmcplugin.endOfDirectory(addon_handle)
 	return
 
-def ITEMS(url,type):
-	if type=='': type = 'default'
-	#xbmcgui.Dialog().ok(url,str(type))
+def ITEMS(url,type=''):
 	html = openURL(url,'',headers,'','MOVIZLAND-ITEMS-1st')
 	#xbmc.log(url, level=xbmc.LOGNOTICE)
-	if type=='default':
-		items = re.findall('height="3[0-9]+" src="(.*?)".*?bottom-title.*?href="(.*?)".*?>(.*?)<',html,re.DOTALL)
-	elif type=='latest-movies':
+	if type=='latest-movies':
 		block = re.findall('class="titleSection">أحدث الأفلام</h1>(.*?)<h1',html,re.DOTALL)[0]
 		items = re.findall('height="3[0-9]+" src="(.*?)".*?bottom-title.*?href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	elif type=='box-office':
@@ -52,6 +48,8 @@ def ITEMS(url,type):
 	elif type=='top-movies':
 		block = re.findall('btn-2-overlay(.*?)<style>',html,re.DOTALL)[0]
 		items = re.findall('style="background-image:url\(\'(.*?)\'.*?href="(.*?)".*?bottom-title.*?>(.*?)<',block,re.DOTALL)
+	else:
+		items = re.findall('height="3[0-9]+" src="(.*?)".*?bottom-title.*?href="(.*?)".*?>(.*?)<',html,re.DOTALL)
 	allTitles = []
 	itemLIST = ['فيلم','الحلقة','الحلقه','عرض','Raw','SmackDown','اعلان']
 	for img,link,title in items:
@@ -71,7 +69,7 @@ def ITEMS(url,type):
 			addLink(menu_name+title,link,182,img)
 		else:
 			addDir(menu_name+title,link,183,img)
-	if type=='default':
+	if type=='':
 		items = re.findall('\n<li><a href="(.*?)".*?>(.*?)<',html,re.DOTALL)
 		for link,title in items:
 			title = unescapeHTML(title)
@@ -117,7 +115,7 @@ def PLAY(url):
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
 	previous_url = settings.getSetting('previous.url')
-	if url==previous_url and 1==2:
+	if url==previous_url:
 		linkLIST = settings.getSetting('previous.linkLIST')
 		linkLIST = linkLIST[1:-1].replace('&apos;','').replace(' ','').replace("'",'')
 		linkLIST = linkLIST.split(',')
@@ -136,7 +134,6 @@ def PLAY(url):
 			items = re.findall('href="(http://moshahda.online/.*?.html)".*?>([^<>]+)<',html,re.DOTALL)
 			if len(items)==1:
 				main_watch_link = items[0][0]
-				linkLIST.append(main_watch_link+'?name=Main')
 				items = re.findall('>([\n\w]+[ \w]*)(|</font></font></font>)<br /> .*?<a rel="nofollow" href="(http://e5tsar.*?)"',html,re.DOTALL)
 				for title,dummy,link in items:
 					title = title.replace('\n','')
@@ -152,7 +149,7 @@ def PLAY(url):
 				selection = xbmcgui.Dialog().select('اختر الملف المناسب:', titleLIST2)
 				if selection == -1 : return ''
 				main_watch_link = linkLIST2[selection]
-				linkLIST.append(main_watch_link+'?name=Main')
+			linkLIST.append(main_watch_link+'?name=Main')
 		else: main_watch_link = ''
 		# mobile_watch_link
 		url2 = url.replace(website0a,website0b)
@@ -166,7 +163,7 @@ def PLAY(url):
 		settings.setSetting('previous.url',url)
 		settings.setSetting('previous.linkLIST',str(linkLIST))
 	if len(linkLIST)==0:
-		xbmcgui.Dialog().ok('مشكلة ... الملفات كثيرة','غير قادر على ايجاد ملف الفيديو المناسب')
+		xbmcgui.Dialog().ok('مشكلة','غير قادر على ايجاد ملف الفيديو المناسب')
 	else:
 		#selection = xbmcgui.Dialog().select('اختر الفلتر المناسب:', linkLIST)
 		#if selection == -1 : return ''
@@ -174,7 +171,7 @@ def PLAY(url):
 		RESOLVERS_PLAY(linkLIST,script_name)
 	return ''
 
-def SEARCH(search=''):
+def SEARCH(search):
 	if search=='': search = KEYBOARD()
 	if search == '': return
 	search = search.replace(' ','+')
@@ -190,6 +187,6 @@ def SEARCH(search=''):
 	category = categoryLIST[selection]
 	url = website0a + '/?s='+search+'&mcat='+category
 	#xbmcgui.Dialog().ok(url,url)
-	ITEMS(url,'default')
+	ITEMS(url)
 	return
 
