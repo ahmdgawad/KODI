@@ -91,6 +91,11 @@ def quote(url):
 def unquote(url):
 	return urllib2.unquote(url)
 
+#decode('utf8')
+#decode('unicode_escape')
+#decode('ascii')
+#decode('windows-1256')
+
 def unescapeHTML(string):
 	if '&' in string and ';' in string:
 		string = string.decode('utf8')

@@ -56,6 +56,7 @@ def ITEMS(url,type):
 	itemLIST = ['فيلم','الحلقة','الحلقه','عرض','Raw','SmackDown','اعلان']
 	for img,link,title in items:
 		link = unquote(link)
+		link = link.replace('?view=true','')
 		title = unescapeHTML(title)
 		title2 = re.findall('(.*?)(بجودة|بجوده)',title,re.DOTALL)
 		if title2: title = title2[0][0]
@@ -116,57 +117,62 @@ def PLAY(url):
 	import xbmcaddon
 	settings = xbmcaddon.Addon(id=addon_id)
 	previous_url = settings.getSetting('previous.url')
-	if url==previous_url:
+	if url==previous_url and 1==2:
 		linkLIST = settings.getSetting('previous.linkLIST')
 		linkLIST = linkLIST[1:-1].replace('&apos;','').replace(' ','').replace("'",'')
 		linkLIST = linkLIST.split(',')
 		#xbmcgui.Dialog().ok(url,str(linkLIST))
 	else:
 		linkLIST = []
-		main_watch_link = ''
-		mobile_watch_link = ''
-		# mobile_watch_link
-		url2 = url.replace(website0a,website0b)
-		html = openURL(url2,'',headers,'','MOVIZLAND-PLAY-1st')
-		id2 = re.findall('margin-bottom: 10px;" href=".*?-(.*?)-',html,re.DOTALL)
-		if id2:
-			if id2[0]!='': mobile_watch_link = 'http://moshahda.online/' + id2[0] + '.html'
 		# main_watch_link
 		html = openURL(url,'',headers,'','MOVIZLAND-PLAY-2nd')
 		link = re.findall('font-size: 25px;" href="(.*?)"',html,re.DOTALL)[0]
-		#link = 'http://vb.movizland.online/t67528'
-		#link = 'http://vb.movizland.online/t68216'
-		#link = 'http://vb.movizland.online/t66978'
 		if 'http://moshahda.online/' in link:
-			main_watch_link = link 
+			main_watch_link = link
+			linkLIST.append(main_watch_link+'?name=Main')
 		elif 'http://vb.movizland.online/' in link:
 			html = openURL(link,'',headers,'','MOVIZLAND-PLAY-3rd')
-			items = re.findall('href="(http://moshahda.online.*?)"',html,re.DOTALL)
+			#xbmc.log(html, level=xbmc.LOGNOTICE)
+			items = re.findall('href="(http://moshahda.online/.*?.html)".*?>([^<>]+)<',html,re.DOTALL)
 			if len(items)==1:
-				main_watch_link = items[0]
-				items = re.findall('>([\na-zA-Z0-9]+[ \na-zA-Z0-9]*)(|</font></font></font>)<br /> .*?<a rel="nofollow" href="(http://e5tsar.*?)"',html,re.DOTALL)
-				#linkLIST.append(str(len(items)))
+				main_watch_link = items[0][0]
+				linkLIST.append(main_watch_link+'?name=Main')
+				items = re.findall('>([\n\w]+[ \w]*)(|</font></font></font>)<br /> .*?<a rel="nofollow" href="(http://e5tsar.*?)"',html,re.DOTALL)
 				for title,dummy,link in items:
 					title = title.replace('\n','')
 					link = link + '?name=' + title
 					linkLIST.append(link)
-			else: 
-				xbmcgui.Dialog().ok('مشكلة ... الملفات كثيرة','غير قادر على ايجاد ملف الفيديو المناسب')
-		if main_watch_link==mobile_watch_link and main_watch_link!='':
-			linkLIST.append(main_watch_link+'?name=Main')
-		else:
-			if main_watch_link!='': linkLIST.append(main_watch_link+'?name=Main')
-			if mobile_watch_link!='': linkLIST.append(mobile_watch_link+'?name=Mobile')
+			else:
+				titleLIST2 = []
+				linkLIST2 = []
+				for link,title in items:
+					title = title.decode('windows-1256')
+					titleLIST2.append(title)
+					linkLIST2.append(link)
+				selection = xbmcgui.Dialog().select('اختر الملف المناسب:', titleLIST2)
+				if selection == -1 : return ''
+				main_watch_link = linkLIST2[selection]
+				linkLIST.append(main_watch_link+'?name=Main')
+		else: main_watch_link = ''
+		# mobile_watch_link
+		url2 = url.replace(website0a,website0b)
+		html = openURL(url2,'',headers,'','MOVIZLAND-PLAY-1st')
+		id2 = re.findall('margin-bottom: 10px;" href=".*?-(.*?)-.*?.html',html,re.DOTALL)
+		if id2:
+			if id2[0]!='':
+				mobile_watch_link = 'http://moshahda.online/' + id2[0] + '.html'
+				if main_watch_link!=mobile_watch_link and main_watch_link!='':
+					linkLIST.append(mobile_watch_link+'?name=Mobile')
 		settings.setSetting('previous.url',url)
 		settings.setSetting('previous.linkLIST',str(linkLIST))
-	if len(linkLIST)>0:
+	if len(linkLIST)==0:
+		xbmcgui.Dialog().ok('مشكلة ... الملفات كثيرة','غير قادر على ايجاد ملف الفيديو المناسب')
+	else:
 		#selection = xbmcgui.Dialog().select('اختر الفلتر المناسب:', linkLIST)
 		#if selection == -1 : return ''
 		from RESOLVERS import PLAY as RESOLVERS_PLAY
-		#xbmcgui.Dialog().ok('',str(len(linkLIST)))
-		#xbmcgui.Dialog().ok(url,str(linkLIST[8:20]))
 		RESOLVERS_PLAY(linkLIST,script_name)
-	return
+	return ''
 
 def SEARCH(search=''):
 	if search=='': search = KEYBOARD()

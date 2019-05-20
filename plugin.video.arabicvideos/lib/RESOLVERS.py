@@ -313,8 +313,15 @@ def MOSHAHDA_ONLINE(link):
 def MOSHAHDA_ONLINE_DOWNLOAD(link):
 	headers = { 'User-Agent' : '' }
 	html = openURL(link,'',headers,'','RESOLVERS-MOSHAHDA_ONLINE_DOWNLOAD-1st')
+	#xbmc.log(html, level=xbmc.LOGNOTICE)
+	#xbmcgui.Dialog().ok(link,html)
 	url = re.findall('direct link.*?href="(.*?)"',html,re.DOTALL)
-	return [ url[0] ]
+	if url: url = url[0]
+	else:
+		message = re.findall('class="err">(.*?)<',html,re.DOTALL)
+		if message: xbmcgui.Dialog().ok('رسالة من الموقع الاصلي',message[0])
+		url = ''
+	return [ url ]
 
 def E5TSAR(url):
 	parts = url.split('?')
