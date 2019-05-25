@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
-website0a = 'http://movizland.online'
+website0a = 'http://m.movizland.online'
 website0b = 'http://m.movizland.online'
 script_name='MOVIZLAND'
 headers = { 'User-Agent' : '' }
