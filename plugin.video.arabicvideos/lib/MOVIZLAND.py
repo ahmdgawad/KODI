@@ -4,7 +4,7 @@ from LIBRARY import *
 website0a = 'http://m.movizland.online'
 website0b = 'http://m.movizland.online'
 script_name='MOVIZLAND'
-headers = { 'User-Agent' : '' }
+headers = { 'User-Agent' : 'Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36' }
 menu_name='[COLOR FFC89008]MVZ [/COLOR]'
 
 def MAIN(mode,url,text):
