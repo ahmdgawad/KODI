@@ -20,7 +20,7 @@ def MENU():
 	addDir(menu_name+'بوكس اوفيس موفيز لاند',website0a,181,'','','box-office')
 	addDir(menu_name+'أحدث الافلام',website0a,181,'','','latest-movies')
 	addDir(menu_name+'تليفزيون موفيز لاند',website0a,181,'','','tv')
-	addDir(menu_name+'الاكثر مشاهدة',website0a,181,'','','top-view')
+	addDir(menu_name+'الاكثر مشاهدة',website0a,181,'','','top-views')
 	addDir(menu_name+'أقوى الافلام الحالية',website0a,181,'','','top-movies')
 	html = openURL(website0a,'',headers,'','MOVIZLAND-MENU-1st')
 	items = re.findall('<h2><a href="(.*?)".*?">(.*?)<',html,re.DOTALL)
@@ -33,31 +33,34 @@ def MENU():
 def ITEMS(url,type=''):
 	html = openURL(url,'',headers,'','MOVIZLAND-ITEMS-1st')
 	#xbmc.log(url, level=xbmc.LOGNOTICE)
-	if type=='latest-movies':
+	if type=='latest-movies': 
 		block = re.findall('class="titleSection">أحدث الأفلام</h1>(.*?)<h1',html,re.DOTALL)[0]
-		items = re.findall('height="3[0-9]+" src="(.*?)".*?bottom-title.*?href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	elif type=='box-office':
 		block = re.findall('class="titleSection">بوكس اوفيس موفيز لاند</h1>(.*?)<h1',html,re.DOTALL)[0]
-		items = re.findall('height="3[0-9]+" src="(.*?)".*?bottom-title.*?href="(.*?)".*?>(.*?)<',block,re.DOTALL)
 	elif type=='tv':
 		block = re.findall('class="titleSection">تليفزيون موفيز لاند</h1>(.*?)class="paging"',html,re.DOTALL)[0]
-		items = re.findall('height="3[0-9]+" src="(.*?)".*?bottom-title.*?href="(.*?)".*?>(.*?)<',block,re.DOTALL)
-	elif type=='top-view':
+	elif type=='top-views':
 		block = re.findall('btn-1 btn-absoly(.*?)btn-2 btn-absoly',html,re.DOTALL)[0]
-		items = re.findall('style="background-image:url\(\'(.*?)\'.*?href="(.*?)".*?bottom-title.*?>(.*?)<',block,re.DOTALL)
 	elif type=='top-movies':
 		block = re.findall('btn-2-overlay(.*?)<style>',html,re.DOTALL)[0]
-		items = re.findall('style="background-image:url\(\'(.*?)\'.*?href="(.*?)".*?bottom-title.*?>(.*?)<',block,re.DOTALL)
+	else: block = html
+	if type in ['top-views','top-movies']:
+		items = re.findall('style="background-image:url\(\'(.*?)\'.*?href="(.*?)".*?href="(.*?)".*?bottom-title.*?>(.*?)<',block,re.DOTALL)
 	else:
-		items = re.findall('height="3[0-9]+" src="(.*?)".*?bottom-title.*?href="(.*?)".*?>(.*?)<',html,re.DOTALL)
+		items = re.findall('height="3[0-9]+" src="(.*?)".*?bottom-title.*?href=.*?>(.*?)<.*?href="(.*?)".*?href="(.*?)"',block,re.DOTALL)
 	allTitles = []
-	itemLIST = ['فيلم','الحلقة','الحلقه','عرض','Raw','SmackDown','اعلان']
-	for img,link,title in items:
+	itemLIST = ['فيلم','الحلقة','الحلقه','عرض','Raw','SmackDown','اعلان','اجزاء']
+	for img,var1,var2,var3 in items:
+		if type in ['top-views','top-movies']:
+			img,link,link2,title = img,var1,var2,var3
+		else: img,title,link,link2 = img,var1,var2,var3
 		link = unquote(link)
 		link = link.replace('?view=true','')
+		#xbmcgui.Dialog().ok(link,link2)
 		title = unescapeHTML(title)
 		title2 = re.findall('(.*?)(بجودة|بجوده)',title,re.DOTALL)
 		if title2: title = title2[0][0]
+		title = title.strip(' ')
 		if 'الحلقة' in title or 'الحلقه' in title:
 			episode = re.findall('(.*?) (الحلقة|الحلقه) [0-9]+',title,re.DOTALL)
 			if episode:
@@ -65,9 +68,11 @@ def ITEMS(url,type=''):
 				if title not in allTitles:
 					addDir(menu_name+title,link,183,img)
 					allTitles.append(title)
-		elif any(value in title for value in itemLIST) and 'اجزاء' not in title:
+		elif any(value in title for value in itemLIST):
+			link = link + '?servers=' + link2
 			addLink(menu_name+title,link,182,img)
 		else:
+			link = link + '?servers=' + link2
 			addDir(menu_name+title,link,183,img)
 	if type=='':
 		items = re.findall('\n<li><a href="(.*?)".*?>(.*?)<',html,re.DOTALL)
@@ -80,7 +85,9 @@ def ITEMS(url,type=''):
 	return
 
 def EPISODES(url):
-	html = openURL(url,'',headers,'','MOVIZLAND-EPISODES-1st')
+	parts = url.split('?servers=')
+	url2 = parts[0]
+	html = openURL(url2,'',headers,'','MOVIZLAND-EPISODES-1st')
 	block = re.findall('<title>(.*?)</title>.*?height="([0-9]+)" src="(.*?)"',html,re.DOTALL)
 	title = block[0][0]
 	img = block[0][2]
@@ -90,7 +97,7 @@ def EPISODES(url):
 	items = []
 	html_blocks = re.findall('class="episodesNumbers"(.*?)</div>',html,re.DOTALL)
 	if html_blocks:
-		#xbmcgui.Dialog().ok(url,str(html_blocks))
+		#xbmcgui.Dialog().ok(url2,str(html_blocks))
 		block = html_blocks[0]
 		items = re.findall('href="(.*?)"',block,re.DOTALL)
 		for link in items:
@@ -121,47 +128,89 @@ def PLAY(url):
 		linkLIST = linkLIST.split(',')
 		#xbmcgui.Dialog().ok(url,str(linkLIST))
 	else:
-		linkLIST = []
-		# main_watch_link
-		html = openURL(url,'',headers,'','MOVIZLAND-PLAY-2nd')
+		urls = url.split('?servers=')
+		html = openURL(urls[0],'',headers,'','MOVIZLAND-PLAY-1st')
 		link = re.findall('font-size: 25px;" href="(.*?)"',html,re.DOTALL)[0]
-		if 'http://moshahda.online/' in link:
-			main_watch_link = link
-			linkLIST.append(main_watch_link+'?name=Main')
-		elif 'http://vb.movizland.online/' in link:
-			html = openURL(link,'',headers,'','MOVIZLAND-PLAY-3rd')
-			#xbmc.log(html, level=xbmc.LOGNOTICE)
-			items = re.findall('href="(http://moshahda.online/.*?.html)".*?>([^<>]+)<',html,re.DOTALL)
-			if len(items)==1:
-				main_watch_link = items[0][0]
-				items = re.findall('>([\n\w]+[ \w]*)(|</font></font></font>)<br /> .*?<a rel="nofollow" href="(http://e5tsar.*?)"',html,re.DOTALL)
-				for title,dummy,link in items:
-					title = title.replace('\n','')
-					link = link + '?name=' + title
-					linkLIST.append(link)
-			else:
-				titleLIST2 = []
-				linkLIST2 = []
-				for link,title in items:
-					title = title.decode('windows-1256')
-					titleLIST2.append(title)
-					linkLIST2.append(link)
-				selection = xbmcgui.Dialog().select('اختر الملف المناسب:', titleLIST2)
-				if selection == -1 : return ''
-				main_watch_link = linkLIST2[selection]
-			linkLIST.append(main_watch_link+'?name=Main')
-		else: main_watch_link = ''
+		if link not in urls: urls.append(link)
+		#xbmcgui.Dialog().ok(url,str(urls))
+		main_watch_link = ''
+		linkLIST = []
+		selection = ''
+		# main_watch_link
+		for link in urls[1:99]:
+			if 'http://moshahda.' in link:
+				main_watch_link = link
+				linkLIST.append(main_watch_link+'?name=Main')
+			elif 'http://vb.movizland.' in link:
+				html = openURL(link,'',headers,'','MOVIZLAND-PLAY-2nd')
+				#xbmc.log(html, level=xbmc.LOGNOTICE)</a></div><br /><div align="center">(\*\*\*\*\*\*\*\*|13721411411.png|)
+				html = html.replace('src="http://up.movizland.com/uploads/13721411411.png"','src="/uploads/13721411411.png"  \n  src="/uploads/13721411411.png"')
+				html = html.replace('src="http://up.movizland.online/uploads/13721411411.png"','src="/uploads/13721411411.png"  \n  src="/uploads/13721411411.png"')
+				html = html.replace('</a></div><br /><div align="center">','src="/uploads/13721411411.png"')
+				html = html.replace('class="tborder" align="center"','src="/uploads/13721411411.png"')
+				html_blocks = re.findall('(src="/uploads/13721411411.png".*?href="http://moshahda\..*?/\w+.html".*?src="/uploads/13721411411.png")',html,re.DOTALL)
+				if html_blocks:
+					#xbmcgui.Dialog().ok(url,str(len(html_blocks)))
+					titleLIST2 = []
+					linkLIST2 = []
+					separator = ' '
+					if len(html_blocks)==1:
+						title = ''
+						block = html
+					else:
+						for block in html_blocks:
+							block2 = re.findall('src="/uploads/13721411411.png".*?http://up.movizland.(online|com)/uploads/.*?\*\*\*\*\*\*\*+(.*?src="/uploads/13721411411.png")',block,re.DOTALL)
+							if block2: block = 'src="/uploads/13721411411.png"  \n  ' + block2[0][1]
+							block2 = re.findall('src="/uploads/13721411411.png".*?<hr size="1" style="color:#333; background-color:#333" />(.*?href="http://moshahda\..*?/\w+.html".*?src="/uploads/13721411411.png")',block,re.DOTALL)
+							if block2: block = 'src="/uploads/13721411411.png"  \n  ' + block2[0]
+							block2 = re.findall('(src="/uploads/13721411411.png".*?href="http://moshahda\..*?/\w+.html".*?)<hr size="1" style="color:#333; background-color:#333" />.*?src="/uploads/13721411411.png"',block,re.DOTALL)
+							if block2: block = block2[0] + '  \n  src="/uploads/13721411411.png"'
+							title_blocks = re.findall('<(.*?)http://up.movizland.(online|com)/uploads/',block,re.DOTALL)
+							title = re.findall('> *([^<>]+) *<',title_blocks[0][0],re.DOTALL)
+							title = separator.join(title)
+							title = title.decode('windows-1256')
+							title = title.replace('\n','').strip(' ')
+							title = title.replace('  ',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ')
+							titleLIST2.append(title)
+						selection = xbmcgui.Dialog().select('أختر الفيديو المطلوب:', titleLIST2)
+						if selection == -1 : return '' 
+						title = titleLIST2[selection]
+						block = html_blocks[selection]
+					link = re.findall('href="(http://moshahda\..*?/\w+.html)"',block,re.DOTALL)
+					main_watch_link = link[0]
+					linkLIST.append(main_watch_link+'?name=Main')
+					block = block.replace('ـ'.encode('windows-1256'),'')
+					block = block.replace('src="http://up.movizland.online/uploads/1517412175296.png"','src="/uploads/13721411411.png"  \n  src="/uploads/13721411411.png"  \n  typetype="both"  \n  ')
+					block = block.replace('src="http://up.movizland.com/uploads/1517412175296.png"','src="/uploads/13721411411.png"  \n  src="/uploads/13721411411.png"  \n  typetype="both"  \n  ')
+					block = block.replace('سيرفرات التحميل'.encode('windows-1256'),'src="/uploads/13721411411.png"  \n  src="/uploads/13721411411.png"  \n  typetype="download"  \n  ')
+					block = block.replace('روابط التحميل'.encode('windows-1256'),'src="/uploads/13721411411.png"  \n  src="/uploads/13721411411.png"  \n  typetype="download"  \n  ')
+					block = block.replace('سيرفرات المشاهد'.encode('windows-1256'),'src="/uploads/13721411411.png"  \n  src="/uploads/13721411411.png"  \n  typetype="watch"  \n  ')
+					block = block.replace('زوابط المشاهد'.encode('windows-1256'),'src="/uploads/13721411411.png"  \n  src="/uploads/13721411411.png"  \n  typetype="watch"  \n  ')
+					links_blocks = re.findall('(src="/uploads/13721411411.png".*?href="http://e5tsar.com/\d+".*?src="/uploads/13721411411.png")',block,re.DOTALL)
+					for link_block in links_blocks:
+						#xbmcgui.Dialog().ok('',str(link_block))
+						type = re.findall(' typetype="(.*?)" ',link_block)
+						if type: type = '__'+type[0]
+						else: type = ''
+						items = re.findall('(?<!http://e5tsar.com/)(\w+[ \w]*</font>.*?|\w+[ \w]*<br />.*?)href="(http://e5tsar.com/.*?)"',link_block,re.DOTALL)
+						for title_block,link in items:
+							title = re.findall('(\w+[ \w]*)<',title_block)
+							title = title[-1]
+							link = link + '?name=' + title + type
+							linkLIST.append(link)
+		linkLIST = list(set(linkLIST))
 		# mobile_watch_link
-		url2 = url.replace(website0a,website0b)
-		html = openURL(url2,'',headers,'','MOVIZLAND-PLAY-1st')
-		id2 = re.findall('margin-bottom: 10px;" href=".*?-(.*?)-.*?.html',html,re.DOTALL)
+		url3 = urls[0].replace(website0a,website0b)
+		html = openURL(url3,'',headers,'','MOVIZLAND-PLAY-3rd')
+		id2 = re.findall('" href="http://moshahda\..*?/embedM-(\w+)-.*?.html',html,re.DOTALL)
+		#xbmcgui.Dialog().ok(url3,str(id2))
 		if id2:
-			if id2[0]!='':
-				mobile_watch_link = 'http://moshahda.online/' + id2[0] + '.html'
-				if main_watch_link!=mobile_watch_link and main_watch_link!='':
-					linkLIST.append(mobile_watch_link+'?name=Mobile')
-		settings.setSetting('previous.url',url)
-		settings.setSetting('previous.linkLIST',str(linkLIST))
+			mobile_watch_link = 'http://moshahda.online/' + id2[0] + '.html'
+			if mobile_watch_link+'?name=Main' not in linkLIST:
+				linkLIST.append(mobile_watch_link+'?name=Mobile')
+		if selection=='':
+			settings.setSetting('previous.url',url)
+			settings.setSetting('previous.linkLIST',str(linkLIST))
 	if len(linkLIST)==0:
 		xbmcgui.Dialog().ok('مشكلة','غير قادر على ايجاد ملف الفيديو المناسب')
 	else:
