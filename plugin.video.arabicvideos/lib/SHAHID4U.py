@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
-website0a = 'https://tv.shahid4u.net'
+website0a = 'https://hd.shahid4u.net'
 script_name='SHAHID4U'
 headers = { 'User-Agent' : '' }
 menu_name='[COLOR FFC89008]SHA [/COLOR]'
