@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from LIBRARY import *
 
-website0a = 'https://akoam.net'
+website0a = 'https://akoam.pro'
 headers = { 'User-Agent' : '' }
 script_name='AKOAM'
 menu_name='[COLOR FFC89008]AKM [/COLOR]'
